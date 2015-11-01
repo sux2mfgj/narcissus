@@ -5,6 +5,16 @@
 namespace narcissus {
     namespace cpu {
 
+        enum operation {
+            INVALID = 0,
+            ADD_B_IMM,
+            ADD_B_R_R,
+            ADD_W_IMM,
+            ADD_W_R_R,
+            ADD_L_IMM,
+            ADD_L_R_R,
+        };
+
         const std::uint32_t ROM_SIZE = 0x00080000;
 
         union register_t{
@@ -39,6 +49,18 @@ namespace narcissus {
                 : interrupt_mask(0), user_interrupt(0), half_carry(0),
                 user(0), negative(0), zero(0), over_flow(0), carry(0) {}
 
+            void reset()
+            {
+                interrupt_mask = 1;
+                user_interrupt = 0;
+                half_carry = 0;
+                user =0;
+                negative = 0;
+                zero = 0;
+                over_flow = 0;
+                carry = 0;
+            }
+
             int interrupt_mask  : 1;
             int user_interrupt  : 1;
             int half_carry      : 1;
@@ -56,7 +78,7 @@ namespace narcissus {
             private:
                 //registers
                 register_t er[7];
-                er7_register pc;
+                er7_register er7;
                 conditional_code_register ccr;
 
                 //built-in memory
@@ -65,7 +87,13 @@ namespace narcissus {
             
             public:
                 void reset_exception();
+                void cycle();
+                operation detect_operation();
         };
+
+//         std::uint8_t std::uint8_t::operator [](std::uint32_t) {
+//             return this[std::uint32_t];
+//         };
     } // namespace cpu
 } // namespace narcissus
 

@@ -6,7 +6,7 @@ set(CMAKE_CXX_FLAGS "-std=c++14")
 enable_testing()
 
 add_subdirectory(googletest/googletest)
-#add_subdirectory(src/test)
+add_subdirectory(src/test)
 
 add_subdirectory(src/cpu)
 include_directories(
