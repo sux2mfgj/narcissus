@@ -26,17 +26,30 @@ namespace narcissus {
         {
             switch (detect_operation()) {
                 case ADD_B_IMM: {
-                                    auto rd = rom[er[7].er32] & 0x0f;
-                                    auto imm = rom[er[7].er32 + 1];
-                                    if(!register_write(rd, imm, register_size::BYTE)){
-                                        return false;
-                                    }
+                    auto rd = rom[er[7].er32] & 0x0f;
+                    auto imm = rom[er[7].er32 + 1];
+                    if (!register_write_immediate(rd, imm, register_size::BYTE)) {
+                        return false;
+                    }
 
-                                    er[7].er32 += 2;
-                                    break;
-                                }
+                    er[7].er32 += 2;
+                    break;
+                }
+                case ADD_B_R_R:
+                {
+                    auto rs = (rom[er[7].er32 + 1] & 0xf0) >> 4;
+                    auto rd = rom[er[7].er32 + 1] & 0x0f;
+
+                    if(!register_write_register(rd, rs, register_size::BYTE)){
+                        return false;
+                    }
+
+                    er[7].er32 += 2;
+                    break;        
+                }
+
                 case INVALID:
-                                return false;
+                    return false;
             }
 
             return true;
@@ -49,45 +62,71 @@ namespace narcissus {
             auto ah = op >> 4;
             auto al = op & 0x0f;
 
+            std::cout << ah << al << std::endl;
             switch (ah) {
                 case 8:
                     return operation::ADD_B_IMM;
-                    break;
+
+                case 0:
+                    switch (al) {
+                        case 8:
+                            return operation::ADD_B_R_R;
+                        default:
+                            return operation::INVALID;
+                    }
 
                 default:
                     return operation::INVALID;
             }
         }
 
-        bool h8_300::register_write(int destination, uint32_t immediate, register_size size)
+        bool h8_300::register_write_immediate(uint8_t destination,
+                uint32_t immediate,
+                register_size size)
         {
-
-
             switch (size) {
                 case BYTE:
 
-                    if(immediate > 0xff) {
+                    if (immediate > 0xff) {
                         return false;
                     }
-                    // high
-                    if ((destination & 0x8) != 0x8) {
-                        er[destination & 0x7].h = immediate;
-                    }
-                    // low
-                    else {
-                        er[destination & 0x7].l = immediate;
-                    }
+                    er[destination & 0x7].write(destination, immediate, register_size::BYTE);
                     break;
 
                 case WORD:
-                    //TODO
+                    // TODO
                     break;
                 case LONG:
-                    //TODO
+                    // TODO
                     break;
             }
             return true;
         }
+
+        bool h8_300::register_write_register(uint8_t destination,
+                uint8_t source,
+                register_size size)
+        {
+            switch (size) {
+                case register_size::BYTE: 
+                    {
+                        if(destination > 0xf || source > 0xf) {
+                            return false;
+                        }
+
+                        auto tmp = er[source & 0x7].read(source, register_size::BYTE);
+                        er[destination & 0x7].write(destination, tmp, register_size::BYTE);
+                        break;
+                    }
+                case register_size::WORD:
+                    break;
+                case register_size::LONG:
+                    break;
+
+            }
+            return true;
+        }
+
 
     }  // namespace cpu
 }  // namespace narcissus

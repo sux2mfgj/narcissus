@@ -11,23 +11,58 @@ namespace narcissus {
         enum operation {
             INVALID = 0,
             ADD_B_IMM,
-            //             ADD_B_R_R,
+            ADD_B_R_R,
             //             ADD_W_IMM,
             //             ADD_W_R_R,
             //             ADD_L_IMM,
             //             ADD_L_R_R,
         };
 
-        enum register_size {
-            BYTE,
-            WORD,
-            LONG
-        };
+        enum register_size { BYTE, WORD, LONG };
 
         const std::uint32_t ROM_SIZE = 0x00080000;
 
         union register_t {
             register_t() : er32(0) {}
+
+            void write(uint8_t destination, uint32_t value, register_size size)
+            {
+                switch (size) {
+                    case register_size::BYTE:
+                        if((destination & 0x8) != 0x8) {
+                            h = value;
+                        }
+                        else {
+                            l = value;
+                        }
+                        break;
+                    case register_size::WORD:
+                        //TODO
+                        break;
+                    case register_size::LONG:
+                        //TODO
+                        break;
+                }
+            }
+
+            uint32_t read(uint8_t source, register_size size)
+            {
+                switch (size) {
+                    case register_size::BYTE:
+                        if((source & 0x8) != 0x8){
+                            return h;
+                        }
+                        else {
+                            return l;
+                        }
+                    case register_size::WORD:
+                        //TODO
+                        return -1;
+                    case register_size::LONG:
+                        //TODO
+                        return -1;
+                }
+            }
 
             std::uint32_t er32;
 
@@ -46,8 +81,6 @@ namespace narcissus {
         union conditional_code_register {
             conditional_code_register() : byte(0) {}
 
-
-
             std::uint8_t byte;
             struct {
                 int interrupt_mask : 1;
@@ -58,11 +91,10 @@ namespace narcissus {
                 int zero : 1;
                 int over_flow : 1;
                 int carry : 1;
-            };  
+            };
         };
 
         class h8_300 {
-
             public:
                 h8_300(std::array<uint8_t, ROM_SIZE>&& mem);
 
@@ -79,10 +111,15 @@ namespace narcissus {
                 void reset_exception();
                 bool cycle();
                 operation detect_operation();
-                bool register_write(int destination, uint32_t immediate, register_size size);
+                bool register_write_immediate(uint8_t destination,
+                        uint32_t immediate,
+                        register_size size);
+                bool register_write_register(uint8_t destination,
+                        uint8_t source,
+                        register_size size);
 
-            FRIEND_TEST(cpu, ADD_B_IMM);
-
+                FRIEND_TEST(cpu, ADD_B_IMM);
+                FRIEND_TEST(cpu, ADD_B_R_R);
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {
