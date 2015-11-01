@@ -28,7 +28,7 @@ namespace narcissus {
 
             ASSERT_EQ(cpu.er[2].l, 0x0ff);
 
-            ASSERT_EQ(cpu.er[7].er32, 0x102);
+            ASSERT_EQ(cpu.PC, 0x102);
         }
 
         TEST(cpu, ADD_B_R_R) {
@@ -55,10 +55,10 @@ namespace narcissus {
 
             ASSERT_EQ(cpu.er[2].h, 0x12);
 
-            ASSERT_EQ(cpu.er[7].er32, 0x102);
+            ASSERT_EQ(cpu.PC, 0x102);
         }
 
-        TEST(cpu, ADDR_W_IMM) {
+        TEST(cpu, ADD_W_IMM) {
             using namespace std;
             array<uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -79,7 +79,31 @@ namespace narcissus {
 
             ASSERT_EQ(true, cpu.cycle());
             ASSERT_EQ(cpu.er[3].e, 0x1234);
-            ASSERT_EQ(cpu.er[7].er32, 0x104);
+            ASSERT_EQ(cpu.PC, 0x104);
+        }
+
+        TEST(cpu, ADD_W_R_R) {
+            using namespace std;
+            array<uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            // ADD.W e3, r6
+            mem[0x100] = 0x09;
+            mem[0x101] = 0xb6;
+
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
+
+            cpu.er[3].e = 0x5678;
+
+            ASSERT_EQ(cpu::operation::ADD_W_R_R, cpu.detect_operation());
+            ASSERT_EQ(true, cpu.cycle());
+            ASSERT_EQ(cpu.er[6].r, 0x5678);
+            ASSERT_EQ(cpu.PC, 0x102);
+
         }
 
     } // namespace cpu

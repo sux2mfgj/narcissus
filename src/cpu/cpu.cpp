@@ -63,6 +63,20 @@ namespace narcissus {
                     break;
                 }
 
+                case ADD_W_R_R:
+                {
+                    auto rs = (rom[PC + 1] & 0xf0) >> 4;
+                    auto rd = (rom[PC + 1] & 0x0f);
+
+                    if(!register_write_register(rd, rs, register_size::WORD)){
+                        return false;
+                    }
+
+                    PC += 2;
+
+                    break;
+                }
+
                 case INVALID:
                     return false;
             }
@@ -104,6 +118,8 @@ namespace narcissus {
                     switch (al) {
                         case 8:
                             return operation::ADD_B_R_R;
+                        case 9:
+                            return operation::ADD_W_R_R;
                         default:
                             return operation::INVALID;
                     }
@@ -146,23 +162,34 @@ namespace narcissus {
                 uint8_t source,
                 register_size size)
         {
-            switch (size) {
-                case register_size::BYTE: 
-                    {
-                        if(destination > 0xf || source > 0xf) {
-                            return false;
-                        }
-
-                        auto tmp = er[source & 0x7].read(source, register_size::BYTE);
-                        er[destination & 0x7].write(destination, tmp, register_size::BYTE);
-                        break;
-                    }
-                case register_size::WORD:
-                    break;
-                case register_size::LONG:
-                    break;
-
+            if(destination > 0xf || source > 0xf) {
+                return false;
             }
+
+            auto tmp = er[source & 0x7].read(source, size);
+            er[destination & 0x7].write(destination, tmp, size);
+            //XXX
+            std::cout << destination << ":" << source << ":" << uint16_t(tmp) << std::endl;
+
+//             switch (size) {
+//                 case register_size::BYTE: 
+//                     {
+
+//                         auto tmp = er[source & 0x7].read(source, register_size::BYTE);
+//                         er[destination & 0x7].write(destination, tmp, register_size::BYTE);
+//                         break;
+//                     }
+//                 case register_size::WORD:
+//                     {
+//                         uint16_t tmp = er[source & 0x7].read(source, register_size::WORD);
+//                         er[destination & 0x7].write(destination, tmp, register_size::BYTE) ;
+//                         
+//                         break;
+//                     }
+//                 case register_size::LONG:
+//                     break;
+
+//             }
             return true;
         }
 
