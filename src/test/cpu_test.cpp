@@ -155,6 +155,29 @@ namespace narcissus {
             ASSERT_EQ(cpu.PC, 0x102);
 
         }
+
+        TEST(cpu, MOV_B_IMM) {
+            using namespace std;
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            // MOV.B #0x12, r2h
+            mem[0x100] = 0xf2;
+            mem[0x101] = 0x12;
+
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
+
+            ASSERT_EQ(cpu::operation::MOV_B_IMM, cpu.detect_operation());
+            ASSERT_EQ(true, cpu.cycle());
+            ASSERT_EQ(cpu.er[2].h, 0x12);
+            ASSERT_EQ(cpu.PC, 0x102);
+        }
         
     } // namespace cpu
 } // namespace narcissus
+
+//TODO added code for condition code register
