@@ -3,9 +3,9 @@
 namespace narcissus {
     namespace cpu {
         
-        h8_300::h8_300() : er(), er7(), ccr(), rom()
+        h8_300::h8_300(std::array<uint8_t, ROM_SIZE>&& mem) : er(), er7(), ccr(), rom()
         {
-            
+            rom = move(mem); 
         }
 
         void h8_300::reset_exception()
@@ -15,6 +15,8 @@ namespace narcissus {
             reset_addr |= uint32_t(rom[1]) << 16;
             reset_addr |= uint32_t(rom[2]) << 8;
             reset_addr |= uint32_t(rom[3]);
+
+            er7.er7.er32 = reset_addr;
 
             // reset ccr 
             ccr.reset();
@@ -39,7 +41,7 @@ namespace narcissus {
                     break;
 
                 default:
-                     return operation::INVALID;
+                    return operation::INVALID;
             }
         }
 

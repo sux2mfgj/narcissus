@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <array>
 
 namespace narcissus {
     namespace cpu {
@@ -73,7 +74,7 @@ namespace narcissus {
 
         class h8_300{
             public:
-                h8_300();
+                h8_300(std::array<uint8_t, ROM_SIZE>&& mem); 
 
             private:
                 //registers
@@ -82,7 +83,7 @@ namespace narcissus {
                 conditional_code_register ccr;
 
                 //built-in memory
-                std::uint8_t rom[ROM_SIZE];
+                std::array<std::uint8_t, ROM_SIZE> rom;
                 //std::uint8_t ram[RAM_SIZE];
             
             public:
