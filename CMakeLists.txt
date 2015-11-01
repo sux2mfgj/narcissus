@@ -8,10 +8,14 @@ enable_testing()
 add_subdirectory(googletest/googletest)
 #add_subdirectory(src/test)
 
+add_subdirectory(src/cpu)
 include_directories(
     src/include
 )
 
 add_executable(narcissus src/main.cpp)
 
-target_link_libraries(narcissus) 
+target_link_libraries(
+    narcissus
+    cpu
+) 
