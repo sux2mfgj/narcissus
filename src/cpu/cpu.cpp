@@ -3,7 +3,8 @@
 namespace narcissus {
     namespace cpu {
 
-        h8_300::h8_300(std::array<std::uint8_t, ROM_SIZE>&& mem) : er(), ccr(), pc(), rom(move(mem))
+        h8_300::h8_300(std::array<std::uint8_t, ROM_SIZE>&& mem) 
+            : er(), sp(), ccr(), pc(), rom(move(mem)), ram()
         {
 //             rom = move(mem);
         }
@@ -135,6 +136,23 @@ namespace narcissus {
                     return true;
                 }
 
+                //TODO yet complete below(have to mcu first than this case)
+                case JSR_ABS:
+                {
+                    auto abs = std::uint32_t(rom[pc + 1]) << 16;
+                    abs |= std::uint32_t(rom[pc + 2]) << 8;
+                    abs |= std::uint32_t(rom[pc + 3]);
+
+                    //TODO [WIP] setup stack
+                    rom[--sp] = std::uint8_t(pc & 0x0000ff);
+//                     rom[--sp] = std::uint8_t((pc >> 8) & 0x00ff00);
+//                     rom[--sp] = std::uint8_t((pc >> 16) & 0xff0000);
+
+                    pc = abs;
+                    return true;
+                }
+
+
                 case INVALID:
 
                     std::cout << "INVALID opecode: " << std::hex << "0x" << std::flush;
@@ -186,6 +204,15 @@ namespace narcissus {
                                 default:
                                     return operation::INVALID;
                             }
+                        default:
+                            return operation::INVALID;
+                    }
+
+                case 5:
+                    switch (al) {
+                        case 0xe:
+                            return operation::JSR_ABS;
+
                         default:
                             return operation::INVALID;
                     }

@@ -42,9 +42,11 @@ int main(int argc, char const* argv[])
     cpu::h8_300 cpu(move(mem));
     cpu.reset_exception();
 
-    if(!cpu.cycle()){
-        std::cout << "cycle failed" << std::endl;
-    }
+    while (cpu.cycle()) {}
+
+//     if(!cpu.cycle()){
+//         std::cout << "cycle failed" << std::endl;
+//     }
     
     return 0;
 }
