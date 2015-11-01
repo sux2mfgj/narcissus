@@ -147,6 +147,7 @@ namespace narcissus {
                 FRIEND_TEST(cpu, ADD_L_IMM);
                 FRIEND_TEST(cpu, ADD_L_R_R);
                 FRIEND_TEST(cpu, MOV_B_IMM);
+                FRIEND_TEST(cpu, MOV_B_R_IND);
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {

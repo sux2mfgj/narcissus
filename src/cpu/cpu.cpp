@@ -85,9 +85,6 @@ namespace narcissus {
                     imm |= std::uint32_t(rom[PC + 4]) << 8;
                     imm |= std::uint32_t(rom[PC + 5]);
 
-                    //XXX
-                    std::cout << erd << ":" <<imm << std::endl;
-
                     if(!register_write_immediate(std::uint8_t(erd), imm, register_size::LONG)){
                         return false;
                     }
@@ -114,8 +111,6 @@ namespace narcissus {
                     auto rd = rom[PC] & 0x0f;
                     auto imm = rom[PC + 1];
 
-                    //XXX
-                    std::cout << std::hex << "rd: "<< (std::uint8_t(rom[0x100]) & 0x4) << std::endl;
                     if(!register_write_immediate(rd, imm, register_size::BYTE)){
                         return false;
                     }
@@ -125,6 +120,16 @@ namespace narcissus {
                 }
 
                 case INVALID:
+
+                    std::cout << "INVALID opecode: " << std::hex << "0x" << std::flush;
+                    std::cout << std::setw(2) << std::setfill('0') 
+                        << (std::uint16_t)(rom[PC]) << std::flush;
+                    std::cout << std::setw(2) << std::setfill('0') 
+                        << (std::uint16_t)(rom[PC+1]) << std::endl;
+
+                    std::cout << "0x" << std::setw(8) << std::setfill('0')
+                        << (std::uint32_t)PC << std::endl;
+
                     return false;
             }
 
@@ -207,8 +212,6 @@ namespace narcissus {
                 register_size size)
         {
 
-            //XXX
-            std::cout << std::uint8_t(destination) << " : " << immediate << std::endl;
             switch (size) {
                 case BYTE:
                     if (immediate > 0xff) {
@@ -238,8 +241,6 @@ namespace narcissus {
 
             auto tmp = er[source & 0x7].read(source, size);
             er[destination & 0x7].write(destination, tmp, size);
-            //XXX
-            std::cout << destination << ":" << source << ":" << std::uint16_t(tmp) << std::endl;
 
 //             switch (size) {
 //                 case register_size::BYTE: 
