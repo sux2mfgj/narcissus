@@ -106,5 +106,30 @@ namespace narcissus {
 
         }
 
+        TEST(cpu, ADD_L_IMM) {
+            using namespace std;
+            array<uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            // ADD.L #0x12345678, r5
+            mem[0x100] = 0x7a;
+            mem[0x101] = 0x15;
+            mem[0x102] = 0x12;
+            mem[0x103] = 0x34;
+            mem[0x104] = 0x56;
+            mem[0x105] = 0x78;
+
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
+
+            ASSERT_EQ(cpu::operation::ADD_L_IMM, cpu.detect_operation());
+            ASSERT_EQ(true, cpu.cycle());
+            ASSERT_EQ(cpu.er[5].er32, 0x12345678);
+            ASSERT_EQ(cpu.PC, 0x106);
+        }
+
     } // namespace cpu
 } // namespace narcissus

@@ -77,6 +77,25 @@ namespace narcissus {
                     break;
                 }
 
+                case ADD_L_IMM:
+                {
+                    uint8_t erd = rom[PC + 1] & 0x7;
+                    auto imm = uint32_t(rom[PC + 2]) << 24;
+                    imm |= uint32_t(rom[PC + 3]) << 16;
+                    imm |= uint32_t(rom[PC + 4]) << 8;
+                    imm |= uint32_t(rom[PC + 5]);
+
+                    //XXX
+                    std::cout << erd << ":" <<imm << std::endl;
+
+                    if(!register_write_immediate(uint8_t(erd), imm, register_size::LONG)){
+                        return false;
+                    }
+
+                    PC += 6;
+                    break;
+                }
+
                 case INVALID:
                     return false;
             }
@@ -110,6 +129,13 @@ namespace narcissus {
                                     return INVALID;
                             }
                             
+                        case 0xa:
+                            switch(bh) {
+                                case 1:
+                                    return operation::ADD_L_IMM;
+                                default:
+                                    return INVALID;
+                            }
                         default:
                             return INVALID;
                     }
@@ -138,23 +164,20 @@ namespace narcissus {
             std::cout << uint8_t(destination) << " : " << immediate << std::endl;
             switch (size) {
                 case BYTE:
-
                     if (immediate > 0xff) {
                         return false;
                     }
-                    er[destination & 0x7].write(destination, immediate, register_size::BYTE);
                     break;
 
                 case WORD:
                     if(immediate > 0xffff){
                         return false;
                     }
-                    er[destination & 0x7].write(destination, immediate, register_size::WORD);
                     break;
                 case LONG:
-                    // TODO
                     break;
             }
+            er[destination & 0x7].write(destination, immediate, size);
             return true;
         }
 

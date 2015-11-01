@@ -14,7 +14,7 @@ namespace narcissus {
             ADD_B_R_R,
             ADD_W_IMM,
             ADD_W_R_R,
-            //             ADD_L_IMM,
+            ADD_L_IMM,
             //             ADD_L_R_R,
         };
 
@@ -45,7 +45,7 @@ namespace narcissus {
                         }
                         break;
                     case register_size::LONG:
-                        //TODO
+                        er32 = uint32_t(value);
                         break;
                 }
             }
@@ -133,6 +133,7 @@ namespace narcissus {
                 FRIEND_TEST(cpu, ADD_B_R_R);
                 FRIEND_TEST(cpu, ADD_W_IMM);
                 FRIEND_TEST(cpu, ADD_W_R_R);
+                FRIEND_TEST(cpu, ADD_L_IMM);
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {
