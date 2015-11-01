@@ -9,8 +9,8 @@ $(TARGET):
 	cd build; make
 
 test: $(TARGET)
-	cd build; ctest
- 
+	cd build; ctest -VV
+  
 run: $(TARGET)
 	./build/narcissus
 
