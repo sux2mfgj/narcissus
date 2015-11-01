@@ -3,7 +3,7 @@
 namespace narcissus {
     namespace cpu {
 
-        h8_300::h8_300(std::array<std::uint8_t, ROM_SIZE>&& mem) : er(), ccr(), rom(move(mem))
+        h8_300::h8_300(std::array<std::uint8_t, ROM_SIZE>&& mem) : er(), ccr(), pc(), rom(move(mem))
         {
 //             rom = move(mem);
         }
@@ -16,7 +16,7 @@ namespace narcissus {
             reset_addr |= std::uint32_t(rom[2]) << 8;
             reset_addr |= std::uint32_t(rom[3]);
 
-            er[7].er32 = reset_addr;
+            pc = reset_addr;
 
             ccr.byte = 0b00000000;
             ccr.interrupt_mask = 1;
@@ -26,109 +26,125 @@ namespace narcissus {
         {
             switch (detect_operation()) {
                 case ADD_B_IMM: {
-                    auto rd = rom[er[7].er32] & 0x0f;
-                    auto imm = rom[er[7].er32 + 1];
+                    auto rd = rom[pc] & 0x0f;
+                    auto imm = rom[pc + 1];
                     if (!register_write_immediate(rd, imm, register_size::BYTE)) {
                         return false;
                     }
 
-                    er[7].er32 += 2;
+                    pc += 2;
                     break;
                 }
                 case ADD_B_R_R:
                 {
-                    auto rs = (rom[er[7].er32 + 1] & 0xf0) >> 4;
-                    auto rd = rom[er[7].er32 + 1] & 0x0f;
+                    auto rs = (rom[pc + 1] & 0xf0) >> 4;
+                    auto rd = rom[pc + 1] & 0x0f;
 
                     if(!register_write_register(rd, rs, register_size::BYTE)){
                         return false;
                     }
 
-                    er[7].er32 += 2;
+                    pc += 2;
                     break;        
                 }
 
                 case ADD_W_IMM:
                 {
-                    auto rd = (rom[PC + 1] & 0xf);
-                    std::uint16_t imm = std::uint16_t(rom[PC + 2]) << 8;
-                    imm |= std::uint16_t(rom[PC + 3]);
+                    auto rd = (rom[pc + 1] & 0xf);
+                    std::uint16_t imm = std::uint16_t(rom[pc + 2]) << 8;
+                    imm |= std::uint16_t(rom[pc + 3]);
 
                     if(!register_write_immediate(rd, imm, register_size::WORD))
                     {
                         return false;
                     }
 
-                    PC += 4;
+                    pc += 4;
                     break;
                 }
 
                 case ADD_W_R_R:
                 {
-                    auto rs = (rom[PC + 1] & 0xf0) >> 4;
-                    auto rd = (rom[PC + 1] & 0x0f);
+                    auto rs = (rom[pc + 1] & 0xf0) >> 4;
+                    auto rd = (rom[pc + 1] & 0x0f);
 
                     if(!register_write_register(rd, rs, register_size::WORD)){
                         return false;
                     }
 
-                    PC += 2;
+                    pc += 2;
 
                     break;
                 }
 
                 case ADD_L_IMM:
                 {
-                    std::uint8_t erd = rom[PC + 1] & 0x7;
-                    auto imm = std::uint32_t(rom[PC + 2]) << 24;
-                    imm |= std::uint32_t(rom[PC + 3]) << 16;
-                    imm |= std::uint32_t(rom[PC + 4]) << 8;
-                    imm |= std::uint32_t(rom[PC + 5]);
+                    std::uint8_t erd = rom[pc + 1] & 0x7;
+                    auto imm = std::uint32_t(rom[pc + 2]) << 24;
+                    imm |= std::uint32_t(rom[pc + 3]) << 16;
+                    imm |= std::uint32_t(rom[pc + 4]) << 8;
+                    imm |= std::uint32_t(rom[pc + 5]);
 
                     if(!register_write_immediate(std::uint8_t(erd), imm, register_size::LONG)){
                         return false;
                     }
 
-                    PC += 6;
+                    pc += 6;
                     break;
                 }
 
                 case ADD_L_R_R:
                 {
-                    auto ers = (rom[PC + 1] & 0x70) >> 8;
-                    auto erd = rom[PC + 1] & 0x07;
+                    auto ers = (rom[pc + 1] & 0x70) >> 8;
+                    auto erd = rom[pc + 1] & 0x07;
                     
                     if(!register_write_register(erd, ers, register_size::LONG)){
                         return false;
                     }
 
-                    PC += 2;
+                    pc += 2;
                     break;
                 }
 
                 case MOV_B_IMM:
                 {
-                    auto rd = rom[PC] & 0x0f;
-                    auto imm = rom[PC + 1];
+                    auto rd = rom[pc] & 0x0f;
+                    auto imm = rom[pc + 1];
 
                     if(!register_write_immediate(rd, imm, register_size::BYTE)){
                         return false;
                     }
-                    PC += 2;
+                    pc += 2;
 
                     break;
+                }
+
+                case MOV_L_IMM:
+                {
+                    auto erd = rom[pc + 1] & 0x7;
+                    auto imm = std::uint32_t(rom[pc + 2]) << 24;
+                    imm |= std::uint32_t(rom[pc + 3]) << 16;
+                    imm |= std::uint32_t(rom[pc + 4]) << 8;
+                    imm |= std::uint32_t(rom[pc + 5]);
+
+//                     std::cout << imm << std::endl;
+                    if(!register_write_immediate(erd, imm, register_size::LONG)){
+                        return false;
+                    }
+                    pc += 6;
+                    return true;
                 }
 
                 case INVALID:
 
                     std::cout << "INVALID opecode: " << std::hex << "0x" << std::flush;
                     std::cout << std::setw(2) << std::setfill('0') 
-                        << (std::uint16_t)(rom[PC]) << std::flush;
+                        << (std::uint16_t)(rom[pc]) << std::flush;
                     std::cout << std::setw(2) << std::setfill('0') 
-                        << (std::uint16_t)(rom[PC+1]) << std::endl;
+                        << (std::uint16_t)(rom[pc+1]) << std::endl;
 
-                    std::cout << "0x" << std::setw(8) << std::setfill('0')
-                        << (std::uint32_t)PC << std::endl;
+                    std::cout << "pc             : 0x" << std::setw(8) << std::setfill('0')
+                        << (std::uint32_t)pc << std::endl;
 
                     return false;
             }
@@ -138,12 +154,12 @@ namespace narcissus {
 
         operation h8_300::detect_operation()
         {
-            std::uint8_t op = rom[PC];
+            std::uint8_t op = rom[pc];
 
             auto ah = op >> 4;
             auto al = op & 0x0f;
 
-            auto op2 = rom[er[7].er32 + 1];
+            auto op2 = rom[pc + 1];
             auto bh = op2 >> 4;
             auto bl = op2 & 0x0f;
 
@@ -187,6 +203,8 @@ namespace narcissus {
                             
                         case 0xa:
                             switch(bh) {
+                                case 0:
+                                    return operation::MOV_L_IMM;
                                 case 1:
                                     return operation::ADD_L_IMM;
                                 default:
@@ -227,6 +245,7 @@ namespace narcissus {
                 case LONG:
                     break;
             }
+
             er[destination & 0x7].write(destination, immediate, size);
             return true;
         }

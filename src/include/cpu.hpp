@@ -26,6 +26,8 @@ namespace narcissus {
             MOV_B_ASB_8,                // absolute addressing 8
             MOV_B_ASB_16,               // absolute addressing 16
             MOV_B_ASB_24,               // absolute addressing 24
+
+            MOV_L_IMM, 
         };
 
         enum register_size { BYTE, WORD, LONG };
@@ -55,7 +57,8 @@ namespace narcissus {
                         }
                         break;
                     case register_size::LONG:
-                        er32 = std::uint32_t(value);
+                        std::cout << "val" << (destination & 0x7)<< std::endl;
+                        er32 = value;
                         break;
                 }
             }
@@ -63,7 +66,7 @@ namespace narcissus {
             std::uint32_t read(std::uint8_t source, register_size size)
             {
                 //XXX
-                std::cout << "source" <<er32 <<std::endl;
+                std::cout << "source" << er32 << std::endl;
                 switch (size) {
                     case register_size::BYTE:
                         if((source & 0x8) != 0x8){
@@ -114,8 +117,6 @@ namespace narcissus {
             };
         };
 
-#define PC er[7].er32
-
         class h8_300 {
             public:
                 h8_300(std::array<std::uint8_t, ROM_SIZE>&& mem);
@@ -124,6 +125,7 @@ namespace narcissus {
                 // registers
                 register_t er[8];
                 conditional_code_register ccr;
+                std::uint32_t pc;
 
                 // built-in memory
                 std::array<std::uint8_t, ROM_SIZE> rom;
@@ -147,7 +149,9 @@ namespace narcissus {
                 FRIEND_TEST(cpu, ADD_L_IMM);
                 FRIEND_TEST(cpu, ADD_L_R_R);
                 FRIEND_TEST(cpu, MOV_B_IMM);
-                FRIEND_TEST(cpu, MOV_B_R_IND);
+//                 FRIEND_TEST(cpu, MOV_B_R_IND);
+                FRIEND_TEST(cpu, MOV_L_IMM);
+
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {
