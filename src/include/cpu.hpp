@@ -15,7 +15,7 @@ namespace narcissus {
             ADD_W_IMM,
             ADD_W_R_R,
             ADD_L_IMM,
-            //             ADD_L_R_R,
+            ADD_L_R_R,
         };
 
         enum register_size { BYTE, WORD, LONG };
@@ -52,6 +52,8 @@ namespace narcissus {
 
             uint32_t read(uint8_t source, register_size size)
             {
+                //XXX
+                std::cout << "source" <<er32 <<std::endl;
                 switch (size) {
                     case register_size::BYTE:
                         if((source & 0x8) != 0x8){
@@ -68,8 +70,7 @@ namespace narcissus {
                             return e;
                         }
                     case register_size::LONG:
-                        //TODO
-                        return -1;
+                        return er32;
                 }
             }
 
@@ -134,6 +135,7 @@ namespace narcissus {
                 FRIEND_TEST(cpu, ADD_W_IMM);
                 FRIEND_TEST(cpu, ADD_W_R_R);
                 FRIEND_TEST(cpu, ADD_L_IMM);
+                FRIEND_TEST(cpu, ADD_L_R_R);
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {

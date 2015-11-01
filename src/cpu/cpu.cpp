@@ -96,6 +96,19 @@ namespace narcissus {
                     break;
                 }
 
+                case ADD_L_R_R:
+                {
+                    auto ers = (rom[PC + 1] & 0x70) >> 8;
+                    auto erd = rom[PC + 1] & 0x07;
+                    
+                    std::cout << "ers" << ers << ":" << erd << std::endl;
+                    if(!register_write_register(erd, ers, register_size::LONG)){
+                        return false;
+                    }
+
+                    PC += 2;
+                    break;
+                }
                 case INVALID:
                     return false;
             }
@@ -146,6 +159,21 @@ namespace narcissus {
                             return operation::ADD_B_R_R;
                         case 9:
                             return operation::ADD_W_R_R;
+                        case 0xa:
+                            switch (bh) {
+                                case 0x8:
+                                case 0x9:
+                                case 0xa:
+                                case 0xb:
+                                case 0xc:
+                                case 0xd:
+                                case 0xe:
+                                case 0xf:
+                                    return operation::ADD_L_R_R;
+
+                                default:
+                                    return operation::INVALID;
+                            }
                         default:
                             return operation::INVALID;
                     }

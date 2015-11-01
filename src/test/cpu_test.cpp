@@ -129,7 +129,32 @@ namespace narcissus {
             ASSERT_EQ(true, cpu.cycle());
             ASSERT_EQ(cpu.er[5].er32, 0x12345678);
             ASSERT_EQ(cpu.PC, 0x106);
-        }
 
+       }
+
+        TEST(cpu, ADD_L_R_R) {
+            using namespace std;
+            array<uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            // ADD.L re2, re1
+            mem[0x100] = 0x0a;
+            mem[0x101] = 0xa1;
+
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
+
+            cpu.er[2].er32 = 0x12345678;
+
+            ASSERT_EQ(cpu::operation::ADD_L_R_R, cpu.detect_operation());
+            ASSERT_EQ(true, cpu.cycle());
+            ASSERT_EQ(cpu.er[2].er32, 0x12345678);
+            ASSERT_EQ(cpu.PC, 0x102);
+
+        }
+        
     } // namespace cpu
 } // namespace narcissus
