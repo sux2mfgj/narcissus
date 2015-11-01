@@ -12,8 +12,8 @@ namespace narcissus {
             INVALID = 0,
             ADD_B_IMM,
             ADD_B_R_R,
-            //             ADD_W_IMM,
-            //             ADD_W_R_R,
+            ADD_W_IMM,
+//            ADD_W_R_R,
             //             ADD_L_IMM,
             //             ADD_L_R_R,
         };
@@ -30,14 +30,19 @@ namespace narcissus {
                 switch (size) {
                     case register_size::BYTE:
                         if((destination & 0x8) != 0x8) {
-                            h = value;
+                            h = uint8_t(value);
                         }
                         else {
-                            l = value;
+                            l = uint8_t(value);
                         }
                         break;
                     case register_size::WORD:
-                        //TODO
+                        if((destination & 0x8) != 0x8){
+                            r = uint16_t(value);
+                        }
+                        else {
+                            e = uint16_t(value);
+                        }
                         break;
                     case register_size::LONG:
                         //TODO
@@ -94,6 +99,8 @@ namespace narcissus {
             };
         };
 
+#define PC er[7].er32
+
         class h8_300 {
             public:
                 h8_300(std::array<uint8_t, ROM_SIZE>&& mem);
@@ -120,6 +127,8 @@ namespace narcissus {
 
                 FRIEND_TEST(cpu, ADD_B_IMM);
                 FRIEND_TEST(cpu, ADD_B_R_R);
+                FRIEND_TEST(cpu, ADDR_W_IMM);
+
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {

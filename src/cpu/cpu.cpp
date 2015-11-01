@@ -48,6 +48,21 @@ namespace narcissus {
                     break;        
                 }
 
+                case ADD_W_IMM:
+                {
+                    auto rd = (rom[PC + 1] & 0xf);
+                    uint16_t imm = uint16_t(rom[PC + 2]) << 8;
+                    imm |= uint16_t(rom[PC + 3]);
+
+                    if(!register_write_immediate(rd, imm, register_size::WORD))
+                    {
+                        return false;
+                    }
+
+                    PC += 4;
+                    break;
+                }
+
                 case INVALID:
                     return false;
             }
@@ -62,10 +77,28 @@ namespace narcissus {
             auto ah = op >> 4;
             auto al = op & 0x0f;
 
-            std::cout << ah << al << std::endl;
+            auto op2 = rom[er[7].er32 + 1];
+            auto bh = op2 >> 4;
+            auto bl = op2 & 0x0f;
+
             switch (ah) {
                 case 8:
                     return operation::ADD_B_IMM;
+
+                case 7:
+                    switch(al) {
+                        case 9:
+                            switch (bh) {
+                                case 1:
+                                    return operation::ADD_W_IMM;
+
+                                default:
+                                    return INVALID;
+                            }
+                            
+                        default:
+                            return INVALID;
+                    }
 
                 case 0:
                     switch (al) {
@@ -84,6 +117,9 @@ namespace narcissus {
                 uint32_t immediate,
                 register_size size)
         {
+
+            //XXX
+            std::cout << uint8_t(destination) << " : " << immediate << std::endl;
             switch (size) {
                 case BYTE:
 
@@ -94,7 +130,10 @@ namespace narcissus {
                     break;
 
                 case WORD:
-                    // TODO
+                    if(immediate > 0xffff){
+                        return false;
+                    }
+                    er[destination & 0x7].write(destination, immediate, register_size::WORD);
                     break;
                 case LONG:
                     // TODO
