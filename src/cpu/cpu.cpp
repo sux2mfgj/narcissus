@@ -138,6 +138,23 @@ namespace narcissus {
                     break;
                 }
 
+                case MOV_B_R_IND_WITH_DIS_16:
+                {
+                    auto erd = (memory[pc + 1] >> 4) & 0x7;
+                    auto rs = (memory[pc + 1]) & 0xf;
+                    auto disp = (std::uint16_t)(memory[pc + 2]) << 8;
+                    disp |= (std::uint16_t)(memory[pc + 3]);
+
+                    auto src_value = er[rs & 0x7].read(rs, register_size::BYTE);
+                    auto dest_addr = er[erd & 0x7].read(erd, register_size::LONG);
+
+                    dest_addr += disp;
+                    memory[dest_addr] = src_value;
+
+                    pc += 4;
+                    break;
+                }
+
                 case MOV_W_IMM:
                 {
                     auto rd = memory[pc + 1] & 0x7;
@@ -391,6 +408,15 @@ namespace narcissus {
                         case 0xe:
                             return operation::JSR_ABS;
 
+                        default:
+                            return operation::INVALID;
+                    }
+
+                case 6:
+                    switch (al) {
+                        case 0xe:
+                            return operation::MOV_B_R_IND_WITH_DIS_16;
+                        
                         default:
                             return operation::INVALID;
                     }

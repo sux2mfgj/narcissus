@@ -224,6 +224,36 @@ namespace narcissus {
         //             ASSERT_EQ(cpu.pc, 0x102);
         //         }
 
+        TEST(cpu, MOV_B_R_IND_WITH_DIS_16)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            // mov.b   r0l,@(0x2:16,er3)
+            // 6e b8 00 02     
+            mem[0x100] = 0x6e;
+            mem[0x101] = 0xb8;
+            mem[0x102] = 0x00;
+            mem[0x103] = 0x02;
+
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
+
+            //source
+            cpu.er[0].l = 0x12;
+
+            //destination
+            cpu.er[3].er32 = 0x00000200;
+
+            ASSERT_EQ(cpu::operation::MOV_B_R_IND_WITH_DIS_16, cpu.detect_operation());
+            ASSERT_EQ(true, cpu.cycle());
+            ASSERT_EQ(0x12, cpu.memory[0x200 + 0x2]);
+            ASSERT_EQ(cpu.pc, 0x104);
+        }
+
         TEST(cpu, MOV_W_IMM)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
@@ -443,6 +473,7 @@ namespace narcissus {
             ASSERT_EQ(cpu.pc, 0x102);
            
         }
+
 
     }  // namespace cpu
 }  // namespace narcissus
