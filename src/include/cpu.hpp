@@ -63,7 +63,7 @@ namespace narcissus {
                         }
                         break;
                     case register_size::LONG:
-                        std::cout << "val" << (destination & 0x7)<< std::endl;
+//                         std::cout << "val" << (destination & 0x7)<< std::endl;
                         er32 = value;
                         break;
                 }
@@ -72,7 +72,7 @@ namespace narcissus {
             std::uint32_t read(std::uint8_t source, register_size size)
             {
                 //XXX
-                std::cout << "source" << er32 << std::endl;
+//                 std::cout << "source" << er32 << std::endl;
                 switch (size) {
                     case register_size::BYTE:
                         if((source & 0x8) != 0x8){
@@ -156,6 +156,8 @@ namespace narcissus {
                         std::uint8_t source,
                         register_size size);
 
+            // use macro for test
+            public:
                 FRIEND_TEST(cpu, ADD_B_IMM);
                 FRIEND_TEST(cpu, ADD_B_R_R);
                 FRIEND_TEST(cpu, ADD_W_IMM);

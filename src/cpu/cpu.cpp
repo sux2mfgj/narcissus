@@ -5,9 +5,7 @@ namespace narcissus {
 
         h8_300::h8_300(std::array<std::uint8_t, ROM_SIZE>&& mem) 
             : er(), sp(), ccr(), pc(), memory(move(mem))
-        {
-//             rom = move(mem);
-        }
+        {}
 
         void h8_300::reset_exception()
         {
@@ -98,7 +96,7 @@ namespace narcissus {
                 {
                     auto ers = (memory[pc + 1] & 0x70) >> 8;
                     auto erd = memory[pc + 1] & 0x07;
-                    
+//                     
                     if(!register_write_register(erd, ers, register_size::LONG)){
                         return false;
                     }
@@ -128,7 +126,7 @@ namespace narcissus {
                     imm |= std::uint32_t(memory[pc + 4]) << 8;
                     imm |= std::uint32_t(memory[pc + 5]);
 
-//                     std::cout << imm << std::endl;
+                    std::cout << imm << std::endl;
                     if(!register_write_immediate(erd, imm, register_size::LONG)){
                         return false;
                     }
@@ -211,7 +209,7 @@ namespace narcissus {
                 case 5:
                     switch (al) {
                         case 0xe:
-//                             return operation::JSR_ABS;
+                            //return operation::JSR_ABS;
 
                         default:
                             return operation::INVALID;
