@@ -30,15 +30,10 @@ namespace narcissus {
 //             MOV_B_ASB_24,               // absolute addressing 24
 
             MOV_L_IMM, 
-//             JSR_ABS,                    // jump to subroutine use absolute address
+            JSR_ABS,                    // jump to subroutine use absolute address
         };
 
         enum register_size { BYTE, WORD, LONG };
-
-//         const std::uint32_t ROM_SIZE        = 0x00080000;
-//         const std::uint32_t RAM_BASE_ADDR   = 0x00ffbf20;
-//         const std::uint32_t RAM_END_ADDR    = 0x00ffff1f;
-
 
         union register_t {
             register_t() : er32(0) {}
@@ -167,7 +162,7 @@ namespace narcissus {
                 FRIEND_TEST(cpu, MOV_B_IMM);
 //                 FRIEND_TEST(cpu, MOV_B_R_IND);
                 FRIEND_TEST(cpu, MOV_L_IMM);
-//                 FRIEND_TEST(cpu, JSR_ABS);
+                FRIEND_TEST(cpu, JSR_ABS);
 
         };
 

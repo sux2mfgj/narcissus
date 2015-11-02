@@ -1,13 +1,13 @@
 #include <gtest/gtest.h>
 
 #include <cpu.hpp>
+            using namespace std;
 
 namespace narcissus {
 
     namespace cpu {
 
         TEST(cpu, ADD_B_IMM){
-            using namespace std;
 
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -32,7 +32,6 @@ namespace narcissus {
         }
 
         TEST(cpu, ADD_B_R_R) {
-            using namespace std;
 
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -59,7 +58,6 @@ namespace narcissus {
         }
 
         TEST(cpu, ADD_W_IMM) {
-            using namespace std;
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
@@ -83,7 +81,6 @@ namespace narcissus {
         }
 
         TEST(cpu, ADD_W_R_R) {
-            using namespace std;
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
@@ -107,7 +104,6 @@ namespace narcissus {
         }
 
         TEST(cpu, ADD_L_IMM) {
-            using namespace std;
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
@@ -133,7 +129,6 @@ namespace narcissus {
        }
 
         TEST(cpu, ADD_L_R_R) {
-            using namespace std;
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
@@ -157,7 +152,6 @@ namespace narcissus {
         }
 
         TEST(cpu, MOV_B_IMM) {
-            using namespace std;
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
@@ -202,7 +196,6 @@ namespace narcissus {
 //         }
         
         TEST(cpu, MOV_L_IMM) {
-            using namespace std;
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
@@ -229,31 +222,35 @@ namespace narcissus {
 
         }
 
-//         TEST(cpu, JSR_ABS) {
-//             using namespace std;
-//             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
-//             mem[0] = 0x00;
-//             mem[1] = 0x00;
-//             mem[2] = 0x01;
-//             mem[3] = 0x00;
+        TEST(cpu, JSR_ABS) {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
 
-            // jsr @0x10c:24
-//             mem[0x100] = 0x5e;
-//             mem[0x101] = 0x00;
-//             mem[0x102] = 0x01;
-//             mem[0x103] = 0x0c;
+//             jsr @0x10c:24
+            mem[0x100] = 0x5e;
+            mem[0x101] = 0x00;
+            mem[0x102] = 0x01;
+            mem[0x103] = 0x0c;
 
-//             cpu::h8_300 cpu(move(mem));
-//             cpu.reset_exception();
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
 
-//             cpu.sp = 0x00ffff00;
+            cpu.sp = 0x00ffff00;
 
-//             ASSERT_EQ(cpu::operation::JSR_ABS, cpu.detect_operation());
-//             ASSERT_EQ(true, cpu.cycle());
-//             ASSERT_EQ(cpu.)
-//             ASSERT_EQ(cpu.pc, 0x10c);
+            ASSERT_EQ(cpu::operation::JSR_ABS, cpu.detect_operation());
+            ASSERT_EQ(true, cpu.cycle());
+            ASSERT_EQ(cpu.pc, 0x10c);
 
-//         }
+            
+            cout << cpu.sp << endl;
+            cout << cpu.pc << endl;
+            cout << (uint32_t)cpu.memory[cpu.sp + 1] << endl;
+            cout << (uint32_t)cpu.memory[cpu.sp + 2] << endl;
+            cout << (uint32_t)cpu.memory[cpu.sp + 3] << endl;
+        }
     } // namespace cpu
 } // namespace narcissus
 

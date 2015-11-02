@@ -19,7 +19,7 @@ namespace narcissus {
             }
 
             if(address >= RAM_BASE_ADDR && address < RAM_END_ADDR) {
-                return ram[address];
+                return ram[address - RAM_BASE_ADDR];
             }
 
             //TODO
