@@ -4,18 +4,16 @@ namespace narcissus {
     namespace cpu {
 
         h8_300::h8_300(std::array<std::uint8_t, ROM_SIZE>&& mem) 
-            : er(), sp(), ccr(), pc(), rom(move(mem)), ram()
-        {
-//             rom = move(mem);
-        }
+            : er(), sp(), ccr(), pc(), memory(move(mem))
+        {}
 
         void h8_300::reset_exception()
         {
-            // load pc from rom[0] ~ rom[3]
-            auto reset_addr = std::uint32_t(rom[0]) << 24;
-            reset_addr |= std::uint32_t(rom[1]) << 16;
-            reset_addr |= std::uint32_t(rom[2]) << 8;
-            reset_addr |= std::uint32_t(rom[3]);
+            // load pc from memory[0] ~ memory[3]
+            auto reset_addr = std::uint32_t(memory[0]) << 24;
+            reset_addr |= std::uint32_t(memory[1]) << 16;
+            reset_addr |= std::uint32_t(memory[2]) << 8;
+            reset_addr |= std::uint32_t(memory[3]);
 
             pc = reset_addr;
 
@@ -27,8 +25,8 @@ namespace narcissus {
         {
             switch (detect_operation()) {
                 case ADD_B_IMM: {
-                    auto rd = rom[pc] & 0x0f;
-                    auto imm = rom[pc + 1];
+                    auto rd = memory[pc] & 0x0f;
+                    auto imm = memory[pc + 1];
                     if (!register_write_immediate(rd, imm, register_size::BYTE)) {
                         return false;
                     }
@@ -38,8 +36,8 @@ namespace narcissus {
                 }
                 case ADD_B_R_R:
                 {
-                    auto rs = (rom[pc + 1] & 0xf0) >> 4;
-                    auto rd = rom[pc + 1] & 0x0f;
+                    auto rs = (memory[pc + 1] & 0xf0) >> 4;
+                    auto rd = memory[pc + 1] & 0x0f;
 
                     if(!register_write_register(rd, rs, register_size::BYTE)){
                         return false;
@@ -51,9 +49,9 @@ namespace narcissus {
 
                 case ADD_W_IMM:
                 {
-                    auto rd = (rom[pc + 1] & 0xf);
-                    std::uint16_t imm = std::uint16_t(rom[pc + 2]) << 8;
-                    imm |= std::uint16_t(rom[pc + 3]);
+                    auto rd = (memory[pc + 1] & 0xf);
+                    std::uint16_t imm = std::uint16_t(memory[pc + 2]) << 8;
+                    imm |= std::uint16_t(memory[pc + 3]);
 
                     if(!register_write_immediate(rd, imm, register_size::WORD))
                     {
@@ -66,8 +64,8 @@ namespace narcissus {
 
                 case ADD_W_R_R:
                 {
-                    auto rs = (rom[pc + 1] & 0xf0) >> 4;
-                    auto rd = (rom[pc + 1] & 0x0f);
+                    auto rs = (memory[pc + 1] & 0xf0) >> 4;
+                    auto rd = (memory[pc + 1] & 0x0f);
 
                     if(!register_write_register(rd, rs, register_size::WORD)){
                         return false;
@@ -80,11 +78,11 @@ namespace narcissus {
 
                 case ADD_L_IMM:
                 {
-                    std::uint8_t erd = rom[pc + 1] & 0x7;
-                    auto imm = std::uint32_t(rom[pc + 2]) << 24;
-                    imm |= std::uint32_t(rom[pc + 3]) << 16;
-                    imm |= std::uint32_t(rom[pc + 4]) << 8;
-                    imm |= std::uint32_t(rom[pc + 5]);
+                    std::uint8_t erd = memory[pc + 1] & 0x7;
+                    auto imm = std::uint32_t(memory[pc + 2]) << 24;
+                    imm |= std::uint32_t(memory[pc + 3]) << 16;
+                    imm |= std::uint32_t(memory[pc + 4]) << 8;
+                    imm |= std::uint32_t(memory[pc + 5]);
 
                     if(!register_write_immediate(std::uint8_t(erd), imm, register_size::LONG)){
                         return false;
@@ -96,9 +94,9 @@ namespace narcissus {
 
                 case ADD_L_R_R:
                 {
-                    auto ers = (rom[pc + 1] & 0x70) >> 8;
-                    auto erd = rom[pc + 1] & 0x07;
-                    
+                    auto ers = (memory[pc + 1] & 0x70) >> 8;
+                    auto erd = memory[pc + 1] & 0x07;
+//                     
                     if(!register_write_register(erd, ers, register_size::LONG)){
                         return false;
                     }
@@ -109,8 +107,8 @@ namespace narcissus {
 
                 case MOV_B_IMM:
                 {
-                    auto rd = rom[pc] & 0x0f;
-                    auto imm = rom[pc + 1];
+                    auto rd = memory[pc] & 0x0f;
+                    auto imm = memory[pc + 1];
 
                     if(!register_write_immediate(rd, imm, register_size::BYTE)){
                         return false;
@@ -122,13 +120,13 @@ namespace narcissus {
 
                 case MOV_L_IMM:
                 {
-                    auto erd = rom[pc + 1] & 0x7;
-                    auto imm = std::uint32_t(rom[pc + 2]) << 24;
-                    imm |= std::uint32_t(rom[pc + 3]) << 16;
-                    imm |= std::uint32_t(rom[pc + 4]) << 8;
-                    imm |= std::uint32_t(rom[pc + 5]);
+                    auto erd = memory[pc + 1] & 0x7;
+                    auto imm = std::uint32_t(memory[pc + 2]) << 24;
+                    imm |= std::uint32_t(memory[pc + 3]) << 16;
+                    imm |= std::uint32_t(memory[pc + 4]) << 8;
+                    imm |= std::uint32_t(memory[pc + 5]);
 
-//                     std::cout << imm << std::endl;
+                    std::cout << imm << std::endl;
                     if(!register_write_immediate(erd, imm, register_size::LONG)){
                         return false;
                     }
@@ -139,15 +137,15 @@ namespace narcissus {
                 //TODO yet complete below(have to mcu first than this case)
 //                 case JSR_ABS:
 //                 {
-//                     auto abs = std::uint32_t(rom[pc + 1]) << 16;
-//                     abs |= std::uint32_t(rom[pc + 2]) << 8;
-//                     abs |= std::uint32_t(rom[pc + 3]);
+//                     auto abs = std::uint32_t(memory[pc + 1]) << 16;
+//                     abs |= std::uint32_t(memory[pc + 2]) << 8;
+//                     abs |= std::uint32_t(memory[pc + 3]);
 
                     //TODO [WIP] setup stack
-//                     rom[--sp] = std::uint8_t(pc & 0x0000ff);
-//                     rom[--sp] = std::uint8_t((pc >> 8) & 0x00ff00);
-//                     rom[--sp] = std::uint8_t((pc >> 16) & 0xff0000);
-
+//                     memory[--sp] = std::uint8_t(pc & 0x0000ff);
+//                     memory[--sp] = std::uint8_t((pc >> 8) & 0x00ff00);
+//                     memory[--sp] = std::uint8_t((pc >> 16) & 0xff0000);
+//
 //                     pc = abs;
 //                     return true;
 //                 }
@@ -157,9 +155,9 @@ namespace narcissus {
 
                     std::cout << "INVALID opecode: " << std::hex << "0x" << std::flush;
                     std::cout << std::setw(2) << std::setfill('0') 
-                        << (std::uint16_t)(rom[pc]) << std::flush;
+                        << (std::uint16_t)(memory[pc]) << std::flush;
                     std::cout << std::setw(2) << std::setfill('0') 
-                        << (std::uint16_t)(rom[pc+1]) << std::endl;
+                        << (std::uint16_t)(memory[pc+1]) << std::endl;
 
                     std::cout << "pc             : 0x" << std::setw(8) << std::setfill('0')
                         << (std::uint32_t)pc << std::endl;
@@ -172,12 +170,12 @@ namespace narcissus {
 
         operation h8_300::detect_operation()
         {
-            std::uint8_t op = rom[pc];
+            std::uint8_t op = memory[pc];
 
             auto ah = op >> 4;
             auto al = op & 0x0f;
 
-            auto op2 = rom[pc + 1];
+            auto op2 = memory[pc + 1];
             auto bh = op2 >> 4;
             auto bl = op2 & 0x0f;
 
@@ -211,7 +209,7 @@ namespace narcissus {
                 case 5:
                     switch (al) {
                         case 0xe:
-//                             return operation::JSR_ABS;
+                            //return operation::JSR_ABS;
 
                         default:
                             return operation::INVALID;

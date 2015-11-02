@@ -7,4 +7,5 @@ include_directories(
 
 add_library(cpu STATIC
     cpu.cpp
+    mcu.cpp
     )

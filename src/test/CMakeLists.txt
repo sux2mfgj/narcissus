@@ -3,7 +3,7 @@ include_directories(
     ../include
     )
 
-add_executable(cpu_test cpu_test.cpp ../cpu/cpu.cpp)
+add_executable(cpu_test cpu_test.cpp ../cpu/cpu.cpp ../cpu/mcu.cpp)
 
 target_link_libraries(
     cpu_test 
