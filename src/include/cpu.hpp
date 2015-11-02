@@ -19,6 +19,8 @@ namespace narcissus {
             ADD_L_IMM,
             ADD_L_R_R,
 
+            SUB_B_R_R,                      // substruct rd from rs
+
             MOV_B_IMM,
 //             MOV_B_R_R,  
 //             MOV_B_R_IND,                // register indirect
@@ -180,6 +182,7 @@ namespace narcissus {
                 FRIEND_TEST(cpu, EXTS_L);
                 FRIEND_TEST(cpu, SHLL_L);
                 FRIEND_TEST(cpu, MOV_L_R_IND_WITH_DIS_24);
+                FRIEND_TEST(cpu, SUB_B_R_R);
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {
