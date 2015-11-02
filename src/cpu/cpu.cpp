@@ -76,6 +76,7 @@ namespace narcissus {
                     break;
                 }
 
+
                 case ADD_L_IMM:
                 {
                     std::uint8_t erd = memory[pc + 1] & 0x7;
@@ -115,6 +116,19 @@ namespace narcissus {
                     }
                     pc += 2;
 
+                    break;
+                }
+
+                case MOV_W_IMM:
+                {
+                    auto rd = memory[pc + 1] & 0x7;
+                    auto imm = uint16_t(memory[pc + 2]) << 8;
+                    imm |= uint16_t(memory[pc + 3]);
+
+                    if(!register_write_immediate(rd, imm, register_size::WORD)){
+                        return false;
+                    }
+                    pc += 4;
                     break;
                 }
 
@@ -284,6 +298,9 @@ namespace narcissus {
                                 case 1:
                                     return operation::ADD_W_IMM;
 
+                                case 0:
+                                    return operation::MOV_W_IMM;
+
                                 default:
                                     return INVALID;
                             }
@@ -303,6 +320,7 @@ namespace narcissus {
 
                 case 8:
                     return operation::ADD_B_IMM;
+
 
                 case 0xf:
                     return operation::MOV_B_IMM;
