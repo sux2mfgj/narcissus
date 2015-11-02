@@ -134,6 +134,18 @@ namespace narcissus {
                     return true;
                 }
 
+                case MOV_L_R_R:
+                {
+                    auto ers = std::uint32_t(memory[pc + 1] & 0x70) >> 4;
+                    auto erd = std::uint32_t(memory[pc + 1] & 0x07);
+
+                    auto src_value = er[ers].er32;
+                    er[erd].er32 = src_value;
+
+                    pc += 2;
+                    return true;
+                }
+
                 case MOV_L_R_IND:
                 {
                     auto erd = (memory[pc + 3] & 0x70) >> 4;
@@ -250,6 +262,8 @@ namespace narcissus {
                                 default:
                                     return operation::INVALID;
                             }
+                        case 0xf:
+                            return operation::MOV_L_R_R;
                         default:
                             return operation::INVALID;
                     }

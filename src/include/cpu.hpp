@@ -30,7 +30,7 @@ namespace narcissus {
 //             MOV_B_ASB_24,               // absolute addressing 24
 
             MOV_L_IMM, 
-//             MOV_L_R_R,
+            MOV_L_R_R,
             MOV_L_R_IND,
             JSR_ABS,                    // jump to subroutine use absolute address
         };
@@ -166,6 +166,7 @@ namespace narcissus {
                 FRIEND_TEST(cpu, MOV_L_IMM);
                 FRIEND_TEST(cpu, JSR_ABS);
                 FRIEND_TEST(cpu, MOV_L_R_IND);
+                FRIEND_TEST(cpu, MOV_L_R_R);
 
         };
 
