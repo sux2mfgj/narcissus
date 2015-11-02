@@ -13,7 +13,7 @@ int main(int argc, char const* argv[])
     char buf[16];
     array<uint8_t, cpu::ROM_SIZE> mem = {0};
 
-    file.open("./binary/kzload.bin", std::ios::in | std::ios::binary);
+    file.open("/home/hima/tmp/binary/kzload.bin", std::ios::in | std::ios::binary);
 
     auto i = 0;
 //     cout <<endl;

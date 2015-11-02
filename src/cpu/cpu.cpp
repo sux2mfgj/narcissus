@@ -137,20 +137,20 @@ namespace narcissus {
                 }
 
                 //TODO yet complete below(have to mcu first than this case)
-                case JSR_ABS:
-                {
-                    auto abs = std::uint32_t(rom[pc + 1]) << 16;
-                    abs |= std::uint32_t(rom[pc + 2]) << 8;
-                    abs |= std::uint32_t(rom[pc + 3]);
+//                 case JSR_ABS:
+//                 {
+//                     auto abs = std::uint32_t(rom[pc + 1]) << 16;
+//                     abs |= std::uint32_t(rom[pc + 2]) << 8;
+//                     abs |= std::uint32_t(rom[pc + 3]);
 
                     //TODO [WIP] setup stack
-                    rom[--sp] = std::uint8_t(pc & 0x0000ff);
+//                     rom[--sp] = std::uint8_t(pc & 0x0000ff);
 //                     rom[--sp] = std::uint8_t((pc >> 8) & 0x00ff00);
 //                     rom[--sp] = std::uint8_t((pc >> 16) & 0xff0000);
 
-                    pc = abs;
-                    return true;
-                }
+//                     pc = abs;
+//                     return true;
+//                 }
 
 
                 case INVALID:
@@ -211,7 +211,7 @@ namespace narcissus {
                 case 5:
                     switch (al) {
                         case 0xe:
-                            return operation::JSR_ABS;
+//                             return operation::JSR_ABS;
 
                         default:
                             return operation::INVALID;
