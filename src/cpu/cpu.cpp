@@ -182,6 +182,28 @@ namespace narcissus {
                     return true;
                 }
 
+                case MOV_L_R_IND_WITH_DIS_24:
+                {
+                    auto ers = memory[pc + 3] >> 4;
+                    auto erd = memory[pc + 5] & 0x3;
+                    auto disp = std::uint32_t(memory[pc + 7]) << 16;
+                    disp |= std::uint32_t(memory[pc + 8]) << 8;
+                    disp |= std::uint32_t(memory[pc + 9]);
+
+                    auto addr = er[ers].er32 + disp;
+
+                    std::cout << std::hex << ers << ":" 
+                        << erd << ":" << disp << ":" << addr << std::endl;
+
+                    er[erd].er32 = std::uint32_t(memory[addr]) << 24;
+                    er[erd].er32 |= std::uint32_t(memory[addr + 1]) << 16;
+                    er[erd].er32 |= std::uint32_t(memory[addr + 2]) << 8;
+                    er[erd].er32 |= std::uint32_t(memory[addr + 3]);
+
+                    pc += 10;
+                    return true;
+                }
+
                 case JSR_ABS:
                 {
                     auto abs = std::uint32_t(memory[pc + 1]) << 16;
@@ -270,6 +292,21 @@ namespace narcissus {
                                                     switch (cl) {
                                                         case 0xd:
                                                             return operation::MOV_L_R_IND;
+                                                        default:
+                                                            return operation::INVALID;
+                                                    }
+                                                case 7:
+                                                    switch (cl) {
+                                                        case 8:
+                                                        {
+                                                            auto t = memory[pc + 5] >> 4;
+                                                            switch (t) {
+                                                                case 0x2:
+                                                                    return operation::MOV_L_R_IND_WITH_DIS_24;
+                                                                default:
+                                                                    return operation::INVALID;
+                                                            }
+                                                        }
                                                         default:
                                                             return operation::INVALID;
                                                     }

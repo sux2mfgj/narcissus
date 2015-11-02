@@ -301,6 +301,47 @@ namespace narcissus {
             ASSERT_EQ(cpu.pc, 0x102);
         }
 
+        TEST(cpu, MOV_L_R_IND_WITH_DIS_24)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+//          01 00 78 00     mov.l   @(0x238:32,er0),er3
+//          6b 23 00 00
+//          02 38
+            mem[0x100] = 0x01;
+            mem[0x101] = 0x00;
+            mem[0x102] = 0x78;
+            mem[0x103] = 0x00;
+            mem[0x104] = 0x6b;
+            mem[0x105] = 0x23;
+            mem[0x106] = 0x00;
+            mem[0x107] = 0x00;
+            mem[0x108] = 0x02;
+            mem[0x109] = 0x38;
+
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
+
+            cpu.er[0].er32 = 0x00000200;
+
+            auto addr = cpu.er[0].er32 + 0x238;
+            cpu.memory[addr] = 0x12;
+            cpu.memory[addr + 1] = 0x34;
+            cpu.memory[addr + 2] = 0x56;
+            cpu.memory[addr + 3] = 0x78;
+
+            ASSERT_EQ(cpu::operation::MOV_L_R_IND_WITH_DIS_24, cpu.detect_operation());
+            ASSERT_EQ(true, cpu.cycle());
+            ASSERT_EQ(cpu.er[3].er32, 0x12345678);
+            ASSERT_EQ(cpu.pc, 0x10a);
+
+        }
+
+        //jsr
         TEST(cpu, JSR_ABS)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
