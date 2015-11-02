@@ -12,12 +12,12 @@ namespace narcissus {
 
         enum operation {
             INVALID = 0,
-            ADD_B_IMM,              // immediate
-            ADD_B_R_R,              // register to register
-            ADD_W_IMM,
-            ADD_W_R_R,
-            ADD_L_IMM,
-            ADD_L_R_R,
+//             ADD_B_IMM,              // immediate
+//             ADD_B_R_R,              // register to register
+//             ADD_W_IMM,
+//             ADD_W_R_R,
+//             ADD_L_IMM,
+//             ADD_L_R_R,
 
             SUB_B_R_R,                      // substruct rd from rs
 
@@ -166,12 +166,13 @@ namespace narcissus {
 
             // use macro for test
             public:
-                FRIEND_TEST(cpu, ADD_B_IMM);
-                FRIEND_TEST(cpu, ADD_B_R_R);
-                FRIEND_TEST(cpu, ADD_W_IMM);
-                FRIEND_TEST(cpu, ADD_W_R_R);
-                FRIEND_TEST(cpu, ADD_L_IMM);
-                FRIEND_TEST(cpu, ADD_L_R_R);
+//                 FRIEND_TEST(cpu, ADD_B_IMM);
+//                 FRIEND_TEST(cpu, ADD_B_R_R);
+//                 FRIEND_TEST(cpu, ADD_W_IMM);
+//                 FRIEND_TEST(cpu, ADD_W_R_R);
+//                 FRIEND_TEST(cpu, ADD_L_IMM);
+//                 FRIEND_TEST(cpu, ADD_L_R_R);
+
                 FRIEND_TEST(cpu, MOV_B_IMM);
 //                 FRIEND_TEST(cpu, MOV_B_R_IND);
                 FRIEND_TEST(cpu, MOV_W_IMM);
