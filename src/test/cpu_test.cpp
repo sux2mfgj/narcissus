@@ -300,6 +300,7 @@ namespace narcissus {
             ASSERT_EQ(0x12345678, cpu.er[6].er32);
             ASSERT_EQ(cpu.pc, 0x102);
         }
+
         TEST(cpu, JSR_ABS)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
@@ -329,6 +330,30 @@ namespace narcissus {
             cout << (uint32_t)cpu.memory[cpu.sp + 2] << endl;
             cout << (uint32_t)cpu.memory[cpu.sp + 3] << endl;
         }
+
+        TEST(cpu, EXTS_L) 
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            //exts.l er0
+            mem[0x100] = 0x17;
+            mem[0x101] = 0xf0;
+
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
+
+            cpu.er[0].er32 = 0x00008001;
+
+            ASSERT_EQ(cpu::operation::EXTS_L, cpu.detect_operation());
+            ASSERT_EQ(true, cpu.cycle());
+            ASSERT_EQ(0xffff8001, cpu.er[0].er32);
+            ASSERT_EQ(cpu.pc, 0x102);
+        }
+
     }  // namespace cpu
 }  // namespace narcissus
 

@@ -188,8 +188,6 @@ namespace narcissus {
                     abs |= std::uint32_t(memory[pc + 2]) << 8;
                     abs |= std::uint32_t(memory[pc + 3]);
 
-                    std::cout << "sp :" << std::hex << sp << std::endl;
-                    //TODO 
                     memory[--sp] = (std::uint8_t)(pc & 0x0000ff);
                     memory[--sp] = (std::uint8_t)((pc >> 8) & 0x0000ff);
                     memory[--sp] = (std::uint8_t)((pc >> 16) & 0x0000ff);
@@ -198,8 +196,26 @@ namespace narcissus {
                     return true;
                 }
 
+                case EXTS_L:
+                {
+                    auto erd = memory[pc + 1] & 0x7;
+                    auto val = er[erd].er32;
+                    uint32_t sign = (uint32_t)(val & 0x00008000);
+                    sign |= sign << 1; // 0x00018000;
+                    sign |= sign << 1; // 0x00038000;
+                    sign |= sign << 2; // 0x000f8000;
+                    sign |= sign << 4; // 0x00ff8000;
+                    sign |= sign << 8; // 0xffff8000;
 
-                case INVALID:
+                    er[erd].er32 = (val & 0x0008fff) | sign;
+
+                    pc += 2;
+                    return true;
+                }
+
+
+                //case operation::INVALID:
+                default:
 
                     std::cout << "INVALID opecode: " << std::hex << "0x" << std::flush;
                     std::cout << std::setw(2) << std::setfill('0') 
@@ -278,6 +294,19 @@ namespace narcissus {
                             }
                         case 0xf:
                             return operation::MOV_L_R_R;
+                        default:
+                            return operation::INVALID;
+                    }
+                case 1:
+                    switch (al) {
+                        case 7:
+                            switch (bh) {
+                                case 0xf:
+                                    return operation::EXTS_L;
+
+                                default:
+                                    return operation::INVALID;
+                            }
                         default:
                             return operation::INVALID;
                     }

@@ -35,7 +35,9 @@ namespace narcissus {
             MOV_L_IMM, 
             MOV_L_R_R,
             MOV_L_R_IND,
+
             JSR_ABS,                    // jump to subroutine use absolute address
+            EXTS_L,                     // extend as signed
         };
 
         enum register_size { BYTE, WORD, LONG };
@@ -171,6 +173,7 @@ namespace narcissus {
                 FRIEND_TEST(cpu, JSR_ABS);
                 FRIEND_TEST(cpu, MOV_L_R_IND);
                 FRIEND_TEST(cpu, MOV_L_R_R);
+                FRIEND_TEST(cpu, EXTS_L);
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {
