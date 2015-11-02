@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <array>
 
+#include <sci.hpp>
+
 namespace narcissus {
     namespace cpu {
 
@@ -25,6 +27,7 @@ namespace narcissus {
             private:
                 std::array<std::uint8_t, ROM_SIZE> rom;
                 std::array<std::uint8_t, RAM_SIZE> ram;
+                std::array<sci::sci, 3> serial_controler_interface;
                
         };
 
