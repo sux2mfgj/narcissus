@@ -25,6 +25,7 @@ namespace narcissus {
             //TODO
             //add MMI/O
 
+            std::cout << "memory access error: 0x"<< address << std::endl;
             throw std::out_of_range("access error");
         }
     } // namespace cpu
