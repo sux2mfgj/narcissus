@@ -9,11 +9,11 @@ int main(int argc, char const* argv[])
     using namespace std;
 
 
-    std::fstream file;
+    fstream file;
     char buf[16];
     array<uint8_t, cpu::ROM_SIZE> mem = {0};
 
-    file.open("./binary/kzload.bin", std::ios::in | std::ios::binary);
+    file.open("/home/hima/tmp/binary/kzload.bin", ios::in | ios::binary);
 
     auto i = 0;
 //     cout <<endl;
@@ -36,8 +36,8 @@ int main(int argc, char const* argv[])
     // ADD.B #0xff, r2l
 //     mem[0x100] = 0x8a;
 //     mem[0x101] = 0xff;
-//     std::cout << std::hex << (uint16_t)mem[0] << (uint16_t)mem[1] 
-//         << (uint16_t)mem[2] << (uint16_t)mem[3] << std::endl;
+//     cout << hex << (uint16_t)mem[0] << (uint16_t)mem[1] 
+//         << (uint16_t)mem[2] << (uint16_t)mem[3] << endl;
 
     cpu::h8_300 cpu(move(mem));
     cpu.reset_exception();
@@ -45,7 +45,7 @@ int main(int argc, char const* argv[])
     while (cpu.cycle()) {}
 
 //     if(!cpu.cycle()){
-//         std::cout << "cycle failed" << std::endl;
+//         cout << "cycle failed" << endl;
 //     }
     
     return 0;

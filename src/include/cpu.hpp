@@ -5,6 +5,8 @@
 
 #include <gtest/gtest.h>
 
+#include <mcu.hpp>
+
 namespace narcissus {
     namespace cpu {
 
@@ -28,14 +30,14 @@ namespace narcissus {
 //             MOV_B_ASB_24,               // absolute addressing 24
 
             MOV_L_IMM, 
-            JSR_ABS,                    // jump to subroutine use absolute address
+//             JSR_ABS,                    // jump to subroutine use absolute address
         };
 
         enum register_size { BYTE, WORD, LONG };
 
-        const std::uint32_t ROM_SIZE        = 0x00080000;
-        const std::uint32_t RAM_BASE_ADDR   = 0x00ffbf20;
-        const std::uint32_t RAM_END_ADDR    = 0x00ffff1f;
+//         const std::uint32_t ROM_SIZE        = 0x00080000;
+//         const std::uint32_t RAM_BASE_ADDR   = 0x00ffbf20;
+//         const std::uint32_t RAM_END_ADDR    = 0x00ffff1f;
 
 
         union register_t {
@@ -136,10 +138,12 @@ namespace narcissus {
                 conditional_code_register ccr;
                 std::uint32_t pc;
 
+                mcu memory;
+
                 // built-in memory
-                std::array<std::uint8_t, ROM_SIZE> rom;
+//                 std::array<std::uint8_t, ROM_SIZE> rom;
 //                  std::uint8_t ram[RAM_SIZE];
-                std::array<std::uint8_t, RAM_END_ADDR - RAM_BASE_ADDR> ram;
+//                 std::array<std::uint8_t, RAM_END_ADDR - RAM_BASE_ADDR> ram;
 
             public:
                 void reset_exception();
@@ -161,7 +165,7 @@ namespace narcissus {
                 FRIEND_TEST(cpu, MOV_B_IMM);
 //                 FRIEND_TEST(cpu, MOV_B_R_IND);
                 FRIEND_TEST(cpu, MOV_L_IMM);
-                FRIEND_TEST(cpu, JSR_ABS);
+//                 FRIEND_TEST(cpu, JSR_ABS);
 
         };
 
