@@ -213,6 +213,15 @@ namespace narcissus {
                     return true;
                 }
 
+                case SHLL_L:
+                {
+                    auto erd = memory[pc + 1] & 0x7;
+                    er[erd].er32 = er[erd].er32 << 1;
+
+                    pc += 2;
+                    return true;
+                }
+
 
                 //case operation::INVALID:
                 default:
@@ -299,6 +308,13 @@ namespace narcissus {
                     }
                 case 1:
                     switch (al) {
+                        case 0:
+                            switch (bh) {
+                                case 3:
+                                    return operation::SHLL_L; 
+                                default:
+                                    return operation::INVALID;
+                            }
                         case 7:
                             switch (bh) {
                                 case 0xf:

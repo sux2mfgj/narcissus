@@ -36,6 +36,8 @@ namespace narcissus {
             MOV_L_R_R,
             MOV_L_R_IND,
 
+            SHLL_L,                     // shift logical left
+
             JSR_ABS,                    // jump to subroutine use absolute address
             EXTS_L,                     // extend as signed
         };
@@ -174,6 +176,7 @@ namespace narcissus {
                 FRIEND_TEST(cpu, MOV_L_R_IND);
                 FRIEND_TEST(cpu, MOV_L_R_R);
                 FRIEND_TEST(cpu, EXTS_L);
+                FRIEND_TEST(cpu, SHLL_L);
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {
