@@ -134,6 +134,28 @@ namespace narcissus {
                     return true;
                 }
 
+                case MOV_L_R_IND:
+                {
+                    auto erd = (memory[pc + 3] & 0x70) >> 4;
+                    auto ers = (memory[pc + 3] & 0x07);
+
+                    auto erd_val = er[erd].er32;
+                    auto ers_val = er[ers].er32;
+
+                    erd_val -= 4;
+//
+                    memory[erd_val] = ers_val >> 24;
+                    memory[erd_val + 1] = ers_val >> 16;
+                    memory[erd_val + 2] = ers_val >> 8;
+                    memory[erd_val + 3] = ers_val;
+
+                    er[erd].er32 = erd_val;
+
+                    pc += 4;
+
+                    return true;
+                }
+
                 case JSR_ABS:
                 {
                     auto abs = std::uint32_t(memory[pc + 1]) << 16;
@@ -179,10 +201,36 @@ namespace narcissus {
             auto bh = op2 >> 4;
             auto bl = op2 & 0x0f;
 
+            auto op3 = memory[pc + 2];
+            auto ch = op3 >> 4;
+            auto cl = op3 & 0x0f;
+
             switch (ah) { 
 
                 case 0:
                     switch (al) {
+                        case 1:
+                            switch (bh) {
+                                case 0:
+                                    switch (bl) {
+                                        case 0:
+                                            switch (ch) {
+                                                case 6:
+                                                    switch (cl) {
+                                                        case 0xd:
+                                                            return operation::MOV_L_R_IND;
+                                                        default:
+                                                            return operation::INVALID;
+                                                    }
+                                                default:
+                                                    return operation::INVALID;
+                                            }       
+                                        default:
+                                            return operation::INVALID;
+                                    }
+                                default:
+                                    return operation::INVALID;
+                            }
                         case 8:
                             return operation::ADD_B_R_R;
                         case 9:
@@ -225,7 +273,7 @@ namespace narcissus {
                                 default:
                                     return INVALID;
                             }
-                            
+
                         case 0xa:
                             switch(bh) {
                                 case 0:
