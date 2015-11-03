@@ -138,6 +138,19 @@ namespace narcissus {
                     break;
                 }
 
+                case MOV_B_R_IND:
+                {
+                    auto erd = (memory[pc + 1] & 0x70) >> 4;
+                    auto rs = memory[pc + 1] & 0x8;
+
+                    auto src_value = er[rs & 0x7].read(rs, register_size::BYTE);
+                    auto dest_value = er[erd & 0x7].read(erd, register_size::LONG);
+                    memory[dest_value] = src_value;
+
+                    pc += 2;
+                    break;
+                }
+
                 case MOV_B_R_IND_WITH_DIS_16:
                 {
                     auto erd = (memory[pc + 1] >> 4) & 0x7;
@@ -357,8 +370,10 @@ namespace narcissus {
                             }
                         case 8:
 //                             return operation::ADD_B_R_R;
+                            return operation::INVALID;
                         case 9:
 //                             return operation::ADD_W_R_R;
+                            return operation::INVALID;
                         case 0xa:
                             switch (bh) {
                                 case 0x8:
@@ -416,6 +431,9 @@ namespace narcissus {
                     switch (al) {
                         case 0xe:
                             return operation::MOV_B_R_IND_WITH_DIS_16;
+
+                        case 0x8:
+                            return operation::MOV_B_R_IND;
                         
                         default:
                             return operation::INVALID;
@@ -450,7 +468,7 @@ namespace narcissus {
 
                 case 8:
 //                     return operation::ADD_B_IMM;
-
+                    return operation::INVALID;
 
                 case 0xf:
                     return operation::MOV_B_IMM;
