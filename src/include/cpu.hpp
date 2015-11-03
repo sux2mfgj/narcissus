@@ -40,6 +40,7 @@ namespace narcissus {
             MOV_L_R_IND,
 
             MOV_L_R_IND_WITH_DIS_24,
+            MOV_L_R_IND_POST_INC,
 
             SHLL_L,                     // shift logical left
 
@@ -189,6 +190,7 @@ namespace narcissus {
                 FRIEND_TEST(cpu, MOV_B_R_IND_WITH_DIS_16);
                 FRIEND_TEST(cpu, SUB_W_R_R);
                 FRIEND_TEST(cpu, RTS);
+                FRIEND_TEST(cpu, MOV_L_R_IND_POST_INC);
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {

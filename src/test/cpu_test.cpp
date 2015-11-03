@@ -371,11 +371,11 @@ namespace narcissus {
             cpu::h8_300 cpu(move(mem));
             cpu.reset_exception();
 
-            cpu.er[7].er32 = 0x12345678;
+            cpu.er[7].er32 = 0x00ffff00;
 
             ASSERT_EQ(cpu::operation::MOV_L_R_R, cpu.detect_operation());
             ASSERT_EQ(true, cpu.cycle());
-            ASSERT_EQ(0x12345678, cpu.er[6].er32);
+            ASSERT_EQ(0x00ffff00, cpu.er[6].er32);
             ASSERT_EQ(cpu.pc, 0x102);
         }
 
@@ -416,6 +416,44 @@ namespace narcissus {
             ASSERT_EQ(true, cpu.cycle());
             ASSERT_EQ(cpu.er[3].er32, 0x12345678);
             ASSERT_EQ(cpu.pc, 0x10a);
+
+        }
+
+        TEST(cpu, MOV_L_R_IND_POST_INC)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            //mov.l   @er7+,er6     :(pop er6)
+            //01 00 6d 76     
+            mem[0x100] = 0x01;
+            mem[0x101] = 0x00;
+            mem[0x102] = 0x6d;
+            mem[0x103] = 0x76;
+ 
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
+
+            cpu.sp = 0xffff00;
+            auto value = 0x12345678;
+            cpu.memory[--cpu.sp] = (uint8_t)value;
+            cpu.memory[--cpu.sp] = (uint8_t)(value >> 8);
+            cpu.memory[--cpu.sp] = (uint8_t)(value >> 16);
+            cpu.memory[--cpu.sp] = (uint8_t)(value >> 24);
+
+            std::cout << "stack top:" << std::endl;
+            for (auto i = 0; i < 4; i++) {
+                std::cout << cpu.memory[cpu.sp + i - 4] << std::endl;
+            }
+            std::cout << cpu.memory[cpu.sp] << std::endl;
+
+            ASSERT_EQ(cpu::operation::MOV_L_R_IND_POST_INC, cpu.detect_operation());
+            ASSERT_EQ(true, cpu.cycle());
+            ASSERT_EQ(0x12345678, cpu.er[6].er32);
+            ASSERT_EQ(cpu.pc, 0x104);
 
         }
 

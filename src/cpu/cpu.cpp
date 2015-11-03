@@ -23,6 +23,12 @@ namespace narcissus {
 
         bool h8_300::cycle()
         {
+            std::cout << "pc : 0x" << std::hex << pc << std::endl;
+            std::cout << "sp : 0x" << std::hex << sp << std::endl;
+            std::cout << "stack: " << std::endl;
+            for (auto i = 0; i < 4; i++) {
+                std::cout << std::hex << "  0x"<< (std::uint32_t)memory[sp + i] << std::endl; 
+            }
             switch (detect_operation()) {
 //                 case ADD_B_IMM: {
 //                     auto rd = memory[pc] & 0x0f;
@@ -271,6 +277,28 @@ namespace narcissus {
                     return true;
                 }
 
+                case MOV_L_R_IND_POST_INC:
+                {
+                    auto ers = memory[pc + 3] >> 4;
+                    auto erd = memory[pc + 3] & 0x07;
+
+                    auto source_addr = er[ers].er32;
+
+                    auto dest_value = memory[source_addr++] << 24;
+                    dest_value |= memory[source_addr++] << 16;
+                    dest_value |= memory[source_addr++] << 8;
+                    dest_value |= memory[source_addr++];
+
+                    er[erd].er32 = dest_value;
+                    er[ers].er32 = source_addr;
+                    std::cout << erd << ":" << ers << std::endl;
+                    std::cout << dest_value << ":" << source_addr << std::endl;
+
+                    pc += 4;
+
+                    return true;
+                }
+
                 case JSR_ABS:
                 {
                     auto abs = std::uint32_t(memory[pc + 1]) << 16;
@@ -327,9 +355,7 @@ namespace narcissus {
                 }
 
 
-                //case operation::INVALID:
-                default:
-
+                case operation::INVALID:
                     std::cout << "INVALID opecode: " << std::hex << "0x" << std::flush;
                     std::cout << std::setw(2) << std::setfill('0') 
                         << (std::uint16_t)(memory[pc]) << std::flush;
@@ -339,6 +365,10 @@ namespace narcissus {
                     std::cout << "pc             : 0x" << std::setw(8) << std::setfill('0')
                         << (std::uint32_t)pc << std::endl;
 
+                    return false;
+
+                default:
+                    std::cout << "implement yet" << std::endl;
                     return false;
             }
 
@@ -373,7 +403,13 @@ namespace narcissus {
                                                 case 6:
                                                     switch (cl) {
                                                         case 0xd:
-                                                            return operation::MOV_L_R_IND;
+                                                            {
+                                                                auto dh = memory[pc + 3] & 0x80;
+                                                                if(dh != 0x80){
+                                                                    return operation::MOV_L_R_IND_POST_INC;
+                                                                }
+                                                                return operation::MOV_L_R_IND;
+                                                            }
                                                         default:
                                                             return operation::INVALID;
                                                     }
