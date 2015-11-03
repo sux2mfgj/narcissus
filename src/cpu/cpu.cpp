@@ -277,9 +277,12 @@ namespace narcissus {
                     abs |= std::uint32_t(memory[pc + 2]) << 8;
                     abs |= std::uint32_t(memory[pc + 3]);
 
+                    pc += 4;
+
                     memory[--sp] = (std::uint8_t)(pc & 0x0000ff);
                     memory[--sp] = (std::uint8_t)((pc >> 8) & 0x0000ff);
                     memory[--sp] = (std::uint8_t)((pc >> 16) & 0x0000ff);
+                    memory[--sp] = 0x00;
 
                     pc = abs;
                     return true;
@@ -308,6 +311,18 @@ namespace narcissus {
                     er[erd].er32 = er[erd].er32 << 1;
 
                     pc += 2;
+                    return true;
+                }
+ 
+                case RTS:
+                {
+                    // memory[sp]: is reserved
+                    auto return_addr = (std::uint32_t)memory[sp + 1] << 16;
+                    return_addr |= (std::uint32_t)memory[sp + 2] << 8;
+                    return_addr |= (std::uint32_t)memory[sp + 3];
+
+                    pc = return_addr;
+
                     return true;
                 }
 
@@ -441,6 +456,19 @@ namespace narcissus {
 
                 case 5:
                     switch (al) {
+                        case 0x4:
+                            switch (bh) {
+                                case 0x7:
+                                    switch (bl) {
+                                        case 0x0:
+                                            return operation::RTS;
+
+                                        default:
+                                            return operation::INVALID;
+                                    }
+                                default:
+                                    return operation::INVALID;
+                            }
                         case 0xe:
                             return operation::JSR_ABS;
 

@@ -443,11 +443,18 @@ namespace narcissus {
             ASSERT_EQ(true, cpu.cycle());
             ASSERT_EQ(cpu.pc, 0x10c);
 
-            cout << cpu.sp << endl;
-            cout << cpu.pc << endl;
-            cout << (uint32_t)cpu.memory[cpu.sp + 1] << endl;
-            cout << (uint32_t)cpu.memory[cpu.sp + 2] << endl;
-            cout << (uint32_t)cpu.memory[cpu.sp + 3] << endl;
+            cout << "0x" << cpu.sp << endl;
+            cout << "0x" << cpu.pc << endl;
+            cout << "0x" << (uint32_t)cpu.memory[cpu.sp + 1] << endl;
+            cout << "0x" << (uint32_t)cpu.memory[cpu.sp + 2] << endl;
+            cout << "0x" << (uint32_t)cpu.memory[cpu.sp + 3] << endl;
+
+            // cpu.memory[cpu.pc]: is reserved
+            auto return_addr = (uint32_t)cpu.memory[cpu.sp + 1] << 16;
+            return_addr |= (uint32_t)cpu.memory[cpu.sp + 2] << 8;
+            return_addr |= (uint32_t)cpu.memory[cpu.sp + 3];
+
+            ASSERT_EQ(0x104, return_addr);
         }
 
         TEST(cpu, EXTS_L) 
@@ -475,7 +482,7 @@ namespace narcissus {
 
         TEST(cpu, SHLL_L)
         {
-             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -497,7 +504,42 @@ namespace narcissus {
            
         }
 
+        TEST(cpu, RTS)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
 
+
+            // jsr @0x000110:24
+            mem[0x100] = 0x5e;
+            mem[0x101] = 0x00;
+            mem[0x102] = 0x01;
+            mem[0x103] = 0x10;
+
+            // rts
+            // 54 70
+            mem[0x110] = 0x54;
+            mem[0x111] = 0x70;
+
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
+
+            cpu.sp = 0x00ffff00;
+
+            // jsr 
+            ASSERT_EQ(cpu::operation::JSR_ABS, cpu.detect_operation());
+            ASSERT_EQ(true, cpu.cycle());
+            std::cout << "jsr" << std::endl;
+            // rts
+            ASSERT_EQ(cpu::operation::RTS, cpu.detect_operation());
+            ASSERT_EQ(true, cpu.cycle());
+
+
+            ASSERT_EQ(cpu.pc, 0x104);
+        }
 
     }  // namespace cpu
 }  // namespace narcissus

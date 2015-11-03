@@ -45,6 +45,7 @@ namespace narcissus {
 
             JSR_ABS,                    // jump to subroutine use absolute address
             EXTS_L,                     // extend as signed
+            RTS,
         };
 
         enum register_size { BYTE, WORD, LONG };
@@ -187,6 +188,7 @@ namespace narcissus {
                 FRIEND_TEST(cpu, SUB_B_R_R);
                 FRIEND_TEST(cpu, MOV_B_R_IND_WITH_DIS_16);
                 FRIEND_TEST(cpu, SUB_W_R_R);
+                FRIEND_TEST(cpu, RTS);
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {
