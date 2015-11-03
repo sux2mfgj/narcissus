@@ -42,6 +42,8 @@ namespace narcissus {
             MOV_L_R_IND_WITH_DIS_24,
             MOV_L_R_IND_POST_INC,
 
+            BEQ,
+
             SHLL_L,                     // shift logical left
 
             JSR_ABS,                    // jump to subroutine use absolute address
@@ -123,14 +125,14 @@ namespace narcissus {
 
             std::uint8_t byte;
             struct {
-                int interrupt_mask : 1;
-                int user_interrupt : 1;
-                int half_carry : 1;
-                int user : 1;
-                int negative : 1;
-                int zero : 1;
-                int over_flow : 1;
-                int carry : 1;
+                uint8_t interrupt_mask : 1;
+                uint8_t user_interrupt : 1;
+                uint8_t half_carry : 1;
+                uint8_t user : 1;
+                uint8_t negative : 1;
+                uint8_t zero : 1;
+                uint8_t over_flow : 1;
+                uint8_t carry : 1;
             };
         };
 
@@ -191,6 +193,7 @@ namespace narcissus {
                 FRIEND_TEST(cpu, SUB_W_R_R);
                 FRIEND_TEST(cpu, RTS);
                 FRIEND_TEST(cpu, MOV_L_R_IND_POST_INC);
+                FRIEND_TEST(cpu, BEQ);
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {

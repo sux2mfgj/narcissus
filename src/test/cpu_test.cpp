@@ -456,6 +456,30 @@ namespace narcissus {
             ASSERT_EQ(cpu.pc, 0x104);
 
         }
+        //bcc
+        TEST(cpu, BEQ)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            //beq .+8
+            mem[0x100] = 0x47;
+            mem[0x101] = 0x08;
+
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
+
+            std::cout << "zero :" << cpu.ccr.zero << std::endl;
+            cpu.ccr.zero = 1;
+            std::cout << "zero :" << cpu.ccr.zero << std::endl;
+
+            ASSERT_EQ(cpu::operation::BEQ, cpu.detect_operation());
+            ASSERT_EQ(true, cpu.cycle());
+            ASSERT_EQ(cpu.pc, 0x102 + 0x8);
+        }
 
         //jsr
         TEST(cpu, JSR_ABS)

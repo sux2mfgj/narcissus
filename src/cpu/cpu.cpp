@@ -299,6 +299,20 @@ namespace narcissus {
                     return true;
                 }
 
+                case BEQ:
+                {
+                    auto disp = memory[pc + 1];
+
+                    pc += 2;
+                    if(ccr.zero != 0x1)
+                    {
+                        return true;
+                    }
+
+                    pc += disp;
+                    return true;
+                }
+
                 case JSR_ABS:
                 {
                     auto abs = std::uint32_t(memory[pc + 1]) << 16;
@@ -485,6 +499,15 @@ namespace narcissus {
 
                         case 9:
                             return operation::SUB_W_R_R;
+
+                        default:
+                            return operation::INVALID;
+                    }
+
+                case 4:
+                    switch (al) {
+                        case 7:
+                            return operation::BEQ;         
 
                         default:
                             return operation::INVALID;
