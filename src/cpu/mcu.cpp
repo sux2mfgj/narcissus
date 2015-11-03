@@ -8,8 +8,8 @@ namespace narcissus {
 
         mcu::mcu(std::array<std::uint8_t, ROM_SIZE>&& init_rom) 
             : rom(move(init_rom)), ram(), 
-            serial_controler_interface{
-                sci::SCI0_BASE_ADDR, sci::SCI1_BASE_ADDR, sci::SCI2_BASE_ADDR}
+            sci_channel{
+                SCI0_BASE_ADDR, SCI1_BASE_ADDR, SCI2_BASE_ADDR}
         {
 //             serial_controler_interface = sci()
 //             serial_controler_interface{0xffffb0, 0xffffb8, 0xffffc0};
@@ -31,21 +31,23 @@ namespace narcissus {
 
             //TODO
             //add MMI/O
-            if(address >= sci::SCI0_BASE_ADDR && address < sci::SCI1_BASE_ADDR)
+            if(address >= SCI0_BASE_ADDR && address < SCI1_BASE_ADDR)
             {
-                return serial_controler_interface[0][address];
+                return sci_channel[0][address];
             }
-            else if(address >= sci::SCI1_BASE_ADDR && address < sci::SCI2_BASE_ADDR)
+            else if(address >= SCI1_BASE_ADDR && address < SCI2_BASE_ADDR)
             {
-                return serial_controler_interface[1][address];
+                return sci_channel[1][address];
             }
-            else if(address >= sci::SCI2_BASE_ADDR && address < 0xffffc6)
+            else if(address >= SCI2_BASE_ADDR && address < 0xffffc6)
             {
-                return serial_controler_interface[2][address];
+                return sci_channel[2][address];
             }
 
             std::cout << "memory access error: 0x"<< address << std::endl;
             throw std::out_of_range("access error");
         }
+
+
     } // namespace cpu
 } // namespace narcissus

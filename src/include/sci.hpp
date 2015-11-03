@@ -5,10 +5,7 @@
 namespace narcissus {
     namespace sci {
 
-        const std::uint32_t SCI0_BASE_ADDR = 0xffffb0;
-        const std::uint32_t SCI1_BASE_ADDR = 0xffffb8;
-        const std::uint32_t SCI2_BASE_ADDR = 0xffffc0;
-
+        
         class sci {
             
             public:
