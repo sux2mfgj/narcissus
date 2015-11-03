@@ -258,7 +258,11 @@ namespace narcissus {
             ASSERT_EQ(true, cpu.cycle());
             ASSERT_EQ(cpu.er[2].h, 0x12);
             ASSERT_EQ(cpu.pc, 0x102);
+
+            ASSERT_EQ(0b10000000, cpu.ccr.byte);
         }
+
+
 
         TEST(MOV_B_R_IND, 0){
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
