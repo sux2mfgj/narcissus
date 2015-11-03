@@ -154,7 +154,7 @@ namespace narcissus {
 //         }
         
         // SUB
-        TEST(cpu, SUB_B_R_R)
+        TEST(SUB_B_R_R, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -169,16 +169,19 @@ namespace narcissus {
             cpu::h8_300 cpu(move(mem));
             cpu.reset_exception();
 
-            cpu.er[2].h = 0x45;
-            cpu.er[0].l = 0x34;
+            cpu.er[2].h = 0x34;
+            cpu.er[0].l = 0x45;
 
             ASSERT_EQ(cpu::operation::SUB_B_R_R, cpu.detect_operation());
             ASSERT_EQ(true, cpu.cycle());
-            ASSERT_EQ(0x45 - 0x34, cpu.er[2].h);
+            ASSERT_EQ((0x34 - 0x45) & 0xff, cpu.er[2].h);
             ASSERT_EQ(0x102, cpu.pc);
+
+            std::cout << "ccr: " << (uint16_t)cpu.ccr.byte << std::endl;
+            ASSERT_EQ(cpu.ccr.byte, 0x89); //1000 1001
         }
 
-        TEST(cpu, SUB_W_R_R)
+        TEST(SUB_W_R_R, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -202,8 +205,13 @@ namespace narcissus {
             ASSERT_EQ(0x102, cpu.pc);
         }
 
+        TEST(SUB_W_R_R, 1)
+        {
+
+        }
+
         //MOV
-        TEST(cpu, MOV_B_IMM)
+        TEST(MOV_B_IMM, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -224,7 +232,7 @@ namespace narcissus {
             ASSERT_EQ(cpu.pc, 0x102);
         }
 
-        TEST(cpu, MOV_B_R_IND){
+        TEST(MOV_B_R_IND, 0){
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
@@ -247,7 +255,7 @@ namespace narcissus {
             ASSERT_EQ(cpu.pc, 0x102);
         }
 
-        TEST(cpu, MOV_B_R_IND_WITH_DIS_16)
+        TEST(MOV_B_R_IND_WITH_DIS_16, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -277,7 +285,7 @@ namespace narcissus {
             ASSERT_EQ(cpu.pc, 0x104);
         }
 
-        TEST(cpu, MOV_W_IMM)
+        TEST(MOV_W_IMM, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -300,7 +308,7 @@ namespace narcissus {
             ASSERT_EQ(cpu.pc, 0x104);
         }
 
-        TEST(cpu, MOV_L_IMM)
+        TEST(MOV_L_IMM, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -327,7 +335,7 @@ namespace narcissus {
             ASSERT_EQ(cpu.pc, 0x106);
         }
 
-        TEST(cpu, MOV_L_R_IND)
+        TEST(MOV_L_R_IND, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -356,7 +364,7 @@ namespace narcissus {
             ASSERT_EQ(cpu.pc, 0x104);
         }
 
-        TEST(cpu, MOV_L_R_R)
+        TEST(MOV_L_R_R, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -379,7 +387,7 @@ namespace narcissus {
             ASSERT_EQ(cpu.pc, 0x102);
         }
 
-        TEST(cpu, MOV_L_R_IND_WITH_DIS_24)
+        TEST(MOV_L_R_IND_WITH_DIS_24, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -419,7 +427,7 @@ namespace narcissus {
 
         }
 
-        TEST(cpu, MOV_L_R_IND_POST_INC)
+        TEST(MOV_L_R_IND_POST_INC, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -457,7 +465,7 @@ namespace narcissus {
 
         }
         //bcc
-        TEST(cpu, BEQ)
+        TEST(BEQ, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -482,7 +490,7 @@ namespace narcissus {
         }
 
         //jsr
-        TEST(cpu, JSR_ABS)
+        TEST(JSR_ABS, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -519,7 +527,7 @@ namespace narcissus {
             ASSERT_EQ(0x104, return_addr);
         }
 
-        TEST(cpu, EXTS_L) 
+        TEST(EXTS_L, 0) 
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -542,7 +550,7 @@ namespace narcissus {
             ASSERT_EQ(cpu.pc, 0x102);
         }
 
-        TEST(cpu, SHLL_L)
+        TEST(SHLL_L, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -566,7 +574,7 @@ namespace narcissus {
            
         }
 
-        TEST(cpu, RTS)
+        TEST(RTS, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;

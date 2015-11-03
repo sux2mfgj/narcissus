@@ -124,15 +124,25 @@ namespace narcissus {
             conditional_code_register() : byte(0) {}
 
             std::uint8_t byte;
+//             struct {
+//                 uint8_t interrupt_mask : 1;
+//                 uint8_t user_interrupt : 1;
+//                 uint8_t half_carry : 1;
+//                 uint8_t user : 1;
+//                 uint8_t negative : 1;
+//                 uint8_t zero : 1;
+//                 uint8_t over_flow : 1;
+//                 uint8_t carry : 1;
+//             };
             struct {
-                uint8_t interrupt_mask : 1;
-                uint8_t user_interrupt : 1;
-                uint8_t half_carry : 1;
-                uint8_t user : 1;
-                uint8_t negative : 1;
-                uint8_t zero : 1;
-                uint8_t over_flow : 1;
-                uint8_t carry : 1;
+                std::uint8_t carry : 1;
+                std::uint8_t over_flow : 1;
+                std::uint8_t zero : 1;
+                std::uint8_t negative : 1;
+                std::uint8_t user : 1;
+                std::uint8_t half_carry : 1;
+                std::uint8_t user_interrupt : 1;
+                std::uint8_t interrupt_mask: 1;
             };
         };
 
@@ -178,22 +188,23 @@ namespace narcissus {
 //                 FRIEND_TEST(cpu, ADD_L_IMM);
 //                 FRIEND_TEST(cpu, ADD_L_R_R);
 
-                FRIEND_TEST(cpu, MOV_B_IMM);
-                FRIEND_TEST(cpu, MOV_B_R_IND);
-                FRIEND_TEST(cpu, MOV_W_IMM);
-                FRIEND_TEST(cpu, MOV_L_IMM);
-                FRIEND_TEST(cpu, JSR_ABS);
-                FRIEND_TEST(cpu, MOV_L_R_IND);
-                FRIEND_TEST(cpu, MOV_L_R_R);
-                FRIEND_TEST(cpu, EXTS_L);
-                FRIEND_TEST(cpu, SHLL_L);
-                FRIEND_TEST(cpu, MOV_L_R_IND_WITH_DIS_24);
-                FRIEND_TEST(cpu, SUB_B_R_R);
-                FRIEND_TEST(cpu, MOV_B_R_IND_WITH_DIS_16);
-                FRIEND_TEST(cpu, SUB_W_R_R);
-                FRIEND_TEST(cpu, RTS);
-                FRIEND_TEST(cpu, MOV_L_R_IND_POST_INC);
-                FRIEND_TEST(cpu, BEQ);
+                FRIEND_TEST(MOV_B_IMM, 0);
+                FRIEND_TEST(MOV_B_R_IND, 0);
+                FRIEND_TEST(MOV_W_IMM, 0);
+                FRIEND_TEST(MOV_L_IMM, 0);
+                FRIEND_TEST(JSR_ABS, 0);
+                FRIEND_TEST(MOV_L_R_IND, 0);
+                FRIEND_TEST(MOV_L_R_R, 0);
+                FRIEND_TEST(EXTS_L, 0);
+                FRIEND_TEST(SHLL_L, 0);
+                FRIEND_TEST(MOV_L_R_IND_WITH_DIS_24, 0);
+                FRIEND_TEST(SUB_B_R_R, 0);
+                FRIEND_TEST(MOV_B_R_IND_WITH_DIS_16, 0);
+                FRIEND_TEST(SUB_W_R_R, 0);
+                FRIEND_TEST(SUB_W_R_R, 1);
+                FRIEND_TEST(RTS, 0);
+                FRIEND_TEST(MOV_L_R_IND_POST_INC, 0);
+                FRIEND_TEST(BEQ, 0);
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {

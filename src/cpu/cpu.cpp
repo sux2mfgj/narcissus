@@ -23,12 +23,12 @@ namespace narcissus {
 
         bool h8_300::cycle()
         {
-            std::cout << "pc : 0x" << std::hex << pc << std::endl;
-            std::cout << "sp : 0x" << std::hex << sp << std::endl;
-            std::cout << "stack: " << std::endl;
-            for (auto i = 0; i < 4; i++) {
-                std::cout << std::hex << "  0x"<< (std::uint32_t)memory[sp + i] << std::endl; 
-            }
+//             std::cout << "pc : 0x" << std::hex << pc << std::endl;
+//             std::cout << "sp : 0x" << std::hex << sp << std::endl;
+//             std::cout << "stack: " << std::endl;
+//             for (auto i = 0; i < 4; i++) {
+//                 std::cout << std::hex << "  0x"<< (std::uint32_t)memory[sp + i] << std::endl; 
+//             }
             switch (detect_operation()) {
 //                 case ADD_B_IMM: {
 //                     auto rd = memory[pc] & 0x0f;
@@ -594,7 +594,19 @@ namespace narcissus {
             switch (size) {
                 case BYTE:
                     if (immediate > 0xff) {
-                        return false;
+                        ccr.carry = 1;
+                        immediate = immediate & 0xff;
+                    }
+                    else {
+                        ccr.carry = 0;
+                    }
+                    std::cout << immediate << std::endl;
+
+                    if((immediate & 0x80) == 0x80) {
+                        ccr.negative = 1;
+                    }
+                    else {
+                        ccr.negative = 0;
                     }
                     break;
 
@@ -605,6 +617,13 @@ namespace narcissus {
                     break;
                 case LONG:
                     break;
+            }
+
+            if(0 == immediate){
+                ccr.zero = 1;
+            }
+            else {
+                ccr.zero = 0;
             }
 
             er[destination & 0x7].write(destination, immediate, size);
