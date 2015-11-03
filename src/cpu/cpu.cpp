@@ -125,6 +125,24 @@ namespace narcissus {
                     break;
                 }
 
+                case SUB_W_R_R:
+                {
+                    auto rs = memory[pc + 1] >> 0x4;
+                    auto rd = memory[pc + 1] & 0x4;
+
+                    auto src_value = er[rs & 0x7].read(rs, register_size::WORD);
+                    auto dest_value = er[rd & 0x7].read(rd, register_size::WORD);
+
+                    dest_value -= src_value;
+                    if(!register_write_immediate(rd, dest_value, register_size::WORD))
+                    {
+                        return false;
+                    }
+
+                    pc += 2;
+                    break;
+                }
+
                 case MOV_B_IMM:
                 {
                     auto rd = memory[pc] & 0x0f;
@@ -413,6 +431,9 @@ namespace narcissus {
                             }
                         case 8:
                             return operation::SUB_B_R_R;
+
+                        case 9:
+                            return operation::SUB_W_R_R;
 
                         default:
                             return operation::INVALID;
