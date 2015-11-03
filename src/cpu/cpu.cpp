@@ -134,11 +134,13 @@ namespace narcissus {
                 case SUB_W_R_R:
                 {
                     auto rs = memory[pc + 1] >> 0x4;
-                    auto rd = memory[pc + 1] & 0x4;
+                    auto rd = memory[pc + 1] & 0xf;
 
                     auto src_value = er[rs & 0x7].read(rs, register_size::WORD);
                     auto dest_value = er[rd & 0x7].read(rd, register_size::WORD);
 
+                    std::cout << src_value << ":" << dest_value << std::endl;
+                    std::cout << rs << ":" << rd << std::endl;
                     dest_value -= src_value;
                     if(!register_write_immediate(rd, dest_value, register_size::WORD))
                     {
@@ -612,9 +614,21 @@ namespace narcissus {
 
                 case WORD:
                     if(immediate > 0xffff){
-                        return false;
+                        ccr.carry = 1;
+                        immediate = immediate & 0xffff;
+                    }
+                    else {
+                        ccr.carry = 0;
+                    }
+
+                    if((immediate & 0x8000) == 0x8000){
+                        ccr.negative = 1;
+                    }
+                    else {
+                        ccr.negative = 0;
                     }
                     break;
+
                 case LONG:
                     break;
             }
@@ -626,7 +640,9 @@ namespace narcissus {
                 ccr.zero = 0;
             }
 
-            er[destination & 0x7].write(destination, immediate, size);
+            std::cout << "imm: 0x" << immediate << std::endl;
+            std::cout << (std::uint16_t)destination << std::endl;
+            er[destination & 0xf].write(destination, immediate, size);
             return true;
         }
 
