@@ -120,12 +120,46 @@ namespace narcissus {
 
                     auto src_value = er[rs & 0x7].read(rs, register_size::BYTE);
                     auto dest_value = er[rd & 0x7].read(rd, register_size::BYTE);
-                    dest_value -= src_value;
+                    std::cout << dest_value << ":" << src_value << std::endl;
+                    auto imm = dest_value - src_value;
 
-                    if(!register_write_immediate(rd, dest_value, register_size::BYTE))
+                    imm &= 0xff;
+                    dest_value &= 0xff;
+
+                    if(!register_write_immediate(rd, imm, register_size::BYTE))
                     {
                         return false;
                     }
+
+                    if((dest_value & 0x80) == 0x80){
+                        ccr.negative = 1;
+                    }
+                    else {
+                        ccr.negative = 0;
+                    }
+
+                    if(dest_value < src_value)  {
+                        ccr.carry = 1;
+                    }
+                    else {
+                        ccr.carry = 0;
+                    }
+
+                    if((dest_value - src_value) > 0xff){
+                        ccr.over_flow = 1;
+                    }
+                    else {
+                        ccr.over_flow = 0;
+                    }
+                    
+                    if(dest_value == 0){
+                        ccr.zero = 1;
+                    }
+                    else {
+                        ccr.zero = 0;
+                    }
+
+                    std::cout << std::hex << (std::uint16_t)ccr.byte << std::endl;
 
                     pc += 2;
                     break;
@@ -595,21 +629,21 @@ namespace narcissus {
 
             switch (size) {
                 case BYTE:
-                    if (immediate > 0xff) {
-                        ccr.carry = 1;
-                        immediate = immediate & 0xff;
-                    }
-                    else {
-                        ccr.carry = 0;
-                    }
-                    std::cout << immediate << std::endl;
+//                     if (immediate > 0xff) {
+//                         ccr.carry = 1;
+//                         immediate = immediate & 0xff;
+//                     }
+//                     else {
+//                         ccr.carry = 0;
+//                     }
+//                     std::cout << immediate << std::endl;
 
-                    if((immediate & 0x80) == 0x80) {
-                        ccr.negative = 1;
-                    }
-                    else {
-                        ccr.negative = 0;
-                    }
+//                     if((immediate & 0x80) == 0x80) {
+//                         ccr.negative = 1;
+//                     }
+//                     else {
+//                         ccr.negative = 0;
+//                     }
                     break;
 
                 case WORD:

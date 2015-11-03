@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(narcissus)
 
-set(CMAKE_CXX_FLAGS "-std=c++14")
+set(CMAKE_CXX_FLAGS "-std=c++14 -O0")
 
 enable_testing()
 

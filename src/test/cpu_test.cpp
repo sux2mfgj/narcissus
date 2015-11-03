@@ -178,7 +178,7 @@ namespace narcissus {
             ASSERT_EQ(0x102, cpu.pc);
 
             std::cout << "ccr: " << (uint16_t)cpu.ccr.byte << std::endl;
-            ASSERT_EQ(cpu.ccr.byte, 0x89); //1000 1001
+            ASSERT_EQ(0b10000011, cpu.ccr.byte); //1000 1001
         }
 
         TEST(SUB_W_R_R, 0)
