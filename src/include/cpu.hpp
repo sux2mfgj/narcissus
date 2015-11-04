@@ -169,15 +169,20 @@ namespace narcissus {
 //                 std::array<std::uint8_t, RAM_END_ADDR - RAM_BASE_ADDR> ram;
 
             public:
-                void reset_exception();
-                bool cycle();
-                operation detect_operation();
+                bool cycle(void);
+                void reset_exception(void);
+                
+            private:
+                operation detect_operation(void);
+                void update_ccr(uint32_t value_0, uint32_t value_1, 
+                        uint64_t result, register_size size);
                 bool register_write_immediate(std::uint8_t destination,
                         std::uint32_t immediate,
                         register_size size);
                 bool register_write_register(std::uint8_t destination,
                         std::uint8_t source,
                         register_size size);
+
 
             // use macro for test
             public:

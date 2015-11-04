@@ -123,43 +123,15 @@ namespace narcissus {
                     std::cout << dest_value << ":" << src_value << std::endl;
                     auto imm = dest_value - src_value;
 
-                    imm &= 0xff;
-                    dest_value &= 0xff;
+//                     imm &= 0xff;
+//                     dest_value &= 0xff;
 
                     if(!register_write_immediate(rd, imm, register_size::BYTE))
                     {
                         return false;
                     }
 
-                    if((dest_value & 0x80) == 0x80){
-                        ccr.negative = 1;
-                    }
-                    else {
-                        ccr.negative = 0;
-                    }
-
-                    if(dest_value < src_value)  {
-                        ccr.carry = 1;
-                    }
-                    else {
-                        ccr.carry = 0;
-                    }
-
-                    if((dest_value - src_value) > 0xff){
-                        ccr.over_flow = 1;
-                    }
-                    else {
-                        ccr.over_flow = 0;
-                    }
-                    
-                    if(dest_value == 0){
-                        ccr.zero = 1;
-                    }
-                    else {
-                        ccr.zero = 0;
-                    }
-
-                    std::cout << std::hex << (std::uint16_t)ccr.byte << std::endl;
+                    update_ccr(src_value, dest_value, imm, register_size::BYTE);
 
                     pc += 2;
                     break;
@@ -713,6 +685,42 @@ namespace narcissus {
             return true;
         }
 
+        void h8_300::update_ccr(uint32_t value_0, uint32_t value_1, 
+                uint64_t result, register_size size)
+        {
+            switch (size) {
+                case register_size::BYTE:
+                {
 
+                    int sign_0 = value_0 >> 7;
+                    int sign_1 = value_1 >> 7;
+                    int sign_result = result >> 7;
+
+                    ccr.carry = (result >> 8) & 0x1;
+                    std::cout << std::hex << sign_0 << ":" << sign_1 
+                        << ":" << sign_result<< std::endl;
+                   
+                    if(result == 0) {
+                        ccr.zero = 1;
+                    }
+                    else {
+                        ccr.zero = 0;
+                    }
+
+                    ccr.negative = (sign_result >> 7) & 0x1;
+                    ccr.over_flow = sign_0 != sign_1 && sign_1 != sign_result;
+
+
+                    break;
+                }
+                case register_size::WORD:
+                    //TODO
+                    break;
+
+                case register_size::LONG:
+                    //TODO
+                    break;
+            }
+        }
     }  // namespace cpu
 }  // namespace narcissus
