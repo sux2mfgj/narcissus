@@ -23,8 +23,8 @@ namespace narcissus {
 
         bool h8_300::cycle()
         {
-//             std::cout << "pc : 0x" << std::hex << pc << std::endl;
-//             std::cout << "sp : 0x" << std::hex << sp << std::endl;
+            std::cout << "pc : 0x" << std::hex << pc << std::endl;
+            std::cout << "sp : 0x" << std::hex << sp << std::endl;
 //             std::cout << "stack: " << std::endl;
 //             for (auto i = 0; i < 4; i++) {
 //                 std::cout << std::hex << "  0x"<< (std::uint32_t)memory[sp + i] << std::endl; 
@@ -333,6 +333,15 @@ namespace narcissus {
                     return true;
                 }
 
+                case BRA:
+                {
+                    auto disp = (std::int8_t)memory[pc + 1];
+                    pc += 2;
+                    pc += disp;
+
+                    return true;
+                }
+
                 case JSR_ABS:
                 {
                     auto abs = std::uint32_t(memory[pc + 1]) << 16;
@@ -529,6 +538,9 @@ namespace narcissus {
 
                 case 4:
                     switch (al) {
+                        case 0:
+                            return operation::BRA;
+
                         case 7:
                             return operation::BEQ;         
 

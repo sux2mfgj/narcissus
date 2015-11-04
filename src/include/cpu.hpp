@@ -42,7 +42,8 @@ namespace narcissus {
             MOV_L_R_IND_WITH_DIS_24,
             MOV_L_R_IND_POST_INC,
 
-            BEQ,
+            BEQ,                        // branch equal
+            BRA,                        // branch always(true)
 
             SHLL_L,                     // shift logical left
 
@@ -216,6 +217,7 @@ namespace narcissus {
                 FRIEND_TEST(RTS, 0);
                 FRIEND_TEST(MOV_L_R_IND_POST_INC, 0);
                 FRIEND_TEST(BEQ, 0);
+                FRIEND_TEST(BRA, 0);
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {
