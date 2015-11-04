@@ -51,7 +51,11 @@ namespace narcissus {
             RTS,
         };
 
-        enum register_size { BYTE, WORD, LONG };
+        enum register_size { 
+            BYTE = 7, 
+            WORD = 15, 
+            LONG = 31
+        };
 
         union register_t {
             register_t() : er32(0) {}
@@ -174,15 +178,15 @@ namespace narcissus {
                 
             private:
                 operation detect_operation(void);
-                void update_ccr(uint32_t value_0, uint32_t value_1, 
-                        uint64_t result, register_size size);
                 bool register_write_immediate(std::uint8_t destination,
                         std::uint32_t immediate,
                         register_size size);
                 bool register_write_register(std::uint8_t destination,
                         std::uint8_t source,
                         register_size size);
-
+                void update_ccr_sub(uint32_t value_0, uint32_t value_1, 
+                        uint64_t result, register_size size);
+                void update_ccr_mov(uint32_t value, register_size size);
 
             // use macro for test
             public:
@@ -194,6 +198,7 @@ namespace narcissus {
 //                 FRIEND_TEST(cpu, ADD_L_R_R);
 
                 FRIEND_TEST(MOV_B_IMM, 0);
+                FRIEND_TEST(MOV_B_IMM, 1);
                 FRIEND_TEST(MOV_B_R_IND, 0);
                 FRIEND_TEST(MOV_W_IMM, 0);
                 FRIEND_TEST(MOV_L_IMM, 0);

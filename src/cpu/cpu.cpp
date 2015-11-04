@@ -128,7 +128,7 @@ namespace narcissus {
                         return false;
                     }
 
-                    update_ccr(src_value, dest_value, imm, register_size::BYTE);
+                    update_ccr_sub(src_value, dest_value, imm, register_size::BYTE);
 
                     pc += 2;
                     break;
@@ -144,11 +144,13 @@ namespace narcissus {
 
                     std::cout << src_value << ":" << dest_value << std::endl;
                     std::cout << rs << ":" << rd << std::endl;
-                    dest_value -= src_value;
-                    if(!register_write_immediate(rd, dest_value, register_size::WORD))
+//                     dest_value -= src_value;
+                    auto result = dest_value - src_value;
+                    if(!register_write_immediate(rd, result, register_size::WORD))
                     {
                         return false;
                     }
+                    update_ccr_sub(src_value, dest_value, result, register_size::WORD);
 
                     pc += 2;
                     break;
@@ -162,8 +164,9 @@ namespace narcissus {
                     if(!register_write_immediate(rd, imm, register_size::BYTE)){
                         return false;
                     }
+                    
+                    update_ccr_mov(imm, register_size::BYTE);
                     pc += 2;
-
                     break;
                 }
 
@@ -175,7 +178,8 @@ namespace narcissus {
                     auto src_value = er[rs & 0x7].read(rs, register_size::BYTE);
                     auto dest_value = er[erd & 0x7].read(erd, register_size::LONG);
                     memory[dest_value] = src_value;
-
+                    
+                    update_ccr_mov(src_value, register_size::BYTE);
                     pc += 2;
                     break;
                 }
@@ -193,6 +197,7 @@ namespace narcissus {
                     dest_addr += disp;
                     memory[dest_addr] = src_value;
 
+                    update_ccr_mov(src_value, register_size::BYTE);
                     pc += 4;
                     break;
                 }
@@ -206,6 +211,8 @@ namespace narcissus {
                     if(!register_write_immediate(rd, imm, register_size::WORD)){
                         return false;
                     }
+
+                    update_ccr_mov(imm, register_size::WORD);
                     pc += 4;
                     break;
                 }
@@ -222,6 +229,8 @@ namespace narcissus {
                     if(!register_write_immediate(erd, imm, register_size::LONG)){
                         return false;
                     }
+
+                    update_ccr_mov(imm, register_size::LONG);
                     pc += 6;
                     return true;
                 }
@@ -234,6 +243,7 @@ namespace narcissus {
                     auto src_value = er[ers].er32;
                     er[erd].er32 = src_value;
 
+                    update_ccr_mov(src_value, register_size::LONG);
                     pc += 2;
                     return true;
                 }
@@ -255,6 +265,7 @@ namespace narcissus {
 
                     er[erd].er32 = erd_val;
 
+                    update_ccr_mov(ers_val, register_size::LONG);
                     pc += 4;
 
                     return true;
@@ -273,11 +284,14 @@ namespace narcissus {
                     std::cout << std::hex << ers << ":" 
                         << erd << ":" << disp << ":" << addr << std::endl;
 
-                    er[erd].er32 = std::uint32_t(memory[addr]) << 24;
-                    er[erd].er32 |= std::uint32_t(memory[addr + 1]) << 16;
-                    er[erd].er32 |= std::uint32_t(memory[addr + 2]) << 8;
-                    er[erd].er32 |= std::uint32_t(memory[addr + 3]);
+                    auto dest_value = std::uint32_t(memory[addr]) << 24;
+                    dest_value |= std::uint32_t(memory[addr + 1]) << 16;
+                    dest_value |= std::uint32_t(memory[addr + 2]) << 8;
+                    dest_value |= std::uint32_t(memory[addr + 3]);
+                    
+                    er[erd].er32 = dest_value;
 
+                    update_ccr_mov(dest_value, register_size::LONG);
                     pc += 10;
                     return true;
                 }
@@ -299,6 +313,7 @@ namespace narcissus {
                     std::cout << erd << ":" << ers << std::endl;
                     std::cout << dest_value << ":" << source_addr << std::endl;
 
+                    update_ccr_mov(dest_value, register_size::LONG);
                     pc += 4;
 
                     return true;
@@ -682,30 +697,14 @@ namespace narcissus {
             return true;
         }
 
-        void h8_300::update_ccr(uint32_t value_0, uint32_t value_1, 
+        void h8_300::update_ccr_sub(uint32_t value_0, uint32_t value_1, 
                 uint64_t result, register_size size)
         {
-            auto bit_size = 0;
-            switch (size) {
-                case register_size::BYTE:
-                {
-                    bit_size = 7;
-                    break;
-                }
-                case register_size::WORD:
-                {
-                    bit_size = 15;
-                    break;
-                }
-                case register_size::LONG:
-                    bit_size = 31;
-                    break;
-            }
 
-            auto carry_shift_size = bit_size + 1;
-            int sign_0 = value_0 >> bit_size;
-            int sign_1 = value_1 >> bit_size;
-            int sign_result = result >> bit_size;
+            auto carry_shift_size = size + 1;
+            int sign_0 = value_0 >> size;
+            int sign_1 = value_1 >> size;
+            int sign_result = result >> size;
 
             ccr.carry = (result >> carry_shift_size) & 0x1;
 
@@ -716,8 +715,24 @@ namespace narcissus {
                 ccr.zero = 0;
             }
 
-            ccr.negative = (sign_result >> bit_size) & 0x1;
+            ccr.negative = (sign_result >> size) & 0x1;
             ccr.over_flow = sign_0 != sign_1 && sign_1 != sign_result;
         }
+
+
+        void h8_300::update_ccr_mov(uint32_t value, register_size size)
+        {
+            ccr.over_flow = 0;
+
+            if(value == 0){
+                ccr.zero = 1;
+            }
+            else {
+                ccr.zero = 0;
+            }
+
+            ccr.negative = (value >> size) & 0x1;
+        }
+
     }  // namespace cpu
 }  // namespace narcissus
