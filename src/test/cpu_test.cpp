@@ -613,6 +613,8 @@ namespace narcissus {
             ASSERT_EQ(true, cpu.cycle());
             ASSERT_EQ(0xffff8001, cpu.er[0].er32);
             ASSERT_EQ(cpu.pc, 0x102);
+
+            ASSERT_EQ(0b10001000, cpu.ccr.byte);
         }
 
         TEST(SHLL_L, 0)
@@ -637,6 +639,7 @@ namespace narcissus {
             ASSERT_EQ(0x00000002, cpu.er[0].er32);
             ASSERT_EQ(cpu.pc, 0x102);
            
+            ASSERT_EQ(0b10000000, cpu.ccr.byte);
         }
 
         TEST(RTS, 0)

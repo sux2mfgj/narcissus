@@ -361,8 +361,10 @@ namespace narcissus {
                     sign |= sign << 4; // 0x00ff8000;
                     sign |= sign << 8; // 0xffff8000;
 
-                    er[erd].er32 = (val & 0x0008fff) | sign;
+                    auto result = (val & 0x00008fff) | sign;
+                    er[erd].er32 = (val & 0x00008fff) | sign;
 
+                    update_ccr_mov(result, register_size::LONG);
                     pc += 2;
                     return true;
                 }
@@ -372,6 +374,7 @@ namespace narcissus {
                     auto erd = memory[pc + 1] & 0x7;
                     er[erd].er32 = er[erd].er32 << 1;
 
+                    update_ccr_shll(er[erd].er32, register_size::LONG);
                     pc += 2;
                     return true;
                 }
@@ -720,7 +723,7 @@ namespace narcissus {
         }
 
 
-        void h8_300::update_ccr_mov(uint32_t value, register_size size)
+        void h8_300::update_ccr_mov(uint64_t value, register_size size)
         {
             ccr.over_flow = 0;
 
@@ -731,7 +734,14 @@ namespace narcissus {
                 ccr.zero = 0;
             }
 
+//             std::cout << value << std::endl;
             ccr.negative = (value >> size) & 0x1;
+        }
+
+        void h8_300::update_ccr_shll(uint64_t value, register_size size)
+        {
+            update_ccr_mov(value, size);
+            ccr.carry = 0x00010000 & value;
         }
 
     }  // namespace cpu

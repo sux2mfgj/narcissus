@@ -186,7 +186,8 @@ namespace narcissus {
                         register_size size);
                 void update_ccr_sub(uint32_t value_0, uint32_t value_1, 
                         uint64_t result, register_size size);
-                void update_ccr_mov(uint32_t value, register_size size);
+                void update_ccr_mov(uint64_t value, register_size size);
+                void update_ccr_shll(uint64_t value, register_size size);
 
             // use macro for test
             public:
