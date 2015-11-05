@@ -558,9 +558,10 @@ namespace narcissus {
 
                 case RTS: {
                               // memory[sp]: is reserved
-                              auto return_addr = (std::uint32_t)memory[sp + 1] << 16;
-                              return_addr |= (std::uint32_t)memory[sp + 2] << 8;
-                              return_addr |= (std::uint32_t)memory[sp + 3];
+                              memory[sp++];
+                              auto return_addr = (std::uint32_t)memory[sp++] << 16;
+                              return_addr |= (std::uint32_t)memory[sp++] << 8;
+                              return_addr |= (std::uint32_t)memory[sp++];
 
                               pc = return_addr;
 
