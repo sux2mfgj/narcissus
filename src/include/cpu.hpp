@@ -44,6 +44,7 @@ namespace narcissus {
 
             BEQ,                        // branch equal
             BRA,                        // branch always(true)
+            BNE,                        // branch not equal
 
             CMP_B_IMM,                  // compare register and immediate
 
@@ -224,6 +225,7 @@ namespace narcissus {
                 FRIEND_TEST(MOV_B_R_R, 0);
                 FRIEND_TEST(CMP_B_IMM, 0);
                 FRIEND_TEST(CMP_B_IMM, 1);
+                FRIEND_TEST(BNE, 0);
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {

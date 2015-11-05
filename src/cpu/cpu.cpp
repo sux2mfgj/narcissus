@@ -390,6 +390,16 @@ namespace narcissus {
                               return true;
                           }
 
+                case BNE:
+                {
+                    auto disp = memory[pc + 1];
+                    pc += 2;
+                    if(ccr.zero == 1) {
+                        pc += disp;
+                    }
+                    return true;
+                }
+
                 case CMP_B_IMM:
                 {
                     auto rd = memory[pc] & 0xf;
@@ -605,6 +615,9 @@ namespace narcissus {
                         case 0:
                             return operation::BRA;
 
+                        case 6:
+                            return operation::BNE;
+
                         case 7:
                             return operation::BEQ;
 
@@ -627,6 +640,7 @@ namespace narcissus {
                                 default:
                                     return operation::INVALID;
                             }
+
                         case 0xe:
                             return operation::JSR_ABS;
 
