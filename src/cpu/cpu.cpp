@@ -390,6 +390,19 @@ namespace narcissus {
                               return true;
                           }
 
+                case CMP_B_IMM:
+                {
+                    auto rd = memory[pc] & 0xf;
+                    auto imm = memory[pc + 1];
+
+                    auto rd_value = er[rd & 0x7].read(rd, register_size::BYTE);
+                    auto result = rd_value - imm;
+
+                    update_ccr_sub(rd_value, imm, result, register_size::BYTE);
+                    pc += 2;
+                    return true;
+                }
+
                 case JSR_ABS: {
                                   auto abs = std::uint32_t(memory[pc + 1]) << 16;
                                   abs |= std::uint32_t(memory[pc + 2]) << 8;
@@ -668,6 +681,9 @@ namespace narcissus {
                 case 8:
                     //                     return operation::ADD_B_IMM;
                     return operation::INVALID;
+
+                case 0xa:
+                    return operation::CMP_B_IMM;
 
                 case 0xf:
                     return operation::MOV_B_IMM;

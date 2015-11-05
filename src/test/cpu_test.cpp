@@ -626,6 +626,52 @@ namespace narcissus {
             ASSERT_EQ(0x100, cpu.pc);
         }
 
+        TEST(CMP_B_IMM, 0)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            //a8 0a           
+            //cmp.b   #0xa,r0l
+            mem[0x100] = 0xa8;
+            mem[0x101] = 0x0a;
+            
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
+
+            cpu.er[0].l = 0xa;
+
+            ASSERT_EQ(cpu::operation::CMP_B_IMM, cpu.detect_operation());
+            ASSERT_EQ(true, cpu.cycle());
+            ASSERT_EQ(0b10000100, cpu.ccr.byte);
+        }
+
+        TEST(CMP_B_IMM, 1)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            //a8 0a           
+            //cmp.b   #0xa,r0l
+            mem[0x100] = 0xa8;
+            mem[0x101] = 0x0a;
+            
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
+
+            cpu.er[0].l = 0x9;
+
+            ASSERT_EQ(cpu::operation::CMP_B_IMM, cpu.detect_operation());
+            ASSERT_EQ(true, cpu.cycle());
+            ASSERT_EQ(0b10001001, cpu.ccr.byte);
+        }
+
         //jsr
         TEST(JSR_ABS, 0)
         {

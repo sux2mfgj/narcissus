@@ -45,6 +45,8 @@ namespace narcissus {
             BEQ,                        // branch equal
             BRA,                        // branch always(true)
 
+            CMP_B_IMM,                  // compare register and immediate
+
             SHLL_L,                     // shift logical left
 
             JSR_ABS,                    // jump to subroutine use absolute address
@@ -220,6 +222,8 @@ namespace narcissus {
                 FRIEND_TEST(BRA, 0);
                 FRIEND_TEST(MOV_B_R_IND_POST_INC, 0);
                 FRIEND_TEST(MOV_B_R_R, 0);
+                FRIEND_TEST(CMP_B_IMM, 0);
+                FRIEND_TEST(CMP_B_IMM, 1);
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {
