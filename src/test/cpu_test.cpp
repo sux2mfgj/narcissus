@@ -4,7 +4,6 @@
 using namespace std;
 
 namespace narcissus {
-
     namespace cpu {
 
         // ADD
@@ -292,19 +291,20 @@ namespace narcissus {
             mem[2] = 0x01;
             mem[3] = 0x00;
 
-            //MOV.B r0l, @er2
+            //mov.b   @er4,r2l
+            //68 4a           
             mem[0x100] = 0x68;
-            mem[0x101] = 0xb8;
+            mem[0x101] = 0x4a;
 
             cpu::h8_300 cpu(move(mem));
             cpu.reset_exception();
 
-            cpu.er[0].l = 0x12;
-            cpu.er[3].er32 = 0x00000200;
+            cpu.er[4].er32 = 0x120;
+            cpu.memory[0x120] = 0x12;
 
             ASSERT_EQ(cpu::operation::MOV_B_R_IND, cpu.detect_operation());
             ASSERT_EQ(true, cpu.cycle());
-            ASSERT_EQ(0x12, cpu.memory[0x200]);
+            ASSERT_EQ(0x12, cpu.er[2].l);
             ASSERT_EQ(cpu.pc, 0x102);
         }
 

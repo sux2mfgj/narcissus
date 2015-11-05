@@ -1,20 +1,20 @@
 #include <sci.hpp>
 
 #include <stdexcept>
+#include <iostream>
 
 namespace narcissus {
     namespace sci {
 
-        sci::sci(std::uint32_t addr)
-            : base_address(addr) ,rsr(), rdr(), tsr(), 
-            tdr(), smr(), scr(), ssr(), brr(), scmr()
-        {
-
-        }
+        sci::sci()
+            : rsr(), rdr(), tsr(), tdr(), smr(), scr(), ssr(), brr(), scmr()
+              ,access_flags(0)
+        {}
 
         std::uint8_t& sci::operator[](std::uint32_t address)
         {
-            
+            access_flags |= 1 << (address & 0xf);
+
             switch (address & 0xf) {
                 case 0x0:
                     return smr;

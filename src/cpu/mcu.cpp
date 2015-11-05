@@ -7,9 +7,7 @@ namespace narcissus {
     namespace cpu {
 
         mcu::mcu(std::array<std::uint8_t, ROM_SIZE>&& init_rom) 
-            : rom(move(init_rom)), ram(), 
-            sci_channel{
-                SCI0_BASE_ADDR, SCI1_BASE_ADDR, SCI2_BASE_ADDR}
+            : rom(move(init_rom)), ram(), sci_channel{}
         {
 //             serial_controler_interface = sci()
 //             serial_controler_interface{0xffffb0, 0xffffb8, 0xffffc0};
