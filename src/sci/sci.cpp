@@ -15,7 +15,7 @@ namespace narcissus {
         {
             access_flags |= 1 << (address & 0xf);
 
-            switch (address & 0xf) {
+            switch (address & 0x7) {
                 case 0x0:
                     return smr;
                 case 0x1:
