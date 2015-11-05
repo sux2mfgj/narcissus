@@ -30,6 +30,7 @@ namespace narcissus {
             MOV_B_R_R,  
             MOV_B_R_IND,                // register indirect
             MOV_B_R_IND_WITH_DIS_16,    // register indirect with displacement(16 bit)
+            MOV_B_IND_WITH_DIS_16_R,    // register indirect with displacement(16 bit)
 //             MOV_B_R_IND_WITH_DIS_24,    // register indirect with displacement(24 bit)
             MOV_B_R_IND_POST_INC,       // rd increment after register indirect acdess
 //             MOV_B_ASB_8,                // absolute addressing 8
@@ -124,14 +125,14 @@ namespace narcissus {
             std::uint32_t er32;
 
             struct {
-                std::uint16_t e;
                 union {
                     std::uint16_t r;
                     struct {
-                        std::uint8_t h;
                         std::uint8_t l;
+                        std::uint8_t h;
                     };
                 };
+                std::uint16_t e;
             };
         };
 
@@ -221,6 +222,7 @@ namespace narcissus {
                 FRIEND_TEST(SHLL_L, 0);
                 FRIEND_TEST(MOV_L_IND_WITH_DIS_24_R, 0);
                 FRIEND_TEST(SUB_B_R_R, 0);
+                FRIEND_TEST(MOV_B_IND_WITH_DIS_16_R, 0);
                 FRIEND_TEST(MOV_B_R_IND_WITH_DIS_16, 0);
                 FRIEND_TEST(SUB_W_R_R, 0);
                 FRIEND_TEST(SUB_W_R_R, 1);
@@ -238,6 +240,7 @@ namespace narcissus {
                 FRIEND_TEST(EXTS_L, 1);
                 FRIEND_TEST(AND_W, 0);
                 FRIEND_TEST(AND_W, 1);
+                FRIEND_TEST(register, 0);
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {
