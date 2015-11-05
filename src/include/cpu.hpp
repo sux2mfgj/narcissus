@@ -44,7 +44,8 @@ namespace narcissus {
             MOV_L_R_R,
             MOV_L_R_IND,
 
-            MOV_L_R_IND_WITH_DIS_24,
+            MOV_L_IND_WITH_DIS_24_R,    // MEMORY to register
+//             MOV_L_R_IND_WITH_DIS_24, // register to memory
             MOV_L_R_IND_POST_INC,
 
             BEQ,                        // branch equal
@@ -217,7 +218,7 @@ namespace narcissus {
                 FRIEND_TEST(MOV_L_R_R, 0);
                 FRIEND_TEST(EXTS_L, 0);
                 FRIEND_TEST(SHLL_L, 0);
-                FRIEND_TEST(MOV_L_R_IND_WITH_DIS_24, 0);
+                FRIEND_TEST(MOV_L_IND_WITH_DIS_24_R, 0);
                 FRIEND_TEST(SUB_B_R_R, 0);
                 FRIEND_TEST(MOV_B_R_IND_WITH_DIS_16, 0);
                 FRIEND_TEST(SUB_W_R_R, 0);
@@ -233,6 +234,7 @@ namespace narcissus {
                 FRIEND_TEST(BNE, 0);
                 FRIEND_TEST(SUB_WITH_SIGN_EXT_4, 0);
                 FRIEND_TEST(MOV_W_R_R, 0);
+                FRIEND_TEST(EXTS_L, 1);
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {

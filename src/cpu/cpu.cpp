@@ -26,6 +26,11 @@ namespace narcissus {
         {
             std::cout << "pc : 0x" << std::hex << pc << std::endl;
             std::cout << "sp : 0x" << std::hex << sp << std::endl;
+            if(pc == 0x1fa){
+                auto in = 0;
+                std::cout << "r5: " << (std::uint16_t)er[5].r << std::endl;
+                std::cin >> in;
+            }
             //             std::cout << "stack: " << std::endl;
             //             for (auto i = 0; i < 4; i++) {
             //                 std::cout << std::hex << "  0x"<<
@@ -293,6 +298,8 @@ namespace narcissus {
                         return false;
                     }
 
+                    std::cout << "rs: " << (uint16_t)er[rs & 0x7].read(rs, register_size::WORD) 
+                        << std::endl;
                     update_ccr_mov(er[rs & 0x7].read(rs, register_size::WORD), 
                             register_size::WORD);
 
@@ -351,29 +358,32 @@ namespace narcissus {
                                       return true;
                                   }
 
-                case MOV_L_R_IND_WITH_DIS_24: {
-                                                  auto ers = memory[pc + 3] >> 4;
-                                                  auto erd = memory[pc + 5] & 0x3;
-                                                  auto disp = std::uint32_t(memory[pc + 7]) << 16;
-                                                  disp |= std::uint32_t(memory[pc + 8]) << 8;
-                                                  disp |= std::uint32_t(memory[pc + 9]);
+                case MOV_L_IND_WITH_DIS_24_R: 
+                {
+                    auto ers = memory[pc + 3] >> 4;
+                    auto erd = memory[pc + 5] & 0x3;
 
-                                                  auto addr = er[ers].er32 + disp;
+                    auto disp = std::uint32_t(memory[pc + 7]) << 16;
+                    disp |= std::uint32_t(memory[pc + 8]) << 8;
+                    disp |= std::uint32_t(memory[pc + 9]);
 
-                                                  std::cout << std::hex << ers << ":" << erd << ":" << disp << ":"
-                                                      << addr << std::endl;
+                    auto addr = (std::int32_t)(er[ers].er32) + (std::int32_t)disp;
 
-                                                  auto dest_value = std::uint32_t(memory[addr]) << 24;
-                                                  dest_value |= std::uint32_t(memory[addr + 1]) << 16;
-                                                  dest_value |= std::uint32_t(memory[addr + 2]) << 8;
-                                                  dest_value |= std::uint32_t(memory[addr + 3]);
+                    std::cout << std::hex << ers << ":" << erd << ":" << disp << ":"
+                        << er[ers].er32 << ":"
+                        << addr << std::endl;
 
-                                                  er[erd].er32 = dest_value;
+                    auto dest_value = std::uint32_t(memory[addr]) << 24;
+                    dest_value |= std::uint32_t(memory[addr + 1]) << 16;
+                    dest_value |= std::uint32_t(memory[addr + 2]) << 8;
+                    dest_value |= std::uint32_t(memory[addr + 3]);
 
-                                                  update_ccr_mov(dest_value, register_size::LONG);
-                                                  pc += 10;
-                                                  return true;
-                                              }
+                    er[erd].er32 = dest_value;
+
+                    update_ccr_mov(dest_value, register_size::LONG);
+                    pc += 10;
+                    return true;
+                }
 
                 case MOV_L_R_IND_POST_INC: {
                                                auto ers = memory[pc + 3] >> 4;
@@ -456,32 +466,38 @@ namespace narcissus {
                                   return true;
                               }
 
-                case EXTS_L: {
-                                 auto erd = memory[pc + 1] & 0x7;
-                                 auto val = er[erd].er32;
-                                 uint32_t sign = (uint32_t)(val & 0x00008000);
-                                 sign |= sign << 1;  // 0x00018000;
-                                 sign |= sign << 1;  // 0x00038000;
-                                 sign |= sign << 2;  // 0x000f8000;
-                                 sign |= sign << 4;  // 0x00ff8000;
-                                 sign |= sign << 8;  // 0xffff8000;
+                case EXTS_L: 
+                {
+                    auto erd = memory[pc + 1] & 0x7;
+                    auto val = er[erd].er32;
+                    uint32_t sign = (uint32_t)(val & 0x00008000);
+                    sign |= sign << 1;  // 0x00018000;
+                    sign |= sign << 1;  // 0x00038000;
+                    sign |= sign << 2;  // 0x000f8000;
+                    sign |= sign << 4;  // 0x00ff8000;
+                    sign |= sign << 8;  // 0xffff8000;
 
-                                 auto result = (val & 0x00008fff) | sign;
-                                 er[erd].er32 = (val & 0x00008fff) | sign;
+//                     auto result = (val & 0x00008fff) | sign;
+                    auto result = (val & 0xffff) | sign;
+                    er[erd].er32 = result; //(val & 0x00008fff) | sign;
 
-                                 update_ccr_mov(result, register_size::LONG);
-                                 pc += 2;
-                                 return true;
-                             }
+                    std::cout << val << " -> " << result << std::endl;
 
-                case SHLL_L: {
-                                 auto erd = memory[pc + 1] & 0x7;
-                                 er[erd].er32 = er[erd].er32 << 1;
+                    update_ccr_mov(result, register_size::LONG);
+                    pc += 2;
+                    return true;
+                }
 
-                                 update_ccr_shll(er[erd].er32, register_size::LONG);
-                                 pc += 2;
-                                 return true;
-                             }
+                case SHLL_L: 
+                {
+                    auto erd = memory[pc + 1] & 0x7;
+                    er[erd].er32 = er[erd].er32 << 1;
+                    std::cout << "shll: " << er[erd].er32 << std::endl;
+
+                    update_ccr_shll(er[erd].er32, register_size::LONG);
+                    pc += 2;
+                    return true;
+                }
 
                 case RTS: {
                               // memory[sp]: is reserved
@@ -561,7 +577,7 @@ namespace narcissus {
                                                                     switch (t) {
                                                                         case 0x2:
                                                                             return operation::
-                                                                                MOV_L_R_IND_WITH_DIS_24;
+                                                                                MOV_L_IND_WITH_DIS_24_R;
                                                                         default:
                                                                             return operation::
                                                                                 INVALID;
@@ -610,6 +626,7 @@ namespace narcissus {
 
                         case 0xf:
                             return operation::MOV_L_R_R;
+
                         default:
                             return operation::INVALID;
                     }
