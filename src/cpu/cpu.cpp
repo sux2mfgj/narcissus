@@ -162,6 +162,16 @@ namespace narcissus {
                         break;
                     }
 
+                case SUB_WITH_SIGN_EXT_4:
+                {
+                    auto erd = memory[pc + 1] & 0x7;;
+
+                    er[erd].er32 -= 4;
+
+                    pc += 2;
+                    break;
+                }
+
                 case MOV_B_IMM: 
                     {
                         auto rd = memory[pc] & 0x0f;
@@ -605,6 +615,21 @@ namespace narcissus {
 
                         case 9:
                             return operation::SUB_W_R_R;
+
+                        case 0xb:
+                            switch (bh) {
+                                case 0:
+//                                     return operation::SUB_WITH_SIGN_EXT_1;
+                                    return operation::INVALID;
+                                case 8:
+//                                     return operation::SUB_WITH_SIGN_EXT_2;
+                                    return operation::INVALID;
+                                case 9:
+                                    return operation::SUB_WITH_SIGN_EXT_4;
+
+                                default:
+                                    return operation::INVALID;
+                            }
 
                         default:
                             return operation::INVALID;

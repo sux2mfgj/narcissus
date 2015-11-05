@@ -22,6 +22,10 @@ namespace narcissus {
             SUB_B_R_R,                      // substruct rd from rs
             SUB_W_R_R,
 
+//             SUB_WITH_SIGN_EXT_1,
+//             SUB_WITH_SIGN_EXT_2,
+            SUB_WITH_SIGN_EXT_4,            // subtract 4 with sign extention
+
             MOV_B_IMM,
             MOV_B_R_R,  
             MOV_B_R_IND,                // register indirect
@@ -226,6 +230,7 @@ namespace narcissus {
                 FRIEND_TEST(CMP_B_IMM, 0);
                 FRIEND_TEST(CMP_B_IMM, 1);
                 FRIEND_TEST(BNE, 0);
+                FRIEND_TEST(SUB_WITH_SIGN_EXT_4, 0);
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {
