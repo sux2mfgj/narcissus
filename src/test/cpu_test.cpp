@@ -898,10 +898,58 @@ namespace narcissus {
 
         }
 
-//         TEST(MOV_W_R_R, 1)
-//         {
+        TEST(AND_W, 0)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
 
-//         }
+            //79 60 00 80     
+            //and.w   #0x80,r0
+            mem[0x100] = 0x79;
+            mem[0x101] = 0x60;
+            mem[0x102] = 0x00;
+            mem[0x103] = 0x80;
+
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
+            
+            cpu.er[0].r = 0xff0f;
+
+            ASSERT_EQ(cpu::operation::AND_W, cpu.detect_operation());
+            ASSERT_EQ(true, cpu.cycle());
+            ASSERT_EQ(0x0000, cpu.er[0].r);
+            ASSERT_EQ(0b10000100, cpu.ccr.byte);
+            ASSERT_EQ(0x104, cpu.pc);
+        }
+
+        TEST(AND_W, 1)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            //79 60 00 80     
+            //and.w   #0x8000,r0
+            mem[0x100] = 0x79;
+            mem[0x101] = 0x60;
+            mem[0x102] = 0x80;
+            mem[0x103] = 0x00;
+
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
+            
+            cpu.er[0].r = 0x8000;
+
+            ASSERT_EQ(cpu::operation::AND_W, cpu.detect_operation());
+            ASSERT_EQ(true, cpu.cycle());
+            ASSERT_EQ(0b10001000, cpu.ccr.byte);
+            ASSERT_EQ(0x104, cpu.pc);
+        }
     }  // namespace cpu
 }  // namespace narcissus
 

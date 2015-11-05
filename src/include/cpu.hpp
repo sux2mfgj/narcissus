@@ -53,6 +53,7 @@ namespace narcissus {
             BNE,                        // branch not equal
 
             CMP_B_IMM,                  // compare register and immediate
+            AND_W,
 
             SHLL_L,                     // shift logical left
 
@@ -235,6 +236,8 @@ namespace narcissus {
                 FRIEND_TEST(SUB_WITH_SIGN_EXT_4, 0);
                 FRIEND_TEST(MOV_W_R_R, 0);
                 FRIEND_TEST(EXTS_L, 1);
+                FRIEND_TEST(AND_W, 0);
+                FRIEND_TEST(AND_W, 1);
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {

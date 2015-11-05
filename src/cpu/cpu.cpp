@@ -26,11 +26,6 @@ namespace narcissus {
         {
             std::cout << "pc : 0x" << std::hex << pc << std::endl;
             std::cout << "sp : 0x" << std::hex << sp << std::endl;
-            if(pc == 0x1fa){
-                auto in = 0;
-                std::cout << "r5: " << (std::uint16_t)er[5].r << std::endl;
-                std::cin >> in;
-            }
             //             std::cout << "stack: " << std::endl;
             //             for (auto i = 0; i < 4; i++) {
             //                 std::cout << std::hex << "  0x"<<
@@ -450,6 +445,25 @@ namespace narcissus {
                     return true;
                 }
 
+                case AND_W:
+                {
+                    auto rd = memory[pc + 1] & 0xf;
+                    auto imm = (std::uint16_t)memory[pc + 2] << 8;
+                    imm |= (std::uint16_t)memory[pc + 3];
+
+                    auto rd_value = (std::uint16_t)er[rd & 0x7].read(rd, register_size::WORD);
+                    auto result = rd_value & imm;
+                    if(!register_write_immediate(rd, result, register_size::WORD)){
+                        return false;
+                    }
+
+                    std::cout << result << std::endl;
+                    update_ccr_mov(result, register_size::WORD);
+
+                    pc += 4;
+                    return true;
+                }
+
                 case JSR_ABS: {
                                   auto abs = std::uint32_t(memory[pc + 1]) << 16;
                                   abs |= std::uint32_t(memory[pc + 2]) << 8;
@@ -732,13 +746,16 @@ namespace narcissus {
                                 case 1:
                                     //                                     return
                                     //                                     operation::ADD_W_IMM;
-
                                 case 0:
                                     return operation::MOV_W_IMM;
+
+                                case 6:
+                                    return operation::AND_W;
 
                                 default:
                                     return INVALID;
                             }
+
 
                         case 0xa:
                             switch (bh) {
