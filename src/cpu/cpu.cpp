@@ -121,107 +121,143 @@ namespace narcissus {
                 //                     break;
                 //                 }
 
-                case SUB_B_R_R: {
-                                    auto rs = (memory[pc + 1]) >> 4;
-                                    auto rd = (memory[pc + 1]) & 0xf;
+                case SUB_B_R_R: 
+                    {
+                        auto rs = (memory[pc + 1]) >> 4;
+                        auto rd = (memory[pc + 1]) & 0xf;
 
-                                    auto src_value = er[rs & 0x7].read(rs, register_size::BYTE);
-                                    auto dest_value = er[rd & 0x7].read(rd, register_size::BYTE);
-                                    std::cout << dest_value << ":" << src_value << std::endl;
-                                    auto imm = dest_value - src_value;
+                        auto src_value = er[rs & 0x7].read(rs, register_size::BYTE);
+                        auto dest_value = er[rd & 0x7].read(rd, register_size::BYTE);
+                        std::cout << dest_value << ":" << src_value << std::endl;
+                        auto imm = dest_value - src_value;
 
-                                    if (!register_write_immediate(rd, imm, register_size::BYTE)) {
-                                        return false;
-                                    }
+                        if (!register_write_immediate(rd, imm, register_size::BYTE)) {
+                            return false;
+                        }
 
-                                    update_ccr_sub(src_value, dest_value, imm, register_size::BYTE);
+                        update_ccr_sub(src_value, dest_value, imm, register_size::BYTE);
 
-                                    pc += 2;
-                                    break;
-                                }
+                        pc += 2;
+                        break;
+                    }
 
-                case SUB_W_R_R: {
-                                    auto rs = memory[pc + 1] >> 0x4;
-                                    auto rd = memory[pc + 1] & 0xf;
+                case SUB_W_R_R: 
+                    {
+                        auto rs = memory[pc + 1] >> 0x4;
+                        auto rd = memory[pc + 1] & 0xf;
 
-                                    auto src_value = er[rs & 0x7].read(rs, register_size::WORD);
-                                    auto dest_value = er[rd & 0x7].read(rd, register_size::WORD);
+                        auto src_value = er[rs & 0x7].read(rs, register_size::WORD);
+                        auto dest_value = er[rd & 0x7].read(rd, register_size::WORD);
 
-                                    std::cout << src_value << ":" << dest_value << std::endl;
-                                    std::cout << rs << ":" << rd << std::endl;
-                                    //                     dest_value -= src_value;
-                                    auto result = dest_value - src_value;
-                                    if (!register_write_immediate(rd, result, register_size::WORD)) {
-                                        return false;
-                                    }
-                                    update_ccr_sub(src_value, dest_value, result, register_size::WORD);
+                        std::cout << src_value << ":" << dest_value << std::endl;
+                        std::cout << rs << ":" << rd << std::endl;
+                        //                     dest_value -= src_value;
+                        auto result = dest_value - src_value;
+                        if (!register_write_immediate(rd, result, register_size::WORD)) {
+                            return false;
+                        }
+                        update_ccr_sub(src_value, dest_value, result, register_size::WORD);
 
-                                    pc += 2;
-                                    break;
-                                }
+                        pc += 2;
+                        break;
+                    }
 
-                case MOV_B_IMM: {
-                                    auto rd = memory[pc] & 0x0f;
-                                    auto imm = memory[pc + 1];
+                case MOV_B_IMM: 
+                    {
+                        auto rd = memory[pc] & 0x0f;
+                        auto imm = memory[pc + 1];
 
-                                    if (!register_write_immediate(rd, imm, register_size::BYTE)) {
-                                        return false;
-                                    }
+                        if (!register_write_immediate(rd, imm, register_size::BYTE)) {
+                            return false;
+                        }
 
-                                    update_ccr_mov(imm, register_size::BYTE);
-                                    pc += 2;
-                                    break;
-                                }
+                        update_ccr_mov(imm, register_size::BYTE);
+                        pc += 2;
+                        break;
+                    }
+                case MOV_B_R_R:
+                    {
+                        auto rs = memory[pc + 1] >> 4;
+                        auto rd = memory[pc + 1] & 0xf;
 
-                case MOV_B_R_IND: {
-                                      auto ers = (memory[pc + 1] & 0x70) >> 4;
-                                      auto rd = memory[pc + 1] & 0x0f;
+                        auto result = er[rs & 0x7].read(rs, register_size::BYTE);
+                        if(!register_write_immediate(rd, result, register_size::BYTE)){
+                            return false;
+                        }
 
-                                      auto src_reg_value = er[ers & 0x7].read(ers, register_size::LONG);
-                                      auto result = memory[src_reg_value];
+                        update_ccr_mov(result, register_size::BYTE);
+                        pc += 2;
+                        break;
+                    }
 
-                                      if (!register_write_immediate(rd, result, register_size::BYTE)) {
-                                          return false;
-                                      }
-                                      update_ccr_mov(result, register_size::BYTE);
-                                      pc += 2;
+                case MOV_B_R_IND: 
+                    {
+                        auto ers = (memory[pc + 1] & 0x70) >> 4;
+                        auto rd = memory[pc + 1] & 0x0f;
 
-                                      std::cout << ers << ":" << rd << ":" << (uint16_t)result << ":"
-                                          << src_reg_value << std::endl;
-                                      break;
-                                  }
-                                  //                 case MOV_B_R_IND:
-                                  //                 {
-                                  //                     auto erd = (memory[pc + 1] & 0x70) >> 4;
-                                  //                     auto rs = memory[pc + 1] & 0x8;
+                        auto src_reg_value = er[ers & 0x7].read(ers, register_size::LONG);
+                        auto result = memory[src_reg_value];
 
-                                  //                     auto src_value = er[rs & 0x7].read(rs,
-                                  //                     register_size::BYTE);
-                                  //                     auto dest_value = er[erd & 0x7].read(erd,
-                                  //                     register_size::LONG);
-                                  //                     memory[dest_value] = src_value;
-                                  //
-                                  //                     update_ccr_mov(src_value, register_size::BYTE);
-                                  //                     pc += 2;
-                                  //                     break;
-                                  //                 }
+                        if (!register_write_immediate(rd, result, register_size::BYTE)) {
+                            return false;
+                        }
+                        update_ccr_mov(result, register_size::BYTE);
+                        pc += 2;
 
-                case MOV_B_R_IND_WITH_DIS_16: {
-                                                  auto erd = (memory[pc + 1] >> 4) & 0x7;
-                                                  auto rs = (memory[pc + 1]) & 0xf;
-                                                  auto disp = (std::uint16_t)(memory[pc + 2]) << 8;
-                                                  disp |= (std::uint16_t)(memory[pc + 3]);
+                        std::cout << ers << ":" << rd << ":" << (uint16_t)result << ":"
+                            << src_reg_value << std::endl;
+                        break;
+                    }
+                    //                 case MOV_B_R_IND:
+                    //                 {
+                    //                     auto erd = (memory[pc + 1] & 0x70) >> 4;
+                    //                     auto rs = memory[pc + 1] & 0x8;
 
-                                                  auto src_value = er[rs & 0x7].read(rs, register_size::BYTE);
-                                                  auto dest_addr = er[erd & 0x7].read(erd, register_size::LONG);
+                    //                     auto src_value = er[rs & 0x7].read(rs,
+                    //                     register_size::BYTE);
+                    //                     auto dest_value = er[erd & 0x7].read(erd,
+                    //                     register_size::LONG);
+                    //                     memory[dest_value] = src_value;
+                    //
+                    //                     update_ccr_mov(src_value, register_size::BYTE);
+                    //                     pc += 2;
+                    //                     break;
+                    //                 }
 
-                                                  dest_addr += disp;
-                                                  memory[dest_addr] = src_value;
+                case MOV_B_R_IND_WITH_DIS_16: 
+                    {
+                        auto erd = (memory[pc + 1] >> 4) & 0x7;
+                        auto rs = (memory[pc + 1]) & 0xf;
+                        auto disp = (std::uint16_t)(memory[pc + 2]) << 8;
+                        disp |= (std::uint16_t)(memory[pc + 3]);
 
-                                                  update_ccr_mov(src_value, register_size::BYTE);
-                                                  pc += 4;
-                                                  break;
-                                              }
+                        auto src_value = er[rs & 0x7].read(rs, register_size::BYTE);
+                        auto dest_addr = er[erd & 0x7].read(erd, register_size::LONG);
+
+                        dest_addr += disp;
+                        memory[dest_addr] = src_value;
+
+                        update_ccr_mov(src_value, register_size::BYTE);
+                        pc += 4;
+                        break;
+                    }
+
+                case MOV_B_R_IND_POST_INC:
+                    {
+                        auto ers = (memory[pc + 1] >> 4) & 0x7;
+                        auto rd = (memory[pc + 1]) & 0xf;
+
+                        auto result = memory[er[ers].er32];
+                        if(!register_write_immediate(rd, result, register_size::BYTE)){
+                            return false;
+                        }
+                        update_ccr_mov(result ,register_size::BYTE);
+
+                        er[ers].er32 += 1;
+                        pc += 2;
+                        return true;
+                    }
+
 
                 case MOV_W_IMM: {
                                     auto rd = memory[pc + 1] & 0x7;
@@ -515,6 +551,10 @@ namespace narcissus {
                                 default:
                                     return operation::INVALID;
                             }
+
+                        case 0xc:
+                            return operation::MOV_B_R_R;
+
                         case 0xf:
                             return operation::MOV_L_R_R;
                         default:
@@ -583,11 +623,14 @@ namespace narcissus {
 
                 case 6:
                     switch (al) {
-                        case 0xe:
-                            return operation::MOV_B_R_IND_WITH_DIS_16;
-
                         case 0x8:
                             return operation::MOV_B_R_IND;
+
+                        case 0xc:
+                            return operation::MOV_B_R_IND_POST_INC;
+
+                        case 0xe:
+                            return operation::MOV_B_R_IND_WITH_DIS_16;
 
                         default:
                             return operation::INVALID;
