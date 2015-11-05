@@ -27,13 +27,10 @@ namespace narcissus {
         {
             std::cout << "pc : 0x" << std::hex << pc << std::endl;
             std::cout << "sp : 0x" << std::hex << sp << std::endl;
-//             std::string line;
-//             std::getline(std::cin, line);
-            //             std::cout << "stack: " << std::endl;
-            //             for (auto i = 0; i < 4; i++) {
-            //                 std::cout << std::hex << "  0x"<<
-            //                 (std::uint32_t)memory[sp + i] << std::endl;
-            //             }
+//             if(pc == 0x1c8){
+//                 std::string s;
+//                 std::cin >> s;
+//             }
 
             switch (detect_operation()) {
                 //                 case ADD_B_IMM: {

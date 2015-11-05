@@ -12,6 +12,17 @@ namespace narcissus {
         const uint8_t SCR_RECEIVE_ENABLE                    = 0b00010000;
         const uint8_t SCR_MULTIPROCESSOR_INTERRUPT_ENABLE   = 0b00001000;
 //         const uint8_t SCR_
+        
+        enum ssr_bits {
+            mpbt = 1 << 0,
+            mpb = 1 << 1,
+            tend = 1 << 2,
+            per = 1 << 3,
+            ferers = 1 << 4,
+            orer = 1 << 5,
+            rdrf = 1 << 6,
+            tdre = 1 << 7
+        };
 
         class sci {
             
@@ -29,12 +40,16 @@ namespace narcissus {
                 std::uint8_t ssr;
                 std::uint8_t brr;
                 std::uint8_t scmr;
-                
+
                 std::uint8_t access_flags;
+
+            private:
+                void work(void);
 
             // for test
             private:
                 FRIEND_TEST(ACCESS_FLAG, 0);
+                FRIEND_TEST(PUTC_SERIAL, 0);
 
 
         };

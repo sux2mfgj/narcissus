@@ -16,7 +16,7 @@ add_test(
     COMMAND cpu_test
     )
 
-add_executable(sci_test sci_test.cpp ../sci/sci.cpp ../cpu/mcu.cpp)
+add_executable(sci_test sci_test.cpp ../sci/sci.cpp)
 
 target_link_libraries(
     sci_test
