@@ -239,49 +239,50 @@ namespace narcissus {
                     //                 }
 
                 case MOV_B_IND_WITH_DIS_16_R: 
-                    {
-                        auto ers = (memory[pc + 1] >> 4) & 0x7;
-                        auto rd = memory[pc + 1] & 0xf;
-                        auto disp = (std::uint16_t)(memory[pc + 2]) << 8;
-                        disp |= (std::uint16_t)memory[pc + 3];
+                {
+                    auto ers = (memory[pc + 1] >> 4) & 0x7;
+                    auto rd = memory[pc + 1] & 0xf;
+                    auto disp = (std::uint16_t)(memory[pc + 2]) << 8;
+                    disp |= (std::uint16_t)memory[pc + 3];
 
-                        auto src_value = er[ers].er32;
-                        auto addr = src_value + (std::int16_t)disp;
+                    auto src_value = er[ers].er32;
+                    auto addr = src_value + (std::int16_t)disp;
 
-                        auto result = memory[addr];
+                    auto result = memory[addr];
 
-                        if (!register_write_immediate(rd, result, register_size::BYTE)) {
-                            return false;
-                        }
-
-                        std::cout << src_value << ":" << disp << std::endl;
-                        std::cout <<std::hex<< addr <<":"<< (std::uint16_t)result << std::endl;
-
-                        update_ccr_mov(result, register_size::BYTE);
-                        pc += 4;
-                        break;
+                    if (!register_write_immediate(rd, result, register_size::BYTE)) {
+                        return false;
                     }
+
+                    std::cout << src_value << ":" << disp << std::endl;
+                    std::cout <<std::hex<< addr <<":"<< (std::uint16_t)result << std::endl;
+
+                    update_ccr_mov(result, register_size::BYTE);
+                    pc += 4;
+                    break;
+                }
+
                 case MOV_B_R_IND_WITH_DIS_16:
-                    {
+                {
 
-                        auto erd = (memory[pc + 1] >> 4) & 0x7;
-                        auto rs = (memory[pc + 1]) & 0xf;
-                        auto disp = (std::uint16_t)(memory[pc + 2]) << 8;
-                        disp |= (std::uint16_t)(memory[pc + 3]);
+                    auto erd = (memory[pc + 1] >> 4) & 0x7;
+                    auto rs = (memory[pc + 1]) & 0xf;
+                    auto disp = (std::uint16_t)(memory[pc + 2]) << 8;
+                    disp |= (std::uint16_t)(memory[pc + 3]);
 
-                        auto src_value = er[rs & 0x7].read(rs, register_size::BYTE);
-                        auto dest_addr = er[erd & 0x7].read(erd, register_size::LONG);
+                    auto src_value = er[rs & 0x7].read(rs, register_size::BYTE);
+                    auto dest_addr = er[erd & 0x7].read(erd, register_size::LONG);
 
-                        std::cout <<  (std::uint16_t)(rs & 0x7) << ":" << erd << std::endl;
-                        std::cout << std::hex << "dest_addr: " << dest_addr << std::endl;
+                    std::cout <<  (std::uint16_t)(rs & 0x7) << ":" << erd << std::endl;
+                    std::cout << std::hex << "dest_addr: " << dest_addr << std::endl;
 
-                        dest_addr += (std::int16_t)disp;
-                        memory[dest_addr] = src_value;
+                    dest_addr += (std::int16_t)disp;
+                    memory[dest_addr] = src_value;
 
-                        update_ccr_mov(src_value, register_size::BYTE);
-                        pc += 4;
-                        break;
-                    }
+                    update_ccr_mov(src_value, register_size::BYTE);
+                    pc += 4;
+                    break;
+                }
 
                 case MOV_B_R_IND_POST_INC:
                     {
