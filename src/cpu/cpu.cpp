@@ -243,8 +243,9 @@ namespace narcissus {
 
                         auto src_value = er[rs & 0x7].read(rs, register_size::BYTE);
                         auto dest_addr = er[erd & 0x7].read(erd, register_size::LONG);
+                        std::cout << "dest_addr: " << dest_addr << std::endl;
 
-                        dest_addr += disp;
+                        dest_addr += (std::int16_t)disp;
                         memory[dest_addr] = src_value;
 
                         update_ccr_mov(src_value, register_size::BYTE);
@@ -282,6 +283,22 @@ namespace narcissus {
                                     pc += 4;
                                     break;
                                 }
+
+                case MOV_W_R_R:
+                {
+                    auto rs = memory[pc + 1] >> 4;
+                    auto rd = memory[pc + 1] & 0xf;
+
+                    if(!register_write_register(rd, rs, register_size::WORD)){
+                        return false;
+                    }
+
+                    update_ccr_mov(er[rs & 0x7].read(rs, register_size::WORD), 
+                            register_size::WORD);
+
+                    pc += 2;
+                    return true;
+                }
 
                 case MOV_L_IMM: {
                                     auto erd = memory[pc + 1] & 0x7;
@@ -587,6 +604,9 @@ namespace narcissus {
 
                         case 0xc:
                             return operation::MOV_B_R_R;
+
+                        case 0xd:
+                            return operation::MOV_W_R_R;
 
                         case 0xf:
                             return operation::MOV_L_R_R;

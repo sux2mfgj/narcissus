@@ -37,6 +37,7 @@ namespace narcissus {
 //             MOV_B_ASB_24,               // absolute addressing 24
 
             MOV_W_IMM,
+            MOV_W_R_R,
 
 
             MOV_L_IMM, 
@@ -231,6 +232,7 @@ namespace narcissus {
                 FRIEND_TEST(CMP_B_IMM, 1);
                 FRIEND_TEST(BNE, 0);
                 FRIEND_TEST(SUB_WITH_SIGN_EXT_4, 0);
+                FRIEND_TEST(MOV_W_R_R, 0);
         };
 
         //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {
