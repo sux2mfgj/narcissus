@@ -136,6 +136,25 @@ namespace narcissus {
                     return true;
                 }
 
+                case ADD_B_IMM_R:
+                {
+                    auto rd = memory[pc] & 0xf;
+                    auto imm = memory[pc + 1];
+
+                    auto rd_value = er[rd & 0x7].read(rd, register_size::BYTE);
+                    //TODO imm have to cast by integer?
+                    auto result = rd_value + imm;
+
+                    if(!register_write_immediate(rd, result, register_size::BYTE)){
+                        return false;
+                    }
+
+                    update_ccr_sub(rd_value, imm, result, register_size::BYTE);
+                    pc += 2;
+
+                    return true;
+                }
+
                 case SUB_B_R_R: 
                 {
                     auto rs = (memory[pc + 1]) >> 4;
@@ -896,8 +915,7 @@ namespace narcissus {
                     }
 
                 case 8:
-                    //                     return operation::ADD_B_IMM;
-                    return operation::INVALID;
+                    return operation::ADD_B_IMM_R;
 
                 case 0xa:
                     return operation::CMP_B_IMM;
