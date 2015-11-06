@@ -12,7 +12,7 @@ test: $(TARGET)
 	cd build; ctest -VV
   
 run: $(TARGET)
-	./build/narcissus
+	./build/narcissus ./object_code/02/bootload/kzload.bin
 
 clean:
 	rm -rf build
