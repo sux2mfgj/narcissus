@@ -237,6 +237,18 @@ namespace narcissus {
                     break;
                 }
 
+                case SUB_WITH_SIGN_EXT_1:
+                {
+
+                    auto erd = memory[pc + 1] & 0x7;
+
+                    er[erd].er32 -= 1;
+
+                    pc += 2;
+                    break;
+
+                }
+
                 case SUB_WITH_SIGN_EXT_4:
                 {
                     auto erd = memory[pc + 1] & 0x7;;
@@ -824,8 +836,7 @@ namespace narcissus {
                         case 0xb:
                             switch (bh) {
                                 case 0:
-//                                     return operation::SUB_WITH_SIGN_EXT_1;
-                                    return operation::INVALID;
+                                    return operation::SUB_WITH_SIGN_EXT_1;
                                 case 8:
 //                                     return operation::SUB_WITH_SIGN_EXT_2;
                                     return operation::INVALID;

@@ -23,7 +23,7 @@ namespace narcissus {
             SUB_W_R_R,
             SUB_L_R_R,
 
-//             SUB_WITH_SIGN_EXT_1,
+            SUB_WITH_SIGN_EXT_1,
 //             SUB_WITH_SIGN_EXT_2,
             SUB_WITH_SIGN_EXT_4,            // subtract 4 with sign extention
 
@@ -257,6 +257,7 @@ namespace narcissus {
                 FRIEND_TEST(SUB_L_R_R, 0);
                 FRIEND_TEST(ADD_B_IMM_R, 0);
                 FRIEND_TEST(ADD_L_IMM_R, 0);
+                FRIEND_TEST(SUB_WITH_SIGN_EXT_1, 0);
 
         };
 
