@@ -143,7 +143,7 @@ namespace narcissus {
 
                         auto src_value = er[rs & 0x7].read(rs, register_size::BYTE);
                         auto dest_value = er[rd & 0x7].read(rd, register_size::BYTE);
-                        std::cout << dest_value << ":" << src_value << std::endl;
+//                         std::cout << dest_value << ":" << src_value << std::endl;
                         auto imm = dest_value - src_value;
 
                         if (!register_write_immediate(rd, imm, register_size::BYTE)) {
@@ -164,8 +164,8 @@ namespace narcissus {
                         auto src_value = er[rs & 0x7].read(rs, register_size::WORD);
                         auto dest_value = er[rd & 0x7].read(rd, register_size::WORD);
 
-                        std::cout << src_value << ":" << dest_value << std::endl;
-                        std::cout << rs << ":" << rd << std::endl;
+//                         std::cout << src_value << ":" << dest_value << std::endl;
+//                         std::cout << rs << ":" << rd << std::endl;
                         //                     dest_value -= src_value;
                         auto result = dest_value - src_value;
                         if (!register_write_immediate(rd, result, register_size::WORD)) {
@@ -229,8 +229,8 @@ namespace narcissus {
                         update_ccr_mov(result, register_size::BYTE);
                         pc += 2;
 
-                        std::cout << ers << ":" << rd << ":" << (uint16_t)result << ":"
-                            << src_reg_value << std::endl;
+//                         std::cout << ers << ":" << rd << ":" << (uint16_t)result << ":"
+//                             << src_reg_value << std::endl;
                         break;
                     }
                     //                 case MOV_B_R_IND:
@@ -265,8 +265,8 @@ namespace narcissus {
                         return false;
                     }
 
-                    std::cout << src_value << ":" << disp << std::endl;
-                    std::cout <<std::hex<< addr <<":"<< (std::uint16_t)result << std::endl;
+//                     std::cout << src_value << ":" << disp << std::endl;
+//                     std::cout <<std::hex<< addr <<":"<< (std::uint16_t)result << std::endl;
 
                     update_ccr_mov(result, register_size::BYTE);
                     pc += 4;
@@ -284,8 +284,8 @@ namespace narcissus {
                     auto src_value = er[rs & 0x7].read(rs, register_size::BYTE);
                     auto dest_addr = er[erd & 0x7].read(erd, register_size::LONG);
 
-                    std::cout <<  (std::uint16_t)(rs & 0x7) << ":" << erd << std::endl;
-                    std::cout << std::hex << "dest_addr: " << dest_addr << std::endl;
+//                     std::cout <<  (std::uint16_t)(rs & 0x7) << ":" << erd << std::endl;
+//                     std::cout << std::hex << "dest_addr: " << dest_addr << std::endl;
 
                     dest_addr += (std::int16_t)disp;
                     memory[dest_addr] = src_value;
@@ -336,14 +336,14 @@ namespace narcissus {
                     }
 
                     
-                    std::cout << "[mov.w rs, rd]" << std::endl;
-                    std::cout <<  "rs[" << rs << "]: " << er[rs & 0x7].read(rs, register_size::WORD)
-                        << " -> "
-                        << "rd[" << rd << "]: " << er[rd & 0x7].read(rd, register_size::WORD)
-                        << std::endl;
+//                     std::cout << "[mov.w rs, rd]" << std::endl;
+//                     std::cout <<  "rs[" << rs << "]: " << er[rs & 0x7].read(rs, register_size::WORD)
+//                         << " -> "
+//                         << "rd[" << rd << "]: " << er[rd & 0x7].read(rd, register_size::WORD)
+//                         << std::endl;
 
-                    std::cout <<  er[rs & 0x7].read(rs, register_size::LONG)<< std::endl;
-                    std::cout <<  er[rd & 0x7].read(rd, register_size::LONG)<< std::endl;
+//                     std::cout <<  er[rs & 0x7].read(rs, register_size::LONG)<< std::endl;
+//                     std::cout <<  er[rd & 0x7].read(rd, register_size::LONG)<< std::endl;
 
                     update_ccr_mov(er[rs & 0x7].read(rs, register_size::WORD), 
                             register_size::WORD);
@@ -359,7 +359,7 @@ namespace narcissus {
                                     imm |= std::uint32_t(memory[pc + 4]) << 8;
                                     imm |= std::uint32_t(memory[pc + 5]);
 
-                                    std::cout << imm << std::endl;
+//                                     std::cout << imm << std::endl;
                                     if (!register_write_immediate(erd, imm, register_size::LONG)) {
                                         return false;
                                     }
@@ -414,17 +414,17 @@ namespace narcissus {
 
                     auto addr = (std::int32_t)(er[ers].er32) + (std::int32_t)disp;
 
-                    std::cout << std::hex 
-                        << "ers : " << ers << ", " 
-                        << "erd : " << erd << ", " << "disp : " << disp << ", "
-                        << (std::uint32_t)er[ers].er32 << std::endl;
+//                     std::cout << std::hex 
+//                         << "ers : " << ers << ", " 
+//                         << "erd : " << erd << ", " << "disp : " << disp << ", "
+//                         << (std::uint32_t)er[ers].er32 << std::endl;
 
                     auto dest_value = std::uint32_t(memory[addr]) << 24;
                     dest_value |= std::uint32_t(memory[addr + 1]) << 16;
                     dest_value |= std::uint32_t(memory[addr + 2]) << 8;
                     dest_value |= std::uint32_t(memory[addr + 3]);
 
-                    std::cout << "dest_value : " << dest_value << std::endl;
+//                     std::cout << "dest_value : " << dest_value << std::endl;
 
                     er[erd].er32 = dest_value;
 
@@ -446,8 +446,8 @@ namespace narcissus {
 
                                                er[erd].er32 = dest_value;
                                                er[ers].er32 = source_addr;
-                                               std::cout << erd << ":" << ers << std::endl;
-                                               std::cout << dest_value << ":" << source_addr << std::endl;
+//                                                std::cout << erd << ":" << ers << std::endl;
+//                                                std::cout << dest_value << ":" << source_addr << std::endl;
 
                                                update_ccr_mov(dest_value, register_size::LONG);
                                                pc += 4;
@@ -511,7 +511,7 @@ namespace narcissus {
                         return false;
                     }
 
-                    std::cout << "and_w: " << result << std::endl;
+//                     std::cout << "and_w: " << result << std::endl;
                     update_ccr_mov(result, register_size::WORD);
                     pc += 4;
                     return true;
@@ -564,8 +564,8 @@ namespace narcissus {
                     auto result = (val & 0xffff) | sign;
                     er[erd].er32 = result; //(val & 0x00008fff) | sign;
 
-                    std::cout << "[exts.l erd]" << std::endl;
-                    std::cout << std::hex << "0x" << val << " -> 0x" << result << std::endl;
+//                     std::cout << "[exts.l erd]" << std::endl;
+//                     std::cout << std::hex << "0x" << val << " -> 0x" << result << std::endl;
 
                     update_ccr_mov(result, register_size::LONG);
                     pc += 2;
@@ -576,7 +576,7 @@ namespace narcissus {
                 {
                     auto erd = memory[pc + 1] & 0x7;
                     er[erd].er32 = er[erd].er32 << 1;
-                    std::cout << "shll: " << er[erd].er32 << std::endl;
+//                     std::cout << "shll: " << er[erd].er32 << std::endl;
 
                     update_ccr_shll(er[erd].er32, register_size::LONG);
                     pc += 2;
