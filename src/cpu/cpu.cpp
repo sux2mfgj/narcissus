@@ -122,6 +122,20 @@ namespace narcissus {
                 //                     break;
                 //                 }
 
+                case ADDS_4:
+                {
+                    auto erd = memory[pc + 1] & 0x7;
+
+                    auto result = er[erd].er32 + 4;
+
+                    if (!register_write_immediate(erd, result, register_size::LONG)) {
+                        return false;
+                    }
+
+                    pc += 2;
+                    return true;
+                }
+
                 case SUB_B_R_R: 
                     {
                         auto rs = (memory[pc + 1]) >> 4;
@@ -684,6 +698,19 @@ namespace narcissus {
                                 case 0xf:
                                     //                                     return
                                     //                                     operation::ADD_L_R_R;
+
+                                default:
+                                    return operation::INVALID;
+                            }
+
+                        case 0xb:
+                            switch (bh) {
+                                case 0x0:
+//                                     return operation::ADDS_1;
+                                case 0x8:
+//                                     return operation::ADDS_2;
+                                case 0x9:
+                                    return operation::ADDS_4;
 
                                 default:
                                     return operation::INVALID;
