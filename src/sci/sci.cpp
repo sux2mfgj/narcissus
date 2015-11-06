@@ -54,9 +54,6 @@ namespace narcissus {
                 if((ssr & ssr_bits::tdre) != ssr_bits::tdre){
                     std::cout << (char)tdr  << std::flush;
                     ssr |= ssr_bits::tdre;
-                    std::string s = "a";
-                    std::cin >> s;
-
                 }
                 access_flags &= ~flag_ssr;
             }
