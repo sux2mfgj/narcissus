@@ -155,6 +155,28 @@ namespace narcissus {
                     return true;
                 }
 
+                case ADD_L_IMM_R:
+                {
+                    auto erd = memory[pc + 1] & 0x7;
+                    auto imm = (std::uint32_t)memory[pc + 2] << 24;
+                    imm |= (std::uint32_t)memory[pc + 3] << 16;
+                    imm |= (std::uint32_t)memory[pc + 4] << 8;
+                    imm |= (std::uint32_t)memory[pc + 5];
+
+                    auto erd_value = er[erd].er32;
+                    auto result = (std::int32_t)erd_value + (std::int32_t)imm;
+                    std::cout << erd_value << ":" 
+                        << imm << std::endl;
+
+                    if(!register_write_immediate(erd, result, register_size::LONG)){
+                        return false;
+                    }
+
+                    update_ccr_sub(erd_value, imm, result, register_size::LONG);
+                    pc += 6;
+                    return true;
+                }
+
                 case SUB_B_R_R: 
                 {
                     auto rs = (memory[pc + 1]) >> 4;
@@ -891,10 +913,8 @@ namespace narcissus {
                                     //                                     operation::ADD_W_IMM;
                                 case 0:
                                     return operation::MOV_W_IMM;
-
                                 case 6:
                                     return operation::AND_W;
-
                                 default:
                                     return INVALID;
                             }
@@ -905,8 +925,7 @@ namespace narcissus {
                                 case 0:
                                     return operation::MOV_L_IMM;
                                 case 1:
-                                    //                                     return
-                                    //                                     operation::ADD_L_IMM;
+                                    return operation::ADD_L_IMM_R;
                                 default:
                                     return INVALID;
                             }

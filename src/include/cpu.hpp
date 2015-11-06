@@ -28,6 +28,9 @@ namespace narcissus {
             SUB_WITH_SIGN_EXT_4,            // subtract 4 with sign extention
 
             ADD_B_IMM_R,
+
+            ADD_L_IMM_R,
+
             ADDS_4,                     // add with sign extention
             
 
@@ -253,6 +256,7 @@ namespace narcissus {
                 FRIEND_TEST(ADDS_4, 0);
                 FRIEND_TEST(SUB_L_R_R, 0);
                 FRIEND_TEST(ADD_B_IMM_R, 0);
+                FRIEND_TEST(ADD_L_IMM_R, 0);
 
         };
 

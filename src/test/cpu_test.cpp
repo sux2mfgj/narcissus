@@ -1092,10 +1092,35 @@ namespace narcissus {
             ASSERT_EQ(0x22, cpu.er[0].l);
             ASSERT_EQ(0x102, cpu.pc);
  
-
-
         }
 
+        TEST(ADD_L_IMM_R, 0)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            //7a 17 ff ff     
+            //add.l   #0xfffffff4,er7
+            mem[0x100] = 0x7a;
+            mem[0x101] = 0x17;
+            mem[0x102] = 0xff;
+            mem[0x103] = 0xff;
+            mem[0x104] = 0xff;
+            mem[0x105] = 0xf4;
+
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
+
+            cpu.er[7].er32 = 0x12345678;
+
+            ASSERT_EQ(cpu::operation::ADD_L_IMM_R, cpu.detect_operation());
+            ASSERT_EQ(true, cpu.cycle());
+            ASSERT_EQ((std::int32_t)0x12345678+ (std::int32_t)0xfffffff4, cpu.er[7].er32);
+            ASSERT_EQ(0x106, cpu.pc);
+        }
     }  // namespace cpu
 }  // namespace narcissus
 
