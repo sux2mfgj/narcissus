@@ -137,45 +137,64 @@ namespace narcissus {
                 }
 
                 case SUB_B_R_R: 
-                    {
-                        auto rs = (memory[pc + 1]) >> 4;
-                        auto rd = (memory[pc + 1]) & 0xf;
+                {
+                    auto rs = (memory[pc + 1]) >> 4;
+                    auto rd = (memory[pc + 1]) & 0xf;
 
-                        auto src_value = er[rs & 0x7].read(rs, register_size::BYTE);
-                        auto dest_value = er[rd & 0x7].read(rd, register_size::BYTE);
+                    auto src_value = er[rs & 0x7].read(rs, register_size::BYTE);
+                    auto dest_value = er[rd & 0x7].read(rd, register_size::BYTE);
 //                         std::cout << dest_value << ":" << src_value << std::endl;
-                        auto imm = dest_value - src_value;
+                    auto imm = dest_value - src_value;
 
-                        if (!register_write_immediate(rd, imm, register_size::BYTE)) {
-                            return false;
-                        }
-
-                        update_ccr_sub(src_value, dest_value, imm, register_size::BYTE);
-
-                        pc += 2;
-                        break;
+                    if (!register_write_immediate(rd, imm, register_size::BYTE)) {
+                        return false;
                     }
 
-                case SUB_W_R_R: 
-                    {
-                        auto rs = memory[pc + 1] >> 0x4;
-                        auto rd = memory[pc + 1] & 0xf;
+                    update_ccr_sub(src_value, dest_value, imm, register_size::BYTE);
 
-                        auto src_value = er[rs & 0x7].read(rs, register_size::WORD);
-                        auto dest_value = er[rd & 0x7].read(rd, register_size::WORD);
+                    pc += 2;
+                    break;
+                }
+
+                case SUB_W_R_R: 
+                {
+                    auto rs = memory[pc + 1] >> 0x4;
+                    auto rd = memory[pc + 1] & 0xf;
+
+                    auto src_value = er[rs & 0x7].read(rs, register_size::WORD);
+                    auto dest_value = er[rd & 0x7].read(rd, register_size::WORD);
 
 //                         std::cout << src_value << ":" << dest_value << std::endl;
 //                         std::cout << rs << ":" << rd << std::endl;
-                        //                     dest_value -= src_value;
-                        auto result = dest_value - src_value;
-                        if (!register_write_immediate(rd, result, register_size::WORD)) {
-                            return false;
-                        }
-                        update_ccr_sub(src_value, dest_value, result, register_size::WORD);
-
-                        pc += 2;
-                        break;
+                    //                     dest_value -= src_value;
+                    auto result = dest_value - src_value;
+                    if (!register_write_immediate(rd, result, register_size::WORD)) {
+                        return false;
                     }
+                    update_ccr_sub(src_value, dest_value, result, register_size::WORD);
+
+                    pc += 2;
+                    break;
+                }
+
+                case SUB_L_R_R:
+                {
+                    auto ers = (memory[pc + 1] >> 4) & 0x1;
+                    auto erd = memory[pc + 1] & 0x7;
+
+                    auto ers_value = er[ers].er32;
+                    auto erd_value = er[erd].er32;
+
+                    auto result = erd_value - ers_value;
+                    if (!register_write_immediate(erd, result, register_size::LONG)) {
+                        return false;
+                    }
+
+                    update_ccr_sub(ers_value, erd_value, result, register_size::LONG);
+
+                    pc += 2;
+                    break;
+                }
 
                 case SUB_WITH_SIGN_EXT_4:
                 {
@@ -188,51 +207,53 @@ namespace narcissus {
                 }
 
                 case MOV_B_IMM: 
-                    {
-                        auto rd = memory[pc] & 0x0f;
-                        auto imm = memory[pc + 1];
+                {
+                    auto rd = memory[pc] & 0x0f;
+                    auto imm = memory[pc + 1];
 
-                        if (!register_write_immediate(rd, imm, register_size::BYTE)) {
-                            return false;
-                        }
-
-                        update_ccr_mov(imm, register_size::BYTE);
-                        pc += 2;
-                        break;
+                    if (!register_write_immediate(rd, imm, register_size::BYTE)) {
+                        return false;
                     }
+
+                    update_ccr_mov(imm, register_size::BYTE);
+                    pc += 2;
+                    break;
+                }
+
                 case MOV_B_R_R:
-                    {
-                        auto rs = memory[pc + 1] >> 4;
-                        auto rd = memory[pc + 1] & 0xf;
+                {
+                    auto rs = memory[pc + 1] >> 4;
+                    auto rd = memory[pc + 1] & 0xf;
 
-                        auto result = er[rs & 0x7].read(rs, register_size::BYTE);
-                        if(!register_write_immediate(rd, result, register_size::BYTE)){
-                            return false;
-                        }
-
-                        update_ccr_mov(result, register_size::BYTE);
-                        pc += 2;
-                        break;
+                    auto result = er[rs & 0x7].read(rs, register_size::BYTE);
+                    if(!register_write_immediate(rd, result, register_size::BYTE)){
+                        return false;
                     }
+
+                    update_ccr_mov(result, register_size::BYTE);
+                    pc += 2;
+                    break;
+                }
 
                 case MOV_B_R_IND: 
-                    {
-                        auto ers = (memory[pc + 1] & 0x70) >> 4;
-                        auto rd = memory[pc + 1] & 0x0f;
+                {
+                    auto ers = (memory[pc + 1] & 0x70) >> 4;
+                    auto rd = memory[pc + 1] & 0x0f;
 
-                        auto src_reg_value = er[ers & 0x7].read(ers, register_size::LONG);
-                        auto result = memory[src_reg_value];
+                    auto src_reg_value = er[ers & 0x7].read(ers, register_size::LONG);
+                    auto result = memory[src_reg_value];
 
-                        if (!register_write_immediate(rd, result, register_size::BYTE)) {
-                            return false;
-                        }
-                        update_ccr_mov(result, register_size::BYTE);
-                        pc += 2;
+                    if (!register_write_immediate(rd, result, register_size::BYTE)) {
+                        return false;
+                    }
+                    update_ccr_mov(result, register_size::BYTE);
+                    pc += 2;
 
 //                         std::cout << ers << ":" << rd << ":" << (uint16_t)result << ":"
 //                             << src_reg_value << std::endl;
-                        break;
-                    }
+                    break;
+                }
+
                     //                 case MOV_B_R_IND:
                     //                 {
                     //                     auto erd = (memory[pc + 1] & 0x70) >> 4;
@@ -731,6 +752,8 @@ namespace narcissus {
                 case 1:
                     switch (al) {
                         case 0:
+                            
+                            
                             switch (bh) {
                                 case 3:
                                     return operation::SHLL_L;
@@ -750,6 +773,12 @@ namespace narcissus {
 
                         case 9:
                             return operation::SUB_W_R_R;
+
+                        case 0xa:
+                            if((bh >> 3) & 0x1){
+                                return operation::SUB_L_R_R;
+                            }
+                            return operation::INVALID;
 
                         case 0xb:
                             switch (bh) {
