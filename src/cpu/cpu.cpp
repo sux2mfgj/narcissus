@@ -1151,6 +1151,15 @@ namespace narcissus {
             return imm;
         }
 
+        auto h8_300::write_immediate(std::uint32_t base, 
+                std::uint8_t number_of_byte, std::uint32_t immediate) -> void
+        {
+            for(auto i = 0; i < number_of_byte; ++i)
+            {
+                memory[base + i] = immediate >> (number_of_byte - i - 1) * 8;
+            }
+        }
+
 
 
     }  // namespace cpu

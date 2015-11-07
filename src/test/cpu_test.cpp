@@ -46,16 +46,19 @@ namespace narcissus {
 
             auto imm = cpu.read_immediate(0x101, 3);
             ASSERT_EQ(0x123456, imm);
-            
+        }
 
+        TEST(write_imm, 0)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
 
-            //auto erd = memory[pc + 1] & 0x7;
-//                     auto imm = (std::uint32_t)memory[pc + 2] << 24;
-//                     imm |= (std::uint32_t)memory[pc + 3] << 16;
-//                     imm |= (std::uint32_t)memory[pc + 4] << 8;
-//                     imm |= (std::uint32_t)memory[pc + 5];
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
 
-
+            cpu.write_immediate(0x100, 3, 0x123456);
+            ASSERT_EQ(cpu.memory[0x100], 0x12);
+            ASSERT_EQ(cpu.memory[0x101], 0x34);
+            ASSERT_EQ(cpu.memory[0x102], 0x56);
         }
 
         // ADD
