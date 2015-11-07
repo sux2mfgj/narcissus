@@ -3,7 +3,7 @@
 
 #include <cpu.hpp>
 
-int main(int argc, char const* argv[])
+auto main(int argc, char const* argv[]) -> int
 {
     using namespace narcissus;
     using namespace std;
@@ -52,6 +52,4 @@ int main(int argc, char const* argv[])
 //     if(!cpu.cycle()){
 //         cout << "cycle failed" << endl;
 //     }
-    
-    return 0;
 }
