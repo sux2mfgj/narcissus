@@ -27,10 +27,6 @@ namespace narcissus {
         {
             std::cout << "pc : 0x" << std::hex << pc << std::endl;
             std::cout << "sp : 0x" << std::hex << sp << std::endl;
-//             if(pc == 0x1c8){
-//                 std::string s;
-//                 std::cin >> s;
-//             }
 
             switch (detect_operation()) {
                 //                 case ADD_B_IMM: {
@@ -246,7 +242,6 @@ namespace narcissus {
 
                     pc += 2;
                     break;
-
                 }
 
                 case SUB_WITH_SIGN_EXT_4:
@@ -346,6 +341,30 @@ namespace narcissus {
                     pc += 4;
                     break;
                 }
+
+//                 case MOV_B_IND_WITH_DIS_24_R:
+//                 {
+//                     auto ers = (memory[pc + 1] & 0x70) >> 4;
+//                     auto rd = memory[pc + 3] & 0x7;
+//                     auto imm = (std::uint32_t)(memory[pc + 5]) << 16;
+//                     imm |= (std::uint32_t)(memory[pc + 6]) << 8;
+//                     imm |= (std::uint32_t)memory[pc + 7];
+
+//                     auto ers_value = er[ers].read(ers, register_size::LONG);
+//                     auto addr = ers_value + (std::int32_t)imm;
+
+//                     std::cout << std::hex << addr << std::endl;
+//                     std::cout << rd << std::endl;
+//                     auto result = memory[addr];
+
+//                     if(!register_write_immediate(rd, result, register_size::BYTE))
+//                     {
+//                         return false;
+//                     }
+
+//                     pc += 8;
+//                     break;
+//                 }
 
                 case MOV_B_R_IND_WITH_DIS_16:
                 {
@@ -917,11 +936,43 @@ namespace narcissus {
 
                 case 7:
                     switch (al) {
+                        case 8:
+                        {
+                            auto t = bh >> 3;
+                            if (t == 0x0) {
+                                switch (bl) {
+                                    case 0:
+                                        switch (ch) {
+                                            case 6:
+                                                switch (cl) {
+                                                    case 0xa:
+                                                    {
+                                                        auto dh = memory[pc + 3] >> 4;
+                                                        auto dl = memory[pc + 3] & 0xf;
+                                                        auto eh = memory[pc + 4] >> 4;
+                                                        auto el = memory[pc + 4] & 0xf;
+                                                        if(dh == 0x2 && eh == 0 && el == 0){
+//                                                             return operation::MOV_B_IND_WITH_DIS_24_R;
+                                                        }
+                                                        return operation::INVALID;
+                                                    }
+                                                    default:
+                                                        return operation::INVALID;
+                                                }
+                                            default:
+                                                return operation::INVALID;
+                                        }
+
+                                    default:
+                                        return operation::INVALID;
+                                }
+                            }
+                            return operation::INVALID;
+                        }
                         case 9:
                             switch (bh) {
                                 case 1:
-                                    //                                     return
-                                    //                                     operation::ADD_W_IMM;
+                                    return operation::INVALID;
                                 case 0:
                                     return operation::MOV_W_IMM;
                                 case 6:
