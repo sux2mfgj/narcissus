@@ -26,7 +26,7 @@ namespace narcissus {
             public:
                 mcu(std::array<std::uint8_t, ROM_SIZE>&& init_rom);
                
-                std::uint8_t& operator[] (std::uint32_t address);
+                auto operator[] (std::uint32_t address) -> std::uint8_t&;
 
             private:
                 std::array<std::uint8_t, ROM_SIZE> rom;

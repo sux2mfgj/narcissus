@@ -28,7 +28,7 @@ namespace narcissus {
             
             public:
                 sci();
-                std::uint8_t& operator[](std::uint32_t address);
+                auto operator[](std::uint32_t address) -> std::uint8_t&;
 
             private:
                 std::uint8_t rsr;
@@ -44,7 +44,7 @@ namespace narcissus {
                 std::uint8_t access_flags;
 
             private:
-                void work(void);
+                auto work(void) -> void;
 
             // for test
             private:

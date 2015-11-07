@@ -16,7 +16,8 @@ namespace narcissus {
         }
 
 
-        std::uint8_t& mcu::operator[] (std::uint32_t address)
+        auto mcu::operator[] (std::uint32_t address)
+            -> std::uint8_t&
         {
 //             std::cout << address << std::endl;
             if(address >= ROM_BASE_ADDR && address < ROM_END_ADDR) {

@@ -9,7 +9,7 @@ namespace narcissus {
         {
         }
 
-        void h8_300::reset_exception()
+        auto h8_300::reset_exception() -> void
         {
             // load pc from memory[0] ~ memory[3]
             auto reset_addr = std::uint32_t(memory[0]) << 24;
@@ -23,7 +23,7 @@ namespace narcissus {
             ccr.interrupt_mask = 1;
         }
 
-        bool h8_300::cycle()
+        auto h8_300::cycle() -> bool
         {
             std::cout << "pc : 0x" << std::hex << pc << std::endl;
             std::cout << "sp : 0x" << std::hex << sp << std::endl;
@@ -708,7 +708,7 @@ namespace narcissus {
             return true;
         }
 
-        operation h8_300::detect_operation()
+        auto h8_300::detect_operation() -> operation
         {
             std::uint8_t op = memory[pc];
 
@@ -1012,9 +1012,9 @@ namespace narcissus {
             }
         }
 
-        bool h8_300::register_write_immediate(std::uint8_t destination,
+        auto h8_300::register_write_immediate(std::uint8_t destination,
                 std::uint32_t immediate,
-                register_size size)
+                register_size size) -> bool
         {
             switch (size) {
                 case BYTE:
@@ -1033,9 +1033,10 @@ namespace narcissus {
             return true;
         }
 
-        bool h8_300::register_write_register(std::uint8_t destination,
+        auto h8_300::register_write_register(std::uint8_t destination,
                 std::uint8_t source,
                 register_size size)
+            -> bool
         {
             if (destination > 0xf || source > 0xf) {
                 return false;
@@ -1070,10 +1071,11 @@ namespace narcissus {
             return true;
         }
 
-        void h8_300::update_ccr_sub(uint32_t value_0,
+        auto h8_300::update_ccr_sub(uint32_t value_0,
                 uint32_t value_1,
                 uint64_t result,
                 register_size size)
+            -> void
         {
             auto carry_shift_size = size + 1;
             int sign_0 = value_0 >> size;
@@ -1092,7 +1094,8 @@ namespace narcissus {
             ccr.over_flow = sign_0 != sign_1 && sign_1 != sign_result;
         }
 
-        void h8_300::update_ccr_mov(uint64_t value, register_size size)
+        auto h8_300::update_ccr_mov(uint64_t value, register_size size)
+            -> void
         {
             ccr.over_flow = 0;
 
@@ -1106,7 +1109,8 @@ namespace narcissus {
             ccr.negative = (value >> size) & 0x1;
         }
 
-        void h8_300::update_ccr_shll(uint64_t value, register_size size)
+        auto h8_300::update_ccr_shll(uint64_t value, register_size size)
+            -> void
         {
             update_ccr_mov(value, size);
             ccr.carry = 0x00010000 & value;

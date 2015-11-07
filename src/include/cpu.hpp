@@ -83,7 +83,8 @@ namespace narcissus {
         union register_t {
             register_t() : er32(0) {}
 
-            void write(std::uint8_t destination, std::uint32_t value, register_size size)
+            auto write(std::uint8_t destination, std::uint32_t value, register_size size)
+                -> void
             {
                 switch (size) {
                     case register_size::BYTE:
@@ -109,10 +110,9 @@ namespace narcissus {
                 }
             }
 
-            std::uint32_t read(std::uint8_t source, register_size size)
+            auto read(std::uint8_t source, register_size size)
+                -> std::uint32_t 
             {
-                //XXX
-//                 std::cout << "source" << er32 << std::endl;
                 switch (size) {
                     case register_size::BYTE:
                         if((source & 0x8) != 0x8){
@@ -196,21 +196,21 @@ namespace narcissus {
 //                 std::array<std::uint8_t, RAM_END_ADDR - RAM_BASE_ADDR> ram;
 
             public:
-                bool cycle(void);
-                void reset_exception(void);
+                auto cycle(void) -> bool;
+                auto reset_exception(void) -> void;
                 
             private:
-                operation detect_operation(void);
-                bool register_write_immediate(std::uint8_t destination,
+                auto detect_operation(void) -> operation;
+                auto register_write_immediate(std::uint8_t destination,
                         std::uint32_t immediate,
-                        register_size size);
-                bool register_write_register(std::uint8_t destination,
+                        register_size size) -> bool;
+                auto register_write_register(std::uint8_t destination,
                         std::uint8_t source,
-                        register_size size);
-                void update_ccr_sub(uint32_t value_0, uint32_t value_1, 
-                        uint64_t result, register_size size);
-                void update_ccr_mov(uint64_t value, register_size size);
-                void update_ccr_shll(uint64_t value, register_size size);
+                        register_size size) -> bool;
+                auto update_ccr_sub(uint32_t value_0, uint32_t value_1, 
+                        uint64_t result, register_size size) -> void;
+                auto update_ccr_mov(uint64_t value, register_size size) -> void;
+                auto update_ccr_shll(uint64_t value, register_size size) -> void;
 
             // use macro for test
             public:

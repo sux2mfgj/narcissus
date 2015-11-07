@@ -12,7 +12,7 @@ namespace narcissus {
               ,access_flags(0)
         {}
 
-        std::uint8_t& sci::operator[](std::uint32_t address)
+        auto sci::operator[](std::uint32_t address) -> std::uint8_t&
         {
             work();
             access_flags |= 1 << (address & 0x7);
@@ -38,7 +38,7 @@ namespace narcissus {
             }
         }
 
-        void sci::work()
+        auto sci::work() -> void
         {
 
             const static uint8_t flag_smr = 1 << 0;
