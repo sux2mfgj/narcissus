@@ -118,7 +118,7 @@ namespace narcissus {
                 //                     break;
                 //                 }
 
-                case ADDS_4:
+                case operation::ADDS_4:
                 {
                     auto erd = memory[pc + 1] & 0x7;
 
@@ -132,7 +132,7 @@ namespace narcissus {
                     return true;
                 }
 
-                case ADD_B_IMM_R:
+                case operation::ADD_B_IMM_R:
                 {
                     auto rd = memory[pc] & 0xf;
                     auto imm = memory[pc + 1];
@@ -151,7 +151,7 @@ namespace narcissus {
                     return true;
                 }
 
-                case ADD_L_IMM_R:
+                case operation::ADD_L_IMM_R:
                 {
                     auto erd = memory[pc + 1] & 0x7;
                     auto imm = (std::uint32_t)memory[pc + 2] << 24;
@@ -173,7 +173,7 @@ namespace narcissus {
                     return true;
                 }
 
-                case SUB_B_R_R: 
+                case operation::SUB_B_R_R: 
                 {
                     auto rs = (memory[pc + 1]) >> 4;
                     auto rd = (memory[pc + 1]) & 0xf;
@@ -193,7 +193,7 @@ namespace narcissus {
                     break;
                 }
 
-                case SUB_W_R_R: 
+                case operation::SUB_W_R_R: 
                 {
                     auto rs = memory[pc + 1] >> 0x4;
                     auto rd = memory[pc + 1] & 0xf;
@@ -214,7 +214,7 @@ namespace narcissus {
                     break;
                 }
 
-                case SUB_L_R_R:
+                case operation::SUB_L_R_R:
                 {
                     auto ers = (memory[pc + 1] >> 4) & 0x1;
                     auto erd = memory[pc + 1] & 0x7;
@@ -233,7 +233,7 @@ namespace narcissus {
                     break;
                 }
 
-                case SUB_WITH_SIGN_EXT_1:
+                case operation::SUB_WITH_SIGN_EXT_1:
                 {
 
                     auto erd = memory[pc + 1] & 0x7;
@@ -244,7 +244,7 @@ namespace narcissus {
                     break;
                 }
 
-                case SUB_WITH_SIGN_EXT_4:
+                case operation::SUB_WITH_SIGN_EXT_4:
                 {
                     auto erd = memory[pc + 1] & 0x7;;
 
@@ -254,7 +254,7 @@ namespace narcissus {
                     break;
                 }
 
-                case MOV_B_IMM: 
+                case operation::MOV_B_IMM: 
                 {
                     auto rd = memory[pc] & 0x0f;
                     auto imm = memory[pc + 1];
@@ -268,7 +268,7 @@ namespace narcissus {
                     break;
                 }
 
-                case MOV_B_R_R:
+                case operation::MOV_B_R_R:
                 {
                     auto rs = memory[pc + 1] >> 4;
                     auto rd = memory[pc + 1] & 0xf;
@@ -283,7 +283,7 @@ namespace narcissus {
                     break;
                 }
 
-                case MOV_B_R_IND: 
+                case operation::MOV_B_R_IND: 
                 {
                     auto ers = (memory[pc + 1] & 0x70) >> 4;
                     auto rd = memory[pc + 1] & 0x0f;
@@ -302,7 +302,7 @@ namespace narcissus {
                     break;
                 }
 
-                    //                 case MOV_B_R_IND:
+                    //                 case operation::MOV_B_R_IND:
                     //                 {
                     //                     auto erd = (memory[pc + 1] & 0x70) >> 4;
                     //                     auto rs = memory[pc + 1] & 0x8;
@@ -318,7 +318,7 @@ namespace narcissus {
                     //                     break;
                     //                 }
 
-                case MOV_B_IND_WITH_DIS_16_R: 
+                case operation::MOV_B_IND_WITH_DIS_16_R: 
                 {
                     auto ers = (memory[pc + 1] >> 4) & 0x7;
                     auto rd = memory[pc + 1] & 0xf;
@@ -342,7 +342,7 @@ namespace narcissus {
                     break;
                 }
 
-//                 case MOV_B_IND_WITH_DIS_24_R:
+//                 case operation::MOV_B_IND_WITH_DIS_24_R:
 //                 {
 //                     auto ers = (memory[pc + 1] & 0x70) >> 4;
 //                     auto rd = memory[pc + 3] & 0x7;
@@ -366,7 +366,7 @@ namespace narcissus {
 //                     break;
 //                 }
 
-                case MOV_B_R_IND_WITH_DIS_16:
+                case operation::MOV_B_R_IND_WITH_DIS_16:
                 {
 
                     auto erd = (memory[pc + 1] >> 4) & 0x7;
@@ -388,7 +388,7 @@ namespace narcissus {
                     break;
                 }
 
-                case MOV_B_R_IND_POST_INC:
+                case operation::MOV_B_R_IND_POST_INC:
                     {
                         auto ers = (memory[pc + 1] >> 4) & 0x7;
                         auto rd = (memory[pc + 1]) & 0xf;
@@ -405,7 +405,7 @@ namespace narcissus {
                     }
 
 
-                case MOV_W_IMM: {
+                case operation::MOV_W_IMM: {
                                     auto rd = memory[pc + 1] & 0x7;
                                     auto imm = uint16_t(memory[pc + 2]) << 8;
                                     imm |= uint16_t(memory[pc + 3]);
@@ -419,7 +419,7 @@ namespace narcissus {
                                     break;
                                 }
 
-                case MOV_W_R_R:
+                case operation::MOV_W_R_R:
                 {
                     auto rs = memory[pc + 1] >> 4;
                     auto rd = memory[pc + 1] & 0xf;
@@ -445,7 +445,7 @@ namespace narcissus {
                     return true;
                 }
 
-                case MOV_L_IMM: {
+                case operation::MOV_L_IMM: {
                                     auto erd = memory[pc + 1] & 0x7;
                                     auto imm = std::uint32_t(memory[pc + 2]) << 24;
                                     imm |= std::uint32_t(memory[pc + 3]) << 16;
@@ -462,7 +462,7 @@ namespace narcissus {
                                     return true;
                                 }
 
-                case MOV_L_R_R: {
+                case operation::MOV_L_R_R: {
                                     auto ers = std::uint32_t(memory[pc + 1] & 0x70) >> 4;
                                     auto erd = std::uint32_t(memory[pc + 1] & 0x07);
 
@@ -474,7 +474,7 @@ namespace narcissus {
                                     return true;
                                 }
 
-                case MOV_L_R_IND: {
+                case operation::MOV_L_R_IND: {
                                       auto erd = (memory[pc + 3] & 0x70) >> 4;
                                       auto ers = (memory[pc + 3] & 0x07);
 
@@ -496,7 +496,7 @@ namespace narcissus {
                                       return true;
                                   }
 
-                case MOV_L_IND_WITH_DIS_24_R: 
+                case operation::MOV_L_IND_WITH_DIS_24_R: 
                 {
                     auto ers = memory[pc + 3] >> 4;
                     auto erd = memory[pc + 5] & 0x7;
@@ -526,7 +526,7 @@ namespace narcissus {
                     return true;
                 }
 
-                case MOV_L_R_IND_POST_INC: {
+                case operation::MOV_L_R_IND_POST_INC: {
                                                auto ers = memory[pc + 3] >> 4;
                                                auto erd = memory[pc + 3] & 0x07;
 
@@ -548,7 +548,7 @@ namespace narcissus {
                                                return true;
                                            }
 
-                case BEQ: 
+                case operation::BEQ: 
                 {
                     auto disp = memory[pc + 1];
 
@@ -561,7 +561,7 @@ namespace narcissus {
                     return true;
                 }
 
-                case BRA: {
+                case operation::BRA: {
                               auto disp = (std::int8_t)memory[pc + 1];
                               pc += 2;
                               pc += disp;
@@ -569,7 +569,7 @@ namespace narcissus {
                               return true;
                           }
 
-                case BNE:
+                case operation::BNE:
                 {
                     auto disp = memory[pc + 1];
                     pc += 2;
@@ -579,7 +579,7 @@ namespace narcissus {
                     return true;
                 }
 
-                case CMP_B_IMM:
+                case operation::CMP_B_IMM:
                 {
                     auto rd = memory[pc] & 0xf;
                     auto imm = memory[pc + 1];
@@ -592,7 +592,7 @@ namespace narcissus {
                     return true;
                 }
 
-                case AND_W:
+                case operation::AND_W:
                 {
                     auto rd = memory[pc + 1] & 0xf;
                     auto imm = (std::uint16_t)memory[pc + 2] << 8;
@@ -610,7 +610,7 @@ namespace narcissus {
                     return true;
                 }
 
-                case AND_B_IMM:
+                case operation::AND_B_IMM:
                 {
                     auto rd = memory[pc] & 0xf;
                     auto imm = memory[pc + 1];
@@ -626,7 +626,7 @@ namespace narcissus {
                     return true;
                 }
 
-                case JSR_ABS: {
+                case operation::JSR_ABS: {
                                   auto abs = std::uint32_t(memory[pc + 1]) << 16;
                                   abs |= std::uint32_t(memory[pc + 2]) << 8;
                                   abs |= std::uint32_t(memory[pc + 3]);
@@ -642,7 +642,7 @@ namespace narcissus {
                                   return true;
                               }
 
-                case EXTS_L: 
+                case operation::EXTS_L: 
                 {
                     auto erd = memory[pc + 1] & 0x7;
                     auto val = er[erd].er32;
@@ -665,7 +665,7 @@ namespace narcissus {
                     return true;
                 }
 
-                case SHLL_L: 
+                case operation::SHLL_L: 
                 {
                     auto erd = memory[pc + 1] & 0x7;
                     er[erd].er32 = er[erd].er32 << 1;
@@ -676,7 +676,7 @@ namespace narcissus {
                     return true;
                 }
 
-                case RTS: {
+                case operation::RTS: {
                               // memory[sp]: is reserved
                               memory[sp++];
                               auto return_addr = (std::uint32_t)memory[sp++] << 16;
@@ -757,8 +757,7 @@ namespace narcissus {
                                                                             return operation::
                                                                                 MOV_L_IND_WITH_DIS_24_R;
                                                                         default:
-                                                                            return operation::
-                                                                                INVALID;
+                                                                            return operation::INVALID;
                                                                     }
                                                                 }
                                                         default:
@@ -978,7 +977,7 @@ namespace narcissus {
                                 case 6:
                                     return operation::AND_W;
                                 default:
-                                    return INVALID;
+                                    return operation::INVALID;
                             }
 
 
@@ -989,10 +988,10 @@ namespace narcissus {
                                 case 1:
                                     return operation::ADD_L_IMM_R;
                                 default:
-                                    return INVALID;
+                                    return operation::INVALID;
                             }
                         default:
-                            return INVALID;
+                            return operation::INVALID;
                     }
 
                 case 8:
@@ -1017,15 +1016,15 @@ namespace narcissus {
                 register_size size) -> bool
         {
             switch (size) {
-                case BYTE:
+                case register_size::BYTE:
                     er[destination & 0x7].write(destination, immediate, size);
                     break;
 
-                case WORD:
+                case register_size::WORD:
                     er[destination & 0x7].write(destination, immediate, size);
                     break;
 
-                case LONG:
+                case register_size::LONG:
                     er[destination & 0xf].write(destination, immediate, size);
                     break;
             }
@@ -1071,12 +1070,13 @@ namespace narcissus {
             return true;
         }
 
-        auto h8_300::update_ccr_sub(uint32_t value_0,
-                uint32_t value_1,
-                uint64_t result,
-                register_size size)
+        auto h8_300::update_ccr_sub(std::uint32_t value_0,
+                std::uint32_t value_1,
+                std::uint64_t result,
+                register_size r_size)
             -> void
         {
+            auto size = (std::uint32_t)r_size;
             auto carry_shift_size = size + 1;
             int sign_0 = value_0 >> size;
             int sign_1 = value_1 >> size;
@@ -1106,7 +1106,7 @@ namespace narcissus {
             }
 
             //             std::cout << value << std::endl;
-            ccr.negative = (value >> size) & 0x1;
+            ccr.negative = (value >> (std::uint32_t)size) & 0x1;
         }
 
         auto h8_300::update_ccr_shll(uint64_t value, register_size size)
@@ -1115,6 +1115,43 @@ namespace narcissus {
             update_ccr_mov(value, size);
             ccr.carry = 0x00010000 & value;
         }
+
+        auto h8_300::read_register_fields(std::uint32_t address, 
+                value_place place, bool is_32bit) -> std::uint8_t
+        {
+            auto reg = memory[address];
+
+            switch (place) {
+                case value_place::high:
+                    reg = (reg & 0xf0) >> 4;
+                    break;
+
+                case value_place::low:
+                    reg = reg & 0x0f;
+                    break;
+            }
+
+            if(is_32bit) {
+                return reg & 0x7;
+            }
+            else {
+                return reg;
+            }
+        }
+
+        auto h8_300::read_immediate(std::uint32_t address, 
+                std::uint8_t number_of_byte) -> std::uint32_t
+        {
+            auto imm = (std::uint32_t)memory[address] << (8 * (number_of_byte - 1));
+            for(auto i = 1; i < number_of_byte; ++i)
+            {
+                imm |= (std::uint32_t)memory[address + i] << ((number_of_byte - i - 1) * 8);
+            }
+
+            return imm;
+        }
+
+
 
     }  // namespace cpu
 }  // namespace narcissus

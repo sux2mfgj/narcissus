@@ -6,6 +6,58 @@ using namespace std;
 namespace narcissus {
     namespace cpu {
 
+        TEST(read_register, 0)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0x100] = 0x0a;
+            mem[0x101] = 0x00;
+
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
+
+            auto rs = cpu.read_register_fields(0x100, h8_300::value_place::low, false);
+
+            ASSERT_EQ(0xa, rs);
+        }
+
+        TEST(read_register, 1)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0x100] = 0x70;
+            mem[0x101] = 0x00;
+
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
+
+            auto ers = cpu.read_register_fields(0x100, h8_300::value_place::high, true);
+            
+            ASSERT_EQ(0x7, ers);
+        }
+
+        TEST(read_imm, 0)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0x101] = 0x12;
+            mem[0x102] = 0x34;
+            mem[0x103] = 0x56;
+
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
+
+            auto imm = cpu.read_immediate(0x101, 3);
+            ASSERT_EQ(0x123456, imm);
+            
+
+
+            //auto erd = memory[pc + 1] & 0x7;
+//                     auto imm = (std::uint32_t)memory[pc + 2] << 24;
+//                     imm |= (std::uint32_t)memory[pc + 3] << 16;
+//                     imm |= (std::uint32_t)memory[pc + 4] << 8;
+//                     imm |= (std::uint32_t)memory[pc + 5];
+
+
+        }
+
         // ADD
         //         TEST(cpu, ADD_B_IMM)
         //         {
@@ -1179,6 +1231,7 @@ namespace narcissus {
 //             ASSERT_EQ(0x12, cpu.er[2].l);
 //             ASSERT_EQ(0x108, cpu.pc);
 //         }
+
 
     }  // namespace cpu
 }  // namespace narcissus

@@ -10,7 +10,8 @@
 namespace narcissus {
     namespace cpu {
 
-        enum operation {
+        enum class operation : std::uint8_t
+        {
             INVALID = 0,
 //             ADD_B_IMM,              // immediate
 //             ADD_B_R_R,              // register to register
@@ -74,7 +75,8 @@ namespace narcissus {
             RTS,
         };
 
-        enum register_size { 
+        enum class register_size : std::uint32_t
+        { 
             BYTE = 7, 
             WORD = 15, 
             LONG = 31
@@ -104,7 +106,6 @@ namespace narcissus {
                         }
                         break;
                     case register_size::LONG:
-//                         std::cout << "val" << (destination & 0x7)<< std::endl;
                         er32 = value;
                         break;
                 }
@@ -151,16 +152,6 @@ namespace narcissus {
             conditional_code_register() : byte(0) {}
 
             std::uint8_t byte;
-//             struct {
-//                 uint8_t interrupt_mask : 1;
-//                 uint8_t user_interrupt : 1;
-//                 uint8_t half_carry : 1;
-//                 uint8_t user : 1;
-//                 uint8_t negative : 1;
-//                 uint8_t zero : 1;
-//                 uint8_t over_flow : 1;
-//                 uint8_t carry : 1;
-//             };
             struct {
                 std::uint8_t carry : 1;
                 std::uint8_t over_flow : 1;
@@ -174,6 +165,13 @@ namespace narcissus {
         };
 
         class h8_300 {
+
+            enum class value_place : std::uint8_t
+            {
+                high, 
+                low,
+            };
+
             public:
                 h8_300(std::array<std::uint8_t, ROM_SIZE>&& mem);
 
@@ -181,7 +179,7 @@ namespace narcissus {
                 // registers
                 register_t er[7];
                 union {
-                    register_t er7;
+                    register_t er7; // er[7];
                     std::uint32_t sp;
                 };
 
@@ -190,30 +188,50 @@ namespace narcissus {
 
                 mcu memory;
 
-                // built-in memory
-//                 std::array<std::uint8_t, ROM_SIZE> rom;
-//                  std::uint8_t ram[RAM_SIZE];
-//                 std::array<std::uint8_t, RAM_END_ADDR - RAM_BASE_ADDR> ram;
-
             public:
                 auto cycle(void) -> bool;
                 auto reset_exception(void) -> void;
                 
             private:
                 auto detect_operation(void) -> operation;
+
                 auto register_write_immediate(std::uint8_t destination,
                         std::uint32_t immediate,
                         register_size size) -> bool;
                 auto register_write_register(std::uint8_t destination,
                         std::uint8_t source,
                         register_size size) -> bool;
-                auto update_ccr_sub(uint32_t value_0, uint32_t value_1, 
-                        uint64_t result, register_size size) -> void;
-                auto update_ccr_mov(uint64_t value, register_size size) -> void;
-                auto update_ccr_shll(uint64_t value, register_size size) -> void;
+
+                //for ccr
+                auto update_ccr_sub(std::uint32_t value_0, std::uint32_t value_1, 
+                        std::uint64_t result, register_size size) -> void;
+                auto update_ccr_mov(std::uint64_t value, register_size size) -> void;
+                auto update_ccr_shll(std::uint64_t value, register_size size) -> void;
+
+                //memory
+                auto read_register_fields(std::uint32_t address, value_place place, bool is_32bit)
+                    -> std::uint8_t;
+                auto read_immediate(std::uint32_t address, std::uint8_t number_of_byte)
+                    -> std::uint32_t;
+                auto write_immediate(std::uint32_t base, std::uint8_t number_of_byte, 
+                        std::uint32_t immediate) 
+                    -> void;
+
+                //register
+                auto read_register(std::uint8_t source, register_size size) -> std::uint32_t;
+                auto write_register(std::uint8_t destination, 
+                        std::uint32_t value, register_size size) -> void;
+
+
 
             // use macro for test
             public:
+
+                // for utility function
+                FRIEND_TEST(read_register, 0);
+                FRIEND_TEST(read_register, 1);
+                FRIEND_TEST(read_imm, 0);
+
 //                 FRIEND_TEST(cpu, ADD_B_IMM);
 //                 FRIEND_TEST(cpu, ADD_B_R_R);
 //                 FRIEND_TEST(cpu, ADD_W_IMM);
