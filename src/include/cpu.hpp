@@ -232,7 +232,10 @@ namespace narcissus {
                 FRIEND_TEST(read_register, 1);
                 FRIEND_TEST(read_imm, 0);
                 FRIEND_TEST(write_imm, 0);
+                FRIEND_TEST(read_value, 0);
 
+
+                // for instruction
 //                 FRIEND_TEST(cpu, ADD_B_IMM);
 //                 FRIEND_TEST(cpu, ADD_B_R_R);
 //                 FRIEND_TEST(cpu, ADD_W_IMM);

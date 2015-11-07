@@ -1160,6 +1160,30 @@ namespace narcissus {
             }
         }
 
+        auto h8_300::read_register(std::uint8_t source, register_size size) 
+            -> std::uint32_t
+            {
+                auto reg = er[source & 0x7];
+                switch (size) {
+                    case register_size::BYTE:
+                        if((source & 0x8) != 0x8){
+                            return reg.h;
+                        }
+                        else {
+                            return reg.l;
+                        }
+                    case register_size::WORD:
+                        if((source & 0x8) != 0x8) {
+                            return reg.r;
+                        }
+                        else {
+                            return reg.e;
+                        }
+                    case register_size::LONG:
+                        return reg.er32;
+                }
+            }
+
 
 
     }  // namespace cpu

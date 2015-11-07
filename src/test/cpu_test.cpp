@@ -61,6 +61,23 @@ namespace narcissus {
             ASSERT_EQ(cpu.memory[0x102], 0x56);
         }
 
+        TEST(read_value , 0)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
+
+            cpu.er[2].l = 0x12;
+            cpu.er[2].h = 0x34;
+
+            cpu.er[5].er32 = 0x12345678;
+
+            ASSERT_EQ(0x12, cpu.read_register(0xa, register_size::BYTE));
+            ASSERT_EQ(0x34, cpu.read_register(0x2, register_size::BYTE));
+            ASSERT_EQ(0x3412, cpu.read_register(0x2, register_size::WORD));
+            ASSERT_EQ(0x12345678, cpu.read_register(5, register_size::LONG));
+        }
         // ADD
         //         TEST(cpu, ADD_B_IMM)
         //         {
