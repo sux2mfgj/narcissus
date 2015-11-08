@@ -22,10 +22,3 @@ target_link_libraries(
     cpu
     sci
 ) 
-
-add_executable(debug src/debug_main.cpp)
-target_link_libraries(
-    debug
-    cpu
-    sci
-    )
