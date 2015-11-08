@@ -126,10 +126,17 @@ namespace narcissus {
 
             public:
                 h8_300(std::array<std::uint8_t, ROM_SIZE>&& mem);
+                virtual ~h8_300() = default;    
+
+            private:
+                h8_300(h8_300 const&) = delete;
+                h8_300(h8_300&&) = delete;
+                h8_300& operator =(h8_300 const&) = delete;
+                h8_300& operator =(h8_300&&) = delete;
 
             private:
                 // registers
-                register_t er[7];
+                std::array<register_t, 7> er;
                 union {
                     register_t er7; // er[7];
                     std::uint32_t sp;
@@ -167,6 +174,9 @@ namespace narcissus {
                 auto read_register(std::uint8_t source, register_size size) -> std::uint32_t;
                 auto write_register(std::uint8_t destination, 
                         std::uint32_t value, register_size size) -> void;
+
+            public:
+                friend class cpu_debuger;
 
             // use macro for test
             public:

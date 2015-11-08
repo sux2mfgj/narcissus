@@ -1,6 +1,8 @@
 
 TARGET := narcissus
 
+BIN_FILE := ./object_code/02/bootload/kzload.bin
+
 all: $(TARGET)
 
 $(TARGET):
@@ -10,9 +12,12 @@ $(TARGET):
 
 test: $(TARGET)
 	cd build; ctest -VV
+
+debug: $(TARGET)
+	./build/debug $(BIN_FILE)
   
 run: $(TARGET)
-	./build/narcissus ./object_code/02/bootload/kzload.bin
+	./build/narcissus $(BIN_FILE)
 
 clean:
 	rm -rf build

@@ -1,9 +1,12 @@
 #include <iostream>
 #include <fstream>
+#include <memory>
+
 
 #include <cpu.hpp>
+#include <debug.hpp>
 
-auto main(int argc, char const* argv[]) -> int
+int main(int argc, char const* argv[])
 {
     using namespace narcissus;
     using namespace std;
@@ -42,15 +45,12 @@ auto main(int argc, char const* argv[]) -> int
 //     cout << hex << (uint16_t)mem[0] << (uint16_t)mem[1] 
 //         << (uint16_t)mem[2] << (uint16_t)mem[3] << endl;
 
-    cpu::h8_300 cpu(move(mem));
-    cpu.reset_exception();
+    auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+    cpu::cpu_debuger debug(cpu);
+    cpu->reset_exception();
 
     while (true) {
-        auto pc = cpu.cycle();
+        auto pc = cpu->cycle();
         std::cout << std::hex << "pc: 0x" << pc << std::endl;
     }
-
-//     if(!cpu.cycle()){
-//         cout << "cycle failed" << endl;
-//     }
 }

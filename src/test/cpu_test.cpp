@@ -771,7 +771,7 @@ namespace narcissus {
             cpu::h8_300 cpu(move(mem));
             cpu.reset_exception();
 
-            cpu.ccr.zero = 1;
+            cpu.ccr.zero = 0;
 
             ASSERT_EQ(cpu::operation::BNE, cpu.detect_operation());
             ASSERT_EQ(0x102 + 0xa, cpu.cycle());

@@ -548,7 +548,7 @@ namespace narcissus {
                 {
                     auto disp = memory[pc + 1];
                     pc += 2;
-                    if(ccr.zero == 1) {
+                    if(ccr.zero == 0) {
                         pc += (std::int8_t)disp;
                     }
                     break;
