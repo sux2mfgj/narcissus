@@ -330,30 +330,25 @@ namespace narcissus {
                     break;
                 }
 
-//                 case operation::MOV_B_IND_WITH_DIS_24_R:
-//                 {
-//                     auto ers = (memory[pc + 1] & 0x70) >> 4;
-//                     auto rd = memory[pc + 3] & 0x7;
-//                     auto imm = read_immediate(pc + 5, 3);
-//                     auto imm = (std::uint32_t)(memory[pc + 5]) << 16;
-//                     imm |= (std::uint32_t)(memory[pc + 6]) << 8;
-//                     imm |= (std::uint32_t)memory[pc + 7];
+                case operation::MOV_B_IND_WITH_DIS_24_R:
+                {
+                    auto ers = read_register_fields(pc + 1, value_place::high, true);
+                    auto rd = read_register_fields(pc + 3, value_place::low, false);
 
-//                     auto ers_value = er[ers].read(ers, register_size::LONG);
-//                     auto addr = ers_value + (std::int32_t)imm;
+                    auto imm = read_immediate(pc + 5, 3);
 
-//                     std::cout << std::hex << addr << std::endl;
-//                     std::cout << rd << std::endl;
-//                     auto result = memory[addr];
+                    auto ers_value = read_register(ers, register_size::LONG);
+                    auto addr = ers_value + (std::int32_t)imm;
 
-//                     if(!register_write_immediate(rd, result, register_size::BYTE))
-//                     {
-//                         return false;
-//                     }
+                    auto result = memory[addr];
 
-//                     pc += 8;
-//                     break;
-//                 }
+                    std::cout << addr << ":" << 
+                        (std::uint32_t)result << ":" << addr << std::endl;
+                    write_register(rd, result, register_size::BYTE);
+
+                    pc += 8;
+                    break;
+                }
 
                 case operation::MOV_B_R_IND_WITH_DIS_16:
                 {
@@ -920,7 +915,7 @@ namespace narcissus {
                                                         auto eh = memory[pc + 4] >> 4;
                                                         auto el = memory[pc + 4] & 0xf;
                                                         if(dh == 0x2 && eh == 0 && el == 0){
-//                                                             return operation::MOV_B_IND_WITH_DIS_24_R;
+                                                            return operation::MOV_B_IND_WITH_DIS_24_R;
                                                         }
                                                         return operation::INVALID;
                                                     }
