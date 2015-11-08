@@ -294,6 +294,22 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::MOV_B_R_IND_R:
+                {
+                    auto ers = read_register_fields(pc + 1, value_place::high, true);
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
+
+                    auto ers_value = read_register(ers, register_size::LONG);
+                    auto result = read_immediate(ers_value, 1);
+
+                    write_register(rd, result, register_size::BYTE);
+
+                    update_ccr_mov(result, register_size::BYTE);
+                    pc += 2;
+
+                    break;
+                }
+
                     //                 case operation::MOV_B_R_IND:
                     //                 {
                     //                     auto erd = (memory[pc + 1] & 0x70) >> 4;

@@ -421,31 +421,7 @@ namespace narcissus {
             ASSERT_EQ(0b10000000, cpu->ccr.byte);
         }
 
-        //TODO
-        TEST(MOV_B_R_IND_R, 0){
-            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
-            mem[0] = 0x00;
-            mem[1] = 0x00;
-            mem[2] = 0x01;
-            mem[3] = 0x00;
-
-            //mov.b   @er4,r2l
-            //68 4a           
-            mem[0x100] = 0x68;
-            mem[0x101] = 0x4a;
-
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
-            cpu->reset_exception();
-
-            cpu->er[4].er = 0x120;
-            cpu->memory[0x120] = 0x12;
-
-            ASSERT_EQ(cpu::operation::MOV_B_R_IND_R, cpu->detect_operation());
-            ASSERT_EQ(0x102, cpu->cycle());
-            ASSERT_EQ(0x12, cpu->er[2].l);
-        }
-
-
+        
         TEST(MOV_B_R_IND_WITH_DIS_16, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
@@ -1303,7 +1279,6 @@ namespace narcissus {
             mem[0x100] = 0x68;
             mem[0x101] = 0xba;
 
-
             auto cpu = std::make_shared<cpu::h8_300>(move(mem));
             cpu->reset_exception();
 
@@ -1315,6 +1290,30 @@ namespace narcissus {
  
             ASSERT_EQ(0x12, cpu->memory[0xffff00]);
         }
+
+        TEST(MOV_B_R_IND_R, 0){
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            //mov.b   @er4,r2l
+            //68 4a           
+            mem[0x100] = 0x68;
+            mem[0x101] = 0x4a;
+
+            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            cpu->reset_exception();
+
+            cpu->er[4].er = 0x120;
+            cpu->memory[0x120] = 0x12;
+
+            ASSERT_EQ(cpu::operation::MOV_B_R_IND_R, cpu->detect_operation());
+            ASSERT_EQ(0x102, cpu->cycle());
+            ASSERT_EQ(0x12, cpu->er[2].l);
+        }
+
 
     }  // namespace cpu
 }  // namespace narcissus
