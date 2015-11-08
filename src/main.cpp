@@ -14,8 +14,12 @@ int main(int argc, char const* argv[])
     using namespace narcissus;
     using namespace std;
 
+//     auto is_debug_mode = false;
+    auto is_debug_mode = true;
+
     fstream file;
     char buf[16];
+
     array<uint8_t, cpu::ROM_SIZE> mem = {0};
 
     if(argc < 2){
@@ -38,11 +42,10 @@ int main(int argc, char const* argv[])
     cpu->reset_exception();
 
     // setup break point
-    std::cout << "setup break point" << std::endl;
     std::uint32_t bp;
     std::vector<std::uint32_t> break_points;
-    while (true) {
-        std::cout << "> 0x";
+    while (is_debug_mode) {
+        std::cout << "break point> 0x";
         std::cin >> std::hex >> bp;
         if(bp < 0x100){
             break;
@@ -63,7 +66,7 @@ int main(int argc, char const* argv[])
         std::cout << std::hex << "pc: 0x" << pc << std::endl;
 
         auto t = break_points.end() != find(break_points.begin(), break_points.end(), pc);
-        if(t || s[0] != 's'){
+        if((t || s[0] != 's') && is_debug_mode){
             std::cout << ">";
             std::getline(std::cin, s);
 

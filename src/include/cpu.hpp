@@ -32,7 +32,9 @@ namespace narcissus {
 
             ADD_L_IMM_R,
 
-            ADDS_4,                     // add with sign extention
+            ADDS_1,                     // add 1 with sign extention
+//             ADDS_2,                     // add 2 with sign extention
+            ADDS_4,                     // add 4 with sign extention
             
 
             
@@ -245,6 +247,7 @@ namespace narcissus {
                 FRIEND_TEST(DEC_W_1, 0);
                 FRIEND_TEST(MOV_B_R_IND_R, 0);
                 FRIEND_TEST(MOV_B_R_R_IND, 0);
+                FRIEND_TEST(ADDS_1, 0);
         };
 
     }  // namespace cpu

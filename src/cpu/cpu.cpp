@@ -131,6 +131,18 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::ADDS_1:
+                {
+                    auto erd = read_register_fields(pc + 1, value_place::low, true);
+                    auto erd_value = read_register(erd, register_size::LONG);
+
+                    auto result = erd_value + 1;
+
+                    write_register(erd, result, register_size::LONG);
+                    pc += 2;
+                    break;
+                }
+
                 case operation::ADD_B_IMM_R:
                 {
                     auto rd = read_register_fields(pc, value_place::low, false);
@@ -812,9 +824,10 @@ namespace narcissus {
                         case 0xb:
                             switch (bh) {
                                 case 0x0:
-//                                     return operation::ADDS_1;
+                                    return operation::ADDS_1;
                                 case 0x8:
 //                                     return operation::ADDS_2;
+                                    return operation::INVALID;
                                 case 0x9:
                                     return operation::ADDS_4;
 

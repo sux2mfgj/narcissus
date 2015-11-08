@@ -55,10 +55,8 @@ namespace narcissus {
                     std::string s;
                     s.push_back(tdr);
 //                     if(tdr != 0xd){
-                        std::clog << std::hex << " 0x" << (std::uint32_t)tdr << std::flush;
-//                     }
-//                     if(tdr == 0x21){
-//                         std::clog << std::endl;
+//                         std::clog << std::hex << " 0x" << (std::uint32_t)tdr << std::flush;
+                        std::clog << (char)tdr << std::flush;
 //                     }
 
                     ssr |= ssr_bits::tdre;
