@@ -45,8 +45,9 @@ auto main(int argc, char const* argv[]) -> int
     cpu::h8_300 cpu(move(mem));
     cpu.reset_exception();
 
-    while (cpu.cycle()) {
-
+    while (true) {
+        auto pc = cpu.cycle();
+        std::cout << std::hex << "pc: 0x" << pc << std::endl;
     }
 
 //     if(!cpu.cycle()){

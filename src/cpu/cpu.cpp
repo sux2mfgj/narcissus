@@ -1,5 +1,8 @@
-#include <cpu.hpp>
 #include <string>
+
+#include <cpu.hpp>
+#include <exception.hpp>
+
 
 namespace narcissus {
     namespace cpu {
@@ -20,10 +23,10 @@ namespace narcissus {
             ccr.interrupt_mask = 1;
         }
 
-        auto h8_300::cycle() -> bool
+        auto h8_300::cycle() -> std::uint32_t
         {
-            std::cout << "pc : 0x" << std::hex << pc << std::endl;
-            std::cout << "sp : 0x" << std::hex << sp << std::endl;
+//             std::cout << "pc : 0x" << std::hex << pc << std::endl;
+//             std::cout << "sp : 0x" << std::hex << sp << std::endl;
 
             switch (detect_operation()) {
                 //                 case ADD_B_IMM: {
@@ -125,7 +128,7 @@ namespace narcissus {
                     write_register(erd, result, register_size::LONG);
 
                     pc += 2;
-                    return true;
+                    break;
                 }
 
                 case operation::ADD_B_IMM_R:
@@ -144,7 +147,7 @@ namespace narcissus {
                     update_ccr_sub(rd_value, imm, result, register_size::BYTE);
                     pc += 2;
 
-                    return true;
+                    break;
                 }
 
                 case operation::ADD_L_IMM_R:
@@ -162,7 +165,7 @@ namespace narcissus {
 
                     update_ccr_sub(erd_value, imm, result, register_size::LONG);
                     pc += 6;
-                    return true;
+                    break;
                 }
 
                 case operation::SUB_B_R_R: 
@@ -386,7 +389,7 @@ namespace narcissus {
 
                     er[ers].er += 1;
                     pc += 2;
-                    return true;
+                    break;
                 }
 
 
@@ -419,7 +422,7 @@ namespace narcissus {
                             register_size::WORD);
 
                     pc += 2;
-                    return true;
+                    break;
                 }
 
                 case operation::MOV_L_IMM: 
@@ -433,7 +436,7 @@ namespace narcissus {
 
                     update_ccr_mov(imm, register_size::LONG);
                     pc += 6;
-                    return true;
+                    break;
                 }
 
                 case operation::MOV_L_R_R: 
@@ -449,7 +452,7 @@ namespace narcissus {
 
                     update_ccr_mov(src_value, register_size::LONG);
                     pc += 2;
-                    return true;
+                    break;
                 }
 
                 case operation::MOV_L_R_IND: 
@@ -475,7 +478,7 @@ namespace narcissus {
                     update_ccr_mov(result, register_size::LONG);
                     pc += 4;
 
-                    return true;
+                    break;
                 }
 
                 case operation::MOV_L_IND_WITH_DIS_24_R: 
@@ -495,7 +498,7 @@ namespace narcissus {
 
                     update_ccr_mov(dest_value, register_size::LONG);
                     pc += 10;
-                    return true;
+                    break;
                 }
 
                 case operation::MOV_L_R_IND_POST_INC: 
@@ -516,7 +519,7 @@ namespace narcissus {
                     update_ccr_mov(dest_value, register_size::LONG);
                     pc += 4;
 
-                    return true;
+                    break;
                 }
 
                 case operation::BEQ: 
@@ -525,11 +528,11 @@ namespace narcissus {
 
                     pc += 2;
                     if (ccr.zero != 0x1) {
-                        return true;
+                        break;
                     }
 
                     pc += (std::int8_t)disp;
-                    return true;
+                    break;
                 }
 
                 case operation::BRA: 
@@ -538,7 +541,7 @@ namespace narcissus {
                     pc += 2;
                     pc += disp;
 
-                    return true;
+                    break;
                 }
 
                 case operation::BNE:
@@ -546,9 +549,9 @@ namespace narcissus {
                     auto disp = memory[pc + 1];
                     pc += 2;
                     if(ccr.zero == 1) {
-                        pc += disp;
+                        pc += (std::int8_t)disp;
                     }
-                    return true;
+                    break;
                 }
 
                 case operation::CMP_B_IMM:
@@ -562,7 +565,7 @@ namespace narcissus {
 
                     update_ccr_sub(rd_value, imm, result, register_size::BYTE);
                     pc += 2;
-                    return true;
+                    break;
                 }
 
                 case operation::AND_W:
@@ -577,7 +580,7 @@ namespace narcissus {
 
                     update_ccr_mov(result, register_size::WORD);
                     pc += 4;
-                    return true;
+                    break;
                 }
 
                 case operation::AND_B_IMM:
@@ -593,7 +596,7 @@ namespace narcissus {
 
                     pc += 2;
                     update_ccr_mov(result, register_size::BYTE);
-                    return true;
+                    break;
                 }
 
                 case operation::JSR_ABS: 
@@ -608,7 +611,7 @@ namespace narcissus {
                     memory[--sp] = 0x00;
 
                     pc = abs;
-                    return true;
+                    break;
                 }
 
                 case operation::EXTS_L: 
@@ -628,7 +631,7 @@ namespace narcissus {
 
                     update_ccr_mov(result, register_size::LONG);
                     pc += 2;
-                    return true;
+                    break;
                 }
 
                 case operation::SHLL_L: 
@@ -639,7 +642,7 @@ namespace narcissus {
 
                     update_ccr_shll(er[erd].er, register_size::LONG);
                     pc += 2;
-                    return true;
+                    break;
                 }
 
                 case operation::SHLR_L:
@@ -664,7 +667,7 @@ namespace narcissus {
 
                     pc = return_addr;
 
-                    return true;
+                    break;
                 }
 
                 case operation::INVALID:
@@ -677,14 +680,16 @@ namespace narcissus {
                           std::cout << "pc             : 0x" << std::setw(8)
                               << std::setfill('0') << (std::uint32_t)pc << std::endl;
 
-                          return false;
+                          //WIP
+                    throw invalid_operation();
+
 
                 default:
-                          std::cout << "implement yet" << std::endl;
-                          return false;
+                    std::cout << "implement yet" << std::endl;
+                    throw invalid_operation();
             }
 
-            return true;
+            return pc; 
         }
 
         auto h8_300::detect_operation() -> operation

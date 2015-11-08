@@ -141,7 +141,7 @@ namespace narcissus {
                 mcu memory;
 
             public:
-                auto cycle(void) -> bool;
+                auto cycle(void) -> std::uint32_t;
                 auto reset_exception(void) -> void;
                 
             private:
