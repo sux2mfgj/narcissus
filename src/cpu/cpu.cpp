@@ -583,6 +583,22 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::DEC_W_1:
+                {
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
+
+                    auto rd_value = read_register(rd, register_size::WORD);
+                    auto result = rd_value - 1;
+
+                    std::cout << std::hex << (std::uint32_t)rd << " " 
+                        << (std::uint32_t)rd_value << " " << result << std::endl;
+                    write_register(rd, result, register_size::WORD);
+                    update_ccr_sub(rd_value, 1, result, register_size::WORD);
+
+                    pc += 2;
+                    break;
+                }
+
                 case operation::AND_B_IMM:
                 {
                     auto rd = read_register_fields(pc, value_place::low, false);
@@ -850,11 +866,16 @@ namespace narcissus {
                             switch (bh) {
                                 case 0:
                                     return operation::SUB_WITH_SIGN_EXT_1;
+                                case 5:
+                                    return operation::DEC_W_1;
                                 case 8:
 //                                     return operation::SUB_WITH_SIGN_EXT_2;
                                     return operation::INVALID;
                                 case 9:
                                     return operation::SUB_WITH_SIGN_EXT_4;
+
+                                case 0xd:
+//                                     return operation::DEC_W_2;
 
                                 default:
                                     return operation::INVALID;

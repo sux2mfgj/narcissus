@@ -65,6 +65,11 @@ namespace narcissus {
 
             CMP_B_IMM,                  // compare register and immediate
 
+//             DEC_B,                   // decrement
+            DEC_W_1,                      
+//             DEC_W_2,                      
+//             DEC_L,
+
             AND_W,                      // AND logical
             AND_B_IMM,
 
@@ -237,6 +242,7 @@ namespace narcissus {
                 FRIEND_TEST(SUB_WITH_SIGN_EXT_1, 0);
                 FRIEND_TEST(MOV_B_IND_WITH_DIS_24_R, 0);
                 FRIEND_TEST(SHLR_L, 0);
+                FRIEND_TEST(DEC_W_1, 0);
 
         };
 
