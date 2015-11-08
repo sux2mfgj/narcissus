@@ -39,10 +39,10 @@ int main(int argc, char const* argv[])
 
     // setup break point
     std::cout << "setup break point" << std::endl;
-    std::cout << ">";
     std::uint32_t bp;
     std::vector<std::uint32_t> break_points;
     while (true) {
+        std::cout << "> 0x";
         std::cin >> std::hex >> bp;
         if(bp < 0x100){
             break;
@@ -54,7 +54,10 @@ int main(int argc, char const* argv[])
     std::cout << "start" << std::endl;
     auto itr = break_points.begin();
 
-    std::string s = "s";
+    std::uint32_t before_pc;
+    std::uint8_t stop_count = 0;
+
+    std::string s = "c";
     std::string before = s;
     while (true) {
         auto pc = cpu->cycle();
@@ -77,6 +80,19 @@ int main(int argc, char const* argv[])
             }
             before = s;
         }
+
+        if(before_pc != pc){
+            before_pc = pc;
+            stop_count = 0;
+        }
+        else {
+            stop_count++;
+            if(stop_count > 10){
+                std::cout << "finish" << std::endl; 
+                break;
+            }
+        }
+
     }
 
     //command:
