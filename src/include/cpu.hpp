@@ -69,6 +69,7 @@ namespace narcissus {
             AND_B_IMM,
 
             SHLL_L,                     // shift logical left
+            SHLR_L,                     // shift logical right
 
             JSR_ABS,                    // jump to subroutine use absolute address
             EXTS_L,                     // extend as signed
@@ -151,6 +152,7 @@ namespace narcissus {
                         std::uint64_t result, register_size size) -> void;
                 auto update_ccr_mov(std::uint64_t value, register_size size) -> void;
                 auto update_ccr_shll(std::uint64_t value, register_size size) -> void;
+                auto update_ccr_shlr(std::uint32_t value, register_size size) -> void;
 
                 //memory
                 auto read_register_fields(std::uint32_t address, value_place place, bool is_32bit)
@@ -224,6 +226,7 @@ namespace narcissus {
                 FRIEND_TEST(ADD_L_IMM_R, 0);
                 FRIEND_TEST(SUB_WITH_SIGN_EXT_1, 0);
                 FRIEND_TEST(MOV_B_IND_WITH_DIS_24_R, 0);
+                FRIEND_TEST(SHLR_L, 0);
 
         };
 

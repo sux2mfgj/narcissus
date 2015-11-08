@@ -642,6 +642,19 @@ namespace narcissus {
                     return true;
                 }
 
+                case operation::SHLR_L:
+                {
+                    auto erd = read_register_fields(pc + 1, value_place::low, true);
+                    auto result = read_register(erd, register_size::LONG);
+                    result = result >> 1;
+
+                    write_register(erd, result, register_size::LONG);
+                    update_ccr_shlr(result, register_size::LONG);
+
+                    pc += 2;
+                    break;
+                }
+
                 case operation::RTS: 
                 {
                     // memory[sp]: is reserved
@@ -792,6 +805,19 @@ namespace narcissus {
                             switch (bh) {
                                 case 3:
                                     return operation::SHLL_L;
+                                default:
+                                    return operation::INVALID;
+                            }
+                        case 1:
+                            switch (bh) {
+                                case 3:
+                                {
+                                    auto t = bl & 0x8;
+                                    if(t == 0x0){
+                                        return operation::SHLR_L;
+                                    }
+                                    return operation::INVALID;
+                                }
                                 default:
                                     return operation::INVALID;
                             }
@@ -999,7 +1025,7 @@ namespace narcissus {
             ccr.over_flow = sign_0 != sign_1 && sign_1 != sign_result;
         }
 
-        auto h8_300::update_ccr_mov(uint64_t value, register_size size)
+        auto h8_300::update_ccr_mov(std::uint64_t value, register_size size)
             -> void
         {
             ccr.over_flow = 0;
@@ -1013,11 +1039,18 @@ namespace narcissus {
             ccr.negative = (value >> (std::uint32_t)size) & 0x1;
         }
 
-        auto h8_300::update_ccr_shll(uint64_t value, register_size size)
+        auto h8_300::update_ccr_shll(std::uint64_t value, register_size size)
             -> void
         {
             update_ccr_mov(value, size);
             ccr.carry = 0x00010000 & value;
+        }
+
+        auto h8_300::update_ccr_shlr(std::uint32_t value, register_size size)
+            -> void
+        {
+            update_ccr_shll(value, size);
+            ccr.negative = 0;
         }
 
         auto h8_300::read_register_fields(std::uint32_t address, 

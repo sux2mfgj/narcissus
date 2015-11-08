@@ -1273,6 +1273,31 @@ namespace narcissus {
             ASSERT_EQ(0x108, cpu.pc);
         }
 
+        TEST(SHLR_L, 0)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            //11 32           
+            //shlr.l  er2
+            mem[0x100] = 0x11;
+            mem[0x101] = 0x32;
+
+            cpu::h8_300 cpu(move(mem));
+            cpu.reset_exception();
+
+            cpu.er[2].er = 0x00000100;
+
+            ASSERT_EQ(cpu::operation::SHLR_L, cpu.detect_operation());
+            ASSERT_EQ(true, cpu.cycle());
+            ASSERT_EQ(0x00000080, cpu.er[2].er);
+            ASSERT_EQ(0x102, cpu.pc);
+
+        }
+
 
     }  // namespace cpu
 }  // namespace narcissus
