@@ -38,7 +38,8 @@ namespace narcissus {
             
             MOV_B_IMM,
             MOV_B_R_R,  
-            MOV_B_R_IND,                // register indirect
+            MOV_B_R_R_IND,              // register indirect (@erd = rs)
+            MOV_B_R_IND_R,              // register indirect (rd = @ers)  
             MOV_B_R_IND_WITH_DIS_16,    // register indirect with displacement(16 bit)
             MOV_B_IND_WITH_DIS_16_R,    // register indirect with displacement(16 bit)
             MOV_B_IND_WITH_DIS_24_R,    // register indirect with displacement(24 bit)
@@ -205,7 +206,6 @@ namespace narcissus {
 
                 FRIEND_TEST(MOV_B_IMM, 0);
                 FRIEND_TEST(MOV_B_IMM, 1);
-                FRIEND_TEST(MOV_B_R_IND, 0);
                 FRIEND_TEST(MOV_W_IMM, 0);
                 FRIEND_TEST(MOV_L_IMM, 0);
                 FRIEND_TEST(JSR_ABS, 0);
@@ -243,7 +243,8 @@ namespace narcissus {
                 FRIEND_TEST(MOV_B_IND_WITH_DIS_24_R, 0);
                 FRIEND_TEST(SHLR_L, 0);
                 FRIEND_TEST(DEC_W_1, 0);
-
+                FRIEND_TEST(MOV_B_R_IND_R, 0);
+                FRIEND_TEST(MOV_B_R_R_IND, 0);
         };
 
     }  // namespace cpu
