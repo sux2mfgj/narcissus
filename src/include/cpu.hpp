@@ -83,7 +83,7 @@ namespace narcissus {
         };
 
         union register_t {
-            register_t() : er32(0) {}
+            register_t() : er(0) {}
 
             auto write(std::uint8_t destination, std::uint32_t value, register_size size)
                 -> void
@@ -106,7 +106,7 @@ namespace narcissus {
                         }
                         break;
                     case register_size::LONG:
-                        er32 = value;
+                        er = value;
                         break;
                 }
             }
@@ -130,11 +130,11 @@ namespace narcissus {
                             return e;
                         }
                     case register_size::LONG:
-                        return er32;
+                        return er;
                 }
             }
 
-            std::uint32_t er32;
+            std::uint32_t er;
 
             struct {
                 union {
