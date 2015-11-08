@@ -281,15 +281,14 @@ namespace narcissus {
 
                 case operation::MOV_B_R_IND: 
                 {
-                    auto ers = read_register_fields(pc + 1, value_place::high, true);
-                    auto rd = read_register_fields(pc + 1, value_place::low, false);
-//                     auto ers = (memory[pc + 1] & 0x70) >> 4;
-//                     auto rd = memory[pc + 1] & 0x0f;
+                    auto erd = read_register_fields(pc + 1, value_place::high, true);
+                    auto rs = read_register_fields(pc + 1, value_place::low, false);
 
-                    auto src_reg_value = read_register(ers, register_size::LONG);
-                    auto result = memory[src_reg_value];
+                    auto dest_addr = read_register(erd, register_size::LONG);
+                    auto result = read_register(rs, register_size::BYTE);
+                    write_immediate(dest_addr, 1, result);
 
-                    write_register(rd, result, register_size::BYTE);
+//                     write_register(rd, result, register_size::BYTE);
                     update_ccr_mov(result, register_size::BYTE);
                     pc += 2;
 
@@ -926,7 +925,10 @@ namespace narcissus {
                 case 6:
                     switch (al) {
                         case 0x8:
-                            return operation::MOV_B_R_IND;
+                            if((bh & 0x8) == 0x8){
+                                return operation::MOV_B_R_IND;
+                            }
+                            return operation::INVALID;
 
                         case 0xc:
                             return operation::MOV_B_R_IND_POST_INC;

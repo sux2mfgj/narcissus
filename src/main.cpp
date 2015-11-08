@@ -52,7 +52,6 @@ int main(int argc, char const* argv[])
     sort(break_points.begin(), break_points.end());;
 
     std::cout << "start" << std::endl;
-    auto itr = break_points.begin();
 
     std::uint32_t before_pc;
     std::uint8_t stop_count = 0;
@@ -64,7 +63,7 @@ int main(int argc, char const* argv[])
         std::cout << std::hex << "pc: 0x" << pc << std::endl;
 
         auto t = break_points.end() != find(break_points.begin(), break_points.end(), pc);
-        if(t || s[0] != 'c'){
+        if(t || s[0] != 's'){
             std::cout << ">";
             std::getline(std::cin, s);
 
