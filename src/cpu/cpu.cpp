@@ -12,10 +12,7 @@ namespace narcissus {
         auto h8_300::reset_exception() -> void
         {
             // load pc from memory[0] ~ memory[3]
-            auto reset_addr = std::uint32_t(memory[0]) << 24;
-            reset_addr |= std::uint32_t(memory[1]) << 16;
-            reset_addr |= std::uint32_t(memory[2]) << 8;
-            reset_addr |= std::uint32_t(memory[3]);
+            auto reset_addr = read_immediate(0, 4);
 
             pc = reset_addr;
 
@@ -151,10 +148,7 @@ namespace narcissus {
                 case operation::ADD_L_IMM_R:
                 {
                     auto erd = memory[pc + 1] & 0x7;
-                    auto imm = (std::uint32_t)memory[pc + 2] << 24;
-                    imm |= (std::uint32_t)memory[pc + 3] << 16;
-                    imm |= (std::uint32_t)memory[pc + 4] << 8;
-                    imm |= (std::uint32_t)memory[pc + 5];
+                    auto imm = read_immediate(pc + 2, 4);
 
                     auto erd_value = er[erd].er;
                     auto result = (std::int32_t)erd_value + (std::int32_t)imm;
@@ -300,8 +294,8 @@ namespace narcissus {
                 {
                     auto ers = (memory[pc + 1] >> 4) & 0x7;
                     auto rd = memory[pc + 1] & 0xf;
-                    auto disp = (std::uint16_t)(memory[pc + 2]) << 8;
-                    disp |= (std::uint16_t)memory[pc + 3];
+
+                    auto disp = (std::uint16_t)read_immediate(pc + 2, 2);
 
                     auto src_value = er[ers].er;
                     auto addr = src_value + (std::int16_t)disp;
@@ -319,6 +313,7 @@ namespace narcissus {
 //                 {
 //                     auto ers = (memory[pc + 1] & 0x70) >> 4;
 //                     auto rd = memory[pc + 3] & 0x7;
+//                     auto imm = read_immediate(pc + 5, 3);
 //                     auto imm = (std::uint32_t)(memory[pc + 5]) << 16;
 //                     imm |= (std::uint32_t)(memory[pc + 6]) << 8;
 //                     imm |= (std::uint32_t)memory[pc + 7];
@@ -344,8 +339,8 @@ namespace narcissus {
 
                     auto erd = (memory[pc + 1] >> 4) & 0x7;
                     auto rs = (memory[pc + 1]) & 0xf;
-                    auto disp = (std::uint16_t)(memory[pc + 2]) << 8;
-                    disp |= (std::uint16_t)(memory[pc + 3]);
+                
+                    auto disp = (std::uint16_t)read_immediate(pc + 2, 2);
 
                     auto src_value = read_register(rs, register_size::BYTE);
                     auto dest_addr = read_register(erd, register_size::LONG);
@@ -377,8 +372,7 @@ namespace narcissus {
                 case operation::MOV_W_IMM: 
                 {
                     auto rd = memory[pc + 1] & 0x7;
-                    auto imm = uint16_t(memory[pc + 2]) << 8;
-                    imm |= uint16_t(memory[pc + 3]);
+                    auto imm = (std::uint16_t)read_immediate(pc + 2, 2);
 
                     write_register(rd, imm, register_size::WORD);
 
@@ -407,10 +401,8 @@ namespace narcissus {
                 case operation::MOV_L_IMM: 
                 {
                     auto erd = memory[pc + 1] & 0x7;
-                    auto imm = std::uint32_t(memory[pc + 2]) << 24;
-                    imm |= std::uint32_t(memory[pc + 3]) << 16;
-                    imm |= std::uint32_t(memory[pc + 4]) << 8;
-                    imm |= std::uint32_t(memory[pc + 5]);
+    
+                    auto imm = read_immediate(pc + 2, 4);
 
                     write_register(erd, imm, register_size::LONG);
 
@@ -460,16 +452,11 @@ namespace narcissus {
                     auto ers = memory[pc + 3] >> 4;
                     auto erd = memory[pc + 5] & 0x7;
 
-                    auto disp = std::uint32_t(memory[pc + 7]) << 16;
-                    disp |= std::uint32_t(memory[pc + 8]) << 8;
-                    disp |= std::uint32_t(memory[pc + 9]);
+                    auto disp = read_immediate(pc + 7, 3);
 
                     auto addr = (std::int32_t)(er[ers].er) + (std::int32_t)disp;
 
-                    auto dest_value = std::uint32_t(memory[addr]) << 24;
-                    dest_value |= std::uint32_t(memory[addr + 1]) << 16;
-                    dest_value |= std::uint32_t(memory[addr + 2]) << 8;
-                    dest_value |= std::uint32_t(memory[addr + 3]);
+                    auto dest_value = read_immediate(addr, 4);
 
                     er[erd].er = dest_value;
 
@@ -485,10 +472,8 @@ namespace narcissus {
 
                     auto source_addr = er[ers].er;
 
-                    auto dest_value = memory[source_addr++] << 24;
-                    dest_value |= memory[source_addr++] << 16;
-                    dest_value |= memory[source_addr++] << 8;
-                    dest_value |= memory[source_addr++];
+                    auto dest_value = read_immediate(source_addr, 4);
+                    source_addr += 4;
 
                     er[erd].er = dest_value;
                     er[ers].er = source_addr;
@@ -547,8 +532,7 @@ namespace narcissus {
                 case operation::AND_W:
                 {
                     auto rd = memory[pc + 1] & 0xf;
-                    auto imm = (std::uint16_t)memory[pc + 2] << 8;
-                    imm |= (std::uint16_t)memory[pc + 3];
+                    auto imm = (std::uint16_t)read_immediate(pc + 2, 2);
 
                     auto rd_value = read_register(rd, register_size::WORD);
                     auto result = rd_value & imm;
@@ -576,9 +560,7 @@ namespace narcissus {
 
                 case operation::JSR_ABS: 
                 {
-                    auto abs = std::uint32_t(memory[pc + 1]) << 16;
-                    abs |= std::uint32_t(memory[pc + 2]) << 8;
-                    abs |= std::uint32_t(memory[pc + 3]);
+                    auto abs = read_immediate(pc + 1, 3);
 
                     pc += 4;
 
@@ -624,9 +606,8 @@ namespace narcissus {
                 {
                     // memory[sp]: is reserved
                     memory[sp++];
-                    auto return_addr = (std::uint32_t)memory[sp++] << 16;
-                    return_addr |= (std::uint32_t)memory[sp++] << 8;
-                    return_addr |= (std::uint32_t)memory[sp++];
+                    auto return_addr = read_immediate(sp, 3);
+                    sp += 3;
 
                     pc = return_addr;
 
