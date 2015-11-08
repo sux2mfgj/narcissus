@@ -85,55 +85,6 @@ namespace narcissus {
         union register_t {
             register_t() : er(0) {}
 
-            auto write(std::uint8_t destination, std::uint32_t value, register_size size)
-                -> void
-            {
-                switch (size) {
-                    case register_size::BYTE:
-                        if((destination & 0x8) != 0x8) {
-                            h = std::uint8_t(value);
-                        }
-                        else {
-                            l = std::uint8_t(value);
-                        }
-                        break;
-                    case register_size::WORD:
-                        if((destination & 0x8) != 0x8){
-                            r = std::uint16_t(value);
-                        }
-                        else {
-                            e = std::uint16_t(value);
-                        }
-                        break;
-                    case register_size::LONG:
-                        er = value;
-                        break;
-                }
-            }
-
-//             auto read(std::uint8_t source, register_size size)
-//                 -> std::uint32_t 
-//             {
-//                 switch (size) {
-//                     case register_size::BYTE:
-//                         if((source & 0x8) != 0x8){
-//                             return h;
-//                         }
-//                         else {
-//                             return l;
-//                         }
-//                     case register_size::WORD:
-//                         if((source & 0x8) != 0x8) {
-//                             return r;
-//                         }
-//                         else {
-//                             return e;
-//                         }
-//                     case register_size::LONG:
-//                         return er;
-//                 }
-//             }
-
             std::uint32_t er;
 
             struct {
@@ -195,13 +146,6 @@ namespace narcissus {
             private:
                 auto detect_operation(void) -> operation;
 
-                auto register_write_immediate(std::uint8_t destination,
-                        std::uint32_t immediate,
-                        register_size size) -> bool;
-                auto register_write_register(std::uint8_t destination,
-                        std::uint8_t source,
-                        register_size size) -> bool;
-
                 //for ccr
                 auto update_ccr_sub(std::uint32_t value_0, std::uint32_t value_1, 
                         std::uint64_t result, register_size size) -> void;
@@ -221,8 +165,6 @@ namespace narcissus {
                 auto read_register(std::uint8_t source, register_size size) -> std::uint32_t;
                 auto write_register(std::uint8_t destination, 
                         std::uint32_t value, register_size size) -> void;
-
-
 
             // use macro for test
             public:
@@ -285,8 +227,5 @@ namespace narcissus {
 
         };
 
-        //         std::uint8_t std::uint8_t::operator [](std::uint32_t) {
-        //             return this[std::uint32_t];
-        //         };
     }  // namespace cpu
 }  // namespace narcissus

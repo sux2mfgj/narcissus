@@ -124,9 +124,7 @@ namespace narcissus {
 
                     auto result = er[erd].er + 4;
 
-                    if (!register_write_immediate(erd, result, register_size::LONG)) {
-                        return false;
-                    }
+                    write_register(erd, result, register_size::LONG);
 
                     pc += 2;
                     return true;
@@ -137,15 +135,12 @@ namespace narcissus {
                     auto rd = memory[pc] & 0xf;
                     auto imm = memory[pc + 1];
 
-//                     auto rd_value = er[rd & 0x7].read(rd, register_size::BYTE);
                     auto rd_value = read_register(rd, register_size::BYTE);
                     
                     //TODO imm have to cast by integer?
                     auto result = rd_value + imm;
 
-                    if(!register_write_immediate(rd, result, register_size::BYTE)){
-                        return false;
-                    }
+                    write_register(rd, result, register_size::BYTE);
 
                     update_ccr_sub(rd_value, imm, result, register_size::BYTE);
                     pc += 2;
@@ -166,9 +161,7 @@ namespace narcissus {
                     std::cout << erd_value << ":" 
                         << imm << std::endl;
 
-                    if(!register_write_immediate(erd, result, register_size::LONG)){
-                        return false;
-                    }
+                    write_register(erd, result, register_size::LONG);
 
                     update_ccr_sub(erd_value, imm, result, register_size::LONG);
                     pc += 6;
@@ -180,18 +173,11 @@ namespace narcissus {
                     auto rs = (memory[pc + 1]) >> 4;
                     auto rd = (memory[pc + 1]) & 0xf;
 
-
-
                     auto src_value = read_register(rs, register_size::BYTE);
-                    //er[rs & 0x7].read(rs, register_size::BYTE);
                     auto dest_value = read_register(rd, register_size::BYTE);
-                    //er[rd & 0x7].read(rd, register_size::BYTE);
-//                         std::cout << dest_value << ":" << src_value << std::endl;
                     auto imm = dest_value - src_value;
 
-                    if (!register_write_immediate(rd, imm, register_size::BYTE)) {
-                        return false;
-                    }
+                    write_register(rd, imm, register_size::BYTE);
 
                     update_ccr_sub(src_value, dest_value, imm, register_size::BYTE);
 
@@ -205,17 +191,11 @@ namespace narcissus {
                     auto rd = memory[pc + 1] & 0xf;
 
                     auto src_value = read_register(rs, register_size::WORD);
-                    //er[rs & 0x7].read(rs, register_size::WORD);
                     auto dest_value = read_register(rd, register_size::WORD);
-                    //er[rd & 0x7].read(rd, register_size::WORD);
 
-//                         std::cout << src_value << ":" << dest_value << std::endl;
-//                         std::cout << rs << ":" << rd << std::endl;
-                    //                     dest_value -= src_value;
                     auto result = dest_value - src_value;
-                    if (!register_write_immediate(rd, result, register_size::WORD)) {
-                        return false;
-                    }
+        
+                    write_register(rd, result, register_size::WORD);
                     update_ccr_sub(src_value, dest_value, result, register_size::WORD);
 
                     pc += 2;
@@ -231,9 +211,8 @@ namespace narcissus {
                     auto erd_value = er[erd].er;
 
                     auto result = erd_value - ers_value;
-                    if (!register_write_immediate(erd, result, register_size::LONG)) {
-                        return false;
-                    }
+                
+                    write_register(erd, result, register_size::LONG);
 
                     update_ccr_sub(ers_value, erd_value, result, register_size::LONG);
 
@@ -243,7 +222,6 @@ namespace narcissus {
 
                 case operation::SUB_WITH_SIGN_EXT_1:
                 {
-
                     auto erd = memory[pc + 1] & 0x7;
 
                     er[erd].er -= 1;
@@ -267,9 +245,7 @@ namespace narcissus {
                     auto rd = memory[pc] & 0x0f;
                     auto imm = memory[pc + 1];
 
-                    if (!register_write_immediate(rd, imm, register_size::BYTE)) {
-                        return false;
-                    }
+                    write_register(rd, imm, register_size::BYTE);
 
                     update_ccr_mov(imm, register_size::BYTE);
                     pc += 2;
@@ -282,10 +258,7 @@ namespace narcissus {
                     auto rd = memory[pc + 1] & 0xf;
 
                     auto result = read_register(rs, register_size::BYTE);
-                    //er[rs & 0x7].read(rs, register_size::BYTE);
-                    if(!register_write_immediate(rd, result, register_size::BYTE)){
-                        return false;
-                    }
+                    write_register(rd, result, register_size::BYTE);
 
                     update_ccr_mov(result, register_size::BYTE);
                     pc += 2;
@@ -298,17 +271,12 @@ namespace narcissus {
                     auto rd = memory[pc + 1] & 0x0f;
 
                     auto src_reg_value = read_register(ers, register_size::LONG);
-                    //er[ers & 0x7].read(ers, register_size::LONG);
                     auto result = memory[src_reg_value];
 
-                    if (!register_write_immediate(rd, result, register_size::BYTE)) {
-                        return false;
-                    }
+                    write_register(rd, result, register_size::BYTE);
                     update_ccr_mov(result, register_size::BYTE);
                     pc += 2;
 
-//                         std::cout << ers << ":" << rd << ":" << (uint16_t)result << ":"
-//                             << src_reg_value << std::endl;
                     break;
                 }
 
@@ -340,12 +308,7 @@ namespace narcissus {
 
                     auto result = memory[addr];
 
-                    if (!register_write_immediate(rd, result, register_size::BYTE)) {
-                        return false;
-                    }
-
-//                     std::cout << src_value << ":" << disp << std::endl;
-//                     std::cout <<std::hex<< addr <<":"<< (std::uint16_t)result << std::endl;
+                    write_register(rd, result, register_size::BYTE);
 
                     update_ccr_mov(result, register_size::BYTE);
                     pc += 4;
@@ -385,12 +348,7 @@ namespace narcissus {
                     disp |= (std::uint16_t)(memory[pc + 3]);
 
                     auto src_value = read_register(rs, register_size::BYTE);
-                    //er[rs & 0x7].read(rs, register_size::BYTE);
                     auto dest_addr = read_register(erd, register_size::LONG);
-                    //er[erd & 0x7].read(erd, register_size::LONG);
-
-//                     std::cout <<  (std::uint16_t)(rs & 0x7) << ":" << erd << std::endl;
-//                     std::cout << std::hex << "dest_addr: " << dest_addr << std::endl;
 
                     dest_addr += (std::int16_t)disp;
                     memory[dest_addr] = src_value;
@@ -401,113 +359,101 @@ namespace narcissus {
                 }
 
                 case operation::MOV_B_R_IND_POST_INC:
-                    {
-                        auto ers = (memory[pc + 1] >> 4) & 0x7;
-                        auto rd = (memory[pc + 1]) & 0xf;
+                {
+                    auto ers = (memory[pc + 1] >> 4) & 0x7;
+                    auto rd = (memory[pc + 1]) & 0xf;
 
-                        auto result = memory[er[ers].er];
-                        if(!register_write_immediate(rd, result, register_size::BYTE)){
-                            return false;
-                        }
-                        update_ccr_mov(result ,register_size::BYTE);
+                    auto result = memory[er[ers].er];
+                    write_register(rd, result, register_size::BYTE);
 
-                        er[ers].er += 1;
-                        pc += 2;
-                        return true;
-                    }
+                    update_ccr_mov(result ,register_size::BYTE);
+
+                    er[ers].er += 1;
+                    pc += 2;
+                    return true;
+                }
 
 
-                case operation::MOV_W_IMM: {
-                                    auto rd = memory[pc + 1] & 0x7;
-                                    auto imm = uint16_t(memory[pc + 2]) << 8;
-                                    imm |= uint16_t(memory[pc + 3]);
+                case operation::MOV_W_IMM: 
+                {
+                    auto rd = memory[pc + 1] & 0x7;
+                    auto imm = uint16_t(memory[pc + 2]) << 8;
+                    imm |= uint16_t(memory[pc + 3]);
 
-                                    if (!register_write_immediate(rd, imm, register_size::WORD)) {
-                                        return false;
-                                    }
+                    write_register(rd, imm, register_size::WORD);
 
-                                    update_ccr_mov(imm, register_size::WORD);
-                                    pc += 4;
-                                    break;
-                                }
+                    update_ccr_mov(imm, register_size::WORD);
+                    pc += 4;
+                    break;
+                }
 
                 case operation::MOV_W_R_R:
                 {
                     auto rs = memory[pc + 1] >> 4;
                     auto rd = memory[pc + 1] & 0xf;
 
-                    if(!register_write_register(rd, rs, register_size::WORD)){
-                        return false;
-                    }
+                    auto result = read_register(rs, register_size::WORD);
+                    write_register(rd, result, register_size::WORD);
 
-                    
-//                     std::cout << "[mov.w rs, rd]" << std::endl;
-//                     std::cout <<  "rs[" << rs << "]: " << er[rs & 0x7].read(rs, register_size::WORD)
-//                         << " -> "
-//                         << "rd[" << rd << "]: " << er[rd & 0x7].read(rd, register_size::WORD)
-//                         << std::endl;
+                    write_register(rd, result, register_size::WORD);
 
-//                     std::cout <<  er[rs & 0x7].read(rs, register_size::LONG)<< std::endl;
-//                     std::cout <<  er[rd & 0x7].read(rd, register_size::LONG)<< std::endl;
-
-                    update_ccr_mov(read_register(rs, register_size::WORD),
-                            //er[rs & 0x7].read(rs, register_size::WORD), 
+                    update_ccr_mov(result,
                             register_size::WORD);
 
                     pc += 2;
                     return true;
                 }
 
-                case operation::MOV_L_IMM: {
-                                    auto erd = memory[pc + 1] & 0x7;
-                                    auto imm = std::uint32_t(memory[pc + 2]) << 24;
-                                    imm |= std::uint32_t(memory[pc + 3]) << 16;
-                                    imm |= std::uint32_t(memory[pc + 4]) << 8;
-                                    imm |= std::uint32_t(memory[pc + 5]);
+                case operation::MOV_L_IMM: 
+                {
+                    auto erd = memory[pc + 1] & 0x7;
+                    auto imm = std::uint32_t(memory[pc + 2]) << 24;
+                    imm |= std::uint32_t(memory[pc + 3]) << 16;
+                    imm |= std::uint32_t(memory[pc + 4]) << 8;
+                    imm |= std::uint32_t(memory[pc + 5]);
 
-//                                     std::cout << imm << std::endl;
-                                    if (!register_write_immediate(erd, imm, register_size::LONG)) {
-                                        return false;
-                                    }
+                    write_register(erd, imm, register_size::LONG);
 
-                                    update_ccr_mov(imm, register_size::LONG);
-                                    pc += 6;
-                                    return true;
-                                }
+                    update_ccr_mov(imm, register_size::LONG);
+                    pc += 6;
+                    return true;
+                }
 
-                case operation::MOV_L_R_R: {
-                                    auto ers = std::uint32_t(memory[pc + 1] & 0x70) >> 4;
-                                    auto erd = std::uint32_t(memory[pc + 1] & 0x07);
+                case operation::MOV_L_R_R: 
+                {
+                    auto ers = std::uint32_t(memory[pc + 1] & 0x70) >> 4;
+                    auto erd = std::uint32_t(memory[pc + 1] & 0x07);
 
-                                    auto src_value = er[ers].er;
-                                    er[erd].er = src_value;
+                    auto src_value = er[ers].er;
+                    er[erd].er = src_value;
 
-                                    update_ccr_mov(src_value, register_size::LONG);
-                                    pc += 2;
-                                    return true;
-                                }
+                    update_ccr_mov(src_value, register_size::LONG);
+                    pc += 2;
+                    return true;
+                }
 
-                case operation::MOV_L_R_IND: {
-                                      auto erd = (memory[pc + 3] & 0x70) >> 4;
-                                      auto ers = (memory[pc + 3] & 0x07);
+                case operation::MOV_L_R_IND: 
+                {
+                    auto erd = (memory[pc + 3] & 0x70) >> 4;
+                    auto ers = (memory[pc + 3] & 0x07);
 
-                                      auto erd_val = er[erd].er;
-                                      auto ers_val = er[ers].er;
+                    auto erd_val = er[erd].er;
+                    auto ers_val = er[ers].er;
 
-                                      erd_val -= 4;
-                                      //
-                                      memory[erd_val] = ers_val >> 24;
-                                      memory[erd_val + 1] = ers_val >> 16;
-                                      memory[erd_val + 2] = ers_val >> 8;
-                                      memory[erd_val + 3] = ers_val;
+                    erd_val -= 4;
+                    
+                    memory[erd_val] = ers_val >> 24;
+                    memory[erd_val + 1] = ers_val >> 16;
+                    memory[erd_val + 2] = ers_val >> 8;
+                    memory[erd_val + 3] = ers_val;
 
-                                      er[erd].er = erd_val;
+                    er[erd].er = erd_val;
 
-                                      update_ccr_mov(ers_val, register_size::LONG);
-                                      pc += 4;
+                    update_ccr_mov(ers_val, register_size::LONG);
+                    pc += 4;
 
-                                      return true;
-                                  }
+                    return true;
+                }
 
                 case operation::MOV_L_IND_WITH_DIS_24_R: 
                 {
@@ -520,17 +466,10 @@ namespace narcissus {
 
                     auto addr = (std::int32_t)(er[ers].er) + (std::int32_t)disp;
 
-//                     std::cout << std::hex 
-//                         << "ers : " << ers << ", " 
-//                         << "erd : " << erd << ", " << "disp : " << disp << ", "
-//                         << (std::uint32_t)er[ers].er << std::endl;
-
                     auto dest_value = std::uint32_t(memory[addr]) << 24;
                     dest_value |= std::uint32_t(memory[addr + 1]) << 16;
                     dest_value |= std::uint32_t(memory[addr + 2]) << 8;
                     dest_value |= std::uint32_t(memory[addr + 3]);
-
-//                     std::cout << "dest_value : " << dest_value << std::endl;
 
                     er[erd].er = dest_value;
 
@@ -539,27 +478,26 @@ namespace narcissus {
                     return true;
                 }
 
-                case operation::MOV_L_R_IND_POST_INC: {
-                                               auto ers = memory[pc + 3] >> 4;
-                                               auto erd = memory[pc + 3] & 0x07;
+                case operation::MOV_L_R_IND_POST_INC: 
+                {
+                    auto ers = memory[pc + 3] >> 4;
+                    auto erd = memory[pc + 3] & 0x07;
 
-                                               auto source_addr = er[ers].er;
+                    auto source_addr = er[ers].er;
 
-                                               auto dest_value = memory[source_addr++] << 24;
-                                               dest_value |= memory[source_addr++] << 16;
-                                               dest_value |= memory[source_addr++] << 8;
-                                               dest_value |= memory[source_addr++];
+                    auto dest_value = memory[source_addr++] << 24;
+                    dest_value |= memory[source_addr++] << 16;
+                    dest_value |= memory[source_addr++] << 8;
+                    dest_value |= memory[source_addr++];
 
-                                               er[erd].er = dest_value;
-                                               er[ers].er = source_addr;
-//                                                std::cout << erd << ":" << ers << std::endl;
-//                                                std::cout << dest_value << ":" << source_addr << std::endl;
+                    er[erd].er = dest_value;
+                    er[ers].er = source_addr;
 
-                                               update_ccr_mov(dest_value, register_size::LONG);
-                                               pc += 4;
+                    update_ccr_mov(dest_value, register_size::LONG);
+                    pc += 4;
 
-                                               return true;
-                                           }
+                    return true;
+                }
 
                 case operation::BEQ: 
                 {
@@ -574,13 +512,14 @@ namespace narcissus {
                     return true;
                 }
 
-                case operation::BRA: {
-                              auto disp = (std::int8_t)memory[pc + 1];
-                              pc += 2;
-                              pc += disp;
+                case operation::BRA: 
+                {
+                    auto disp = (std::int8_t)memory[pc + 1];
+                    pc += 2;
+                    pc += disp;
 
-                              return true;
-                          }
+                    return true;
+                }
 
                 case operation::BNE:
                 {
@@ -598,7 +537,6 @@ namespace narcissus {
                     auto imm = memory[pc + 1];
 
                     auto rd_value = read_register(rd, register_size::BYTE);
-                    //er[rd & 0x7].read(rd, register_size::BYTE);
                     auto result = rd_value - imm;
 
                     update_ccr_sub(rd_value, imm, result, register_size::BYTE);
@@ -613,13 +551,9 @@ namespace narcissus {
                     imm |= (std::uint16_t)memory[pc + 3];
 
                     auto rd_value = read_register(rd, register_size::WORD);
-                    //(std::uint16_t)er[rd & 0x7].read(rd, register_size::WORD);
                     auto result = rd_value & imm;
-                    if(!register_write_immediate(rd, result, register_size::WORD)){
-                        return false;
-                    }
+                    write_register(rd, result, register_size::WORD);
 
-//                     std::cout << "and_w: " << result << std::endl;
                     update_ccr_mov(result, register_size::WORD);
                     pc += 4;
                     return true;
@@ -631,32 +565,31 @@ namespace narcissus {
                     auto imm = memory[pc + 1];
 
                     auto rd_value = read_register(rd, register_size::BYTE);
-                    //er[rd & 0x7].read(rd, register_size::BYTE);
                     auto result = rd_value & imm;
 
-                    if (!register_write_immediate(rd, result, register_size::BYTE)) {
-                        return false;
-                    }
+                    write_register(rd, result, register_size::BYTE);
+
                     pc += 2;
                     update_ccr_mov(result, register_size::BYTE);
                     return true;
                 }
 
-                case operation::JSR_ABS: {
-                                  auto abs = std::uint32_t(memory[pc + 1]) << 16;
-                                  abs |= std::uint32_t(memory[pc + 2]) << 8;
-                                  abs |= std::uint32_t(memory[pc + 3]);
+                case operation::JSR_ABS: 
+                {
+                    auto abs = std::uint32_t(memory[pc + 1]) << 16;
+                    abs |= std::uint32_t(memory[pc + 2]) << 8;
+                    abs |= std::uint32_t(memory[pc + 3]);
 
-                                  pc += 4;
+                    pc += 4;
 
-                                  memory[--sp] = (std::uint8_t)(pc & 0x0000ff);
-                                  memory[--sp] = (std::uint8_t)((pc >> 8) & 0x0000ff);
-                                  memory[--sp] = (std::uint8_t)((pc >> 16) & 0x0000ff);
-                                  memory[--sp] = 0x00;
+                    memory[--sp] = (std::uint8_t)(pc & 0x0000ff);
+                    memory[--sp] = (std::uint8_t)((pc >> 8) & 0x0000ff);
+                    memory[--sp] = (std::uint8_t)((pc >> 16) & 0x0000ff);
+                    memory[--sp] = 0x00;
 
-                                  pc = abs;
-                                  return true;
-                              }
+                    pc = abs;
+                    return true;
+                }
 
                 case operation::EXTS_L: 
                 {
@@ -669,12 +602,8 @@ namespace narcissus {
                     sign |= sign << 4;  // 0x00ff8000;
                     sign |= sign << 8;  // 0xffff8000;
 
-//                     auto result = (val & 0x00008fff) | sign;
                     auto result = (val & 0xffff) | sign;
                     er[erd].er = result; //(val & 0x00008fff) | sign;
-
-//                     std::cout << "[exts.l erd]" << std::endl;
-//                     std::cout << std::hex << "0x" << val << " -> 0x" << result << std::endl;
 
                     update_ccr_mov(result, register_size::LONG);
                     pc += 2;
@@ -685,24 +614,24 @@ namespace narcissus {
                 {
                     auto erd = memory[pc + 1] & 0x7;
                     er[erd].er = er[erd].er << 1;
-//                     std::cout << "shll: " << er[erd].er << std::endl;
 
                     update_ccr_shll(er[erd].er, register_size::LONG);
                     pc += 2;
                     return true;
                 }
 
-                case operation::RTS: {
-                              // memory[sp]: is reserved
-                              memory[sp++];
-                              auto return_addr = (std::uint32_t)memory[sp++] << 16;
-                              return_addr |= (std::uint32_t)memory[sp++] << 8;
-                              return_addr |= (std::uint32_t)memory[sp++];
+                case operation::RTS: 
+                {
+                    // memory[sp]: is reserved
+                    memory[sp++];
+                    auto return_addr = (std::uint32_t)memory[sp++] << 16;
+                    return_addr |= (std::uint32_t)memory[sp++] << 8;
+                    return_addr |= (std::uint32_t)memory[sp++];
 
-                              pc = return_addr;
+                    pc = return_addr;
 
-                              return true;
-                          }
+                    return true;
+                }
 
                 case operation::INVALID:
                           std::cout << "INVALID opecode: " << std::hex << "0x" << std::flush;
@@ -839,8 +768,6 @@ namespace narcissus {
                 case 1:
                     switch (al) {
                         case 0:
-                            
-                            
                             switch (bh) {
                                 case 3:
                                     return operation::SHLL_L;
@@ -1027,66 +954,6 @@ namespace narcissus {
             }
         }
 
-        auto h8_300::register_write_immediate(std::uint8_t destination,
-                std::uint32_t immediate,
-                register_size size) -> bool
-        {
-            switch (size) {
-                case register_size::BYTE:
-                    er[destination & 0x7].write(destination, immediate, size);
-                    break;
-
-                case register_size::WORD:
-                    er[destination & 0x7].write(destination, immediate, size);
-                    break;
-
-                case register_size::LONG:
-                    er[destination & 0xf].write(destination, immediate, size);
-                    break;
-            }
-
-            return true;
-        }
-
-        auto h8_300::register_write_register(std::uint8_t destination,
-                std::uint8_t source,
-                register_size size)
-            -> bool
-        {
-            if (destination > 0xf || source > 0xf) {
-                return false;
-            }
-
-            auto tmp = read_register(source, size);
-            //er[source & 0x7].read(source, size);
-            er[destination & 0x7].write(destination, tmp, size);
-
-            //             switch (size) {
-            //                 case register_size::BYTE:
-            //                     {
-
-            //                         auto tmp = er[source & 0x7].read(source,
-            //                         register_size::BYTE);
-            //                         er[destination & 0x7].write(destination, tmp,
-            //                         register_size::BYTE);
-            //                         break;
-            //                     }
-            //                 case register_size::WORD:
-            //                     {
-            //                         uint16_t tmp = er[source & 0x7].read(source,
-            //                         register_size::WORD);
-            //                         er[destination & 0x7].write(destination, tmp,
-            //                         register_size::BYTE) ;
-            //
-            //                         break;
-            //                     }
-            //                 case register_size::LONG:
-            //                     break;
-
-            //             }
-            return true;
-        }
-
         auto h8_300::update_ccr_sub(std::uint32_t value_0,
                 std::uint32_t value_1,
                 std::uint64_t result,
@@ -1122,7 +989,6 @@ namespace narcissus {
                 ccr.zero = 0;
             }
 
-            //             std::cout << value << std::endl;
             ccr.negative = (value >> (std::uint32_t)size) & 0x1;
         }
 
