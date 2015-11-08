@@ -1162,28 +1162,54 @@ namespace narcissus {
 
         auto h8_300::read_register(std::uint8_t source, register_size size) 
             -> std::uint32_t
-            {
-                auto reg = er[source & 0x7];
-                switch (size) {
-                    case register_size::BYTE:
-                        if((source & 0x8) != 0x8){
-                            return reg.h;
-                        }
-                        else {
-                            return reg.l;
-                        }
-                    case register_size::WORD:
-                        if((source & 0x8) != 0x8) {
-                            return reg.r;
-                        }
-                        else {
-                            return reg.e;
-                        }
-                    case register_size::LONG:
-                        return reg.er32;
-                }
+        {
+            auto reg = er[source & 0x7];
+            switch (size) {
+                case register_size::BYTE:
+                    if((source & 0x8) != 0x8){
+                        return reg.h;
+                    }
+                    else {
+                        return reg.l;
+                    }
+                case register_size::WORD:
+                    if((source & 0x8) != 0x8) {
+                        return reg.r;
+                    }
+                    else {
+                        return reg.e;
+                    }
+                case register_size::LONG:
+                    return reg.er32;
             }
+        }
 
+        auto h8_300::write_register(std::uint8_t destination, 
+                        std::uint32_t value, register_size size) -> void
+        {
+            auto &reg = er[destination & 0x7];
+            switch (size) {
+                case register_size::BYTE:
+                    if((destination & 0x8) != 0x8) {
+                        reg.h = std::uint8_t(value);
+                    }
+                    else {
+                        reg.l = std::uint8_t(value);
+                    }
+                    break;
+                case register_size::WORD:
+                    if((destination & 0x8) != 0x8){
+                        reg.r = std::uint16_t(value);
+                    }
+                    else {
+                        reg.e = std::uint16_t(value);
+                    }
+                    break;
+                case register_size::LONG:
+                    reg.er32 = value;
+                    break;
+            }
+        }
 
 
     }  // namespace cpu

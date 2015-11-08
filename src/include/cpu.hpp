@@ -233,6 +233,7 @@ namespace narcissus {
                 FRIEND_TEST(read_imm, 0);
                 FRIEND_TEST(write_imm, 0);
                 FRIEND_TEST(read_value, 0);
+                FRIEND_TEST(write_register, 0);
 
 
                 // for instruction
