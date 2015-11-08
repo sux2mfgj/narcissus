@@ -111,28 +111,28 @@ namespace narcissus {
                 }
             }
 
-            auto read(std::uint8_t source, register_size size)
-                -> std::uint32_t 
-            {
-                switch (size) {
-                    case register_size::BYTE:
-                        if((source & 0x8) != 0x8){
-                            return h;
-                        }
-                        else {
-                            return l;
-                        }
-                    case register_size::WORD:
-                        if((source & 0x8) != 0x8) {
-                            return r;
-                        }
-                        else {
-                            return e;
-                        }
-                    case register_size::LONG:
-                        return er;
-                }
-            }
+//             auto read(std::uint8_t source, register_size size)
+//                 -> std::uint32_t 
+//             {
+//                 switch (size) {
+//                     case register_size::BYTE:
+//                         if((source & 0x8) != 0x8){
+//                             return h;
+//                         }
+//                         else {
+//                             return l;
+//                         }
+//                     case register_size::WORD:
+//                         if((source & 0x8) != 0x8) {
+//                             return r;
+//                         }
+//                         else {
+//                             return e;
+//                         }
+//                     case register_size::LONG:
+//                         return er;
+//                 }
+//             }
 
             std::uint32_t er;
 

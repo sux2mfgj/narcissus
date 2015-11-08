@@ -137,7 +137,9 @@ namespace narcissus {
                     auto rd = memory[pc] & 0xf;
                     auto imm = memory[pc + 1];
 
-                    auto rd_value = er[rd & 0x7].read(rd, register_size::BYTE);
+//                     auto rd_value = er[rd & 0x7].read(rd, register_size::BYTE);
+                    auto rd_value = read_register(rd, register_size::BYTE);
+                    
                     //TODO imm have to cast by integer?
                     auto result = rd_value + imm;
 
@@ -178,8 +180,12 @@ namespace narcissus {
                     auto rs = (memory[pc + 1]) >> 4;
                     auto rd = (memory[pc + 1]) & 0xf;
 
-                    auto src_value = er[rs & 0x7].read(rs, register_size::BYTE);
-                    auto dest_value = er[rd & 0x7].read(rd, register_size::BYTE);
+
+
+                    auto src_value = read_register(rs, register_size::BYTE);
+                    //er[rs & 0x7].read(rs, register_size::BYTE);
+                    auto dest_value = read_register(rd, register_size::BYTE);
+                    //er[rd & 0x7].read(rd, register_size::BYTE);
 //                         std::cout << dest_value << ":" << src_value << std::endl;
                     auto imm = dest_value - src_value;
 
@@ -198,8 +204,10 @@ namespace narcissus {
                     auto rs = memory[pc + 1] >> 0x4;
                     auto rd = memory[pc + 1] & 0xf;
 
-                    auto src_value = er[rs & 0x7].read(rs, register_size::WORD);
-                    auto dest_value = er[rd & 0x7].read(rd, register_size::WORD);
+                    auto src_value = read_register(rs, register_size::WORD);
+                    //er[rs & 0x7].read(rs, register_size::WORD);
+                    auto dest_value = read_register(rd, register_size::WORD);
+                    //er[rd & 0x7].read(rd, register_size::WORD);
 
 //                         std::cout << src_value << ":" << dest_value << std::endl;
 //                         std::cout << rs << ":" << rd << std::endl;
@@ -273,7 +281,8 @@ namespace narcissus {
                     auto rs = memory[pc + 1] >> 4;
                     auto rd = memory[pc + 1] & 0xf;
 
-                    auto result = er[rs & 0x7].read(rs, register_size::BYTE);
+                    auto result = read_register(rs, register_size::BYTE);
+                    //er[rs & 0x7].read(rs, register_size::BYTE);
                     if(!register_write_immediate(rd, result, register_size::BYTE)){
                         return false;
                     }
@@ -288,7 +297,8 @@ namespace narcissus {
                     auto ers = (memory[pc + 1] & 0x70) >> 4;
                     auto rd = memory[pc + 1] & 0x0f;
 
-                    auto src_reg_value = er[ers & 0x7].read(ers, register_size::LONG);
+                    auto src_reg_value = read_register(ers, register_size::LONG);
+                    //er[ers & 0x7].read(ers, register_size::LONG);
                     auto result = memory[src_reg_value];
 
                     if (!register_write_immediate(rd, result, register_size::BYTE)) {
@@ -374,8 +384,10 @@ namespace narcissus {
                     auto disp = (std::uint16_t)(memory[pc + 2]) << 8;
                     disp |= (std::uint16_t)(memory[pc + 3]);
 
-                    auto src_value = er[rs & 0x7].read(rs, register_size::BYTE);
-                    auto dest_addr = er[erd & 0x7].read(erd, register_size::LONG);
+                    auto src_value = read_register(rs, register_size::BYTE);
+                    //er[rs & 0x7].read(rs, register_size::BYTE);
+                    auto dest_addr = read_register(erd, register_size::LONG);
+                    //er[erd & 0x7].read(erd, register_size::LONG);
 
 //                     std::cout <<  (std::uint16_t)(rs & 0x7) << ":" << erd << std::endl;
 //                     std::cout << std::hex << "dest_addr: " << dest_addr << std::endl;
@@ -438,7 +450,8 @@ namespace narcissus {
 //                     std::cout <<  er[rs & 0x7].read(rs, register_size::LONG)<< std::endl;
 //                     std::cout <<  er[rd & 0x7].read(rd, register_size::LONG)<< std::endl;
 
-                    update_ccr_mov(er[rs & 0x7].read(rs, register_size::WORD), 
+                    update_ccr_mov(read_register(rs, register_size::WORD),
+                            //er[rs & 0x7].read(rs, register_size::WORD), 
                             register_size::WORD);
 
                     pc += 2;
@@ -584,7 +597,8 @@ namespace narcissus {
                     auto rd = memory[pc] & 0xf;
                     auto imm = memory[pc + 1];
 
-                    auto rd_value = er[rd & 0x7].read(rd, register_size::BYTE);
+                    auto rd_value = read_register(rd, register_size::BYTE);
+                    //er[rd & 0x7].read(rd, register_size::BYTE);
                     auto result = rd_value - imm;
 
                     update_ccr_sub(rd_value, imm, result, register_size::BYTE);
@@ -598,7 +612,8 @@ namespace narcissus {
                     auto imm = (std::uint16_t)memory[pc + 2] << 8;
                     imm |= (std::uint16_t)memory[pc + 3];
 
-                    auto rd_value = (std::uint16_t)er[rd & 0x7].read(rd, register_size::WORD);
+                    auto rd_value = read_register(rd, register_size::WORD);
+                    //(std::uint16_t)er[rd & 0x7].read(rd, register_size::WORD);
                     auto result = rd_value & imm;
                     if(!register_write_immediate(rd, result, register_size::WORD)){
                         return false;
@@ -615,7 +630,8 @@ namespace narcissus {
                     auto rd = memory[pc] & 0xf;
                     auto imm = memory[pc + 1];
 
-                    auto rd_value = er[rd & 0x7].read(rd, register_size::BYTE);
+                    auto rd_value = read_register(rd, register_size::BYTE);
+                    //er[rd & 0x7].read(rd, register_size::BYTE);
                     auto result = rd_value & imm;
 
                     if (!register_write_immediate(rd, result, register_size::BYTE)) {
@@ -1041,7 +1057,8 @@ namespace narcissus {
                 return false;
             }
 
-            auto tmp = er[source & 0x7].read(source, size);
+            auto tmp = read_register(source, size);
+            //er[source & 0x7].read(source, size);
             er[destination & 0x7].write(destination, tmp, size);
 
             //             switch (size) {
