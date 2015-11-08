@@ -117,7 +117,8 @@ namespace narcissus {
 
                 case operation::ADDS_4:
                 {
-                    auto erd = memory[pc + 1] & 0x7;
+                    auto erd = read_register_fields(pc + 1, value_place::low, false);
+//                     auto erd = memory[pc + 1] & 0x7;
 
                     auto result = er[erd].er + 4;
 
@@ -129,12 +130,13 @@ namespace narcissus {
 
                 case operation::ADD_B_IMM_R:
                 {
-                    auto rd = memory[pc] & 0xf;
+                    auto rd = read_register_fields(pc, value_place::low, false);
+                        //memory[pc] & 0xf;
                     auto imm = memory[pc + 1];
 
                     auto rd_value = read_register(rd, register_size::BYTE);
                     
-                    //TODO imm have to cast by integer?
+                    //TODO Do imm have to cast by integer?
                     auto result = rd_value + imm;
 
                     write_register(rd, result, register_size::BYTE);
@@ -147,7 +149,8 @@ namespace narcissus {
 
                 case operation::ADD_L_IMM_R:
                 {
-                    auto erd = memory[pc + 1] & 0x7;
+                    auto erd = read_register_fields(pc + 1, value_place::low, true);
+                        //memory[pc + 1] & 0x7;
                     auto imm = read_immediate(pc + 2, 4);
 
                     auto erd_value = er[erd].er;
@@ -164,11 +167,14 @@ namespace narcissus {
 
                 case operation::SUB_B_R_R: 
                 {
-                    auto rs = (memory[pc + 1]) >> 4;
-                    auto rd = (memory[pc + 1]) & 0xf;
+                    auto rs = read_register_fields(pc + 1, value_place::high, false);
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
+//                     auto rs = (memory[pc + 1]) >> 4;
+//                     auto rd = (memory[pc + 1]) & 0xf;
 
                     auto src_value = read_register(rs, register_size::BYTE);
                     auto dest_value = read_register(rd, register_size::BYTE);
+
                     auto imm = dest_value - src_value;
 
                     write_register(rd, imm, register_size::BYTE);
@@ -181,8 +187,10 @@ namespace narcissus {
 
                 case operation::SUB_W_R_R: 
                 {
-                    auto rs = memory[pc + 1] >> 0x4;
-                    auto rd = memory[pc + 1] & 0xf;
+                    auto rs = read_register_fields(pc + 1, value_place::high, false);
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
+//                     auto rs = memory[pc + 1] >> 0x4;
+//                     auto rd = memory[pc + 1] & 0xf;
 
                     auto src_value = read_register(rs, register_size::WORD);
                     auto dest_value = read_register(rd, register_size::WORD);
@@ -198,8 +206,11 @@ namespace narcissus {
 
                 case operation::SUB_L_R_R:
                 {
-                    auto ers = (memory[pc + 1] >> 4) & 0x1;
-                    auto erd = memory[pc + 1] & 0x7;
+                    auto ers = read_register_fields(pc + 1, value_place::high, true);
+                    auto erd = read_register_fields(pc + 1, value_place::low, true);
+
+//                     auto ers = (memory[pc + 1] >> 4) & 0x1;
+//                     auto erd = memory[pc + 1] & 0x7;
 
                     auto ers_value = er[ers].er;
                     auto erd_value = er[erd].er;
@@ -216,7 +227,8 @@ namespace narcissus {
 
                 case operation::SUB_WITH_SIGN_EXT_1:
                 {
-                    auto erd = memory[pc + 1] & 0x7;
+                    auto erd = read_register_fields(pc + 1, value_place::low, true);
+//                     auto erd = memory[pc + 1] & 0x7;
 
                     er[erd].er -= 1;
 
@@ -226,7 +238,8 @@ namespace narcissus {
 
                 case operation::SUB_WITH_SIGN_EXT_4:
                 {
-                    auto erd = memory[pc + 1] & 0x7;;
+                    auto erd = read_register_fields(pc + 1, value_place::low, true);
+//                     auto erd = memory[pc + 1] & 0x7;;
 
                     er[erd].er -= 4;
 
@@ -236,7 +249,8 @@ namespace narcissus {
 
                 case operation::MOV_B_IMM: 
                 {
-                    auto rd = memory[pc] & 0x0f;
+                    auto rd = read_register_fields(pc, value_place::low, false);
+//                     auto rd = memory[pc] & 0x0f;
                     auto imm = memory[pc + 1];
 
                     write_register(rd, imm, register_size::BYTE);
@@ -248,8 +262,11 @@ namespace narcissus {
 
                 case operation::MOV_B_R_R:
                 {
-                    auto rs = memory[pc + 1] >> 4;
-                    auto rd = memory[pc + 1] & 0xf;
+
+                    auto rs = read_register_fields(pc + 1, value_place::high, false);
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
+//                     auto rs = memory[pc + 1] >> 4;
+//                     auto rd = memory[pc + 1] & 0xf;
 
                     auto result = read_register(rs, register_size::BYTE);
                     write_register(rd, result, register_size::BYTE);
@@ -261,8 +278,10 @@ namespace narcissus {
 
                 case operation::MOV_B_R_IND: 
                 {
-                    auto ers = (memory[pc + 1] & 0x70) >> 4;
-                    auto rd = memory[pc + 1] & 0x0f;
+                    auto ers = read_register_fields(pc + 1, value_place::high, true);
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
+//                     auto ers = (memory[pc + 1] & 0x70) >> 4;
+//                     auto rd = memory[pc + 1] & 0x0f;
 
                     auto src_reg_value = read_register(ers, register_size::LONG);
                     auto result = memory[src_reg_value];
@@ -292,8 +311,10 @@ namespace narcissus {
 
                 case operation::MOV_B_IND_WITH_DIS_16_R: 
                 {
-                    auto ers = (memory[pc + 1] >> 4) & 0x7;
-                    auto rd = memory[pc + 1] & 0xf;
+                    auto ers = read_register_fields(pc + 1, value_place::high, true);
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
+//                     auto ers = (memory[pc + 1] >> 4) & 0x7;
+//                     auto rd = memory[pc + 1] & 0xf;
 
                     auto disp = (std::uint16_t)read_immediate(pc + 2, 2);
 
@@ -337,8 +358,10 @@ namespace narcissus {
                 case operation::MOV_B_R_IND_WITH_DIS_16:
                 {
 
-                    auto erd = (memory[pc + 1] >> 4) & 0x7;
-                    auto rs = (memory[pc + 1]) & 0xf;
+                    auto erd = read_register_fields(pc + 1, value_place::high, true);
+                    auto rs = read_register_fields(pc + 1, value_place::low, false);
+//                     auto erd = (memory[pc + 1] >> 4) & 0x7;
+//                     auto rs = (memory[pc + 1]) & 0xf;
                 
                     auto disp = (std::uint16_t)read_immediate(pc + 2, 2);
 
@@ -355,8 +378,11 @@ namespace narcissus {
 
                 case operation::MOV_B_R_IND_POST_INC:
                 {
-                    auto ers = (memory[pc + 1] >> 4) & 0x7;
-                    auto rd = (memory[pc + 1]) & 0xf;
+        
+                    auto ers = read_register_fields(pc + 1, value_place::high, true);
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
+//                     auto ers = (memory[pc + 1] >> 4) & 0x7;
+//                     auto rd = (memory[pc + 1]) & 0xf;
 
                     auto result = memory[er[ers].er];
                     write_register(rd, result, register_size::BYTE);
@@ -371,7 +397,8 @@ namespace narcissus {
 
                 case operation::MOV_W_IMM: 
                 {
-                    auto rd = memory[pc + 1] & 0x7;
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
+//                     auto rd = memory[pc + 1] & 0x7;
                     auto imm = (std::uint16_t)read_immediate(pc + 2, 2);
 
                     write_register(rd, imm, register_size::WORD);
@@ -383,8 +410,10 @@ namespace narcissus {
 
                 case operation::MOV_W_R_R:
                 {
-                    auto rs = memory[pc + 1] >> 4;
-                    auto rd = memory[pc + 1] & 0xf;
+                    auto rs = read_register_fields(pc + 1, value_place::high, false);
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
+//                     auto rs = memory[pc + 1] >> 4;
+//                     auto rd = memory[pc + 1] & 0xf;
 
                     auto result = read_register(rs, register_size::WORD);
                     write_register(rd, result, register_size::WORD);
@@ -400,7 +429,8 @@ namespace narcissus {
 
                 case operation::MOV_L_IMM: 
                 {
-                    auto erd = memory[pc + 1] & 0x7;
+                    auto erd = read_register_fields(pc + 1, value_place::low, true);
+//                     auto erd = memory[pc + 1] & 0x7;
     
                     auto imm = read_immediate(pc + 2, 4);
 
@@ -413,8 +443,11 @@ namespace narcissus {
 
                 case operation::MOV_L_R_R: 
                 {
-                    auto ers = std::uint32_t(memory[pc + 1] & 0x70) >> 4;
-                    auto erd = std::uint32_t(memory[pc + 1] & 0x07);
+                    auto ers = read_register_fields(pc + 1, value_place::high, true);
+                    auto erd = read_register_fields(pc + 1, value_place::low, true);
+
+//                     auto ers = std::uint32_t(memory[pc + 1] & 0x70) >> 4;
+//                     auto erd = std::uint32_t(memory[pc + 1] & 0x07);
 
                     auto src_value = er[ers].er;
                     er[erd].er = src_value;
@@ -426,8 +459,10 @@ namespace narcissus {
 
                 case operation::MOV_L_R_IND: 
                 {
-                    auto erd = (memory[pc + 3] & 0x70) >> 4;
-                    auto ers = (memory[pc + 3] & 0x07);
+                    auto erd = read_register_fields(pc + 3, value_place::high, true);
+                    auto ers = read_register_fields(pc + 3, value_place::low, true);
+//                     auto erd = (memory[pc + 3] & 0x70) >> 4;
+//                     auto ers = (memory[pc + 3] & 0x07);
 
                     auto erd_val = er[erd].er;
                     auto ers_val = er[ers].er;
@@ -449,8 +484,10 @@ namespace narcissus {
 
                 case operation::MOV_L_IND_WITH_DIS_24_R: 
                 {
-                    auto ers = memory[pc + 3] >> 4;
-                    auto erd = memory[pc + 5] & 0x7;
+                    auto ers = read_register_fields(pc + 3, value_place::high, true);
+                    auto erd = read_register_fields(pc + 5, value_place::low, true);
+//                     auto ers = memory[pc + 3] >> 4;
+//                     auto erd = memory[pc + 5] & 0x7;
 
                     auto disp = read_immediate(pc + 7, 3);
 
@@ -467,8 +504,10 @@ namespace narcissus {
 
                 case operation::MOV_L_R_IND_POST_INC: 
                 {
-                    auto ers = memory[pc + 3] >> 4;
-                    auto erd = memory[pc + 3] & 0x07;
+                    auto ers = read_register_fields(pc + 3, value_place::high, true);
+                    auto erd = read_register_fields(pc + 3, value_place::low, true);
+//                     auto ers = memory[pc + 3] >> 4;
+//                     auto erd = memory[pc + 3] & 0x07;
 
                     auto source_addr = er[ers].er;
 
@@ -518,7 +557,8 @@ namespace narcissus {
 
                 case operation::CMP_B_IMM:
                 {
-                    auto rd = memory[pc] & 0xf;
+                    auto rd = read_register_fields(pc, value_place::low, false);
+//                     auto rd = memory[pc] & 0xf;
                     auto imm = memory[pc + 1];
 
                     auto rd_value = read_register(rd, register_size::BYTE);
@@ -531,7 +571,8 @@ namespace narcissus {
 
                 case operation::AND_W:
                 {
-                    auto rd = memory[pc + 1] & 0xf;
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
+//                     auto rd = memory[pc + 1] & 0xf;
                     auto imm = (std::uint16_t)read_immediate(pc + 2, 2);
 
                     auto rd_value = read_register(rd, register_size::WORD);
@@ -545,7 +586,8 @@ namespace narcissus {
 
                 case operation::AND_B_IMM:
                 {
-                    auto rd = memory[pc] & 0xf;
+                    auto rd = read_register_fields(pc, value_place::low, false);
+//                     auto rd = memory[pc] & 0xf;
                     auto imm = memory[pc + 1];
 
                     auto rd_value = read_register(rd, register_size::BYTE);
@@ -575,7 +617,8 @@ namespace narcissus {
 
                 case operation::EXTS_L: 
                 {
-                    auto erd = memory[pc + 1] & 0x7;
+                    auto erd = read_register_fields(pc + 1, value_place::low, true);
+//                     auto erd = memory[pc + 1] & 0x7;
                     auto val = er[erd].er;
                     uint32_t sign = (uint32_t)(val & 0x00008000);
                     sign |= sign << 1;  // 0x00018000;
@@ -594,7 +637,8 @@ namespace narcissus {
 
                 case operation::SHLL_L: 
                 {
-                    auto erd = memory[pc + 1] & 0x7;
+                    auto erd = read_register_fields(pc + 1, value_place::low, true);
+//                     auto erd = memory[pc + 1] & 0x7;
                     er[erd].er = er[erd].er << 1;
 
                     update_ccr_shll(er[erd].er, register_size::LONG);
