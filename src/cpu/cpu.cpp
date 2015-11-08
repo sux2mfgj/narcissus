@@ -155,8 +155,8 @@ namespace narcissus {
 
                     auto erd_value = er[erd].er;
                     auto result = (std::int32_t)erd_value + (std::int32_t)imm;
-                    std::cout << erd_value << ":" 
-                        << imm << std::endl;
+//                     std::cout << erd_value << ":" 
+//                         << imm << std::endl;
 
                     write_register(erd, result, register_size::LONG);
 
@@ -464,19 +464,20 @@ namespace narcissus {
 //                     auto erd = (memory[pc + 3] & 0x70) >> 4;
 //                     auto ers = (memory[pc + 3] & 0x07);
 
-                    auto erd_val = er[erd].er;
-                    auto ers_val = er[ers].er;
+                    auto dest_addr = er[erd].er;
+                    auto result = er[ers].er;
 
-                    erd_val -= 4;
+                    dest_addr -= 4;
                     
-                    memory[erd_val] = ers_val >> 24;
-                    memory[erd_val + 1] = ers_val >> 16;
-                    memory[erd_val + 2] = ers_val >> 8;
-                    memory[erd_val + 3] = ers_val;
+                    write_immediate(dest_addr, 4, result);
+//                     memory[erd_val] = ers_val >> 24;
+//                     memory[erd_val + 1] = ers_val >> 16;
+//                     memory[erd_val + 2] = ers_val >> 8;
+//                     memory[erd_val + 3] = ers_val;
 
-                    er[erd].er = erd_val;
+                    er[erd].er = dest_addr;
 
-                    update_ccr_mov(ers_val, register_size::LONG);
+                    update_ccr_mov(result, register_size::LONG);
                     pc += 4;
 
                     return true;
