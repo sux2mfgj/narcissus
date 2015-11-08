@@ -47,6 +47,14 @@ namespace narcissus {
             throw std::out_of_range("access error");
         }
 
+        auto mcu::flush() -> void
+        {
+            for(auto sci: sci_channel)
+            {
+                sci[0x00000100];
+            }
+        }
+
 
     } // namespace cpu
 } // namespace narcissus

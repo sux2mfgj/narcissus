@@ -23,6 +23,11 @@ namespace narcissus {
             ccr.interrupt_mask = 1;
         }
 
+        auto h8_300::closing(void) -> void
+        {
+            memory.flush();
+        }
+
         auto h8_300::cycle() -> std::uint32_t
         {
 //             std::cout << "pc : 0x" << std::hex << pc << std::endl;

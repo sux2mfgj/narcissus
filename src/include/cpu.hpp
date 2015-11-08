@@ -158,6 +158,9 @@ namespace narcissus {
             public:
                 auto cycle(void) -> std::uint32_t;
                 auto reset_exception(void) -> void;
+
+                //TODO move to destoractor?
+                auto closing() -> void;
                 
             private:
                 auto detect_operation(void) -> operation;

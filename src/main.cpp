@@ -97,6 +97,8 @@ int main(int argc, char const* argv[])
 
     }
 
+    cpu->closing();
+
     //command:
     //  - [c] continue
     //  - [p] print registers
