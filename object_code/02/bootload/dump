@@ -1,0 +1,451 @@
+
+kzload.elf:     file format elf32-h8300
+
+
+Disassembly of section .vectors:
+
+00000000 <_vectors>:
+   0:	00 00       	nop	
+   2:	01 00       	.word	H'1,H'0
+	...
+
+Disassembly of section .text:
+
+00000100 <_start>:
+ 100:	7a 07 00 ff 	mov.l	#0xffff00,er7
+ 104:	ff 00 
+ 106:	5e 00 01 0c 	jsr	@0x10c:24
+
+0000010a <.L11>:
+ 10a:	40 fe       	bra	.-2 (0x10a)
+
+0000010c <_main>:
+ 10c:	01 00 6d f6 	mov.l	er6,@-er7
+ 110:	0f f6       	mov.l	er7,er6
+ 112:	79 00 00 01 	mov.w	#0x1,r0
+ 116:	5e 00 03 2c 	jsr	@0x32c:24
+ 11a:	7a 00 00 00 	mov.l	#0x3dc,er0
+ 11e:	03 dc 
+ 120:	5e 00 02 a4 	jsr	@0x2a4:24
+
+/*
+ * putxval(0x10, 0); 
+ * putxval(er0, r1);
+ */
+// r1 = 0
+ 124:	19 11       	sub.w	r1,r1
+//er0 = 0
+ 126:	1a 80       	sub.l	er0,er0
+//r0l = 0x10
+ 128:	88 10       	add.b	#0x10,r0l
+ 12a:	5e 00 02 c8 	jsr	@0x2c8:24 // putxval
+
+ 12e:	7a 00 00 00 	mov.l	#0x3e8,er0
+ 132:	03 e8 
+ 134:	5e 00 02 a4 	jsr	@0x2a4:24
+ 138:	19 11       	sub.w	r1,r1
+ 13a:	1a 80       	sub.l	er0,er0
+ 13c:	1b 50       	dec.w	#1,r0
+ 13e:	5e 00 02 c8 	jsr	@0x2c8:24
+
+//puts("\n");
+ 142:	7a 00 00 00 	mov.l	#0x3e8,er0
+ 146:	03 e8 
+ 148:	5e 00 02 a4 	jsr	@0x2a4:24
+
+0000014c <.L2>:
+ 14c:	40 fe       	bra	.-2 (0x14c)
+
+0000014e <_memset>:
+ 14e:	01 00 6d f6 	mov.l	er6,@-er7
+ 152:	0f f6       	mov.l	er7,er6
+ 154:	0f 83       	mov.l	er0,er3
+
+00000156 <.L8>:
+ 156:	0f a2       	mov.l	er2,er2
+ 158:	4f 08       	ble	.+8 (0x162)
+ 15a:	68 b9       	mov.b	r1l,@er3
+ 15c:	0b 03       	adds	#1,er3
+ 15e:	1b 02       	subs	#1,er2
+ 160:	40 f4       	bra	.-12 (0x156)
+
+00000162 <.L7>:
+ 162:	01 00 6d 76 	mov.l	@er7+,er6
+ 166:	54 70       	rts	
+
+00000168 <_memcpy>:
+ 168:	01 00 6d f6 	mov.l	er6,@-er7
+ 16c:	0f f6       	mov.l	er7,er6
+ 16e:	01 00 6d f4 	mov.l	er4,@-er7
+ 172:	0f 84       	mov.l	er0,er4
+ 174:	0f a3       	mov.l	er2,er3
+
+00000176 <.L16>:
+ 176:	0f b3       	mov.l	er3,er3
+ 178:	4f 0a       	ble	.+10 (0x184)
+ 17a:	6c 1a       	mov.b	@er1+,r2l
+ 17c:	68 8a       	mov.b	r2l,@er0
+ 17e:	0b 00       	adds	#1,er0
+ 180:	1b 03       	subs	#1,er3
+ 182:	40 f2       	bra	.-14 (0x176)
+
+00000184 <.L15>:
+ 184:	0f c0       	mov.l	er4,er0
+ 186:	01 00 6d 74 	mov.l	@er7+,er4
+ 18a:	01 00 6d 76 	mov.l	@er7+,er6
+ 18e:	54 70       	rts	
+
+00000190 <_memcmp>:
+ 190:	01 00 6d f6 	mov.l	er6,@-er7
+ 194:	0f f6       	mov.l	er7,er6
+ 196:	01 00 6d f4 	mov.l	er4,@-er7
+ 19a:	0f 84       	mov.l	er0,er4
+
+0000019c <.L27>:
+ 19c:	0f a2       	mov.l	er2,er2
+ 19e:	4f 1e       	ble	.+30 (0x1be)
+ 1a0:	68 48       	mov.b	@er4,r0l
+ 1a2:	68 1b       	mov.b	@er1,r3l
+ 1a4:	1c b8       	cmp.b	r3l,r0l
+ 1a6:	47 0e       	beq	.+14 (0x1b6)
+ 1a8:	43 06       	bls	.+6 (0x1b0)
+ 1aa:	79 00 00 01 	mov.w	#0x1,r0
+ 1ae:	40 10       	bra	.+16 (0x1c0)
+
+000001b0 <.L22>:
+ 1b0:	79 00 ff ff 	mov.w	#0xffff,r0
+ 1b4:	40 0a       	bra	.+10 (0x1c0)
+
+000001b6 <.L21>:
+ 1b6:	0b 04       	adds	#1,er4
+ 1b8:	0b 01       	adds	#1,er1
+ 1ba:	1b 02       	subs	#1,er2
+ 1bc:	40 de       	bra	.-34 (0x19c)
+
+000001be <.L26>:
+ 1be:	19 00       	sub.w	r0,r0
+
+000001c0 <.L17>:
+ 1c0:	01 00 6d 74 	mov.l	@er7+,er4
+ 1c4:	01 00 6d 76 	mov.l	@er7+,er6
+ 1c8:	54 70       	rts	
+
+000001ca <_strlen>:
+ 1ca:	01 00 6d f6 	mov.l	er6,@-er7
+ 1ce:	0f f6       	mov.l	er7,er6
+ 1d0:	19 33       	sub.w	r3,r3
+
+000001d2 <.L35>:
+ 1d2:	68 0a       	mov.b	@er0,r2l
+ 1d4:	47 06       	beq	.+6 (0x1dc)
+ 1d6:	0b 00       	adds	#1,er0
+ 1d8:	0b 03       	adds	#1,er3
+ 1da:	40 f6       	bra	.-10 (0x1d2)
+
+000001dc <.L34>:
+ 1dc:	0d 30       	mov.w	r3,r0
+ 1de:	01 00 6d 76 	mov.l	@er7+,er6
+ 1e2:	54 70       	rts	
+
+000001e4 <_strcpy>:
+ 1e4:	01 00 6d f6 	mov.l	er6,@-er7
+ 1e8:	0f f6       	mov.l	er7,er6
+ 1ea:	0f 83       	mov.l	er0,er3
+
+000001ec <.L37>:
+ 1ec:	68 1a       	mov.b	@er1,r2l
+ 1ee:	68 8a       	mov.b	r2l,@er0
+ 1f0:	68 1a       	mov.b	@er1,r2l
+ 1f2:	47 06       	beq	.+6 (0x1fa)
+ 1f4:	0b 00       	adds	#1,er0
+ 1f6:	0b 01       	adds	#1,er1
+ 1f8:	40 f2       	bra	.-14 (0x1ec)
+
+000001fa <.L38>:
+ 1fa:	0f b0       	mov.l	er3,er0
+ 1fc:	01 00 6d 76 	mov.l	@er7+,er6
+ 200:	54 70       	rts	
+
+00000202 <_strcmp>:
+ 202:	01 00 6d f6 	mov.l	er6,@-er7
+ 206:	0f f6       	mov.l	er7,er6
+
+00000208 <.L55>:
+ 208:	68 0a       	mov.b	@er0,r2l
+ 20a:	46 04       	bne	.+4 (0x210)
+ 20c:	68 1a       	mov.b	@er1,r2l
+ 20e:	47 1c       	beq	.+28 (0x22c)
+
+00000210 <.L53>:
+ 210:	68 0b       	mov.b	@er0,r3l
+ 212:	68 1a       	mov.b	@er1,r2l
+ 214:	1c ab       	cmp.b	r2l,r3l
+ 216:	47 0e       	beq	.+14 (0x226)
+ 218:	43 06       	bls	.+6 (0x220)
+ 21a:	79 00 00 01 	mov.w	#0x1,r0
+ 21e:	40 0e       	bra	.+14 (0x22e)
+
+00000220 <.L46>:
+ 220:	79 00 ff ff 	mov.w	#0xffff,r0
+ 224:	40 08       	bra	.+8 (0x22e)
+
+00000226 <.L45>:
+ 226:	0b 00       	adds	#1,er0
+ 228:	0b 01       	adds	#1,er1
+ 22a:	40 dc       	bra	.-36 (0x208)
+
+0000022c <.L50>:
+ 22c:	19 00       	sub.w	r0,r0
+
+0000022e <.L41>:
+ 22e:	01 00 6d 76 	mov.l	@er7+,er6
+ 232:	54 70       	rts	
+
+00000234 <_strncmp>:
+ 234:	01 00 6d f6 	mov.l	er6,@-er7
+ 238:	0f f6       	mov.l	er7,er6
+ 23a:	01 00 6d f4 	mov.l	er4,@-er7
+ 23e:	0f 84       	mov.l	er0,er4
+ 240:	0d 20       	mov.w	r2,r0
+ 242:	40 1a       	bra	.+26 (0x25e)
+
+00000244 <.L63>:
+ 244:	68 1a       	mov.b	@er1,r2l
+ 246:	1c ab       	cmp.b	r2l,r3l
+ 248:	47 0e       	beq	.+14 (0x258)
+ 24a:	43 06       	bls	.+6 (0x252)
+ 24c:	79 00 00 01 	mov.w	#0x1,r0
+ 250:	40 1a       	bra	.+26 (0x26c)
+
+00000252 <.L61>:
+ 252:	79 00 ff ff 	mov.w	#0xffff,r0
+ 256:	40 14       	bra	.+20 (0x26c)
+
+00000258 <.L60>:
+ 258:	0b 04       	adds	#1,er4
+ 25a:	0b 01       	adds	#1,er1
+ 25c:	1b 00       	subs	#1,er0
+
+0000025e <.L57>:
+ 25e:	68 4b       	mov.b	@er4,r3l
+ 260:	46 04       	bne	.+4 (0x266)
+ 262:	68 1a       	mov.b	@er1,r2l
+ 264:	47 04       	beq	.+4 (0x26a)
+
+00000266 <.L59>:
+ 266:	0d 00       	mov.w	r0,r0
+ 268:	4e da       	bgt	.-38 (0x244)
+
+0000026a <.L58>:
+ 26a:	19 00       	sub.w	r0,r0
+
+0000026c <.L56>:
+ 26c:	01 00 6d 74 	mov.l	@er7+,er4
+ 270:	01 00 6d 76 	mov.l	@er7+,er6
+ 274:	54 70       	rts	
+
+00000276 <_putc>:
+ 276:	01 00 6d f6 	mov.l	er6,@-er7
+ 27a:	0f f6       	mov.l	er7,er6
+ 27c:	01 00 6d f4 	mov.l	er4,@-er7
+ 280:	0c 8c       	mov.b	r0l,r4l
+ 282:	a8 0a       	cmp.b	#0xa,r0l
+ 284:	46 0a       	bne	.+10 (0x290)
+ 286:	f9 0d       	mov.b	#0xd,r1l
+ 288:	79 00 00 01 	mov.w	#0x1,r0
+ 28c:	5e 00 03 86 	jsr	@0x386:24
+
+00000290 <.L65>:
+ 290:	0c c9       	mov.b	r4l,r1l
+ 292:	79 00 00 01 	mov.w	#0x1,r0
+ 296:	5e 00 03 86 	jsr	@0x386:24
+ 29a:	01 00 6d 74 	mov.l	@er7+,er4
+ 29e:	01 00 6d 76 	mov.l	@er7+,er6
+ 2a2:	54 70       	rts	
+
+000002a4 <_puts>:
+ 2a4:	01 00 6d f6 	mov.l	er6,@-er7
+ 2a8:	0f f6       	mov.l	er7,er6
+ 2aa:	01 00 6d f4 	mov.l	er4,@-er7
+ 2ae:	0f 84       	mov.l	er0,er4
+
+000002b0 <.L72>:
+ 2b0:	68 4a       	mov.b	@er4,r2l
+ 2b2:	47 08       	beq	.+8 (0x2bc)
+ 2b4:	6c 48       	mov.b	@er4+,r0l
+ 2b6:	5e 00 02 76 	jsr	@0x276:24
+ 2ba:	40 f4       	bra	.-12 (0x2b0)
+
+000002bc <.L71>:
+ 2bc:	19 00       	sub.w	r0,r0
+ 2be:	01 00 6d 74 	mov.l	@er7+,er4
+ 2c2:	01 00 6d 76 	mov.l	@er7+,er6
+ 2c6:	54 70       	rts	
+
+000002c8 <_putxval>:
+ 2c8:	01 00 6d f6 	mov.l	er6,@-er7
+ 2cc:	0f f6       	mov.l	er7,er6
+ 2ce:	7a 17 ff ff 	add.l	#0xfffffff4,er7
+ 2d2:	ff f4 
+ 2d4:	18 aa       	sub.b	r2l,r2l
+ 2d6:	6e ea ff fc 	mov.b	r2l,@(0xfffc:16,er6)
+ 2da:	0f e3       	mov.l	er6,er3
+ 2dc:	1b 93       	subs	#4,er3
+ 2de:	1b 03       	subs	#1,er3
+
+// 		if(!value && !column) {
+//			column++;
+//		}
+ 2e0:	0f 80       	mov.l	er0,er0 // value
+ 2e2:	46 06       	bne	.+6 (0x2ea) 
+ 2e4:	0d 11       	mov.w	r1,r1   // column
+ 2e6:	46 02       	bne	.+2 (0x2ea)
+ 2e8:	0b 01       	adds	#1,er1
+
+// r2l = "0123456789abcdef"[value & 0xf];
+000002ea <.L86>:
+ 2ea:	1a a2       	sub.l	er2,er2 // er2 = 0;
+ 2ec:	0c 8a       	mov.b	r0l,r2l // r2l = value
+ 2ee:	ea 0f       	and.b	#0xf,r2l // r2l = value & 0xf
+ 2f0:	78 20 6a 2a 	mov.b	@(0x3ea:32,er2),r2l
+ 2f4:	00 00 03 ea 
+
+
+// *p = r2l 
+ 2f8:	68 ba       	mov.b	r2l,@er3
+
+// p--
+ 2fa:	1b 03       	subs	#1,er3
+
+// er2 = value
+ 2fc:	0f 82       	mov.l	er0,er2
+// er2 >> 4 ;(value >> 4)
+ 2fe:	11 32       	shlr.l	er2
+ 300:	11 32       	shlr.l	er2
+ 302:	11 32       	shlr.l	er2
+ 304:	11 32       	shlr.l	er2
+
+//er0 = (value >> 4)
+ 306:	0f a0       	mov.l	er2,er0
+
+//if (column) column--;
+ 308:	0d 11       	mov.w	r1,r1
+ 30a:	47 02       	beq	.+2 (0x30e)
+ 30c:	1b 01       	subs	#1,er1
+
+0000030e <.L75>:
+while(value || column)
+ 30e:	0f a2       	mov.l	er2,er2
+ 310:	46 d8       	bne	.-40 (0x2ea)
+ 312:	0d 11       	mov.w	r1,r1
+ 314:	46 d4       	bne	.-44 (0x2ea)
+
+//er0 = p
+ 316:	0f b0       	mov.l	er3,er0
+// er0++;
+ 318:	0b 00       	adds	#1,er0
+ 31a:	5e 00 02 a4 	jsr	@0x2a4:24
+
+//stack 
+ 31e:	19 00       	sub.w	r0,r0
+ 320:	7a 17 00 00 	add.l	#0xc,er7
+ 324:	00 0c 
+ 326:	01 00 6d 76 	mov.l	@er7+,er6
+ 32a:	54 70       	rts	
+
+0000032c <_serial_init>:
+ 32c:	01 00 6d f6 	mov.l	er6,@-er7
+ 330:	0f f6       	mov.l	er7,er6
+ 332:	17 f0       	exts.l	er0
+ 334:	10 30       	shll.l	er0
+ 336:	10 30       	shll.l	er0
+ 338:	01 00 78 00 	mov.l	@(0x3fc:32,er0),er3
+ 33c:	6b 23 00 00 
+ 340:	03 fc 
+ 342:	18 88       	sub.b	r0l,r0l
+ 344:	6e b8 00 02 	mov.b	r0l,@(0x2:16,er3)
+ 348:	68 b8       	mov.b	r0l,@er3
+ 34a:	fa 40       	mov.b	#0x40,r2l
+ 34c:	6e ba 00 01 	mov.b	r2l,@(0x1:16,er3)
+ 350:	fa 30       	mov.b	#0x30,r2l
+ 352:	6e ba 00 02 	mov.b	r2l,@(0x2:16,er3)
+ 356:	6e b8 00 04 	mov.b	r0l,@(0x4:16,er3)
+ 35a:	19 00       	sub.w	r0,r0
+ 35c:	01 00 6d 76 	mov.l	@er7+,er6
+ 360:	54 70       	rts	
+
+00000362 <_serial_is_send_enable>:
+ 362:	01 00 6d f6 	mov.l	er6,@-er7
+ 366:	0f f6       	mov.l	er7,er6
+ 368:	17 f0       	exts.l	er0
+ 36a:	10 30       	shll.l	er0
+ 36c:	10 30       	shll.l	er0
+ 36e:	01 00 78 00 	mov.l	@(0x3fc:32,er0),er2
+ 372:	6b 22 00 00 
+ 376:	03 fc 
+ 378:	6e 28 00 04 	mov.b	@(0x4:16,er2),r0l
+ 37c:	79 60 00 80 	and.w	#0x80,r0
+ 380:	01 00 6d 76 	mov.l	@er7+,er6
+ 384:	54 70       	rts	
+
+00000386 <_serial_send_byte>:
+ 386:	01 00 6d f6 	mov.l	er6,@-er7
+ 38a:	0f f6       	mov.l	er7,er6
+ 38c:	1b 97       	subs	#4,er7
+ 38e:	01 00 6d f4 	mov.l	er4,@-er7
+ 392:	01 00 6d f5 	mov.l	er5,@-er7
+ 396:	0d 05       	mov.w	r0,r5
+ 398:	6e e9 ff ff 	mov.b	r1l,@(0xffff:16,er6)
+ 39c:	0d 02       	mov.w	r0,r2
+ 39e:	17 f2       	exts.l	er2
+ 3a0:	10 32       	shll.l	er2
+ 3a2:	10 32       	shll.l	er2
+ 3a4:	01 00 78 20 	mov.l	@(0x3fc:32,er2),er4
+ 3a8:	6b 24 00 00 
+ 3ac:	03 fc 
+
+000003ae <.L4>:
+ 3ae:	0d 50       	mov.w	r5,r0
+ 3b0:	5e 00 03 62 	jsr	@0x362:24
+ 3b4:	0d 00       	mov.w	r0,r0
+ 3b6:	47 f6       	beq	.-10 (0x3ae)
+ 3b8:	6e 6a ff ff 	mov.b	@(0xffff:16,er6),r2l
+ 3bc:	6e ca 00 03 	mov.b	r2l,@(0x3:16,er4)
+ 3c0:	6e 4a 00 04 	mov.b	@(0x4:16,er4),r2l
+ 3c4:	ea 7f       	and.b	#0x7f,r2l
+ 3c6:	6e ca 00 04 	mov.b	r2l,@(0x4:16,er4)
+ 3ca:	19 00       	sub.w	r0,r0
+ 3cc:	01 00 6d 75 	mov.l	@er7+,er5
+ 3d0:	01 00 6d 74 	mov.l	@er7+,er4
+ 3d4:	0b 97       	adds	#4,er7
+ 3d6:	01 00 6d 76 	mov.l	@er7+,er6
+ 3da:	54 70       	rts	
+
+Disassembly of section .rodata:
+
+000003dc <.rodata>:
+ 3dc:	48 65       	.word	H'48,H'65
+ 3de:	6c 6c       	mov.b	@er6+,r4l
+ 3e0:	6f 20 57 6f 	mov.w	@(0x576f:16,er2),r0
+ 3e4:	72 6c       	bclr	#0x6,r4l
+ 3e6:	64 21       	or.w	r2,r1
+ 3e8:	0a 00       	inc	r0h
+ 3ea:	30 31       	mov.b	r0h,@0x31:8
+ 3ec:	32 33       	mov.b	r2h,@0x33:8
+ 3ee:	34 35       	mov.b	r4h,@0x35:8
+ 3f0:	36 37       	mov.b	r6h,@0x37:8
+ 3f2:	38 39       	mov.b	r0l,@0x39:8
+ 3f4:	61 62       	bnot	r6h,r2h
+ 3f6:	63 64       	btst	r6h,r4h
+ 3f8:	65 66       	xor.w	r6,r6
+	...
+
+Disassembly of section .data:
+
+000003fc <_regs>:
+ 3fc:	00 ff       	.word	H'0,H'ff
+ 3fe:	ff b0       	mov.b	#0xb0,r7l
+ 400:	00 ff       	.word	H'0,H'ff
+ 402:	ff b8       	mov.b	#0xb8,r7l
+ 404:	00 ff       	.word	H'0,H'ff
+ 406:	ff c0       	mov.b	#0xc0,r7l

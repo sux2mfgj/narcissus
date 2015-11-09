@@ -23,6 +23,7 @@ namespace narcissus {
             SUB_B_R_R,                      // substruct rd from rs
             SUB_W_R_R,
             SUB_L_R_R,
+            SUB_L_IMM_R,
 
             SUB_WITH_SIGN_EXT_1,
 //             SUB_WITH_SIGN_EXT_2,
@@ -251,6 +252,7 @@ namespace narcissus {
                 FRIEND_TEST(MOV_B_R_IND_R, 0);
                 FRIEND_TEST(MOV_B_R_R_IND, 0);
                 FRIEND_TEST(ADDS_1, 0);
+                FRIEND_TEST(SUB_L_IMM_R, 0);
         };
 
     }  // namespace cpu

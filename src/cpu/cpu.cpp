@@ -251,6 +251,23 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::SUB_L_IMM_R:
+                {
+                    auto erd = read_register_fields(pc + 1, value_place::low, true);
+
+                    auto imm = read_immediate(pc + 2, 2);
+
+                    auto erd_value = read_register(erd, register_size::LONG);
+
+                    auto result = erd_value  - imm;
+
+                    write_register(erd, result, register_size::LONG);
+
+                    update_ccr_sub(erd_value, imm, result, register_size::LONG);
+                    pc += 4; 
+                    break;
+                }
+
                 case operation::SUB_WITH_SIGN_EXT_1:
                 {
                     auto erd = read_register_fields(pc + 1, value_place::low, true);
@@ -1046,6 +1063,13 @@ namespace narcissus {
                                     return operation::MOV_L_IMM;
                                 case 1:
                                     return operation::ADD_L_IMM_R;
+                                case 3:
+                                    if((bl & 0x8) == 0x0)
+                                    {
+                                        return operation::SUB_L_IMM_R;
+                                    }
+                                    return operation::INVALID;
+
                                 default:
                                     return operation::INVALID;
                             }
