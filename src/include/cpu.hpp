@@ -66,6 +66,7 @@ namespace narcissus {
             BEQ,                        // branch equal
             BRA,                        // branch always(true)
             BNE,                        // branch not equal
+            BLE_8,                      // branch less or equal
 
             CMP_B_IMM,                  // compare register and immediate
 
@@ -253,6 +254,7 @@ namespace narcissus {
                 FRIEND_TEST(MOV_B_R_R_IND, 0);
                 FRIEND_TEST(ADDS_1, 0);
                 FRIEND_TEST(SUB_L_IMM_R, 0);
+                FRIEND_TEST(BLE_8, 0);
         };
 
     }  // namespace cpu

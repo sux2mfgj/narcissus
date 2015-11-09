@@ -1348,11 +1348,14 @@ namespace narcissus {
             mem[3] = 0x00;
 
             //7a 32 00 ff     
+            //fc 30
             //sub.l   #0xfffc20,er2
             mem[0x100] = 0x7a;
             mem[0x101] = 0x32;
             mem[0x102] = 0x00;
             mem[0x103] = 0xff;
+            mem[0x104] = 0xfc;
+            mem[0x105] = 0x20;
 
             auto cpu = std::make_shared<cpu::h8_300>(move(mem));
             cpu->reset_exception();
@@ -1360,9 +1363,33 @@ namespace narcissus {
             cpu->er[2].er = 0x12345678;
 
             ASSERT_EQ(cpu::operation::SUB_L_IMM_R, cpu->detect_operation());
-            ASSERT_EQ(0x104, cpu->cycle());
+            ASSERT_EQ(0x106, cpu->cycle());
 
-            ASSERT_EQ(0x12345678 - (std::int32_t)0xfffc20, cpu->er[2].er);
+            ASSERT_EQ(0x12345678 - 0xfffc20, cpu->er[2].er);
+        }
+
+        TEST(BLE_8, 0)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            //4f 0a           
+            //ble .+0xa (0x104 + 0xa)
+            mem[0x100] = 0x4f;
+            mem[0x101] = 0x0a;
+
+            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            cpu->reset_exception();
+
+            cpu->ccr.zero = 0;
+            cpu->ccr.negative = 0;
+            cpu->ccr.over_flow = 1;
+
+            ASSERT_EQ(cpu::operation::BLE_8, cpu->detect_operation());
+            ASSERT_EQ(0x102 + 0xa, cpu->cycle());
         }
 
     }  // namespace cpu

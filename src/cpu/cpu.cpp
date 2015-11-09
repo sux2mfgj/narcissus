@@ -251,20 +251,22 @@ namespace narcissus {
                     break;
                 }
 
+                // h8/300h シリーズ　プログラミングマニュアルに無い？
                 case operation::SUB_L_IMM_R:
                 {
                     auto erd = read_register_fields(pc + 1, value_place::low, true);
 
-                    auto imm = read_immediate(pc + 2, 2);
+                    auto imm = read_immediate(pc + 2, 4);
 
                     auto erd_value = read_register(erd, register_size::LONG);
 
                     auto result = erd_value  - imm;
 
+                    std::cout << result << ": " << erd_value << ": " << imm << std::endl;
                     write_register(erd, result, register_size::LONG);
 
                     update_ccr_sub(erd_value, imm, result, register_size::LONG);
-                    pc += 4; 
+                    pc += 6; 
                     break;
                 }
 
@@ -604,6 +606,18 @@ namespace narcissus {
                     pc += 2;
                     if(ccr.zero == 0) {
                         pc += (std::int8_t)disp;
+                    }
+                    break;
+                }
+
+                case operation::BLE_8:
+                {
+                    auto disp = read_immediate(pc + 1, 1);
+
+                    pc += 2;
+                    if(ccr.zero || (ccr.negative ^ ccr.over_flow))
+                    {
+                        pc += disp;
                     }
                     break;
                 }
@@ -950,6 +964,9 @@ namespace narcissus {
 
                         case 7:
                             return operation::BEQ;
+
+                        case 0xf:
+                            return operation::BLE_8;
 
                         default:
                             return operation::INVALID;
