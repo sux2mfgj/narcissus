@@ -9,7 +9,11 @@ namespace narcissus {
 
         h8_300::h8_300(std::array<std::uint8_t, ROM_SIZE>&& mem)
             : er(), sp(), ccr(), pc(), memory(move(mem))
+        {}
+
+        h8_300::~h8_300()
         {
+            memory.flush();
         }
 
         auto h8_300::reset_exception() -> void
@@ -23,10 +27,12 @@ namespace narcissus {
             ccr.interrupt_mask = 1;
         }
 
-        auto h8_300::closing(void) -> void
-        {
-            memory.flush();
-        }
+
+
+//         auto h8_300::closing(void) -> void
+//         {
+//             memory.flush();
+//         }
 
         auto h8_300::cycle() -> std::uint32_t
         {

@@ -97,7 +97,7 @@ int main(int argc, char const* argv[])
 
     }
 
-    cpu->closing();
+//     cpu->closing();
 
     //command:
     //  - [c] continue
