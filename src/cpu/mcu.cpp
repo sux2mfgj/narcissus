@@ -15,7 +15,6 @@ namespace narcissus {
 //             sci[2](0xffffc0);
         }
 
-
         auto mcu::operator[] (std::uint32_t address)
             -> std::uint8_t&
         {
