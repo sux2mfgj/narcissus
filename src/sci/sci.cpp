@@ -95,7 +95,7 @@ namespace narcissus {
                 if(!(ssr & (std::uint8_t)ssr_bits::rdrf)){
                     char c;
 
-                    if(input_buffer.size() != 0){
+                    if(input_buffer.size() == 0){
                         std::string tmp;
                         std::cin >> tmp;
 
@@ -103,6 +103,7 @@ namespace narcissus {
                         {
                             input_buffer.push(t);
                         }
+                        input_buffer.push('\r');
                     }
                     c = input_buffer.front();
                     input_buffer.pop();
