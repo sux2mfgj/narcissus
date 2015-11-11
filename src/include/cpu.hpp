@@ -63,10 +63,16 @@ namespace narcissus {
 //             MOV_L_R_IND_WITH_DIS_24, // register to memory
             MOV_L_R_IND_POST_INC,
 
-            BEQ,                        // branch equal
-            BRA,                        // branch always(true)
-            BNE,                        // branch not equal
+            BEQ_8,                        // branch equal
+//             BEQ_16,                        // branch equal
+            BRA_8,                        // branch always(true)
+//             BRA_16,                        // branch always(true)
+            BNE_8,                        // branch not equal
+//             BNE_16,                        // branch not equal
             BLE_8,                      // branch less or equal
+//             BLE_16,                      // branch less or equal
+            BLS_8,                     // branch low or same
+//             BLS_16,                     // branch low or same
 
             CMP_B_IMM,                  // compare register and immediate
             CMP_B_R_R,                  // compare register and  register
@@ -229,13 +235,13 @@ namespace narcissus {
                 FRIEND_TEST(SUB_W_R_R, 1);
                 FRIEND_TEST(RTS, 0);
                 FRIEND_TEST(MOV_L_R_IND_POST_INC, 0);
-                FRIEND_TEST(BEQ, 0);
-                FRIEND_TEST(BRA, 0);
+                FRIEND_TEST(BEQ_8, 0);
+                FRIEND_TEST(BRA_8, 0);
                 FRIEND_TEST(MOV_B_R_IND_POST_INC, 0);
                 FRIEND_TEST(MOV_B_R_R, 0);
                 FRIEND_TEST(CMP_B_IMM, 0);
                 FRIEND_TEST(CMP_B_IMM, 1);
-                FRIEND_TEST(BNE, 0);
+                FRIEND_TEST(BNE_8, 0);
                 FRIEND_TEST(SUB_WITH_SIGN_EXT_4, 0);
                 FRIEND_TEST(MOV_W_R_R, 0);
                 FRIEND_TEST(EXTS_L, 1);
@@ -260,6 +266,7 @@ namespace narcissus {
                 FRIEND_TEST(MOV_W_R_ABS_24, 0);
                 FRIEND_TEST(EXTU_W, 0);
                 FRIEND_TEST(CMP_B_R_R, 0);
+                FRIEND_TEST(BLS_8, 0);
         };
 
     }  // namespace cpu

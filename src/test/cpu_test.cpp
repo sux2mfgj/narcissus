@@ -695,7 +695,7 @@ namespace narcissus {
             ASSERT_EQ(0b10000000, cpu->ccr.byte);
         }
         //bcc
-        TEST(BEQ, 0)
+        TEST(BEQ_8, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -714,11 +714,11 @@ namespace narcissus {
             cpu->ccr.zero = 1;
             //             std::cout << "zero :" << cpu->ccr.zero << std::endl;
 
-            ASSERT_EQ(cpu::operation::BEQ, cpu->detect_operation());
+            ASSERT_EQ(cpu::operation::BEQ_8, cpu->detect_operation());
             ASSERT_EQ(0x10a, cpu->cycle());
         }
 
-        TEST(BRA, 0)
+        TEST(BRA_8, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -734,11 +734,11 @@ namespace narcissus {
             auto cpu = std::make_shared<cpu::h8_300>(move(mem));
             cpu->reset_exception();
 
-            ASSERT_EQ(cpu::operation::BRA, cpu->detect_operation());
+            ASSERT_EQ(cpu::operation::BRA_8, cpu->detect_operation());
             ASSERT_EQ(0x100, cpu->cycle());
         }
 
-        TEST(BNE, 0)
+        TEST(BNE_8, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -756,7 +756,7 @@ namespace narcissus {
 
             cpu->ccr.zero = 0;
 
-            ASSERT_EQ(cpu::operation::BNE, cpu->detect_operation());
+            ASSERT_EQ(cpu::operation::BNE_8, cpu->detect_operation());
             ASSERT_EQ(0x102 + 0xa, cpu->cycle());
 
 
@@ -1503,6 +1503,28 @@ namespace narcissus {
 
             //TODO
 //             ASSERT_EQ(0x80000000, cpu->ccr.byte);
+        }
+
+        TEST(BLS_8, 0)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            //43 06           
+            //bls .+6 (0x376)
+            mem[0x100] = 0x43;
+            mem[0x101] = 0x06;
+
+            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            cpu->reset_exception();
+
+            cpu->ccr.carry = 1;
+
+            ASSERT_EQ(cpu::operation::BLS_8, cpu->detect_operation());
+            ASSERT_EQ(0x102 + 6, cpu->cycle());
         }
 
     }  // namespace cpu

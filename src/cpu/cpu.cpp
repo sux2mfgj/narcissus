@@ -597,7 +597,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::BEQ: 
+                case operation::BEQ_8: 
                 {
                     auto disp = memory[pc + 1];
 
@@ -610,7 +610,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::BRA: 
+                case operation::BRA_8: 
                 {
                     auto disp = (std::int8_t)memory[pc + 1];
                     pc += 2;
@@ -619,7 +619,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::BNE:
+                case operation::BNE_8:
                 {
                     auto disp = memory[pc + 1];
                     pc += 2;
@@ -638,6 +638,18 @@ namespace narcissus {
                     {
                         pc += disp;
                     }
+                    break;
+                }
+
+                case operation::BLS_8:
+                {
+                    auto disp = read_immediate(pc + 1, 1);
+                    
+                    if(ccr.carry || ccr.zero){
+                        pc += disp;
+                    }
+                    pc += 2;
+
                     break;
                 }
 
@@ -1004,13 +1016,16 @@ namespace narcissus {
                 case 4:
                     switch (al) {
                         case 0:
-                            return operation::BRA;
+                            return operation::BRA_8;
+
+                        case 3:
+                            return operation::BLS_8;
 
                         case 6:
-                            return operation::BNE;
+                            return operation::BNE_8;
 
                         case 7:
-                            return operation::BEQ;
+                            return operation::BEQ_8;
 
                         case 0xf:
                             return operation::BLE_8;
