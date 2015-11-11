@@ -629,6 +629,18 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::BNE_16:
+                {
+
+                    auto disp = read_immediate(pc + 2, 2);
+                    if(ccr.zero == 0){
+                        pc += (std::int16_t)disp;
+                    }
+                    pc += 4;
+                    break;
+
+                }
+
                 case operation::BLE_8:
                 {
                     auto disp = read_immediate(pc + 1, 1);
@@ -646,7 +658,7 @@ namespace narcissus {
                     auto disp = read_immediate(pc + 1, 1);
                     
                     if(ccr.carry || ccr.zero){
-                        pc += disp;
+                        pc += (std::uint8_t)disp;
                     }
                     pc += 2;
 
@@ -1043,6 +1055,19 @@ namespace narcissus {
                                         case 0x0:
                                             return operation::RTS;
 
+                                        default:
+                                            return operation::INVALID;
+                                    }
+                                default:
+                                    return operation::INVALID;
+                            }
+
+                        case 8:
+                            switch (bh) {
+                                case 6:
+                                    switch (bl) {
+                                        case 0:
+                                            return operation::BNE_16;
                                         default:
                                             return operation::INVALID;
                                     }
