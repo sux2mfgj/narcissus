@@ -9,7 +9,9 @@ namespace narcissus {
 
         sci::sci()
             : rsr(), rdr(), tsr(), tdr(), smr(), scr(), 
-            ssr((std::uint8_t)ssr_bits::rdrf), brr(), scmr(), access_flags(0)//, is_continue(true)
+            ssr((std::uint8_t)ssr_bits::rdrf), brr(), scmr(), access_flags(0)
+              ,input_buffer()
+              //, is_continue(true)
         {
 
 //             read_thread = std::thread(
@@ -93,8 +95,21 @@ namespace narcissus {
                 if(!(ssr & (std::uint8_t)ssr_bits::rdrf)){
                     //TODO 
                     //when read string, is some charcter lost?
+                    
                     char c;
-                    std::cin >> c;
+
+                    if(input_buffer.size() != 0){
+                        std::string tmp;
+                        std::cin >> tmp;
+
+                        for(auto t : tmp)
+                        {
+                            input_buffer.push(t);
+                        }
+                    }
+                    c = input_buffer.front();
+                    input_buffer.pop();
+
                     rdr = c;
 //                     cd.notify_one();
                     ssr |= (std::uint8_t)ssr_bits::rdrf;

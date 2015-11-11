@@ -105,19 +105,20 @@ namespace narcissus {
                 //                     break;
                 //                 }
 
-                //                 case ADD_L_R_R:
-                //                 {
-                //                     auto ers = (memory[pc + 1] & 0x70) >> 8;
-                //                     auto erd = memory[pc + 1] & 0x07;
+                case operation::ADD_L_R_R:
+                {
+                    auto ers = read_register_fields(pc + 1, value_place::high, true);
+                    auto erd = read_register_fields(pc + 1, value_place::low, true);
 
-                //                     if(!register_write_register(erd, ers,
-                //                     register_size::LONG)){
-                //                         return false;
-                //                     }
+                    auto ers_value = read_register(ers, register_size::LONG);
+                    auto erd_value = read_register(erd, register_size::LONG);
 
-                //                     pc += 2;
-                //                     break;
-                //                 }
+                    auto result = ers_value + erd_value;
+
+                    write_register(erd, result, register_size::LONG);
+                    pc += 2;
+                    break;
+                }
 
                 case operation::ADDS_4:
                 {
@@ -880,18 +881,10 @@ namespace narcissus {
                             //                             return operation::ADD_W_R_R;
                             return operation::INVALID;
                         case 0xa:
+                            if((bh & 0x8) && !(bl & 0x8)){
+                                return operation::ADD_L_R_R;
+                            }
                             switch (bh) {
-                                case 0x8:
-                                case 0x9:
-                                case 0xa:
-                                case 0xb:
-                                case 0xc:
-                                case 0xd:
-                                case 0xe:
-                                case 0xf:
-                                    //                                     return
-                                    //                                     operation::ADD_L_R_R;
-
                                 default:
                                     return operation::INVALID;
                             }

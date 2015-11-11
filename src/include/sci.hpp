@@ -2,9 +2,10 @@
 #include <gtest/gtest.h>
 
 #include <cstdint>
-#include <thread>
-#include <condition_variable>
-#include <mutex>
+#include <queue>
+// #include <thread>
+// #include <condition_variable>
+// #include <mutex>
 
 namespace narcissus {
     namespace sci {
@@ -51,6 +52,8 @@ namespace narcissus {
                 std::uint8_t scmr;
 
                 std::uint8_t access_flags;
+
+                std::queue<char> input_buffer;
 
 //                 bool is_continue;
 

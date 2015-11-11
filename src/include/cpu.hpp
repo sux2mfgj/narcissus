@@ -18,7 +18,7 @@ namespace narcissus {
 //             ADD_W_IMM,
 //             ADD_W_R_R,
 //             ADD_L_IMM,
-//             ADD_L_R_R,
+            ADD_L_R_R,
 
             SUB_B_R_R,                      // substruct rd from rs
             SUB_W_R_R,
@@ -209,7 +209,7 @@ namespace narcissus {
 //                 FRIEND_TEST(cpu, ADD_W_IMM);
 //                 FRIEND_TEST(cpu, ADD_W_R_R);
 //                 FRIEND_TEST(cpu, ADD_L_IMM);
-//                 FRIEND_TEST(cpu, ADD_L_R_R);
+                FRIEND_TEST(ADD_L_R_R, 0);
 
                 FRIEND_TEST(MOV_B_IMM, 0);
                 FRIEND_TEST(MOV_B_IMM, 1);

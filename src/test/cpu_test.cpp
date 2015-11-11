@@ -224,28 +224,30 @@ namespace narcissus {
         //             ASSERT_EQ(cpu->pc, 0x106);
         //         }
 
-        //         TEST(cpu, ADD_L_R_R)
-        //         {
-        //             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
-        //             mem[0] = 0x00;
-        //             mem[1] = 0x00;
-        //             mem[2] = 0x01;
-        //             mem[3] = 0x00;
+                TEST(ADD_L_R_R, 0)
+                {
+                    array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+                    mem[0] = 0x00;
+                    mem[1] = 0x00;
+                    mem[2] = 0x01;
+                    mem[3] = 0x00;
 
-        //             ADD.L re2, re1
-        //             mem[0x100] = 0x0a;
-        //             mem[0x101] = 0xa1;
+                    //0a d2           
+                    //add.l   er5,er2
+                    mem[0x100] = 0x0a;
+                    mem[0x101] = 0xd2;
 
-//         auto cpu = std::make_shared<cpu::h8_300>(move(mem));
-        //             cpu->reset_exception();
+                    auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+                    cpu->reset_exception();
 
-        //             cpu->er[2].er = 0x12345678;
+                    cpu->er[5].er = 0x12345678;
+                    cpu->er[2].er = 0x87654321;
 
-        //             ASSERT_EQ(cpu::operation::ADD_L_R_R, cpu->detect_operation());
-        //             ASSERT_EQ(true, cpu->cycle());
-        //             ASSERT_EQ(cpu->er[2].er, 0x12345678);
-        //             ASSERT_EQ(cpu->pc, 0x102);
-        //         }
+
+                    ASSERT_EQ(cpu::operation::ADD_L_R_R, cpu->detect_operation());
+                    ASSERT_EQ(0x102, cpu->cycle());
+                    ASSERT_EQ(0x99999999, cpu->er[2].er);
+                }
 
         // SUB
         TEST(SUB_B_R_R, 0)
