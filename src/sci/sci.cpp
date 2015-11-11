@@ -9,45 +9,44 @@ namespace narcissus {
 
         sci::sci()
             : rsr(), rdr(), tsr(), tdr(), smr(), scr(), 
-            ssr((std::uint8_t)ssr_bits::rdrf), brr(), scmr(), access_flags(0),
-            is_continue(true)
+            ssr((std::uint8_t)ssr_bits::rdrf), brr(), scmr(), access_flags(0)//, is_continue(true)
         {
 
-            read_thread = std::thread(
-                    [this]()
-                    {
-                        char c; 
+//             read_thread = std::thread(
+//                     [this]()
+//                     {
+//                         char c; 
 
-                        while (true) 
-                        {
-                            {
-                                std::unique_lock<std::mutex> lock(mtx);
+//                         while (true) 
+//                         {
+//                             {
+//                                 std::unique_lock<std::mutex> lock(mtx);
 
-                                cd.wait(lock, [this]{
-                                            return !(ssr & (std::uint8_t)ssr_bits::rdrf) || !is_continue;
-                                        });
+//                                 cd.wait(lock, [this]{
+//                                             return !(ssr & (std::uint8_t)ssr_bits::rdrf) || !is_continue;
+//                                         });
 
-                                if(!is_continue){
-                                    break;
-                                }
-                            }
+//                                 if(!is_continue){
+//                                     break;
+//                                 }
+//                             }
 
-                            std::cin >> c;
-                            rdr = c; 
-                            std::cout << "c: " << c << std::endl;
-                        }
-                    });
+//                             std::cin >> c;
+//                             rdr = c; 
+//                             std::cout << "c: " << c << std::endl;
+//                         }
+//                     });
         }
 
         sci::~sci()
         {
             work();
-            {
-                std::lock_guard<std::mutex> lock(mtx);
-                is_continue = false;
-            }
-            cd.notify_one();
-            read_thread.join();
+//             {
+//                 std::lock_guard<std::mutex> lock(mtx);
+//                 is_continue = false;
+//             }
+//             cd.notify_one();
+//             read_thread.join();
         }
 
         auto sci::operator[](std::uint32_t address) -> std::uint8_t&
@@ -79,15 +78,12 @@ namespace narcissus {
         auto sci::work() -> void
         {
 
-            
-            //             
             if(access_flags & (std::uint8_t)access_flag::ssr){
 
                 if((ssr & (std::uint8_t)ssr_bits::tdre) != (std::uint8_t)ssr_bits::tdre){
                     std::string s;
                     s.push_back(tdr);
                     if(tdr != 0xd){
-                        //                         std::clog << std::hex << " 0x" << (std::uint32_t)tdr << std::flush;
                         std::clog << (char)tdr << std::flush;
                     }
 

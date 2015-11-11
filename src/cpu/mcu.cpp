@@ -10,44 +10,6 @@ namespace narcissus {
             : rom(move(init_rom)), ram() //, is_contitue(true)
         {
             sci_1 = std::make_shared<sci::sci>();
-
-//             read_thread = std::thread(
-//                     [this]()
-//                     {
-//                         char c; 
-
-//                         while (true) 
-//                         {
-//                             {
-//                                 std::unique_lock<std::mutex> lock(mtx);
-
-//                                 cd.wait(lock, [this]{
-//                                         return !(ssr & (std::uint8_tssr_bits::rdrf) || !is_contitue;
-//                                         });
-
-//                                 if(!is_contitue){
-//                                     break;
-//                                 }
-//                             }
-
-//                             std::cin >> c;
-//                             rdr = c; // rdr = c;
-//                             ssr |= (std::uint8_t)ssr_bits::rdrf;
-//                         }
-//                         std::cout << "rdr : " << rdr << std::endl;
-
-//                     });
-        }
-
-        mcu::~mcu() 
-        {
-//             (*sci_1)[0x000000];
-//             {
-//                 std::lock_guard<std::mutex> lock(mtx);
-//                 is_contitue = false;
-//             }
-//             cd.notify_one();
-//             read_thread.join();
         }
 
         auto mcu::operator[] (std::uint32_t address)

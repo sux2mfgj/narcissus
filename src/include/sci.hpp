@@ -52,11 +52,11 @@ namespace narcissus {
 
                 std::uint8_t access_flags;
 
-                bool is_continue;
+//                 bool is_continue;
 
-                std::thread read_thread;
-                std::condition_variable cd;
-                std::mutex mtx;
+//                 std::thread read_thread;
+//                 std::condition_variable cd;
+//                 std::mutex mtx;
 
             private:
                 auto work(void) -> void;
