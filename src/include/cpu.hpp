@@ -83,6 +83,9 @@ namespace narcissus {
 
             JSR_ABS,                    // jump to subroutine use absolute address
             EXTS_L,                     // extend as signed
+
+            EXTU_W,                     // extend as unsigned
+
             RTS,
         };
 
@@ -254,6 +257,7 @@ namespace narcissus {
                 FRIEND_TEST(BLE_8, 0);
                 FRIEND_TEST(MOV_W_ASB_24_R, 0);
                 FRIEND_TEST(MOV_W_R_ABS_24, 0);
+                FRIEND_TEST(EXTU_W, 0);
         };
 
     }  // namespace cpu

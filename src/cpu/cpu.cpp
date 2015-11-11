@@ -736,6 +736,21 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::EXTU_W:
+                {
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
+
+                    auto rd_value = read_register(rd, register_size::WORD);
+
+                    auto result = rd_value & 0x00ff;
+
+                    write_register(rd, result, register_size::WORD);
+                    update_ccr_mov(result, register_size::WORD);
+
+                    pc += 2;
+                    break;
+                }
+
                 case operation::SHLL_L: 
                 {
                     auto erd = read_register_fields(pc + 1, value_place::low, true);
@@ -931,6 +946,9 @@ namespace narcissus {
                             }
                         case 7:
                             switch (bh) {
+                                case 5:
+                                    return operation::EXTU_W;
+
                                 case 0xf:
                                     return operation::EXTS_L;
 
