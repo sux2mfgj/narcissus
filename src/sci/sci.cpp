@@ -11,7 +11,7 @@ namespace narcissus {
             : rsr(), rdr(), tsr(), tdr(), smr(), scr(), 
             ssr((std::uint8_t)ssr_bits::rdrf), brr(), scmr(), access_flags(0)
               ,input_buffer()
-              //, is_continue(true)
+//               , is_continue(true)
         {
 
 //             read_thread = std::thread(
@@ -35,7 +35,6 @@ namespace narcissus {
 
 //                             std::cin >> c;
 //                             rdr = c; 
-//                             std::cout << "c: " << c << std::endl;
 //                         }
 //                     });
         }
@@ -68,7 +67,18 @@ namespace narcissus {
                 case 0x4:
                     return ssr;
                 case 0x5:
-                    return rdr;
+                    if(input_buffer.size() == 0)
+                    {
+                        std::string str;
+                        std::cin >> str;
+                        for(auto c: str)
+                        {
+                            input_buffer.push((std::uint8_t)c);
+                        }
+                        input_buffer.push((std::uint8_t)'\r');
+
+                    }
+                    return input_buffer.front();
                 case 0x6:
                     return scmr;
 
@@ -93,23 +103,26 @@ namespace narcissus {
                 }
 
                 if(!(ssr & (std::uint8_t)ssr_bits::rdrf)){
-                    char c;
+//                     char c;
 
-                    if(input_buffer.size() == 0){
-                        std::string tmp;
-                        std::cin >> tmp;
+//                     if(input_buffer.size() == 0){
+//                         std::string tmp;
+//                         std::cin >> tmp;
 
-                        for(auto t : tmp)
-                        {
-                            input_buffer.push(t);
-                        }
-                        input_buffer.push('\r');
+//                         for(auto t : tmp)
+//                         {
+//                             input_buffer.push(t);
+//                         }
+//                         input_buffer.push('\r');
+//                     }
+//                     c = input_buffer.front();
+//                     input_buffer.pop();
+
+//                     rdr = c;
+                    if(input_buffer.size() != 0){
+                        input_buffer.pop();
                     }
-                    c = input_buffer.front();
-                    input_buffer.pop();
 
-                    rdr = c;
-//                     cd.notify_one();
                     ssr |= (std::uint8_t)ssr_bits::rdrf;
                 }
 

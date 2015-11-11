@@ -53,7 +53,7 @@ namespace narcissus {
 
                 std::uint8_t access_flags;
 
-                std::queue<char> input_buffer;
+                std::queue<std::uint8_t> input_buffer;
 
 //                 bool is_continue;
 
