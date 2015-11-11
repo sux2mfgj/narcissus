@@ -611,6 +611,20 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::MOV_L_R_IMM_ABS_24:
+                {
+                    auto ers = read_register_fields(pc + 3, value_place::low, true);
+                    auto abs = read_immediate(pc + 5, 3);
+
+                    auto result = read_register(ers, register_size::LONG);
+                    write_immediate(abs, 4, result);
+
+                    update_ccr_mov(result, register_size::LONG);
+                    pc += 8;
+
+                    break;
+                }
+
                 case operation::BEQ_8: 
                 {
                     auto disp = memory[pc + 1];
@@ -905,6 +919,12 @@ namespace narcissus {
                                                             {
                                                                 return operation::MOV_L_IMM_ABS_24_R; 
                                                             }
+
+                                                            if((dh == 0xa) && !(dl & 0x8) && e == 0)
+                                                            {
+                                                                return operation::MOV_L_R_IMM_ABS_24;
+                                                            }
+
                                                             return operation::INVALID;
                                                         }
                                                         case 0xd: 
