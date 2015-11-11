@@ -93,9 +93,6 @@ namespace narcissus {
                 }
 
                 if(!(ssr & (std::uint8_t)ssr_bits::rdrf)){
-                    //TODO 
-                    //when read string, is some charcter lost?
-                    
                     char c;
 
                     if(input_buffer.size() != 0){

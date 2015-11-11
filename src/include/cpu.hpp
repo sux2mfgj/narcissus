@@ -69,6 +69,7 @@ namespace narcissus {
             BLE_8,                      // branch less or equal
 
             CMP_B_IMM,                  // compare register and immediate
+            CMP_B_R_R,                  // compare register and  register
 
 //             DEC_B,                   // decrement
             DEC_W_1,                      
@@ -258,6 +259,7 @@ namespace narcissus {
                 FRIEND_TEST(MOV_W_ASB_24_R, 0);
                 FRIEND_TEST(MOV_W_R_ABS_24, 0);
                 FRIEND_TEST(EXTU_W, 0);
+                FRIEND_TEST(CMP_B_R_R, 0);
         };
 
     }  // namespace cpu
