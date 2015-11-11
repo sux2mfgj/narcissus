@@ -57,13 +57,14 @@ namespace narcissus {
 
             MOV_L_IMM, 
             MOV_L_R_R,
-            MOV_L_R_IND,
+            MOV_L_R_IND_PRE_DEC,
 
             MOV_L_IND_WITH_DIS_24_R,    // MEMORY to register
 //             MOV_L_R_IND_WITH_DIS_24, // register to memory
             MOV_L_R_IND_POST_INC,
             MOV_L_IMM_ABS_24_R, 
             MOV_L_R_IMM_ABS_24,
+            MOV_L_R_IND_WITH_DIS_16,
 
             BEQ_8,                        // branch equal
 //             BEQ_16,                        // branch equal
@@ -225,7 +226,7 @@ namespace narcissus {
                 FRIEND_TEST(MOV_W_IMM, 0);
                 FRIEND_TEST(MOV_L_IMM, 0);
                 FRIEND_TEST(JSR_ABS, 0);
-                FRIEND_TEST(MOV_L_R_IND, 0);
+                FRIEND_TEST(MOV_L_R_IND_PRE_DEC, 0);
                 FRIEND_TEST(MOV_L_R_R, 0);
                 FRIEND_TEST(EXTS_L, 0);
                 FRIEND_TEST(SHLL_L, 0);
@@ -273,6 +274,7 @@ namespace narcissus {
                 FRIEND_TEST(MOV_L_IMM_ABS_24_R, 0);
                 FRIEND_TEST(BRA_16, 0);
                 FRIEND_TEST(MOV_L_R_IMM_ABS_24, 0);
+                FRIEND_TEST(MOV_L_R_IND_WITH_DIS_16, 0);
         };
 
     }  // namespace cpu

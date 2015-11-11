@@ -563,7 +563,7 @@ namespace narcissus {
             ASSERT_EQ(0b10000000, cpu->ccr.byte);
         }
 
-        TEST(MOV_L_R_IND, 0)
+        TEST(MOV_L_R_IND_PRE_DEC, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -583,7 +583,7 @@ namespace narcissus {
             cpu->er[6].er = 0x12345678;
             cpu->sp = 0x00ffff00;
 
-            ASSERT_EQ(cpu::operation::MOV_L_R_IND, cpu->detect_operation());
+            ASSERT_EQ(cpu::operation::MOV_L_R_IND_PRE_DEC, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
             ASSERT_EQ(0x12, cpu->memory[0xffff00 - 4]);
             ASSERT_EQ(0x34, cpu->memory[0xffff00 - 3]);
@@ -1638,6 +1638,40 @@ namespace narcissus {
             ASSERT_EQ(0x34, cpu->memory[0xfffc41]);
             ASSERT_EQ(0x56, cpu->memory[0xfffc42]);
             ASSERT_EQ(0x78, cpu->memory[0xfffc43]);
+        }
+
+        TEST(MOV_L_R_IND_WITH_DIS_16, 0)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            //01 00 6f e0     
+            //ff fc                                       
+            //mov.l   er0,@(0xfffc:16,er6)
+            mem[0x100] = 0x01;
+            mem[0x101] = 0x00;
+            mem[0x102] = 0x6f;
+            mem[0x103] = 0xe0;
+            mem[0x104] = 0xff;
+            mem[0x105] = 0xfc;
+
+            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            cpu->reset_exception();
+
+            cpu->er[0].er = 0x12345678;
+            cpu->er[6].er = 0x00ffff00;
+
+            ASSERT_EQ(cpu::operation::MOV_L_R_IND_WITH_DIS_16, cpu->detect_operation());
+            ASSERT_EQ(0x106, cpu->cycle());
+
+            auto addr = 0xffff00 + (std::int16_t)0xfffc;
+            ASSERT_EQ(0x12, cpu->memory[addr]);
+            ASSERT_EQ(0x34, cpu->memory[addr + 1]);
+            ASSERT_EQ(0x56, cpu->memory[addr + 2]);
+            ASSERT_EQ(0x78, cpu->memory[addr + 3]);
         }
 
     }  // namespace cpu
