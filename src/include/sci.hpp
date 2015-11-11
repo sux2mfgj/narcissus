@@ -3,9 +3,6 @@
 
 #include <cstdint>
 #include <queue>
-// #include <thread>
-// #include <condition_variable>
-// #include <mutex>
 
 namespace narcissus {
     namespace sci {
@@ -54,12 +51,6 @@ namespace narcissus {
                 std::uint8_t access_flags;
 
                 std::queue<std::uint8_t> input_buffer;
-
-//                 bool is_continue;
-
-//                 std::thread read_thread;
-//                 std::condition_variable cd;
-//                 std::mutex mtx;
 
             private:
                 auto work(void) -> void;
