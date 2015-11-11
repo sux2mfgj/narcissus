@@ -2,17 +2,13 @@
 #include <gtest/gtest.h>
 
 #include <cstdint>
+#include <thread>
+#include <condition_variable>
+#include <mutex>
 
 namespace narcissus {
     namespace sci {
 
-        const uint8_t SCR_TRANSMIT_INTERRUPT_ENABLE         = 0b10000000;
-        const uint8_t SCR_RECEIVE_INTERRUPT_ENABLE          = 0b01000000;
-        const uint8_t SCR_TRANSMIT_ENABLE                   = 0b00100000; 
-        const uint8_t SCR_RECEIVE_ENABLE                    = 0b00010000;
-        const uint8_t SCR_MULTIPROCESSOR_INTERRUPT_ENABLE   = 0b00001000;
-//         const uint8_t SCR_
-        
         enum class ssr_bits : std::uint8_t
         {
             mpbt = 1 << 0,
@@ -25,10 +21,22 @@ namespace narcissus {
             tdre = 1 << 7
         };
 
+        enum class access_flag : std::uint8_t
+        {
+            smr = 1 << 0,
+            brr = 1 << 1,
+            scr = 1 << 2,
+            tdr = 1 << 3,
+            ssr = 1 << 4,
+            rdr = 1 << 5,
+            scmr = 1 << 6,
+        };
+
         class sci {
             
             public:
                 sci();
+                virtual ~sci();
                 auto operator[](std::uint32_t address) -> std::uint8_t&;
 
             private:
@@ -43,6 +51,12 @@ namespace narcissus {
                 std::uint8_t scmr;
 
                 std::uint8_t access_flags;
+
+                bool is_continue;
+
+                std::thread read_thread;
+                std::condition_variable cd;
+                std::mutex mtx;
 
             private:
                 auto work(void) -> void;

@@ -29,7 +29,7 @@ namespace narcissus {
             
             public:
                 mcu(std::array<std::uint8_t, ROM_SIZE>&& init_rom);
-                ~mcu();
+                virtual ~mcu();
                
                 auto operator[] (std::uint32_t address) -> std::uint8_t&;
 
@@ -39,11 +39,11 @@ namespace narcissus {
 //                 std::array<std::shared_ptr<sci::sci>, 3> sci_channel;
                 std::shared_ptr<sci::sci> sci_1;
 
-                std::thread read_thread;
+//                 std::thread read_thread;
 
-                bool is_contitue; 
-                std::condition_variable cd;
-                std::mutex mtx;
+//                 bool is_contitue; 
+//                 std::condition_variable cd;
+//                 std::mutex mtx;
 
         };
 

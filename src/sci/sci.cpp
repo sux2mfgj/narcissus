@@ -8,9 +8,47 @@ namespace narcissus {
     namespace sci {
 
         sci::sci()
-            : rsr(), rdr(), tsr(), tdr(), smr(), scr(), ssr((std::uint8_t)ssr_bits::rdrf), brr(), scmr()
-              ,access_flags(0)
-        {}
+            : rsr(), rdr(), tsr(), tdr(), smr(), scr(), 
+            ssr((std::uint8_t)ssr_bits::rdrf), brr(), scmr(), access_flags(0),
+            is_continue(true)
+        {
+
+            read_thread = std::thread(
+                    [this]()
+                    {
+                        char c; 
+
+                        while (true) 
+                        {
+                            {
+                                std::unique_lock<std::mutex> lock(mtx);
+
+                                cd.wait(lock, [this]{
+                                            return !(ssr & (std::uint8_t)ssr_bits::rdrf) || !is_continue;
+                                        });
+
+                                if(!is_continue){
+                                    break;
+                                }
+                            }
+
+                            std::cin >> c;
+                            rdr = c; 
+                            std::cout << "c: " << c << std::endl;
+                        }
+                    });
+        }
+
+        sci::~sci()
+        {
+            work();
+            {
+                std::lock_guard<std::mutex> lock(mtx);
+                is_continue = false;
+            }
+            cd.notify_one();
+            read_thread.join();
+        }
 
         auto sci::operator[](std::uint32_t address) -> std::uint8_t&
         {
@@ -41,41 +79,32 @@ namespace narcissus {
         auto sci::work() -> void
         {
 
-//             enum class flag {
-//                 smr = 1 << 0,
-//                 brr = 1 << 1,
-//                 scr = 1 << 2,
-//                 tdr = 1 << 3,
-//                 ssr = 1 << 4,
-//                 rdr = 1 << 5,
-//                 scmr = 1 << 6;
-//             };
-            const static uint8_t flag_smr = 1 << 0;
-            const static uint8_t flag_brr = 1 << 1;
-            const static uint8_t flag_scr = 1 << 2;
-            const static uint8_t flag_tdr = 1 << 3;
-            const static uint8_t flag_ssr = 1 << 4;
-            const static uint8_t flag_rdr = 1 << 5;
-            const static uint8_t flag_scmr = 1 << 6;
-//             
-            if(access_flags & flag_ssr){
+            
+            //             
+            if(access_flags & (std::uint8_t)access_flag::ssr){
 
                 if((ssr & (std::uint8_t)ssr_bits::tdre) != (std::uint8_t)ssr_bits::tdre){
                     std::string s;
                     s.push_back(tdr);
                     if(tdr != 0xd){
-//                         std::clog << std::hex << " 0x" << (std::uint32_t)tdr << std::flush;
+                        //                         std::clog << std::hex << " 0x" << (std::uint32_t)tdr << std::flush;
                         std::clog << (char)tdr << std::flush;
                     }
 
                     ssr |= (std::uint8_t)ssr_bits::tdre;
                 }
 
-//                 if((ssr & ssr_bits::rdrf) ){
+                if(!(ssr & (std::uint8_t)ssr_bits::rdrf)){
+                    //TODO 
+                    //when read string, is some charcter lost?
+                    char c;
+                    std::cin >> c;
+                    rdr = c;
+//                     cd.notify_one();
+                    ssr |= (std::uint8_t)ssr_bits::rdrf;
+                }
 
-//                 }
-
-                access_flags &= ~flag_ssr;
+                access_flags &= ~(std::uint8_t)access_flag::ssr;
             }
 
         }

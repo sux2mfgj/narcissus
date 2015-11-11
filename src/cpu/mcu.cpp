@@ -7,49 +7,47 @@ namespace narcissus {
     namespace cpu {
 
         mcu::mcu(std::array<std::uint8_t, ROM_SIZE>&& init_rom) 
-            : rom(move(init_rom)), ram(), is_contitue(true)
-//             sci_channel{
-//                 std::make_shared<sci::sci>(), std::make_shared<sci::sci>(), std::make_shared<sci::sci>()}
+            : rom(move(init_rom)), ram() //, is_contitue(true)
         {
             sci_1 = std::make_shared<sci::sci>();
 
-            read_thread = std::thread(
-                    [this]()
-                    {
-                        char c; 
+//             read_thread = std::thread(
+//                     [this]()
+//                     {
+//                         char c; 
 
-                        while (true) 
-                        {
-                            {
-                                std::unique_lock<std::mutex> lock(mtx);
+//                         while (true) 
+//                         {
+//                             {
+//                                 std::unique_lock<std::mutex> lock(mtx);
 
-                                cd.wait(lock, [this]{
-                                        return !((*sci_1)[0x4] & (std::uint8_t)sci::ssr_bits::rdrf) || !is_contitue;
-                                        });
+//                                 cd.wait(lock, [this]{
+//                                         return !(ssr & (std::uint8_tssr_bits::rdrf) || !is_contitue;
+//                                         });
 
-                                if(!is_contitue){
-                                    break;
-                                }
-                            }
+//                                 if(!is_contitue){
+//                                     break;
+//                                 }
+//                             }
 
-                            std::cin >> c;
-                            (*sci_1)[0x5] = c; // rdr = c;
-                            (*sci_1)[0x4] |= (std::uint8_t)sci::ssr_bits::rdrf;
-                        }
-                        std::cout << "rdr : " << (std::uint32_t)(*sci_1)[0x000005] << std::endl;
+//                             std::cin >> c;
+//                             rdr = c; // rdr = c;
+//                             ssr |= (std::uint8_t)ssr_bits::rdrf;
+//                         }
+//                         std::cout << "rdr : " << rdr << std::endl;
 
-                    });
+//                     });
         }
 
         mcu::~mcu() 
         {
-            (*sci_1)[0x000000];
-            {
-                std::lock_guard<std::mutex> lock(mtx);
-                is_contitue = false;
-            }
-            cd.notify_one();
-            read_thread.join();
+//             (*sci_1)[0x000000];
+//             {
+//                 std::lock_guard<std::mutex> lock(mtx);
+//                 is_contitue = false;
+//             }
+//             cd.notify_one();
+//             read_thread.join();
         }
 
         auto mcu::operator[] (std::uint32_t address)

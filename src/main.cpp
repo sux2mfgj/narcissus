@@ -14,8 +14,8 @@ int main(int argc, char const* argv[])
     using namespace narcissus;
     using namespace std;
 
-        auto is_debug_mode = false;
-//     auto is_debug_mode = true;
+//         auto is_debug_mode = false;
+    auto is_debug_mode = true;
 
     fstream file;
     char buf[16];
