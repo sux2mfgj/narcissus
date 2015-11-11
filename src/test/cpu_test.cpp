@@ -1584,6 +1584,28 @@ namespace narcissus {
 
         }
 
+        TEST(BRA_16, 0)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x02;
+            mem[3] = 0xa0;
+
+            //58 00 fe bc     
+            //bra .-324 (0x160)
+            mem[0x2a0] = 0x58;
+            mem[0x2a1] = 0x00;
+            mem[0x2a2] = 0xfe;
+            mem[0x2a3] = 0xbc;
+
+            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            cpu->reset_exception();
+
+            ASSERT_EQ(cpu::operation::BRA_16, cpu->detect_operation());
+            ASSERT_EQ(0x160, cpu->cycle());
+        }
+
     }  // namespace cpu
 }  // namespace narcissus
 
