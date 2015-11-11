@@ -597,6 +597,20 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::MOV_L_IMM_ABS_24_R:
+                {
+                    auto erd = read_register_fields(pc + 3, value_place::low, true);
+                    auto abs = read_immediate(pc + 5, 3);
+
+                    auto result = read_immediate(abs, 4);
+                    write_register(erd, result, register_size::LONG);
+
+                    update_ccr_mov(result, register_size::LONG);
+                    pc += 8;
+
+                    break;
+                }
+
                 case operation::BEQ_8: 
                 {
                     auto disp = memory[pc + 1];
@@ -875,18 +889,30 @@ namespace narcissus {
                                             switch (ch) {
                                                 case 6:
                                                     switch (cl) {
-                                                        case 0xd: {
-                                                                      auto dh =
-                                                                          memory[pc + 3] & 0x80;
-                                                                      if (dh != 0x80) {
-                                                                          return operation::
-                                                                              MOV_L_R_IND_POST_INC;
-                                                                      }
-                                                                      return operation::
-                                                                          MOV_L_R_IND;
-                                                                  }
+                                                        case 0xb:
+                                                        {
+                                                            auto dh = memory[pc + 3] >> 4;
+                                                            auto dl = memory[pc + 3] & 0xf;
+                                                            auto e = memory[pc + 4];
+                                                            if((dh == 2) && !(dl & 0x8) && e == 0)
+                                                            {
+                                                                return operation::MOV_L_IMM_ABS_24_R; 
+                                                            }
+                                                            return operation::INVALID;
+                                                        }
+                                                        case 0xd: 
+                                                        {
+                                                            auto dh =
+                                                                memory[pc + 3] & 0x80;
+                                                            if (dh != 0x80) {
+                                                                return operation::
+                                                                    MOV_L_R_IND_POST_INC;
+                                                            }
+                                                            return operation::
+                                                                MOV_L_R_IND;
+                                                        }
                                                         default:
-                                                                  return operation::INVALID;
+                                                        return operation::INVALID;
                                                     }
                                                 case 7:
                                                     switch (cl) {
