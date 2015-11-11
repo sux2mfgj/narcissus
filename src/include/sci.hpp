@@ -13,7 +13,8 @@ namespace narcissus {
         const uint8_t SCR_MULTIPROCESSOR_INTERRUPT_ENABLE   = 0b00001000;
 //         const uint8_t SCR_
         
-        enum ssr_bits {
+        enum class ssr_bits : std::uint8_t
+        {
             mpbt = 1 << 0,
             mpb = 1 << 1,
             tend = 1 << 2,

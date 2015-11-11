@@ -2,6 +2,10 @@
 
 #include <cstdint>
 #include <array>
+#include <memory>
+#include <thread>
+#include <condition_variable>
+#include <mutex>
 
 #include <sci.hpp>
 
@@ -25,15 +29,22 @@ namespace narcissus {
             
             public:
                 mcu(std::array<std::uint8_t, ROM_SIZE>&& init_rom);
+                ~mcu();
                
                 auto operator[] (std::uint32_t address) -> std::uint8_t&;
-                auto flush(void) -> void;
 
             private:
                 std::array<std::uint8_t, ROM_SIZE> rom;
                 std::array<std::uint8_t, RAM_SIZE> ram;
-                std::array<sci::sci, 3> sci_channel;
-               
+//                 std::array<std::shared_ptr<sci::sci>, 3> sci_channel;
+                std::shared_ptr<sci::sci> sci_1;
+
+                std::thread read_thread;
+
+                bool is_contitue; 
+                std::condition_variable cd;
+                std::mutex mtx;
+
         };
 
     } // namespace cpu

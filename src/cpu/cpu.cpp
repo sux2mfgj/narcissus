@@ -11,11 +11,6 @@ namespace narcissus {
             : er(), sp(), ccr(), pc(), memory(move(mem))
         {}
 
-        h8_300::~h8_300()
-        {
-            memory.flush();
-        }
-
         auto h8_300::reset_exception() -> void
         {
             // load pc from memory[0] ~ memory[3]
@@ -28,11 +23,6 @@ namespace narcissus {
         }
 
 
-
-//         auto h8_300::closing(void) -> void
-//         {
-//             memory.flush();
-//         }
 
         auto h8_300::cycle() -> std::uint32_t
         {
@@ -262,7 +252,7 @@ namespace narcissus {
 
                     auto result = erd_value  - imm;
 
-                    std::cout << result << ": " << erd_value << ": " << imm << std::endl;
+//                     std::cout << result << ": " << erd_value << ": " << imm << std::endl;
                     write_register(erd, result, register_size::LONG);
 
                     update_ccr_sub(erd_value, imm, result, register_size::LONG);
@@ -401,8 +391,8 @@ namespace narcissus {
 
                     auto result = memory[addr];
 
-                    std::cout << addr << ":" << 
-                        (std::uint32_t)result << ":" << addr << std::endl;
+//                     std::cout << addr << ":" << 
+//                         (std::uint32_t)result << ":" << addr << std::endl;
                     write_register(rd, result, register_size::BYTE);
 
                     pc += 8;
@@ -686,8 +676,8 @@ namespace narcissus {
                     auto rd_value = read_register(rd, register_size::WORD);
                     auto result = rd_value - 1;
 
-                    std::cout << std::hex << (std::uint32_t)rd << " " 
-                        << (std::uint32_t)rd_value << " " << result << std::endl;
+//                     std::cout << std::hex << (std::uint32_t)rd << " " 
+//                         << (std::uint32_t)rd_value << " " << result << std::endl;
                     write_register(rd, result, register_size::WORD);
                     update_ccr_sub(rd_value, 1, result, register_size::WORD);
 

@@ -8,7 +8,7 @@ namespace narcissus {
     namespace sci {
 
         sci::sci()
-            : rsr(), rdr(), tsr(), tdr(), smr(), scr(), ssr(), brr(), scmr()
+            : rsr(), rdr(), tsr(), tdr(), smr(), scr(), ssr((std::uint8_t)ssr_bits::rdrf), brr(), scmr()
               ,access_flags(0)
         {}
 
@@ -41,6 +41,15 @@ namespace narcissus {
         auto sci::work() -> void
         {
 
+//             enum class flag {
+//                 smr = 1 << 0,
+//                 brr = 1 << 1,
+//                 scr = 1 << 2,
+//                 tdr = 1 << 3,
+//                 ssr = 1 << 4,
+//                 rdr = 1 << 5,
+//                 scmr = 1 << 6;
+//             };
             const static uint8_t flag_smr = 1 << 0;
             const static uint8_t flag_brr = 1 << 1;
             const static uint8_t flag_scr = 1 << 2;
@@ -48,10 +57,10 @@ namespace narcissus {
             const static uint8_t flag_ssr = 1 << 4;
             const static uint8_t flag_rdr = 1 << 5;
             const static uint8_t flag_scmr = 1 << 6;
-            
+//             
             if(access_flags & flag_ssr){
 
-                if((ssr & ssr_bits::tdre) != ssr_bits::tdre){
+                if((ssr & (std::uint8_t)ssr_bits::tdre) != (std::uint8_t)ssr_bits::tdre){
                     std::string s;
                     s.push_back(tdr);
                     if(tdr != 0xd){
@@ -59,8 +68,13 @@ namespace narcissus {
                         std::clog << (char)tdr << std::flush;
                     }
 
-                    ssr |= ssr_bits::tdre;
+                    ssr |= (std::uint8_t)ssr_bits::tdre;
                 }
+
+//                 if((ssr & ssr_bits::rdrf) ){
+
+//                 }
+
                 access_flags &= ~flag_ssr;
             }
 

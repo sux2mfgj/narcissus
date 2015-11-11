@@ -136,7 +136,7 @@ namespace narcissus {
 
             public:
                 h8_300(std::array<std::uint8_t, ROM_SIZE>&& mem);
-                virtual ~h8_300();
+                virtual ~h8_300() = default;;
 
             private:
                 h8_300(h8_300 const&) = delete;
@@ -161,9 +161,6 @@ namespace narcissus {
                 auto cycle(void) -> std::uint32_t;
                 auto reset_exception(void) -> void;
 
-                //TODO move to destoractor?
-//                 auto closing() -> void;
-                
             private:
                 auto detect_operation(void) -> operation;
 

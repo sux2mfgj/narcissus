@@ -14,8 +14,8 @@ int main(int argc, char const* argv[])
     using namespace narcissus;
     using namespace std;
 
-//     auto is_debug_mode = false;
-    auto is_debug_mode = true;
+        auto is_debug_mode = false;
+//     auto is_debug_mode = true;
 
     fstream file;
     char buf[16];
@@ -63,41 +63,42 @@ int main(int argc, char const* argv[])
     std::string before = s;
     while (true) {
         auto pc = cpu->cycle();
-        std::cout << std::hex << "pc: 0x" << pc << std::endl;
+        if(is_debug_mode){
 
-        auto t = break_points.end() != find(break_points.begin(), break_points.end(), pc);
-        if((t || s[0] != 's') && is_debug_mode){
-            std::cout << ">";
-            std::getline(std::cin, s);
+            std::cout << std::hex << "pc: 0x" << pc << std::endl;
+            auto t = break_points.end() != find(break_points.begin(), break_points.end(), pc);
+            if((t || s[0] != 's') && is_debug_mode){
+                std::cout << ">";
+                std::getline(std::cin, s);
 
-            if(s.empty()){
-                s = before;
+                if(s.empty()){
+                    s = before;
+                }
+
+                if(s[0] == 'p'){
+                    std::cout << debug << std::endl;
+                }
+                if(s[0] == 'q'){
+                    break;
+                }
+                before = s;
             }
 
-            if(s[0] == 'p'){
-                std::cout << debug << std::endl;
-            }
-            if(s[0] == 'q'){
-                break;
-            }
-            before = s;
         }
-
-        if(before_pc != pc){
-            before_pc = pc;
-            stop_count = 0;
-        }
-        else {
-            stop_count++;
-            if(stop_count > 10){
-                std::cout << "finish" << std::endl; 
-                break;
+            if(before_pc != pc){
+                before_pc = pc;
+                stop_count = 0;
             }
-        }
-
+            else {
+                stop_count++;
+                if(stop_count > 10){
+                    std::cout << "finish" << std::endl; 
+                    break;
+                }
+            }
     }
 
-//     cpu->closing();
+    //     cpu->closing();
 
     //command:
     //  - [c] continue

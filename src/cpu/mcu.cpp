@@ -7,12 +7,49 @@ namespace narcissus {
     namespace cpu {
 
         mcu::mcu(std::array<std::uint8_t, ROM_SIZE>&& init_rom) 
-            : rom(move(init_rom)), ram(), sci_channel{}
+            : rom(move(init_rom)), ram(), is_contitue(true)
+//             sci_channel{
+//                 std::make_shared<sci::sci>(), std::make_shared<sci::sci>(), std::make_shared<sci::sci>()}
         {
-//             serial_controler_interface = sci()
-//             serial_controler_interface{0xffffb0, 0xffffb8, 0xffffc0};
-//             sci[1](0xffffb8);
-//             sci[2](0xffffc0);
+            sci_1 = std::make_shared<sci::sci>();
+
+            read_thread = std::thread(
+                    [this]()
+                    {
+                        char c; 
+
+                        while (true) 
+                        {
+                            {
+                                std::unique_lock<std::mutex> lock(mtx);
+
+                                cd.wait(lock, [this]{
+                                        return !((*sci_1)[0x4] & (std::uint8_t)sci::ssr_bits::rdrf) || !is_contitue;
+                                        });
+
+                                if(!is_contitue){
+                                    break;
+                                }
+                            }
+
+                            std::cin >> c;
+                            (*sci_1)[0x5] = c; // rdr = c;
+                            (*sci_1)[0x4] |= (std::uint8_t)sci::ssr_bits::rdrf;
+                        }
+                        std::cout << "rdr : " << (std::uint32_t)(*sci_1)[0x000005] << std::endl;
+
+                    });
+        }
+
+        mcu::~mcu() 
+        {
+            (*sci_1)[0x000000];
+            {
+                std::lock_guard<std::mutex> lock(mtx);
+                is_contitue = false;
+            }
+            cd.notify_one();
+            read_thread.join();
         }
 
         auto mcu::operator[] (std::uint32_t address)
@@ -27,33 +64,17 @@ namespace narcissus {
                 return ram[address - RAM_BASE_ADDR];
             }
 
-            //TODO
             //add MMI/O
-            if(address >= SCI0_BASE_ADDR && address < SCI1_BASE_ADDR)
+            //TODO
+            //consider about sci0 and sci2.
+                if(address >= SCI1_BASE_ADDR && address < SCI2_BASE_ADDR)
             {
-                return sci_channel[0][address];
-            }
-            else if(address >= SCI1_BASE_ADDR && address < SCI2_BASE_ADDR)
-            {
-                return sci_channel[1][address];
-            }
-            else if(address >= SCI2_BASE_ADDR && address < 0xffffc6)
-            {
-                return sci_channel[2][address];
+                return (*sci_1)[address];
             }
 
             std::cout << "memory access error: 0x"<< address << std::endl;
             throw std::out_of_range("access error");
         }
-
-        auto mcu::flush() -> void
-        {
-            for(auto sci: sci_channel)
-            {
-                sci[0x00000100];
-            }
-        }
-
 
     } // namespace cpu
 } // namespace narcissus
