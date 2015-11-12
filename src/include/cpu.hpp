@@ -78,6 +78,8 @@ namespace narcissus {
 //             BLE_16,                      // branch less or equal
             BLS_8,                     // branch low or same
 //             BLS_16,                     // branch low or same
+            BGE_8,                  //branch greater or equal
+//             BGE_16,
 
             CMP_B_IMM,                  // compare register and immediate
             CMP_B_R_R,                  // compare register and  register
@@ -279,6 +281,7 @@ namespace narcissus {
                 FRIEND_TEST(MOV_L_R_IND_WITH_DIS_16, 0);
                 FRIEND_TEST(MOV_W_R_IND_WITH_DIS_16, 0);
                 FRIEND_TEST(MOV_W_IND_WITH_DIS_16_R, 0);
+                FRIEND_TEST(BGE_8, 0);
         };
 
     }  // namespace cpu

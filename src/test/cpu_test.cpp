@@ -1734,6 +1734,32 @@ namespace narcissus {
             ASSERT_EQ(cpu->er[3].r, 0x1234);
         }
 
+        TEST(BGE_8, 0)
+        {
+            array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+
+            //4c 0a           
+            //bge .+10 
+            mem[0x100] = 0x4c;
+            mem[0x101] = 0x0a;
+
+            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            cpu->reset_exception();
+
+            cpu->ccr.negative = 1;
+            cpu->ccr.over_flow = 1;
+
+            ASSERT_EQ(cpu::operation::BGE_8, cpu->detect_operation());
+            ASSERT_EQ(0x102 + 10, cpu->cycle());
+
+
+        }
+
     }  // namespace cpu
 }  // namespace narcissus
 
