@@ -19,5 +19,8 @@ debug: $(TARGET)
 run: $(TARGET)
 	./build/narcissus $(BIN_FILE)
 
+serial: $(TARGET)
+	socat -d -d pty,raw,echo=0 "exec:./build/narcissus ./object_code/04/bootload/kzload.bin,pty,raw,echo=1"
+
 clean:
 	rm -rf build

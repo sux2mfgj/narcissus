@@ -692,6 +692,17 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::BEQ_16:
+                {
+                    auto disp = (std::int16_t)read_immediate(pc + 2, 2);
+                    if(ccr.zero == 1){
+                        pc += disp;
+                    }
+
+                    pc += 4;
+                    break;
+                }
+
                 case operation::BRA_8: 
                 {
                     auto disp = (std::int8_t)memory[pc + 1];
@@ -1208,6 +1219,13 @@ namespace narcissus {
                                     switch (bl) {
                                         case 0:
                                             return operation::BNE_16;
+                                        default:
+                                            return operation::INVALID;
+                                    }
+                                case 7:
+                                    switch (bl) {
+                                        case 0:
+                                            return operation::BEQ_16;
                                         default:
                                             return operation::INVALID;
                                     }

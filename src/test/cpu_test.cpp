@@ -1757,7 +1757,29 @@ namespace narcissus {
             ASSERT_EQ(cpu::operation::BGE_8, cpu->detect_operation());
             ASSERT_EQ(0x102 + 10, cpu->cycle());
 
+        }
 
+        TEST(BEQ_16, 0){
+            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            // 58 70 00 be     
+            // beq .+190 (0x730)
+            mem[0x100] = 0x58;
+            mem[0x101] = 0x70;
+            mem[0x102] = 0x00;
+            mem[0x103] = 0xbe;
+            
+            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            cpu->reset_exception();
+
+            cpu->ccr.zero = 1;
+
+            ASSERT_EQ(cpu::operation::BEQ_16, cpu->detect_operation());
+            ASSERT_EQ(0x104 + 190, cpu->cycle());
         }
 
     }  // namespace cpu

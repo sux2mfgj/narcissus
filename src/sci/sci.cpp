@@ -13,9 +13,15 @@ namespace narcissus {
               ,input_buffer()
         {}
 
+        //char buf;
+        //std::fstream fst;
+        //fst.open(std::cin, std::ios::in | std::ios::binary);
+        //fst.read(&buf, sizeof(buf));
+
         sci::~sci()
         {
             work();
+            //fst.close();
         }
 
         auto sci::operator[](std::uint32_t address) -> std::uint8_t&
@@ -38,7 +44,9 @@ namespace narcissus {
                     if(input_buffer.size() == 0)
                     {
                         std::string str;
+
                         std::cin >> str;
+
                         for(auto c: str)
                         {
                             input_buffer.push((std::uint8_t)c);
@@ -63,9 +71,9 @@ namespace narcissus {
                 if((ssr & (std::uint8_t)ssr_bits::tdre) != (std::uint8_t)ssr_bits::tdre){
                     std::string s;
                     s.push_back(tdr);
-                    if(tdr != 0xd){
-                        std::clog << (char)tdr << std::flush;
-                    }
+//                     if(tdr != 0xd){
+                        std::cout << (char)tdr << std::flush;
+//                     }
 
                     ssr |= (std::uint8_t)ssr_bits::tdre;
                 }

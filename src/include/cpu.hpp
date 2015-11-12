@@ -69,7 +69,7 @@ namespace narcissus {
             MOV_L_R_IND_WITH_DIS_16,
 
             BEQ_8,                        // branch equal
-//             BEQ_16,                        // branch equal
+            BEQ_16,                        // branch equal
             BRA_8,                        // branch always(true)
             BRA_16,                        // branch always(true)
             BNE_8,                        // branch not equal
@@ -282,6 +282,7 @@ namespace narcissus {
                 FRIEND_TEST(MOV_W_R_IND_WITH_DIS_16, 0);
                 FRIEND_TEST(MOV_W_IND_WITH_DIS_16_R, 0);
                 FRIEND_TEST(BGE_8, 0);
+                FRIEND_TEST(BEQ_16, 0);
         };
 
     }  // namespace cpu

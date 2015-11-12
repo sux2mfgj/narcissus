@@ -14,8 +14,8 @@ int main(int argc, char const* argv[])
     using namespace narcissus;
     using namespace std;
 
-//         auto is_debug_mode = false;
-    auto is_debug_mode = true;
+        auto is_debug_mode = false;
+//     auto is_debug_mode = true;
 
     fstream file;
     char buf[16];
@@ -63,9 +63,9 @@ int main(int argc, char const* argv[])
     std::string before = s;
     while (true) {
         auto pc = cpu->cycle();
+        std::clog << std::hex << "pc: 0x" << pc << std::endl;
         if(is_debug_mode){
 
-            std::cout << std::hex << "pc: 0x" << pc << std::endl;
             auto t = break_points.end() != find(break_points.begin(), break_points.end(), pc);
             if((t || s[0] != 's') && is_debug_mode){
                 std::cout << ">";
@@ -97,8 +97,6 @@ int main(int argc, char const* argv[])
                 }
             }
     }
-
-    //     cpu->closing();
 
     //command:
     //  - [c] continue
