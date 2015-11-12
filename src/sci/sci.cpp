@@ -9,19 +9,14 @@ namespace narcissus {
 
         sci::sci()
             : rsr(), rdr(), tsr(), tdr(), smr(), scr(), 
-            ssr((std::uint8_t)ssr_bits::rdrf), brr(), scmr(), access_flags(0)
-              ,input_buffer()
-        {}
-
-        //char buf;
-        //std::fstream fst;
-        //fst.open(std::cin, std::ios::in | std::ios::binary);
-        //fst.read(&buf, sizeof(buf));
+            ssr((std::uint8_t)ssr_bits::rdrf), brr(), scmr(), access_flags(0),
+            rdrf_count(0)
+//               ,input_buffer()
+        {} 
 
         sci::~sci()
         {
             work();
-            //fst.close();
         }
 
         auto sci::operator[](std::uint32_t address) -> std::uint8_t&
@@ -41,20 +36,26 @@ namespace narcissus {
                 case 0x4:
                     return ssr;
                 case 0x5:
-                    if(input_buffer.size() == 0)
-                    {
-                        std::string str;
+                    char buf;
+                    std::cin.read(&buf, sizeof(buf));
+//                     if(input_buffer.size() == 0)
+//                     {
+//                         std::string str;
 
-                        std::cin >> str;
+//                         std::cin >> str;
 
-                        for(auto c: str)
-                        {
-                            input_buffer.push((std::uint8_t)c);
-                        }
-                        input_buffer.push((std::uint8_t)'\r');
+//                         for(auto c: str)
+//                         {
+//                             input_buffer.push((std::uint8_t)c);
+//                         }
+//                         input_buffer.push((std::uint8_t)'\r');
 
-                    }
-                    return input_buffer.front();
+//                     }
+//                     return input_buffer.front();
+                    read_buffer = (std::uint8_t)buf;
+                    rdrf_count = 10;
+                    return read_buffer;
+
                 case 0x6:
                     return scmr;
 
@@ -71,20 +72,20 @@ namespace narcissus {
                 if((ssr & (std::uint8_t)ssr_bits::tdre) != (std::uint8_t)ssr_bits::tdre){
                     std::string s;
                     s.push_back(tdr);
-//                     if(tdr != 0xd){
-                        std::cout << (char)tdr << std::flush;
-//                     }
+                    std::cout << (char)tdr << std::flush;
 
                     ssr |= (std::uint8_t)ssr_bits::tdre;
                 }
 
                 if(!(ssr & (std::uint8_t)ssr_bits::rdrf)){
 
-                    if(input_buffer.size() != 0){
-                        input_buffer.pop();
-                    }
+//                     if(input_buffer.size() != 0){
+//                         input_buffer.pop();
+//                     }
 
-                    ssr |= (std::uint8_t)ssr_bits::rdrf;
+                    if(rdrf_count-- <= 0){
+                        ssr |= (std::uint8_t)ssr_bits::rdrf;
+                    }
                 }
 
                 access_flags &= ~(std::uint8_t)access_flag::ssr;

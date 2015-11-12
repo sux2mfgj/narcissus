@@ -34,7 +34,6 @@ int main(int argc, char const* argv[])
             mem[i++] = buf[j];
         }
     }
-
     file.close();
 
     auto cpu = std::make_shared<cpu::h8_300>(move(mem));
