@@ -46,19 +46,31 @@ namespace narcissus {
                 //                     break;
                 //                 }
 
-                //                 case ADD_B_R_R:
-                //                 {
-                //                     auto rs = (memory[pc + 1] & 0xf0) >> 4;
-                //                     auto rd = memory[pc + 1] & 0x0f;
+                case operation::ADD_B_R_R:
+                    {
+                        auto rs = read_register_fields(pc + 1, value_place::high, false);
+                        auto rd = read_register_fields(pc + 1, value_place::low, false);
 
-                //                     if(!register_write_register(rd, rs,
-                //                     register_size::BYTE)){
-                //                         return false;
-                //                     }
+                        auto rs_value = read_register(rs, register_size::BYTE);
+                        auto rd_value = read_register(rd, register_size::BYTE);
 
-                //                     pc += 2;
-                //                     break;
-                //                 }
+                        auto result = rs_value + rd_value;
+                        write_register(rd, result, register_size::BYTE);
+
+                        //TODO
+                        update_ccr_sub(rd_value, rs_value, result, register_size::BYTE);
+
+                        //                     auto rs = (memory[pc + 1] & 0xf0) >> 4;
+                        //                     auto rd = memory[pc + 1] & 0x0f;
+
+                        //                     if(!register_write_register(rd, rs,
+                        //                     register_size::BYTE)){
+                        //                         return false;
+                        //                     }
+
+                        pc += 2;
+                        break;
+                    }
 
                 //                 case ADD_W_IMM:
                 //                 {
@@ -1148,8 +1160,7 @@ namespace narcissus {
                                     return operation::INVALID;
                             }
                         case 8:
-                            //                             return operation::ADD_B_R_R;
-                            return operation::INVALID;
+                            return operation::ADD_B_R_R;
                         case 9:
                             //                             return operation::ADD_W_R_R;
                             return operation::INVALID;

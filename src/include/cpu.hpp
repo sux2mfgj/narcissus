@@ -14,7 +14,7 @@ namespace narcissus {
         {
             INVALID = 0,
 //             ADD_B_IMM,              // immediate
-//             ADD_B_R_R,              // register to register
+            ADD_B_R_R,              // register to register
 //             ADD_W_IMM,
 //             ADD_W_R_R,
 //             ADD_L_IMM,
@@ -227,7 +227,6 @@ namespace narcissus {
 
                 // for instruction
 //                 FRIEND_TEST(cpu, ADD_B_IMM);
-//                 FRIEND_TEST(cpu, ADD_B_R_R);
 //                 FRIEND_TEST(cpu, ADD_W_IMM);
 //                 FRIEND_TEST(cpu, ADD_W_R_R);
 //                 FRIEND_TEST(cpu, ADD_L_IMM);
@@ -296,6 +295,7 @@ namespace narcissus {
                 FRIEND_TEST(XOR_B_R_R, 0);
                 FRIEND_TEST(BGT_8, 0);
                 FRIEND_TEST(MOV_L_R_R_IND, 0);
+                FRIEND_TEST(ADD_B_R_R, 0);
         };
 
     }  // namespace cpu
