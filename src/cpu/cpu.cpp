@@ -801,6 +801,17 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::BGT_8:
+                {
+                    auto disp = (std::int8_t)read_immediate(pc + 1, 1);
+                    if(!(ccr.zero || (ccr.negative ^ ccr.over_flow)))
+                    {
+                        pc += disp;
+                    }
+                    pc += 2;
+                    break;
+                }
+
                 case operation::CMP_B_IMM:
                 {
                     auto rd = read_register_fields(pc, value_place::low, false);
@@ -1242,6 +1253,9 @@ namespace narcissus {
 
                         case 0xc:
                             return operation::BGE_8;
+
+                        case 0xe:
+                            return operation::BGT_8;
 
                         case 0xf:
                             return operation::BLE_8;

@@ -79,6 +79,8 @@ namespace narcissus {
 //             BLE_16,                      // branch less or equal
             BLS_8,                     // branch low or same
 //             BLS_16,                     // branch low or same
+            BGT_8,                  // greater or equal
+//             BGT_16,
             BGE_8,                  //branch greater or equal
 //             BGE_16,
 
@@ -291,6 +293,7 @@ namespace narcissus {
                 FRIEND_TEST(CMP_L_IMM, 0);
                 FRIEND_TEST(MOV_L_IND_WITH_DIS_16_R, 0);
                 FRIEND_TEST(XOR_B_R_R, 0);
+                FRIEND_TEST(BGT_8, 0);
         };
 
     }  // namespace cpu
