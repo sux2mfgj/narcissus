@@ -616,6 +616,26 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::MOV_L_IND_WITH_DIS_16_R:
+                {
+                    auto ers = read_register_fields(pc + 3, value_place::high, true);
+                    auto erd = read_register_fields(pc + 3, value_place::low, true);
+
+                    auto disp = (std::int16_t)read_immediate(pc + 4, 2);
+
+                    auto addr = read_register(ers, register_size::LONG);
+                    addr += disp;
+
+                    std::cout << disp << std::endl;
+                    std::cout << std::hex << addr << std::endl;
+                    auto result = read_immediate(addr, 4);
+
+                    write_register(erd, result, register_size::LONG);
+                    update_ccr_mov(result, register_size::LONG);
+                    pc += 6;
+                    break;
+                }
+
                 case operation::MOV_L_R_IND_WITH_DIS_16:
                 {
                     auto erd = read_register_fields(pc + 3, value_place::high, true);
@@ -1003,47 +1023,51 @@ namespace narcissus {
                                         case 0:
                                             switch (ch) {
                                                 case 6:
-                                                    {
-                                                        auto dh = memory[pc + 3] >> 4;
-                                                        auto dl = memory[pc + 3] & 0xf;
-                                                        auto e = memory[pc + 4];
-                                                        switch (cl) {
-                                                            case 0xb:
-                                                                {
-                                                                    if((dh == 2) && !(dl & 0x8) && e == 0)
-                                                                    {
-                                                                        return operation::MOV_L_IMM_ABS_24_R; 
-                                                                    }
+                                                {
+                                                    auto dh = memory[pc + 3] >> 4;
+                                                    auto dl = memory[pc + 3] & 0xf;
+                                                    auto e = memory[pc + 4];
+                                                    switch (cl) {
+                                                        case 0xb:
+                                                        {
+                                                            if((dh == 2) && !(dl & 0x8) && e == 0)
+                                                            {
+                                                                return operation::MOV_L_IMM_ABS_24_R; 
+                                                            }
 
-                                                                    if((dh == 0xa) && !(dl & 0x8) && e == 0)
-                                                                    {
-                                                                        return operation::MOV_L_R_IMM_ABS_24;
-                                                                    }
+                                                            if((dh == 0xa) && !(dl & 0x8) && e == 0)
+                                                            {
+                                                                return operation::MOV_L_R_IMM_ABS_24;
+                                                            }
 
-                                                                    return operation::INVALID;
-                                                                }
-                                                            case 0xd: 
-                                                                {
-                                                                    if ((dh & 0x8) && !(dl &0x8)) {
-                                                                        return operation::MOV_L_R_IND_PRE_DEC;
-                                                                    }
-                                                                    return operation::
-                                                                        MOV_L_R_IND_POST_INC;
-                                                                }
-
-                                                            case 0xf:
-                                                                {
-                                                                    if((dh & 0x8) && !(dl & 0x8))
-                                                                    {
-                                                                        return operation::MOV_L_R_IND_WITH_DIS_16;
-                                                                    }
-                                                                    return operation::INVALID;
-
-                                                                }
-
-                                                            default:
-                                                                return operation::INVALID;
+                                                            return operation::INVALID;
                                                         }
+                                                        case 0xd: 
+                                                        {
+                                                            if ((dh & 0x8) && !(dl &0x8)) {
+                                                                return operation::MOV_L_R_IND_PRE_DEC;
+                                                            }
+                                                            return operation::
+                                                                MOV_L_R_IND_POST_INC;
+                                                        }
+
+                                                        case 0xf:
+                                                        {
+                                                            if((dh & 0x8) && !(dl & 0x8))
+                                                            {
+                                                                return operation::MOV_L_R_IND_WITH_DIS_16;
+                                                            }
+
+                                                            if(!(dh & 0x8) && !(dl & 0x8)){
+                                                                return operation::MOV_L_IND_WITH_DIS_16_R;
+                                                            }
+                                                            return operation::INVALID;
+
+                                                        }
+
+                                                    default:
+                                                            return operation::INVALID;
+                                                    }
                                                 }
                                                 case 7:
                                                     switch (cl) {

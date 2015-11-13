@@ -1810,6 +1810,38 @@ namespace narcissus {
             ASSERT_EQ(0b10000100, cpu->ccr.byte);
         }
 
+        TEST(MOV_L_IND_WITH_DIS_16_R, 0){
+            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            //mov.l   @(0xfffc:16,er6),er4
+            //01 00 6f 64     
+            //ff fc
+            mem[0x100] = 0x01;
+            mem[0x101] = 0x00;
+            mem[0x102] = 0x6f;
+            mem[0x103] = 0x64;
+            mem[0x104] = 0xff;
+            mem[0x105] = 0xfc;
+
+            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            cpu->reset_exception();
+
+            cpu->er[6].er = 0x00ffff00;
+            auto addr = 0x00ffff00 + (std::int16_t)0xfffc;
+            cpu->memory[addr] = 0x12;
+            cpu->memory[addr + 1] = 0x34;
+            cpu->memory[addr + 2] = 0x56;
+            cpu->memory[addr + 3] = 0x78;
+
+            ASSERT_EQ(cpu::operation::MOV_L_IND_WITH_DIS_16_R, cpu->detect_operation());
+            ASSERT_EQ(0x106, cpu->cycle());
+
+            ASSERT_EQ(cpu->er[4].er, 0x12345678);
+        }
 
     }  // namespace cpu
 }  // namespace narcissus

@@ -61,6 +61,7 @@ namespace narcissus {
             MOV_L_R_R,
             MOV_L_R_IND_PRE_DEC,
 
+            MOV_L_IND_WITH_DIS_16_R,
             MOV_L_IND_WITH_DIS_24_R,    // MEMORY to register
 //             MOV_L_R_IND_WITH_DIS_24, // register to memory
             MOV_L_R_IND_POST_INC,
@@ -286,6 +287,7 @@ namespace narcissus {
                 FRIEND_TEST(BGE_8, 0);
                 FRIEND_TEST(BEQ_16, 0);
                 FRIEND_TEST(CMP_L_IMM, 0);
+                FRIEND_TEST(MOV_L_IND_WITH_DIS_16_R, 0);
         };
 
     }  // namespace cpu

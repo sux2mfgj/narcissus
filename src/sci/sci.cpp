@@ -18,7 +18,7 @@ namespace narcissus {
 
                                 char buf;
                                 std::cin.read(&buf, sizeof(buf));
-                                std::clog << std::hex << "in(hex): " << buf << std::endl;
+//                                 std::clog << std::hex << "in(hex): " << buf << std::endl;
                                 rdr = (std::uint8_t)buf;
                                 ssr |= (std::uint8_t)ssr_bits::rdrf;
                             }
