@@ -60,6 +60,7 @@ namespace narcissus {
             MOV_L_IMM, 
             MOV_L_R_R,
             MOV_L_R_R_IND,
+            MOV_L_R_IND_R,
             MOV_L_R_IND_PRE_DEC,
 
             MOV_L_IND_WITH_DIS_16_R,
@@ -296,6 +297,7 @@ namespace narcissus {
                 FRIEND_TEST(BGT_8, 0);
                 FRIEND_TEST(MOV_L_R_R_IND, 0);
                 FRIEND_TEST(ADD_B_R_R, 0);
+                FRIEND_TEST(MOV_L_R_IND_R, 0);
         };
 
     }  // namespace cpu

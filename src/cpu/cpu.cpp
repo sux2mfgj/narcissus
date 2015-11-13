@@ -30,8 +30,6 @@ namespace narcissus {
 
         auto h8_300::cycle() -> std::uint32_t
         {
-//             std::cout << "pc : 0x" << std::hex << pc << std::endl;
-//             std::cout << "sp : 0x" << std::hex << sp << std::endl;
 
             switch (detect_operation()) {
                 //                 case ADD_B_IMM: {
@@ -57,16 +55,7 @@ namespace narcissus {
                         auto result = rs_value + rd_value;
                         write_register(rd, result, register_size::BYTE);
 
-                        //TODO
                         update_ccr_sub(rd_value, rs_value, result, register_size::BYTE);
-
-                        //                     auto rs = (memory[pc + 1] & 0xf0) >> 4;
-                        //                     auto rd = memory[pc + 1] & 0x0f;
-
-                        //                     if(!register_write_register(rd, rs,
-                        //                     register_size::BYTE)){
-                        //                         return false;
-                        //                     }
 
                         pc += 2;
                         break;
@@ -598,6 +587,21 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::MOV_L_R_IND_R:
+                {
+                    auto erd = read_register_fields(pc + 3, value_place::high, true);
+                    auto ers = read_register_fields(pc + 3, value_place::low, true);
+
+                    auto result = read_register(ers, register_size::LONG);
+                    auto erd_value = read_register(erd, register_size::LONG);
+
+                    write_immediate(erd_value, 4, result);
+                    update_ccr_mov(result, register_size::LONG);
+
+                    pc += 4;
+                    break;
+                }
+
                 case operation::MOV_L_R_IND_PRE_DEC: 
                 {
                     auto erd = read_register_fields(pc + 3, value_place::high, true);
@@ -1088,6 +1092,10 @@ namespace narcissus {
                                                             if(!(dh&0x8) && !(dl&0x8))
                                                             {
                                                                 return operation::MOV_L_R_R_IND;
+                                                            }
+                                                            if((dh&0x8) && !(dl&0x8))
+                                                            {
+                                                                return operation::MOV_L_R_IND_R;
                                                             }
 
                                                             return operation::INVALID;
