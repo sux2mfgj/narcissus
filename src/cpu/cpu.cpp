@@ -944,7 +944,6 @@ namespace narcissus {
                 case operation::SHLL_L: 
                 {
                     auto erd = read_register_fields(pc + 1, value_place::low, true);
-//                     auto erd = memory[pc + 1] & 0x7;
                     er[erd].er = er[erd].er << 1;
 
                     update_ccr_shll(er[erd].er, register_size::LONG);
@@ -974,6 +973,23 @@ namespace narcissus {
 
                     pc = return_addr;
 
+                    break;
+                }
+
+                case operation::XOR_B_R_R:
+                {
+                    auto rs = read_register_fields(pc + 1, value_place::high, false);
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
+
+                    auto rs_value = read_register(rs, register_size::BYTE);
+                    auto rd_value = read_register(rd, register_size::BYTE);
+
+                    auto result = rd_value ^ rs_value;
+                    write_register(rd, result, register_size::BYTE);
+
+                    update_ccr_mov(result, register_size::BYTE);
+                    
+                    pc += 2;
                     break;
                 }
 
@@ -1157,6 +1173,10 @@ namespace narcissus {
                                 default:
                                     return operation::INVALID;
                             }
+
+                        case 5:
+                            return operation::XOR_B_R_R;
+
                         case 7:
                             switch (bh) {
                                 case 5:

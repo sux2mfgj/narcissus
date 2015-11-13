@@ -103,6 +103,8 @@ namespace narcissus {
             EXTU_W,                     // extend as unsigned
 
             RTS,
+
+            XOR_B_R_R,                  //exclusive or logical direct registers
         };
 
         enum class register_size : std::uint32_t
@@ -288,6 +290,7 @@ namespace narcissus {
                 FRIEND_TEST(BEQ_16, 0);
                 FRIEND_TEST(CMP_L_IMM, 0);
                 FRIEND_TEST(MOV_L_IND_WITH_DIS_16_R, 0);
+                FRIEND_TEST(XOR_B_R_R, 0);
         };
 
     }  // namespace cpu
