@@ -31,7 +31,10 @@ namespace narcissus {
                 mcu(std::array<std::uint8_t, ROM_SIZE>&& init_rom);
                 virtual ~mcu() = default;
                
+            public:
                 auto operator[] (std::uint32_t address) -> std::uint8_t&;
+
+//                 auto quick_exit(void) -> void;
 
             private:
                 std::array<std::uint8_t, ROM_SIZE> rom;

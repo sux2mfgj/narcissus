@@ -2,6 +2,7 @@
 
 #include <cpu.hpp>
 #include <exception.hpp>
+#include <cassert>
 
 
 namespace narcissus {
@@ -22,7 +23,10 @@ namespace narcissus {
             ccr.interrupt_mask = 1;
         }
 
-
+//         auto h8_300::quick_exit(void) -> void
+//         {
+//             memory.quick_exit();
+//         }
 
         auto h8_300::cycle() -> std::uint32_t
         {
@@ -806,6 +810,20 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::CMP_L_IMM:
+                {
+                    auto erd = read_register_fields(pc + 1, value_place::low, true);
+                    auto imm = read_immediate(pc + 2, 4);
+
+                    auto erd_value = read_register(erd, register_size::LONG);
+
+                    std::uint64_t result = (std::int32_t)erd_value - (std::int32_t)imm;
+
+                    update_ccr_sub(erd_value, imm, result, register_size::LONG);
+                    pc += 6;
+                    break;
+                }
+
                 case operation::AND_W:
                 {
                     auto rd = read_register_fields(pc + 1, value_place::low, false);
@@ -940,17 +958,16 @@ namespace narcissus {
                 }
 
                 case operation::INVALID:
-                          std::cout << "INVALID opecode: " << std::hex << "0x" << std::flush;
-                          std::cout << std::setw(2) << std::setfill('0')
-                              << (std::uint16_t)(memory[pc]) << std::flush;
-                          std::cout << std::setw(2) << std::setfill('0')
-                              << (std::uint16_t)(memory[pc + 1]) << std::endl;
+                      std::clog << "INVALID opecode: " << std::hex << "0x" << std::flush;
+                      std::clog << std::setw(2) << std::setfill('0')
+                          << (std::uint16_t)(memory[pc]) << std::flush;
+                      std::clog << std::setw(2) << std::setfill('0')
+                          << (std::uint16_t)(memory[pc + 1]) << std::endl;
 
-                          std::cout << "pc             : 0x" << std::setw(8)
-                              << std::setfill('0') << (std::uint32_t)pc << std::endl;
+                      std::clog << "pc             : 0x" << std::setw(8)
+                          << std::setfill('0') << (std::uint32_t)pc << std::endl;
 
-                          //WIP
-                    throw invalid_operation();
+                    assert(false);
 
 
                 default:
@@ -1355,6 +1372,12 @@ namespace narcissus {
                                     return operation::MOV_L_IMM;
                                 case 1:
                                     return operation::ADD_L_IMM_R;
+
+                                case 2:
+                                    if(!(bl & 0x8)){
+                                        return operation::CMP_L_IMM;
+                                    }
+                                    return operation::INVALID;
                                 case 3:
                                     if((bl & 0x8) == 0x0)
                                     {

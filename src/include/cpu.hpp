@@ -83,6 +83,7 @@ namespace narcissus {
 
             CMP_B_IMM,                  // compare register and immediate
             CMP_B_R_R,                  // compare register and  register
+            CMP_L_IMM,
 
 //             DEC_B,                   // decrement
             DEC_W_1,                      
@@ -177,6 +178,7 @@ namespace narcissus {
             public:
                 auto cycle(void) -> std::uint32_t;
                 auto reset_exception(void) -> void;
+                auto quick_exit(void) -> void;
 
             private:
                 auto detect_operation(void) -> operation;
@@ -283,6 +285,7 @@ namespace narcissus {
                 FRIEND_TEST(MOV_W_IND_WITH_DIS_16_R, 0);
                 FRIEND_TEST(BGE_8, 0);
                 FRIEND_TEST(BEQ_16, 0);
+                FRIEND_TEST(CMP_L_IMM, 0);
         };
 
     }  // namespace cpu

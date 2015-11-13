@@ -636,56 +636,71 @@ Disassembly of section .text:
  638:	6f 63 ff fa 	mov.w	@(0xfffa:16,er6),r3
  63c:	46 26       	bne	.+38 (0x664)
  63e:	1a c4       	sub.l	er4,er4
+
+ // jmp while loop in xmodem_wait
  640:	40 16       	bra	.+22 (0x658)
 
+//xmodem_wait
 00000642 <.L8>:
  642:	0b 04       	adds	#1,er4
  644:	7a 24 00 1e 	cmp.l	#0x1e847f,er4
  648:	84 7f 
  64a:	4f 0c       	ble	.+12 (0x658)
  64c:	1a c4       	sub.l	er4,er4
+
+ // send NAK for XMODEM
  64e:	f9 15       	mov.b	#0x15,r1l
  650:	79 00 00 01 	mov.w	#0x1,r0
- 654:	5e 00 05 46 	jsr	@0x546:24
+ 654:	5e 00 05 46 	jsr	@0x546:24  // serial_send_byte
 
+// while(!serial_is_recv_enable(....
 00000658 <.L40>:
  658:	79 00 00 01 	mov.w	#0x1,r0
- 65c:	5e 00 05 9c 	jsr	@0x59c:24
+ 65c:	5e 00 05 9c 	jsr	@0x59c:24 // serial_is_recv_enable
  660:	0d 00       	mov.w	r0,r0
+ // jump xmodem_wait
  662:	47 de       	beq	.-34 (0x642)
 
+// c = serial_recv_byte(SERIAL_DEFAULT_DEVICE);
 00000664 <.L4>:
  664:	79 00 00 01 	mov.w	#0x1,r0
- 668:	5e 00 05 c0 	jsr	@0x5c0:24
+ 668:	5e 00 05 c0 	jsr	@0x5c0:24   // serial_recv_byte
+
+ // c == XMODEM_EOT
  66c:	a8 04       	cmp.b	#0x4,r0l
  66e:	58 70 00 be 	beq	.+190 (0x730)
+ // c == XMODEM_CAN
  672:	a8 18       	cmp.b	#0x18,r0l
  674:	58 70 00 b2 	beq	.+178 (0x72a)
+ // else 
  678:	a8 01       	cmp.b	#0x1,r0l
  67a:	58 60 00 a4 	bne	.+164 (0x722)
+
+ // c == XMODEM_SOH
  67e:	6f 62 ff fa 	mov.w	@(0xfffa:16,er6),r2
  682:	0b 02       	adds	#1,er2
  684:	6f e2 ff fa 	mov.w	r2,@(0xfffa:16,er6)
  688:	01 00 6f 64 	mov.l	@(0xfffc:16,er6),er4
  68c:	ff fc 
  68e:	79 00 00 01 	mov.w	#0x1,r0
- 692:	5e 00 05 c0 	jsr	@0x5c0:24
+ 692:	5e 00 05 c0 	jsr	@0x5c0:24   // serial_recv_byte
  696:	6e 6b ff f3 	mov.b	@(0xfff3:16,er6),r3l
  69a:	1c b8       	cmp.b	r3l,r0l
  69c:	46 76       	bne	.+118 (0x714)
  69e:	79 00 00 01 	mov.w	#0x1,r0
- 6a2:	5e 00 05 c0 	jsr	@0x5c0:24
+ 6a2:	5e 00 05 c0 	jsr	@0x5c0:24 // serial_recv_byte
  6a6:	6e 6a ff f3 	mov.b	@(0xfff3:16,er6),r2l
  6aa:	15 8a       	xor.b	r0l,r2l
  6ac:	aa ff       	cmp.b	#0xff,r2l
  6ae:	46 64       	bne	.+100 (0x714)
+
  6b0:	18 aa       	sub.b	r2l,r2l
  6b2:	6e ea ff f2 	mov.b	r2l,@(0xfff2:16,er6)
  6b6:	79 05 00 7f 	mov.w	#0x7f,r5
 
 000006ba <.L21>:
  6ba:	79 00 00 01 	mov.w	#0x1,r0
- 6be:	5e 00 05 c0 	jsr	@0x5c0:24
+ 6be:	5e 00 05 c0 	jsr	@0x5c0:24 // serial_recv_byte
  6c2:	68 c8       	mov.b	r0l,@er4
  6c4:	0b 04       	adds	#1,er4
  6c6:	6e 6b ff f2 	mov.b	@(0xfff2:16,er6),r3l
@@ -725,8 +740,12 @@ Disassembly of section .text:
  71a:	5e 00 05 46 	jsr	@0x546:24
  71e:	58 00 ff 16 	bra	.-234 (0x638)
 
+// patter of else
 00000722 <.L14>:
+// if(receiving){
  722:	6f 62 ff fa 	mov.w	@(0xfffa:16,er6),r2
+
+// goto xmodem_recv loop head
  726:	58 70 ff 0e 	beq	.-242 (0x638)
 
 0000072a <.L38>:
@@ -737,7 +756,7 @@ Disassembly of section .text:
 00000730 <.L27>:
  730:	f9 06       	mov.b	#0x6,r1l
  732:	79 00 00 01 	mov.w	#0x1,r0
- 736:	5e 00 05 46 	jsr	@0x546:24
+ 736:	5e 00 05 46 	jsr	@0x546:24   // serial_send_byte
  73a:	01 00 6f 60 	mov.l	@(0xfff4:16,er6),er0
  73e:	ff f4 
 
@@ -747,6 +766,7 @@ Disassembly of section .text:
  748:	7a 17 00 00 	add.l	#0x10,er7
  74c:	00 10 
  74e:	01 00 6d 76 	mov.l	@er7+,er6
+// return -1; // to 
  752:	54 70       	rts	
 
 Disassembly of section .rodata:

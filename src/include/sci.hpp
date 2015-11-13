@@ -2,8 +2,9 @@
 #include <gtest/gtest.h>
 
 #include <cstdint>
-#include <queue>
-#include <fstream>
+// #include <queue>
+// #include <fstream>
+#include <thread>
 
 namespace narcissus {
     namespace sci {
@@ -51,11 +52,7 @@ namespace narcissus {
 
                 std::uint8_t access_flags;
 
-//                 std::queue<std::uint8_t> input_buffer;
-//                 std::fstream fst;
-                std::uint8_t read_buffer;
-//                 char read_buffer[1];
-                std::uint8_t rdrf_count;
+                std::thread read_thread;
 
             private:
                 auto work(void) -> void;

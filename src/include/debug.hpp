@@ -21,6 +21,8 @@ namespace narcissus {
                     for(auto i = 0; i < cpu->er.size(); ++i){
                         os << std::hex << i << ":" << cpu->er[i].er << std::endl;;
                     }
+
+                    os << std::hex << "ccr: "<< (std::uint16_t)cpu->ccr.byte << std::endl;
                     return os.str();
                 }
         };

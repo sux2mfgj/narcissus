@@ -27,7 +27,7 @@ namespace narcissus {
             //add MMI/O
             //TODO
             //consider about sci0 and sci2.
-                if(address >= SCI1_BASE_ADDR && address < SCI2_BASE_ADDR)
+            if(address >= SCI1_BASE_ADDR && address < SCI2_BASE_ADDR)
             {
                 return (*sci_1)[address];
             }
@@ -35,6 +35,12 @@ namespace narcissus {
             std::cout << "memory access error: 0x"<< address << std::endl;
             throw std::out_of_range("access error");
         }
+
+//         auto mcu::quick_exit(void) -> void
+//         {
+//             (*sci_1)[0x000000];
+
+//         }
 
     } // namespace cpu
 } // namespace narcissus

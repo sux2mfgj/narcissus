@@ -53,7 +53,7 @@ int main(int argc, char const* argv[])
     }
     sort(break_points.begin(), break_points.end());;
 
-    std::cout << "start" << std::endl;
+    std::clog << "start" << std::endl;
 
     std::uint32_t before_pc;
     std::uint8_t stop_count = 0;
@@ -61,8 +61,15 @@ int main(int argc, char const* argv[])
     std::string s = "c";
     std::string before = s;
     while (true) {
+//         std::chrono::milliseconds dura(20);
+//         std::this_thread::sleep_for(dura);
         auto pc = cpu->cycle();
         std::clog << std::hex << "pc: 0x" << pc << std::endl;
+
+        if(pc == 0x644){
+            std::clog << debug << std::endl;
+        }
+
         if(is_debug_mode){
 
             auto t = break_points.end() != find(break_points.begin(), break_points.end(), pc);
@@ -91,7 +98,7 @@ int main(int argc, char const* argv[])
             else {
                 stop_count++;
                 if(stop_count > 10){
-                    std::cout << "finish" << std::endl; 
+                    std::clog << "finish" << std::endl; 
                     break;
                 }
             }
