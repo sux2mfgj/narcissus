@@ -727,7 +727,7 @@ Disassembly of section .text:
  6f2:	8a 80       	add.b	#0x80,r2l
  6f4:	01 00 6f 63 	mov.l	@(0xfff4:16,er6),er3
  6f8:	ff f4 
- 6fa:	0a a3       	add.l	er2,er3 //size += r
+ 6fa:	0a a3       	add.l	er2,er3 //size
  6fc:	01 00 6f e3 	mov.l	er3,@(0xfff4:16,er6)
  700:	ff f4 
  702:	01 00 6f 63 	mov.l	@(0xfffc:16,er6),er3

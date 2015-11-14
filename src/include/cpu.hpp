@@ -185,7 +185,6 @@ namespace narcissus {
             public:
                 auto cycle(void) -> std::uint32_t;
                 auto reset_exception(void) -> void;
-                auto quick_exit(void) -> void;
 
             private:
                 auto detect_operation(void) -> operation;
@@ -298,6 +297,7 @@ namespace narcissus {
                 FRIEND_TEST(MOV_L_R_R_IND, 0);
                 FRIEND_TEST(ADD_B_R_R, 0);
                 FRIEND_TEST(MOV_L_R_IND_R, 0);
+
         };
 
     }  // namespace cpu
