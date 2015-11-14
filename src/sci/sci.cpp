@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <string>
+#include <vector>
 
 namespace narcissus {
     namespace sci {
@@ -14,14 +15,10 @@ namespace narcissus {
             read_thread = std::thread(
                     [&]{
                         while (true) {
-                            if(ssr & (std::uint8_t)ssr_bits::rdrf){
-
-                                char buf;
-                                std::cin.read(&buf, sizeof(buf));
-                                std::clog << std::hex << "in(hex): " << buf << std::endl;
-                                rdr = (std::uint8_t)buf;
-                                ssr |= (std::uint8_t)ssr_bits::rdrf;
-                            }
+                            char buf;
+                            std::cin.read(&buf, sizeof(buf));
+                            read_buffer.push((std::uint8_t)buf);
+                            ssr |= (std::uint8_t)ssr_bits::rdrf;
                         }
                     });
             read_thread.detach();
@@ -30,7 +27,6 @@ namespace narcissus {
         sci::~sci()
         {
             work();
-//             std::quick_exit(EXIT_SUCCESS);
         }
 
         auto sci::operator[](std::uint32_t address) -> std::uint8_t&
@@ -50,6 +46,9 @@ namespace narcissus {
                 case 0x4:
                     return ssr;
                 case 0x5:
+                    rdr = (std::uint8_t)read_buffer.front();
+                    read_buffer.pop();
+                    std::clog << std::hex << "in(hex): " << rdr << std::endl;
                     return rdr;
                 case 0x6:
                     return scmr;
@@ -61,7 +60,6 @@ namespace narcissus {
 
         auto sci::work() -> void
         {
-
             if(access_flags & (std::uint8_t)access_flag::ssr){
 
                 if((ssr & (std::uint8_t)ssr_bits::tdre) != (std::uint8_t)ssr_bits::tdre){
@@ -74,10 +72,12 @@ namespace narcissus {
                     ssr |= (std::uint8_t)ssr_bits::tdre;
                 }
 
-//                 if(!(ssr & (std::uint8_t)ssr_bits::rdrf)){
-
-//                     ssr |= (std::uint8_t)ssr_bits::rdrf;
-//                 }
+                if(!(ssr & (std::uint8_t)ssr_bits::rdrf))
+                {
+                    if(!read_buffer.empty()){
+                        ssr |= (std::uint8_t)ssr_bits::rdrf;
+                    }
+                }
 
                 access_flags &= ~(std::uint8_t)access_flag::ssr;
             }

@@ -66,10 +66,6 @@ int main(int argc, char const* argv[])
         auto pc = cpu->cycle();
         std::clog << std::hex << "pc: 0x" << pc << std::endl;
 
-        if(pc == 0x644){
-            std::clog << debug << std::endl;
-        }
-
         if(is_debug_mode){
 
             auto t = break_points.end() != find(break_points.begin(), break_points.end(), pc);
