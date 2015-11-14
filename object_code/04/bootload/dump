@@ -683,14 +683,17 @@ Disassembly of section .text:
  688:	01 00 6f 64 	mov.l	@(0xfffc:16,er6),er4
  68c:	ff fc 
  68e:	79 00 00 01 	mov.w	#0x1,r0
+ // receive block_num
  692:	5e 00 05 c0 	jsr	@0x5c0:24   // serial_recv_byte
  696:	6e 6b ff f3 	mov.b	@(0xfff3:16,er6),r3l
  69a:	1c b8       	cmp.b	r3l,r0l
  69c:	46 76       	bne	.+118 (0x714)
  69e:	79 00 00 01 	mov.w	#0x1,r0
+ // receive block_num reverse
  6a2:	5e 00 05 c0 	jsr	@0x5c0:24 // serial_recv_byte
  6a6:	6e 6a ff f3 	mov.b	@(0xfff3:16,er6),r2l
  6aa:	15 8a       	xor.b	r0l,r2l
+
  6ac:	aa ff       	cmp.b	#0xff,r2l
  6ae:	46 64       	bne	.+100 (0x714)
 
@@ -698,6 +701,7 @@ Disassembly of section .text:
  6b2:	6e ea ff f2 	mov.b	r2l,@(0xfff2:16,er6)
  6b6:	79 05 00 7f 	mov.w	#0x7f,r5
 
+ //receive 128 byte data
 000006ba <.L21>:
  6ba:	79 00 00 01 	mov.w	#0x1,r0
  6be:	5e 00 05 c0 	jsr	@0x5c0:24 // serial_recv_byte
@@ -709,24 +713,26 @@ Disassembly of section .text:
  6d0:	1b 05       	subs	#1,er5
  6d2:	0d 55       	mov.w	r5,r5
  6d4:	4c e4       	bge	.-28 (0x6ba)
+
  6d6:	79 00 00 01 	mov.w	#0x1,r0
- 6da:	5e 00 05 c0 	jsr	@0x5c0:24
+ // receive check_sum
+ 6da:	5e 00 05 c0 	jsr	@0x5c0:24 //serial_recv_byte
  6de:	6e 6a ff f2 	mov.b	@(0xfff2:16,er6),r2l
  6e2:	1c 8a       	cmp.b	r0l,r2l
  6e4:	46 2e       	bne	.+46 (0x714)
  6e6:	6e 6b ff f3 	mov.b	@(0xfff3:16,er6),r3l
- 6ea:	8b 01       	add.b	#0x1,r3l
+ 6ea:	8b 01       	add.b	#0x1,r3l // block_number++;
  6ec:	6e eb ff f3 	mov.b	r3l,@(0xfff3:16,er6)
  6f0:	1a a2       	sub.l	er2,er2
  6f2:	8a 80       	add.b	#0x80,r2l
  6f4:	01 00 6f 63 	mov.l	@(0xfff4:16,er6),er3
  6f8:	ff f4 
- 6fa:	0a a3       	add.l	er2,er3
+ 6fa:	0a a3       	add.l	er2,er3 //size += r
  6fc:	01 00 6f e3 	mov.l	er3,@(0xfff4:16,er6)
  700:	ff f4 
  702:	01 00 6f 63 	mov.l	@(0xfffc:16,er6),er3
  706:	ff fc 
- 708:	0a a3       	add.l	er2,er3
+ 708:	0a a3       	add.l	er2,er3 //buf += r
  70a:	01 00 6f e3 	mov.l	er3,@(0xfffc:16,er6)
  70e:	ff fc 
  710:	f9 06       	mov.b	#0x6,r1l
@@ -737,7 +743,7 @@ Disassembly of section .text:
 
 00000716 <.L37>:
  716:	79 00 00 01 	mov.w	#0x1,r0
- 71a:	5e 00 05 46 	jsr	@0x546:24
+ 71a:	5e 00 05 46 	jsr	@0x546:24 // serial_send_byte
  71e:	58 00 ff 16 	bra	.-234 (0x638)
 
 // patter of else
