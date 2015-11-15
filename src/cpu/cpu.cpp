@@ -416,7 +416,7 @@ namespace narcissus {
                 }
 
 
-                case operation::MOV_W_IMM: 
+                case operation::MOV_W_IMM_R: 
                 {
                     auto rd = read_register_fields(pc + 1, value_place::low, false);
 
@@ -446,7 +446,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::MOV_W_ASB_24_R:
+                case operation::MOV_W_ABS_24_R:
                 {
                     auto rd = read_register_fields(pc + 1, value_place::low, false);
                     auto abs = read_immediate(pc + 3, 3);
@@ -1358,7 +1358,7 @@ namespace narcissus {
                             switch (bh) {
                                 case 2:
                                     if((ch == 0) && (cl == 0)){
-                                        return operation::MOV_W_ASB_24_R;
+                                        return operation::MOV_W_ABS_24_R;
                                     }
                                     return operation::INVALID;
 
@@ -1445,7 +1445,7 @@ namespace narcissus {
                                 case 1:
                                     return operation::INVALID;
                                 case 0:
-                                    return operation::MOV_W_IMM;
+                                    return operation::MOV_W_IMM_R;
                                 case 6:
                                     return operation::AND_W;
                                 default:

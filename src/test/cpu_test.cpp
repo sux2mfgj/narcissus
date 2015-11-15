@@ -509,7 +509,7 @@ namespace narcissus {
             ASSERT_EQ(0x121, cpu->er[4].er);
         }
 
-        TEST(MOV_W_IMM, 0)
+        TEST(MOV_W_IMM_R, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -526,7 +526,7 @@ namespace narcissus {
             auto cpu = std::make_shared<cpu::h8_300>(move(mem));
             cpu->reset_exception();
 
-            ASSERT_EQ(cpu::operation::MOV_W_IMM, cpu->detect_operation());
+            ASSERT_EQ(cpu::operation::MOV_W_IMM_R, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
             ASSERT_EQ(0x0001, cpu->er[0].r);
 
@@ -1394,7 +1394,7 @@ namespace narcissus {
             ASSERT_EQ(0x102 + 0xa, cpu->cycle());
         }
 
-        TEST(MOV_W_ASB_24_R, 0)
+        TEST(MOV_W_ABS_24_R, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -1419,7 +1419,7 @@ namespace narcissus {
             cpu->memory[0xfffc20] = 0x12;
             cpu->memory[0xfffc21] = 0x34;
 
-            ASSERT_EQ(cpu::operation::MOV_W_ASB_24_R, cpu->detect_operation());
+            ASSERT_EQ(cpu::operation::MOV_W_ABS_24_R, cpu->detect_operation());
             ASSERT_EQ(0x106, cpu->cycle());
 
             ASSERT_EQ(0x1234, cpu->er[0].er);

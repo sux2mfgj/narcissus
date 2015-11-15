@@ -49,9 +49,9 @@ namespace narcissus {
 //             MOV_B_ASB_16,               // absolute addressing 16
 //             MOV_B_ASB_24,               // absolute addressing 24
 
-            MOV_W_IMM,
+            MOV_W_IMM_R,
             MOV_W_R_R,
-            MOV_W_ASB_24_R,         
+            MOV_W_ABS_24_R,         
             MOV_W_R_ABS_24,
             MOV_W_R_IND_WITH_DIS_16,
             MOV_W_IND_WITH_DIS_16_R,
@@ -236,7 +236,7 @@ namespace narcissus {
 
                 FRIEND_TEST(MOV_B_IMM_R, 0);
                 FRIEND_TEST(MOV_B_IMM_R, 1);
-                FRIEND_TEST(MOV_W_IMM, 0);
+                FRIEND_TEST(MOV_W_IMM_R, 0);
                 FRIEND_TEST(MOV_L_IMM, 0);
                 FRIEND_TEST(JSR_ABS, 0);
                 FRIEND_TEST(MOV_L_R_IND_PRE_DEC, 0);
@@ -278,7 +278,7 @@ namespace narcissus {
                 FRIEND_TEST(ADDS_1, 0);
                 FRIEND_TEST(SUB_L_IMM_R, 0);
                 FRIEND_TEST(BLE_8, 0);
-                FRIEND_TEST(MOV_W_ASB_24_R, 0);
+                FRIEND_TEST(MOV_W_ABS_24_R, 0);
                 FRIEND_TEST(MOV_W_R_ABS_24, 0);
                 FRIEND_TEST(EXTU_W, 0);
                 FRIEND_TEST(CMP_B_R_R, 0);
