@@ -1007,6 +1007,20 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::XOR_B_R_IMM:
+                {
+                    auto rd = read_register_fields(pc, value_place::low, false);
+                    auto imm = (std::uint8_t)read_immediate(pc + 1, 1);
+
+                    auto rd_value = (std::uint8_t)read_register(rd, register_size::BYTE);
+
+                    auto result = rd_value ^ imm;
+
+                    update_ccr_mov(result, register_size::BYTE);
+                    pc += 2;
+                    break;
+                }
+
                 case operation::INVALID:
                       std::clog << "INVALID opecode: " << std::hex << "0x" << std::flush;
                       std::clog << std::setw(2) << std::setfill('0')
@@ -1475,6 +1489,9 @@ namespace narcissus {
 
                 case 0xa:
                     return operation::CMP_B_IMM;
+
+                case 0xd:
+                    return operation::XOR_B_R_IMM;
 
                 case 0xe:
                     return operation::AND_B_IMM;
