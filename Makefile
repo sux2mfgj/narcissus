@@ -1,7 +1,7 @@
 
 TARGET := narcissus
 
-BIN_FILE := ./object_code/04/bootload/kzload.bin
+BIN_FILE := ./data/04/bootload/kzload.bin
 
 all: $(TARGET)
 
@@ -20,7 +20,7 @@ run: $(TARGET)
 	./build/narcissus $(BIN_FILE)
 
 serial: $(TARGET)
-	socat -d -d pty,raw,echo=0 "exec:./build/narcissus ./object_code/04/bootload/kzload.bin,pty,raw,echo=0"
+	socat -d -d pty,raw,echo=0 "exec:./build/narcissus ./data/04/bootload/kzload.bin,pty,raw,echo=0"
 #      socat -d -d "exec:./build/narcissus ./object_code/04/bootload/kzload.bin,pty,raw,echo=0" pty,raw,echo=0 
 
 
