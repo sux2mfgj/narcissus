@@ -69,7 +69,7 @@ namespace narcissus {
             MOV_L_R_IND_POST_INC_R,
             MOV_L_IMM_ABS_24_R, 
             MOV_L_R_IMM_ABS_24,
-            MOV_L_R_IND_WITH_DIS_16,
+            MOV_L_R_R_IND_WITH_DIS_16,
 
             BEQ_8,                        // branch equal
             BEQ_16,                        // branch equal
@@ -287,7 +287,7 @@ namespace narcissus {
                 FRIEND_TEST(MOV_L_IMM_ABS_24_R, 0);
                 FRIEND_TEST(BRA_16, 0);
                 FRIEND_TEST(MOV_L_R_IMM_ABS_24, 0);
-                FRIEND_TEST(MOV_L_R_IND_WITH_DIS_16, 0);
+                FRIEND_TEST(MOV_L_R_R_IND_WITH_DIS_16, 0);
                 FRIEND_TEST(MOV_W_R_IND_WITH_DIS_16, 0);
                 FRIEND_TEST(MOV_W_IND_WITH_DIS_16_R, 0);
                 FRIEND_TEST(BGE_8, 0);

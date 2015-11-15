@@ -59,6 +59,13 @@ instruction list
             : MOV_L_R_IND_WITH_DIS_24_R
     - [x] MOV.L @ERs+, ERd
             : MOV_L_R_IND_POST_INC_R
+    - [x] MOV.L @aa:24, ERd
+            : MOV_L_IMM_ABS_24_R
+    - [x] MOV.L ERs, @aa:24
+            : MOV_L_R_IMM_ABS_24
+    - [x] MOV.L ERs, @(d:16, ERd)
+            : MOV_L_R_R_IND_WITH_DIS_16
+
 
 
 

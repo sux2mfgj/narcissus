@@ -623,7 +623,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::MOV_L_R_IND_WITH_DIS_16:
+                case operation::MOV_L_R_R_IND_WITH_DIS_16:
                 {
                     auto erd = read_register_fields(pc + 3, value_place::high, true);
                     auto ers = read_register_fields(pc + 3, value_place::low, true);
@@ -1108,7 +1108,7 @@ namespace narcissus {
                                                         {
                                                             if((dh & 0x8) && !(dl & 0x8))
                                                             {
-                                                                return operation::MOV_L_R_IND_WITH_DIS_16;
+                                                                return operation::MOV_L_R_R_IND_WITH_DIS_16;
                                                             }
 
                                                             if(!(dh & 0x8) && !(dl & 0x8)){
