@@ -343,7 +343,7 @@ namespace narcissus {
                     //                     break;
                     //                 }
 
-                case operation::MOV_B_IND_WITH_DIS_16_R: 
+                case operation::MOV_B_R_IND_WITH_DIS_16_R: 
                 {
                     auto ers = read_register_fields(pc + 1, value_place::high, true);
                     auto rd = read_register_fields(pc + 1, value_place::low, false);
@@ -362,7 +362,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::MOV_B_IND_WITH_DIS_24_R:
+                case operation::MOV_B_R_IND_WITH_DIS_24_R:
                 {
                     auto ers = read_register_fields(pc + 1, value_place::high, true);
                     auto rd = read_register_fields(pc + 3, value_place::low, false);
@@ -380,7 +380,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::MOV_B_R_IND_WITH_DIS_16:
+                case operation::MOV_B_R_R_IND_WITH_DIS_16:
                 {
 
                     auto erd = read_register_fields(pc + 1, value_place::high, true);
@@ -399,7 +399,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::MOV_B_R_IND_POST_INC:
+                case operation::MOV_B_R_IND_POST_INC_R:
                 {
         
                     auto ers = read_register_fields(pc + 1, value_place::high, true);
@@ -1375,17 +1375,17 @@ namespace narcissus {
 
 
                         case 0xc:
-                            return operation::MOV_B_R_IND_POST_INC;
+                            return operation::MOV_B_R_IND_POST_INC_R;
 
                         case 0xe:
                             {
                                 auto t = memory[pc + 1] >> 7;
                                 switch (t) {
                                     case 0:
-                                        return operation::MOV_B_IND_WITH_DIS_16_R;
+                                        return operation::MOV_B_R_IND_WITH_DIS_16_R;
 
                                     case 1:
-                                        return operation::MOV_B_R_IND_WITH_DIS_16;
+                                        return operation::MOV_B_R_R_IND_WITH_DIS_16;
 
                                     default:
                                         return operation::INVALID;
@@ -1423,7 +1423,7 @@ namespace narcissus {
                                                         auto eh = memory[pc + 4] >> 4;
                                                         auto el = memory[pc + 4] & 0xf;
                                                         if(dh == 0x2 && eh == 0 && el == 0){
-                                                            return operation::MOV_B_IND_WITH_DIS_24_R;
+                                                            return operation::MOV_B_R_IND_WITH_DIS_24_R;
                                                         }
                                                         return operation::INVALID;
                                                     }

@@ -41,10 +41,10 @@ namespace narcissus {
             MOV_B_R_R,  
             MOV_B_R_R_IND,              // register indirect (@erd = rs)
             MOV_B_R_IND_R,              // register indirect (rd = @ers)  
-            MOV_B_R_IND_WITH_DIS_16,    // register indirect with displacement(16 bit)
-            MOV_B_IND_WITH_DIS_16_R,    // register indirect with displacement(16 bit)
-            MOV_B_IND_WITH_DIS_24_R,    // register indirect with displacement(24 bit)
-            MOV_B_R_IND_POST_INC,       // rd increment after register indirect acdess
+            MOV_B_R_R_IND_WITH_DIS_16,    // register indirect with displacement(16 bit)
+            MOV_B_R_IND_WITH_DIS_16_R,    // register indirect with displacement(16 bit)
+            MOV_B_R_IND_WITH_DIS_24_R,    // register indirect with displacement(24 bit)
+            MOV_B_R_IND_POST_INC_R,       // rd increment after register indirect acdess
 //             MOV_B_ASB_8,                // absolute addressing 8
 //             MOV_B_ASB_16,               // absolute addressing 16
 //             MOV_B_ASB_24,               // absolute addressing 24
@@ -245,15 +245,15 @@ namespace narcissus {
                 FRIEND_TEST(SHLL_L, 0);
                 FRIEND_TEST(MOV_L_IND_WITH_DIS_24_R, 0);
                 FRIEND_TEST(SUB_B_R_R, 0);
-                FRIEND_TEST(MOV_B_IND_WITH_DIS_16_R, 0);
-                FRIEND_TEST(MOV_B_R_IND_WITH_DIS_16, 0);
+                FRIEND_TEST(MOV_B_R_IND_WITH_DIS_16_R, 0);
+                FRIEND_TEST(MOV_B_R_R_IND_WITH_DIS_16, 0);
                 FRIEND_TEST(SUB_W_R_R, 0);
                 FRIEND_TEST(SUB_W_R_R, 1);
                 FRIEND_TEST(RTS, 0);
                 FRIEND_TEST(MOV_L_R_IND_POST_INC, 0);
                 FRIEND_TEST(BEQ_8, 0);
                 FRIEND_TEST(BRA_8, 0);
-                FRIEND_TEST(MOV_B_R_IND_POST_INC, 0);
+                FRIEND_TEST(MOV_B_R_IND_POST_INC_R, 0);
                 FRIEND_TEST(MOV_B_R_R, 0);
                 FRIEND_TEST(CMP_B_IMM, 0);
                 FRIEND_TEST(CMP_B_IMM, 1);
@@ -270,7 +270,7 @@ namespace narcissus {
                 FRIEND_TEST(ADD_B_IMM_R, 0);
                 FRIEND_TEST(ADD_L_IMM_R, 0);
                 FRIEND_TEST(SUB_WITH_SIGN_EXT_1, 0);
-                FRIEND_TEST(MOV_B_IND_WITH_DIS_24_R, 0);
+                FRIEND_TEST(MOV_B_R_IND_WITH_DIS_24_R, 0);
                 FRIEND_TEST(SHLR_L, 0);
                 FRIEND_TEST(DEC_W_1, 0);
                 FRIEND_TEST(MOV_B_R_IND_R, 0);
