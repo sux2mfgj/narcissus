@@ -1,7 +1,6 @@
 #include <string>
 
 #include <cpu.hpp>
-#include <exception.hpp>
 #include <cassert>
 
 
@@ -22,7 +21,6 @@ namespace narcissus {
             ccr.byte = 0b00000000;
             ccr.interrupt_mask = 1;
         }
-
 
         auto h8_300::cycle() -> std::uint32_t
         {
@@ -154,7 +152,7 @@ namespace narcissus {
 
                     auto rd_value = read_register(rd, register_size::BYTE);
                     
-                    //TODO Do imm have to cast by integer?
+                    //TODO Do i have to cast by integer?
                     auto result = rd_value + imm;
 
                     write_register(rd, result, register_size::BYTE);
@@ -617,8 +615,6 @@ namespace narcissus {
                     auto addr = read_register(ers, register_size::LONG);
                     addr += disp;
 
-//                     std::cout << disp << std::endl;
-//                     std::cout << std::hex << addr << std::endl;
                     auto result = read_immediate(addr, 4);
 
                     write_register(erd, result, register_size::LONG);
@@ -751,7 +747,6 @@ namespace narcissus {
                     }
                     pc += 4;
                     break;
-
                 }
 
                 case operation::BLE_8:
