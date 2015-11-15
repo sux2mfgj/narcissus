@@ -617,8 +617,8 @@ namespace narcissus {
                     auto addr = read_register(ers, register_size::LONG);
                     addr += disp;
 
-                    std::cout << disp << std::endl;
-                    std::cout << std::hex << addr << std::endl;
+//                     std::cout << disp << std::endl;
+//                     std::cout << std::hex << addr << std::endl;
                     auto result = read_immediate(addr, 4);
 
                     write_register(erd, result, register_size::LONG);
@@ -1006,7 +1006,7 @@ namespace narcissus {
 
                 default:
                     std::cout << "implement yet" << std::endl;
-                    throw invalid_operation();
+                    assert(false);
             }
 
             return pc; 

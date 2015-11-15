@@ -34,8 +34,6 @@ namespace narcissus {
             public:
                 auto operator[] (std::uint32_t address) -> std::uint8_t&;
 
-//                 auto quick_exit(void) -> void;
-
             private:
                 std::array<std::uint8_t, ROM_SIZE> rom;
                 std::array<std::uint8_t, RAM_SIZE> ram;

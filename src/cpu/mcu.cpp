@@ -1,5 +1,6 @@
 #include <mcu.hpp>
 #include <exception>
+#include <cassert>
 
 #include <iostream>
 
@@ -7,7 +8,7 @@ namespace narcissus {
     namespace cpu {
 
         mcu::mcu(std::array<std::uint8_t, ROM_SIZE>&& init_rom) 
-            : rom(move(init_rom)), ram() //, is_contitue(true)
+            : rom(move(init_rom)), ram() 
         {
             sci_1 = std::make_shared<sci::sci>();
         }
@@ -33,14 +34,8 @@ namespace narcissus {
             }
 
             std::cout << "memory access error: 0x"<< address << std::endl;
-            throw std::out_of_range("access error");
+            assert(false);
         }
-
-//         auto mcu::quick_exit(void) -> void
-//         {
-//             (*sci_1)[0x000000];
-
-//         }
 
     } // namespace cpu
 } // namespace narcissus

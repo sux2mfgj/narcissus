@@ -21,6 +21,8 @@ run: $(TARGET)
 
 serial: $(TARGET)
 	socat -d -d pty,raw,echo=0 "exec:./build/narcissus ./object_code/04/bootload/kzload.bin,pty,raw,echo=0"
+#      socat -d -d "exec:./build/narcissus ./object_code/04/bootload/kzload.bin,pty,raw,echo=0" pty,raw,echo=0 
+
 
 clean:
 	rm -rf build

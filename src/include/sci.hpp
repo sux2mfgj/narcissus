@@ -62,7 +62,6 @@ namespace narcissus {
                 FRIEND_TEST(ACCESS_FLAG, 0);
                 FRIEND_TEST(PUTC_SERIAL, 0);
 
-
         };
 
     } // namespace sci

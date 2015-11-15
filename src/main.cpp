@@ -44,7 +44,7 @@ int main(int argc, char const* argv[])
     std::uint32_t bp;
     std::vector<std::uint32_t> break_points;
     while (is_debug_mode) {
-        std::cout << "break point> 0x";
+//         std::cout << "break point> 0x";
         std::cin >> std::hex >> bp;
         if(bp < 0x100){
             break;
@@ -70,7 +70,7 @@ int main(int argc, char const* argv[])
 
             auto t = break_points.end() != find(break_points.begin(), break_points.end(), pc);
             if((t || s[0] != 's') && is_debug_mode){
-                std::cout << ">";
+//                 std::cout << ">";
                 std::getline(std::cin, s);
 
                 if(s.empty()){
@@ -78,7 +78,7 @@ int main(int argc, char const* argv[])
                 }
 
                 if(s[0] == 'p'){
-                    std::cout << debug << std::endl;
+//                     std::cout << debug << std::endl;
                 }
                 if(s[0] == 'q'){
                     break;
