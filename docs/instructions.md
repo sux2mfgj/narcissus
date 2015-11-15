@@ -45,9 +45,20 @@ instruction list
             : MOV_L_IMM_L
     - [x] MOV.L Rs, Rd
             : MOV_L_R_R
+    - [x] MOV.L ERs, @ERd
+            : MOV_L_R_R_IND
     - [x] MOV.L @ERs, ERd
             : MOV_L_R_IND_R
-
+    - [x] MOV.L @ERs, ERd
+            : MOV_L_R_IND_R
+    - [x] MOV.L ERs, @-ERd
+            : MOV_L_R_R_IND_PRE_DEC
+    - [x] MOV.L @(d:16, ERs), ERd
+            : MOV_L_R_IND_WITH_DIS_16_R
+    - [x] MOV.L @(d:24, ERs), ERd
+            : MOV_L_R_IND_WITH_DIS_24_R
+    - [x] MOV.L @ERs+, ERd
+            : MOV_L_R_IND_POST_INC_R
 
 
 

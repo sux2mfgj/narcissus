@@ -510,7 +510,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::MOV_L_IMM: 
+                case operation::MOV_L_IMM_L: 
                 {
                     auto erd = read_register_fields(pc + 1, value_place::low, true);
     
@@ -567,7 +567,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::MOV_L_R_IND_PRE_DEC: 
+                case operation::MOV_L_R_R_IND_PRE_DEC: 
                 {
                     auto erd = read_register_fields(pc + 3, value_place::high, true);
                     auto ers = read_register_fields(pc + 3, value_place::low, true);
@@ -587,7 +587,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::MOV_L_IND_WITH_DIS_24_R: 
+                case operation::MOV_L_R_IND_WITH_DIS_24_R: 
                 {
                     auto ers = read_register_fields(pc + 3, value_place::high, true);
                     auto erd = read_register_fields(pc + 5, value_place::low, true);
@@ -605,7 +605,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::MOV_L_IND_WITH_DIS_16_R:
+                case operation::MOV_L_R_IND_WITH_DIS_16_R:
                 {
                     auto ers = read_register_fields(pc + 3, value_place::high, true);
                     auto erd = read_register_fields(pc + 3, value_place::low, true);
@@ -641,7 +641,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::MOV_L_R_IND_POST_INC: 
+                case operation::MOV_L_R_IND_POST_INC_R: 
                 {
                     auto ers = read_register_fields(pc + 3, value_place::high, true);
                     auto erd = read_register_fields(pc + 3, value_place::low, true);
@@ -1098,10 +1098,10 @@ namespace narcissus {
                                                         case 0xd: 
                                                         {
                                                             if ((dh & 0x8) && !(dl &0x8)) {
-                                                                return operation::MOV_L_R_IND_PRE_DEC;
+                                                                return operation::MOV_L_R_R_IND_PRE_DEC;
                                                             }
                                                             return operation::
-                                                                MOV_L_R_IND_POST_INC;
+                                                                MOV_L_R_IND_POST_INC_R;
                                                         }
 
                                                         case 0xf:
@@ -1112,7 +1112,7 @@ namespace narcissus {
                                                             }
 
                                                             if(!(dh & 0x8) && !(dl & 0x8)){
-                                                                return operation::MOV_L_IND_WITH_DIS_16_R;
+                                                                return operation::MOV_L_R_IND_WITH_DIS_16_R;
                                                             }
                                                             return operation::INVALID;
 
@@ -1130,7 +1130,7 @@ namespace narcissus {
                                                                     switch (t) {
                                                                         case 0x2:
                                                                             return operation::
-                                                                                MOV_L_IND_WITH_DIS_24_R;
+                                                                                MOV_L_R_IND_WITH_DIS_24_R;
                                                                         default:
                                                                             return operation::INVALID;
                                                                     }
@@ -1456,7 +1456,7 @@ namespace narcissus {
                         case 0xa:
                             switch (bh) {
                                 case 0:
-                                    return operation::MOV_L_IMM;
+                                    return operation::MOV_L_IMM_L;
                                 case 1:
                                     return operation::ADD_L_IMM_R;
 

@@ -57,16 +57,16 @@ namespace narcissus {
             MOV_W_IND_WITH_DIS_16_R,
 
 
-            MOV_L_IMM, 
+            MOV_L_IMM_L, 
             MOV_L_R_R,
             MOV_L_R_R_IND,
             MOV_L_R_IND_R,
-            MOV_L_R_IND_PRE_DEC,
+            MOV_L_R_R_IND_PRE_DEC,
 
-            MOV_L_IND_WITH_DIS_16_R,
-            MOV_L_IND_WITH_DIS_24_R,    // MEMORY to register
+            MOV_L_R_IND_WITH_DIS_16_R,
+            MOV_L_R_IND_WITH_DIS_24_R,    // MEMORY to register
 //             MOV_L_R_IND_WITH_DIS_24, // register to memory
-            MOV_L_R_IND_POST_INC,
+            MOV_L_R_IND_POST_INC_R,
             MOV_L_IMM_ABS_24_R, 
             MOV_L_R_IMM_ABS_24,
             MOV_L_R_IND_WITH_DIS_16,
@@ -237,20 +237,20 @@ namespace narcissus {
                 FRIEND_TEST(MOV_B_IMM_R, 0);
                 FRIEND_TEST(MOV_B_IMM_R, 1);
                 FRIEND_TEST(MOV_W_IMM_R, 0);
-                FRIEND_TEST(MOV_L_IMM, 0);
+                FRIEND_TEST(MOV_L_IMM_L, 0);
                 FRIEND_TEST(JSR_ABS, 0);
-                FRIEND_TEST(MOV_L_R_IND_PRE_DEC, 0);
+                FRIEND_TEST(MOV_L_R_R_IND_PRE_DEC, 0);
                 FRIEND_TEST(MOV_L_R_R, 0);
                 FRIEND_TEST(EXTS_L, 0);
                 FRIEND_TEST(SHLL_L, 0);
-                FRIEND_TEST(MOV_L_IND_WITH_DIS_24_R, 0);
+                FRIEND_TEST(MOV_L_R_IND_WITH_DIS_24_R, 0);
                 FRIEND_TEST(SUB_B_R_R, 0);
                 FRIEND_TEST(MOV_B_R_IND_WITH_DIS_16_R, 0);
                 FRIEND_TEST(MOV_B_R_R_IND_WITH_DIS_16, 0);
                 FRIEND_TEST(SUB_W_R_R, 0);
                 FRIEND_TEST(SUB_W_R_R, 1);
                 FRIEND_TEST(RTS, 0);
-                FRIEND_TEST(MOV_L_R_IND_POST_INC, 0);
+                FRIEND_TEST(MOV_L_R_IND_POST_INC_R, 0);
                 FRIEND_TEST(BEQ_8, 0);
                 FRIEND_TEST(BRA_8, 0);
                 FRIEND_TEST(MOV_B_R_IND_POST_INC_R, 0);
@@ -293,7 +293,7 @@ namespace narcissus {
                 FRIEND_TEST(BGE_8, 0);
                 FRIEND_TEST(BEQ_16, 0);
                 FRIEND_TEST(CMP_L_IMM, 0);
-                FRIEND_TEST(MOV_L_IND_WITH_DIS_16_R, 0);
+                FRIEND_TEST(MOV_L_R_IND_WITH_DIS_16_R, 0);
                 FRIEND_TEST(XOR_B_R_R, 0);
                 FRIEND_TEST(BGT_8, 0);
                 FRIEND_TEST(MOV_L_R_R_IND, 0);
