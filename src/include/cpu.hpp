@@ -37,7 +37,7 @@ namespace narcissus {
 //             ADDS_2,                     // add 2 with sign extention
             ADDS_4,                     // add 4 with sign extention
             
-            MOV_B_IMM,
+            MOV_B_IMM_R,
             MOV_B_R_R,  
             MOV_B_R_R_IND,              // register indirect (@erd = rs)
             MOV_B_R_IND_R,              // register indirect (rd = @ers)  
@@ -234,8 +234,8 @@ namespace narcissus {
 //                 FRIEND_TEST(cpu, ADD_L_IMM);
                 FRIEND_TEST(ADD_L_R_R, 0);
 
-                FRIEND_TEST(MOV_B_IMM, 0);
-                FRIEND_TEST(MOV_B_IMM, 1);
+                FRIEND_TEST(MOV_B_IMM_R, 0);
+                FRIEND_TEST(MOV_B_IMM_R, 1);
                 FRIEND_TEST(MOV_W_IMM, 0);
                 FRIEND_TEST(MOV_L_IMM, 0);
                 FRIEND_TEST(JSR_ABS, 0);

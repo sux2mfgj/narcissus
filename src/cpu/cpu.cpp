@@ -269,7 +269,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::MOV_B_IMM: 
+                case operation::MOV_B_IMM_R: 
                 {
                     auto rd = read_register_fields(pc, value_place::low, false);
 
@@ -1492,7 +1492,7 @@ namespace narcissus {
                     return operation::AND_B_IMM;
 
                 case 0xf:
-                    return operation::MOV_B_IMM;
+                    return operation::MOV_B_IMM_R;
 
                 default:
                     return operation::INVALID;
