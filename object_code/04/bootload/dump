@@ -34,7 +34,7 @@ Disassembly of section .text:
  12e:	07 ec 
  130:	7a 00 00 ff 	mov.l	#0xfffc20,er0
  134:	fc 20 
- 136:	5e 00 02 be 	jsr	@0x2be:24
+ 136:	5e 00 02 be 	jsr	@0x2be:24 // memcpy
  13a:	7a 02 00 ff 	mov.l	#0xfffc44,er2
  13e:	fc 44 
  140:	7a 32 00 ff 	sub.l	#0xfffc30,er2
@@ -42,32 +42,33 @@ Disassembly of section .text:
  146:	19 11       	sub.w	r1,r1
  148:	7a 00 00 ff 	mov.l	#0xfffc30,er0
  14c:	fc 30 
- 14e:	5e 00 02 a4 	jsr	@0x2a4:24
+ 14e:	5e 00 02 a4 	jsr	@0x2a4:24 // memset
  152:	79 00 00 01 	mov.w	#0x1,r0
- 156:	5e 00 04 ec 	jsr	@0x4ec:24
+ 156:	5e 00 04 ec 	jsr	@0x4ec:24 // serial_init
  15a:	7a 00 00 00 	mov.l	#0x754,er0
  15e:	07 54 
 
 00000160 <.L36>:
- 160:	5e 00 04 2a 	jsr	@0x42a:24
+ 160:	5e 00 04 2a 	jsr	@0x42a:24// puts
  164:	7a 00 00 00 	mov.l	#0x779,er0
  168:	07 79 
- 16a:	5e 00 04 2a 	jsr	@0x42a:24
+ 16a:	5e 00 04 2a 	jsr	@0x42a:24 //puts
  16e:	7a 00 00 ff 	mov.l	#0xfffc30,er0
  172:	fc 30 
- 174:	5e 00 04 4e 	jsr	@0x44e:24
+ 174:	5e 00 04 4e 	jsr	@0x44e:24 // gets
  178:	7a 01 00 00 	mov.l	#0x782,er1
  17c:	07 82 
  17e:	7a 00 00 ff 	mov.l	#0xfffc30,er0
  182:	fc 30 
- 184:	5e 00 03 58 	jsr	@0x358:24
+ 184:	5e 00 03 58 	jsr	@0x358:24 // strcmp
  188:	0d 00       	mov.w	r0,r0
  18a:	46 5c       	bne	.+92 (0x1e8)
+    // buf == "load"
  18c:	7a 00 00 ff 	mov.l	#0xffdf20,er0
  190:	df 20 
  192:	01 00 6b a0 	mov.l	er0,@0xfffc40:32
  196:	00 ff fc 40 
- 19a:	5e 00 06 0a 	jsr	@0x60a:24
+ 19a:	5e 00 06 0a 	jsr	@0x60a:24 // xmodem_recv
  19e:	01 00 6b a0 	mov.l	er0,@0xfffc20:32
  1a2:	00 ff fc 20 
  1a6:	1a a2       	sub.l	er2,er2
@@ -100,24 +101,27 @@ Disassembly of section .text:
  1e2:	07 9f 
  1e4:	58 00 ff 78 	bra	.-136 (0x160)
 
+
+    // else
 000001e8 <.L5>:
  1e8:	7a 01 00 00 	mov.l	#0x7bb,er1
  1ec:	07 bb 
  1ee:	7a 00 00 ff 	mov.l	#0xfffc30,er0
  1f2:	fc 30 
- 1f4:	5e 00 03 58 	jsr	@0x358:24
+ 1f4:	5e 00 03 58 	jsr	@0x358:24 // strmp
  1f8:	0d 00       	mov.w	r0,r0
  1fa:	58 60 00 9c 	bne	.+156 (0x29a)
+    // buf == "dump"
  1fe:	7a 00 00 00 	mov.l	#0x7c0,er0
  202:	07 c0 
- 204:	5e 00 04 2a 	jsr	@0x42a:24
+ 204:	5e 00 04 2a 	jsr	@0x42a:24 // puts
  208:	19 11       	sub.w	r1,r1
  20a:	01 00 6b 20 	mov.l	@0xfffc20:32,er0
  20e:	00 ff fc 20 
- 212:	5e 00 04 88 	jsr	@0x488:24
+ 212:	5e 00 04 88 	jsr	@0x488:24 // putxval
  216:	7a 00 00 00 	mov.l	#0x79d,er0
  21a:	07 9d 
- 21c:	5e 00 04 2a 	jsr	@0x42a:24
+ 21c:	5e 00 04 2a 	jsr	@0x42a:24  // puts
  220:	01 00 6b 22 	mov.l	@0xfffc40:32,er2
  224:	00 ff fc 40 
  228:	01 00 6f e2 	mov.l	er2,@(0xfff8:16,er6)
@@ -125,6 +129,7 @@ Disassembly of section .text:
  22e:	01 00 6b 24 	mov.l	@0xfffc20:32,er4
  232:	00 ff fc 20 
  236:	4c 0a       	bge	.+10 (0x242)
+// if (size < 0){ ...
  238:	7a 00 00 00 	mov.l	#0x7c7,er0
  23c:	07 c7 
  23e:	58 00 ff 1e 	bra	.-226 (0x160)
@@ -132,6 +137,7 @@ Disassembly of section .text:
 00000242 <.L15>:
  242:	1a d5       	sub.l	er5,er5
 
+ // for(i = 0; i < size; ++i){...
 00000244 <.L34>:
  244:	1f c5       	cmp.l	er4,er5
  246:	4c 48       	bge	.+72 (0x290)
@@ -141,7 +147,7 @@ Disassembly of section .text:
  250:	79 01 00 02 	mov.w	#0x2,r1
  254:	1a 80       	sub.l	er0,er0
  256:	68 28       	mov.b	@er2,r0l
- 258:	5e 00 04 88 	jsr	@0x488:24
+ 258:	5e 00 04 88 	jsr	@0x488:24 // putxval
  25c:	1a a2       	sub.l	er2,er2
  25e:	0c da       	mov.b	r5l,r2l
  260:	ea 0f       	and.b	#0xf,r2l
@@ -158,14 +164,14 @@ Disassembly of section .text:
  276:	46 0a       	bne	.+10 (0x282)
  278:	7a 00 00 00 	mov.l	#0x7c5,er0
  27c:	07 c5 
- 27e:	5e 00 04 2a 	jsr	@0x42a:24
+ 27e:	5e 00 04 2a 	jsr	@0x42a:24 // puts
 
 00000282 <.L22>:
  282:	7a 00 00 00 	mov.l	#0x7c5,er0
  286:	07 c5 
 
 00000288 <.L35>:
- 288:	5e 00 04 2a 	jsr	@0x42a:24
+ 288:	5e 00 04 2a 	jsr	@0x42a:24 //puts
  28c:	0b 05       	adds	#1,er5
  28e:	40 b4       	bra	.-76 (0x244)
 
@@ -174,6 +180,7 @@ Disassembly of section .text:
  294:	07 9d 
  296:	58 00 fe c6 	bra	.-314 (0x160)
 
+// else
 0000029a <.L14>:
  29a:	7a 00 00 00 	mov.l	#0x7d1,er0
  29e:	07 d1 
@@ -376,12 +383,12 @@ Disassembly of section .text:
  3da:	46 0a       	bne	.+10 (0x3e6)
  3dc:	f9 0d       	mov.b	#0xd,r1l
  3de:	79 00 00 01 	mov.w	#0x1,r0
- 3e2:	5e 00 05 46 	jsr	@0x546:24
+ 3e2:	5e 00 05 46 	jsr	@0x546:24 // serial_send_byte
 
 000003e6 <.L65>:
  3e6:	0c c9       	mov.b	r4l,r1l
  3e8:	79 00 00 01 	mov.w	#0x1,r0
- 3ec:	5e 00 05 46 	jsr	@0x546:24
+ 3ec:	5e 00 05 46 	jsr	@0x546:24 // serial_send_byte
  3f0:	01 00 6d 74 	mov.l	@er7+,er4
  3f4:	01 00 6d 76 	mov.l	@er7+,er6
  3f8:	54 70       	rts	

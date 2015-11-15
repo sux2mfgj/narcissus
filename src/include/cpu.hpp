@@ -89,6 +89,7 @@ namespace narcissus {
             CMP_B_IMM,                  // compare register and immediate
             CMP_B_R_R,                  // compare register and  register
             CMP_L_IMM,
+            CMP_L_R_R,
 
 //             DEC_B,                   // decrement
             DEC_W_1,                      
@@ -297,7 +298,7 @@ namespace narcissus {
                 FRIEND_TEST(MOV_L_R_R_IND, 0);
                 FRIEND_TEST(ADD_B_R_R, 0);
                 FRIEND_TEST(MOV_L_R_IND_R, 0);
-
+                FRIEND_TEST(CMP_L_R_R, 0);
         };
 
     }  // namespace cpu

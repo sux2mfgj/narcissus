@@ -844,6 +844,22 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::CMP_L_R_R:
+                {
+                    auto ers = read_register_fields(pc + 1, value_place::high, true);
+                    auto erd = read_register_fields(pc + 1, value_place::low, true);
+
+                    auto ers_value = read_register(ers, register_size::LONG);
+                    auto erd_value = read_register(erd, register_size::LONG);
+
+                    std::uint64_t result = (std::int32_t)erd_value - (std::int32_t)ers_value;
+
+                    update_ccr_sub(erd_value, ers_value, result, register_size::LONG);
+                    pc += 2;
+
+                    break;
+                }
+
                 case operation::AND_W:
                 {
                     auto rd = read_register_fields(pc + 1, value_place::low, false);
@@ -1222,7 +1238,6 @@ namespace narcissus {
                                     return operation::INVALID;
                                 case 9:
                                     return operation::SUB_WITH_SIGN_EXT_4;
-
                                 case 0xd:
 //                                     return operation::DEC_W_2;
 
@@ -1232,6 +1247,11 @@ namespace narcissus {
 
                         case 0xc:
                             return operation::CMP_B_R_R;
+
+                        case 0xf:
+                            if((bh & 0x8) && !(bl & 0x8)){
+                                return operation::CMP_L_R_R;
+                            }
 
                         default:
                             return operation::INVALID;
