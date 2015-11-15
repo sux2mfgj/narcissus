@@ -855,7 +855,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::AND_W:
+                case operation::AND_W_IMM:
                 {
                     auto rd = read_register_fields(pc + 1, value_place::low, false);
 
@@ -1002,7 +1002,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::XOR_B_R_IMM:
+                case operation::XOR_B_IMM_R:
                 {
                     auto rd = read_register_fields(pc, value_place::low, false);
                     auto imm = (std::uint8_t)read_immediate(pc + 1, 1);
@@ -1447,7 +1447,7 @@ namespace narcissus {
                                 case 0:
                                     return operation::MOV_W_IMM_R;
                                 case 6:
-                                    return operation::AND_W;
+                                    return operation::AND_W_IMM;
                                 default:
                                     return operation::INVALID;
                             }
@@ -1486,7 +1486,7 @@ namespace narcissus {
                     return operation::CMP_B_IMM;
 
                 case 0xd:
-                    return operation::XOR_B_R_IMM;
+                    return operation::XOR_B_IMM_R;
 
                 case 0xe:
                     return operation::AND_B_IMM;

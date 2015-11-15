@@ -977,7 +977,7 @@ namespace narcissus {
 
         }
 
-        TEST(AND_W, 0)
+        TEST(AND_W_IMM, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -997,13 +997,13 @@ namespace narcissus {
 
             cpu->er[0].r = 0xff0f;
 
-            ASSERT_EQ(cpu::operation::AND_W, cpu->detect_operation());
+            ASSERT_EQ(cpu::operation::AND_W_IMM, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
             ASSERT_EQ(0x0000, cpu->er[0].r);
             ASSERT_EQ(0b10000100, cpu->ccr.byte);
         }
 
-        TEST(AND_W, 1)
+        TEST(AND_W_IMM, 1)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -1023,7 +1023,7 @@ namespace narcissus {
 
             cpu->er[0].r = 0x8000;
 
-            ASSERT_EQ(cpu::operation::AND_W, cpu->detect_operation());
+            ASSERT_EQ(cpu::operation::AND_W_IMM, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
             ASSERT_EQ(0b10001000, cpu->ccr.byte);
         }
@@ -1997,7 +1997,7 @@ namespace narcissus {
         }
 
 
-        TEST(XOR_B_R_IMM, 0){
+        TEST(XOR_B_IMM_R, 0){
             std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
@@ -2014,7 +2014,7 @@ namespace narcissus {
 
             cpu->er[2].l = 0x8;
 
-            ASSERT_EQ(cpu::operation::XOR_B_R_IMM, cpu->detect_operation());
+            ASSERT_EQ(cpu::operation::XOR_B_IMM_R, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0b10000000, (std::uint8_t)cpu->ccr.byte);
         }

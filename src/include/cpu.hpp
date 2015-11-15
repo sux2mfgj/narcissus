@@ -96,7 +96,7 @@ namespace narcissus {
 //             DEC_W_2,                      
 //             DEC_L,
 
-            AND_W,                      // AND logical
+            AND_W_IMM,                      // AND logical
             AND_B_IMM,
 
             SHLL_L,                     // shift logical left
@@ -110,7 +110,7 @@ namespace narcissus {
             RTS,
 
             XOR_B_R_R,                  //exclusive or logical direct registers
-            XOR_B_R_IMM,
+            XOR_B_IMM_R,
         };
 
         enum class register_size : std::uint32_t
@@ -261,8 +261,8 @@ namespace narcissus {
                 FRIEND_TEST(SUB_WITH_SIGN_EXT_4, 0);
                 FRIEND_TEST(MOV_W_R_R, 0);
                 FRIEND_TEST(EXTS_L, 1);
-                FRIEND_TEST(AND_W, 0);
-                FRIEND_TEST(AND_W, 1);
+                FRIEND_TEST(AND_W_IMM, 0);
+                FRIEND_TEST(AND_W_IMM, 1);
                 FRIEND_TEST(register, 0);
                 FRIEND_TEST(AND_B_IMM, 0);
                 FRIEND_TEST(ADDS_4, 0);
@@ -300,7 +300,7 @@ namespace narcissus {
                 FRIEND_TEST(ADD_B_R_R, 0);
                 FRIEND_TEST(MOV_L_R_IND_R, 0);
                 FRIEND_TEST(CMP_L_R_R, 0);
-                FRIEND_TEST(XOR_B_R_IMM, 0);
+                FRIEND_TEST(XOR_B_IMM_R, 0);
         };
 
     }  // namespace cpu
