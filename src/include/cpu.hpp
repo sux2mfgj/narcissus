@@ -189,7 +189,9 @@ namespace narcissus {
 //             SHAL_L,
 //             SHAR_L,
 
+            JSR_R,
             JSR_ABS,                    // jump to subroutine use absolute address
+//             JSR_ABS_IND,
             EXTS_L,                     // extend as signed
 
             EXTU_W,                     // extend as unsigned
@@ -403,6 +405,7 @@ namespace narcissus {
                 FRIEND_TEST(CMP_W_R_R, 0);
                 FRIEND_TEST(BGE_16, 0);
                 FRIEND_TEST(MULXS_W_R_R, 0);
+                FRIEND_TEST(JSR_R, 0);
 
         };
 

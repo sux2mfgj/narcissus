@@ -1003,6 +1003,15 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::JSR_R:
+                {
+                    auto ern = read_register_fields(pc + 1, value_place::high, true);
+                    auto ern_value = read_register(ern, register_size::LONG);
+
+                    pc = ern_value;
+                    break;
+                }
+
                 case operation::EXTS_L: 
                 {
                     auto erd = read_register_fields(pc + 1, value_place::low, true);
@@ -1586,15 +1595,12 @@ namespace narcissus {
                             //TODO
                             //JMP
                             return operation::INVALID;
-
                         case 0xc:
                             //TODO
                             //BSR
                             return operation::INVALID;
                         case 0xd:
-                            //TODO
-                            //JSR
-                            return operation::INVALID;
+                            return operation::JSR_R;
                         case 0xe:
                             return operation::JSR_ABS;
                         case 0xf:
