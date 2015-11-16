@@ -369,7 +369,7 @@ WIP
     - [ ] JMP @@aa:8  
             : JMP_IND_IMM
 
-    - [ ] JSR @ERn  
+    - [x] JSR @ERn  
             : JSR_R
     - [x] JSR @aa:24  
             : JSR_ABS
