@@ -68,32 +68,94 @@ namespace narcissus {
 //             MOV_L_R_ABS_16,
             MOV_L_R_ABS_24,
 
-//             ADD_B_IMM,              // immediate
+            // pop/push
+            //POP_W_R
+            //POP_L_R
+            //PUSH_W_R
+            //PUSH_L_R
+
+            // movfpe
+            //MOVFPE_IMM_16_R
+            //MOVTPE_R_IMM_16
+
+            // add
+            ADD_B_IMM_R,              // immediate
             ADD_B_R_R,              // register to register
             ADD_W_IMM_R,
 //             ADD_W_R_R,
-//             ADD_L_IMM,
+            ADD_L_IMM_R,
             ADD_L_R_R,
 
-            SUB_B_R_R,                      // substruct rd from rs
-            SUB_W_R_R,
-            SUB_L_R_R,
-            SUB_L_IMM_R,
-
-            SUB_WITH_SIGN_EXT_1,
-//             SUB_WITH_SIGN_EXT_2,
-            SUB_WITH_SIGN_EXT_4,            // subtract 4 with sign extention
-
-            ADD_B_IMM_R,
-
-            ADD_L_IMM_R,
-
+            // addx
+            //ADDX_B_IMM_R
+            //ADDX_B_R_R
+            
+            // adds
             ADDS_1,                     // add 1 with sign extention
 //             ADDS_2,                     // add 2 with sign extention
             ADDS_4,                     // add 4 with sign extention
-            
+
+            // inc
+            //INC_B,
+            //INC_W_1_R,
+            //INC_W_2_R,
+            //INC_L_1_R,
+            //INC_L_2_R,
+
+            // daa
+            //DAA_R
+
+            //sub
+            SUB_B_R_R,
+            //SUB_W_IMM_R,
+            SUB_W_R_R,
+            SUB_L_IMM_R,
+            SUB_L_R_R,
+
+            // subx
+            //SUBX_IMM_R,
+            //SUBX_R_R,
+
+            // subs
+            SUBS_1,
+            // SUBS_2,
+            SUBS_4,
+
+            // dec
+//             DEC_B,                   // decrement
+            DEC_W_1,                      
+            DEC_W_2,                      
+            DEC_L_1,
+//             DEC_L_2,
+
+            // das
+            //DAS_R,
+
+            // mulxu
+            //MULXU_B_R_R,
+            //MULXU_W_R_R,
+
+            // mulxu
+            //MULXS_B_R_R,
+            MULXS_W_R_R,
+
+            // cmp
+            CMP_B_IMM,                  // compare register and immediate
+            CMP_B_R_R,                  // compare register and  register
+//             CMP_W_IMM,
+            CMP_W_R_R,
+            CMP_L_IMM,
+            CMP_L_R_R,
+
+
+            //TODO [WIP] arrange enum
+            // ----
+
+//             SUB_WITH_SIGN_EXT_1,
+//             SUB_WITH_SIGN_EXT_4,            // subtract 4 with sign extention
+
 //             MULXS_B_R_R,
-            MULXS_W_R_R,                //multiply extend as signed
+//             MULXS_W_R_R,                //multiply extend as signed
 //             MULXS_L_R_R,
 
 
@@ -112,18 +174,11 @@ namespace narcissus {
             BGE_8,                  //branch greater or equal
             BGE_16,
 
-            CMP_B_IMM,                  // compare register and immediate
-            CMP_B_R_R,                  // compare register and  register
-//             CMP_W_IMM,
-            CMP_W_R_R,
-            CMP_L_IMM,
-            CMP_L_R_R,
-
-//             DEC_B,                   // decrement
-            DEC_W_1,                      
-            DEC_W_2,                      
-            DEC_L_1,
-//             DEC_L_2,
+//             CMP_B_IMM,                  // compare register and immediate
+//             CMP_B_R_R,                  // compare register and  register
+//             CMP_W_R_R,
+//             CMP_L_IMM,
+//             CMP_L_R_R,
 
             AND_W_IMM,                      // AND logical
             AND_B_IMM,
@@ -298,7 +353,7 @@ namespace narcissus {
                 FRIEND_TEST(CMP_B_IMM, 0);
                 FRIEND_TEST(CMP_B_IMM, 1);
                 FRIEND_TEST(BNE_8, 0);
-                FRIEND_TEST(SUB_WITH_SIGN_EXT_4, 0);
+                FRIEND_TEST(SUBS_4, 0);
                 FRIEND_TEST(MOV_W_R_R, 0);
                 FRIEND_TEST(EXTS_L, 1);
                 FRIEND_TEST(AND_W_IMM, 0);
@@ -309,7 +364,7 @@ namespace narcissus {
                 FRIEND_TEST(SUB_L_R_R, 0);
                 FRIEND_TEST(ADD_B_IMM_R, 0);
                 FRIEND_TEST(ADD_L_IMM_R, 0);
-                FRIEND_TEST(SUB_WITH_SIGN_EXT_1, 0);
+                FRIEND_TEST(SUBS_1, 0);
                 FRIEND_TEST(MOV_B_R_IND_WITH_DIS_24_R, 0);
                 FRIEND_TEST(SHLR_L, 0);
                 FRIEND_TEST(DEC_W_1, 0);

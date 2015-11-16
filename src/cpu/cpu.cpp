@@ -264,7 +264,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::SUB_WITH_SIGN_EXT_1:
+                case operation::SUBS_1:
                 {
                     auto erd = read_register_fields(pc + 1, value_place::low, true);
 
@@ -274,7 +274,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::SUB_WITH_SIGN_EXT_4:
+                case operation::SUBS_4:
                 {
                     auto erd = read_register_fields(pc + 1, value_place::low, true);
 
@@ -1390,16 +1390,16 @@ namespace narcissus {
                         case 0xb:
                             switch (bh) {
                                 case 0:
-                                    return operation::SUB_WITH_SIGN_EXT_1;
+                                    return operation::SUBS_1;
                                 case 5:
                                     return operation::DEC_W_1;
                                 case 7:
                                     return operation::DEC_L_1;
                                 case 8:
-//                                     return operation::SUB_WITH_SIGN_EXT_2;
+//                                     return operation::SUBS_2;
                                     return operation::INVALID;
                                 case 9:
-                                    return operation::SUB_WITH_SIGN_EXT_4;
+                                    return operation::SUBS_4;
                                 case 0xd:
                                     return operation::DEC_W_2;
                                 case 0xf:
@@ -1973,14 +1973,14 @@ namespace narcissus {
 //                         case 0xb:
 //                             switch (bh) {
 //                                 case 0:
-//                                     return operation::SUB_WITH_SIGN_EXT_1;
+//                                     return operation::SUBS_1;
 //                                 case 5:
 //                                     return operation::DEC_W_1;
 //                                 case 8:
-//                                     return operation::SUB_WITH_SIGN_EXT_2;
+//                                     return operation::SUBS_2;
 //                                     return operation::INVALID;
 //                                 case 9:
-//                                     return operation::SUB_WITH_SIGN_EXT_4;
+//                                     return operation::SUBS_4;
 //                                 case 0xd:
 //                                     return operation::DEC_W_2;
 

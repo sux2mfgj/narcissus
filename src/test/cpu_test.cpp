@@ -330,7 +330,7 @@ namespace narcissus {
             ASSERT_EQ(0b10001001, cpu->ccr.byte);
         }
 
-        TEST(SUB_WITH_SIGN_EXT_4, 0)
+        TEST(SUBS_4, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -348,7 +348,7 @@ namespace narcissus {
 
             cpu->er[7].er = 0x00ffff00;
 
-            ASSERT_EQ(cpu::operation::SUB_WITH_SIGN_EXT_4, cpu->detect_operation());
+            ASSERT_EQ(cpu::operation::SUBS_4, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0x00ffff00 - 4, cpu->er[7].er);
         }
@@ -1164,7 +1164,7 @@ namespace narcissus {
             ASSERT_EQ((std::int32_t)0x12345678+ (std::int32_t)0xfffffff4, cpu->er[7].er);
         }
 
-        TEST(SUB_WITH_SIGN_EXT_1, 0)
+        TEST(SUBS_1, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -1182,7 +1182,7 @@ namespace narcissus {
 
             cpu->er[3].er = 0x12345678;
 
-            ASSERT_EQ(cpu::operation::SUB_WITH_SIGN_EXT_1, cpu->detect_operation());
+            ASSERT_EQ(cpu::operation::SUBS_1, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0x12345678 - 1, cpu->er[3].er);
 

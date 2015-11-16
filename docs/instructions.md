@@ -38,22 +38,74 @@ implemented
 
 * mov.w
     
-    - [x] MOV.W #xx:16, Rd  
+    - [x] MOV.W #xx:8, Rd           
             : MOV_W_IMM_R
     - [x] MOV.W Rs, Rd  
             : MOV_W_R_R
-    - [x] MOV.W @ERs, Rd  
+    - [ ] MOV.W @ERs, Rd  
             : MOV_W_R_IND_R
+    - [x] MOV.W @(d:16, ERs), Rd  
+            : MOV_W_R_IND_WITH_DIS_16_R
+    - [ ] MOV.W @(d:24, ERs), Rd  
+            : MOV_W_R_IND_WITH_DIS_24_R
+    - [ ] MOV.W @ERs+, Rd  
+            : MOV_W_R_IND_POST_INC_R,
+    - [ ] MOV.W @aa:8, Rd  
+            : MOV_W_ABS_8_R
+    - [ ] MOV.W @aa:16, Rd  
+            : MOV_W_ABS_16_R
     - [x] MOV.W @aa:24, Rd  
             : MOV_W_ABS_24_R
-    - [x] MOV.W Rs, @aa:24  
-            : MOV_W_R_ABS_24
+    - [ ] MOV.W Rs, @ERd  
+            : MOV_W_R_R_IND
     - [x] MOV.W Rs, @(d:16, ERd)  
-            : MOV_W_R_IND_WITH_DIS_16
+            : MOV_W_R_R_IND_WITH_DIS_16
     - [ ] MOV.W Rs, @(d:24, ERd)  
-            : MOV_W_R_IND_WITH_DIS_24
-    - [x] MOV.W @(d:16, ERs), Rd  
-            : MOV_W_IND_WITH_DIS_16_R
+            : MOV_W_R_R_IND_WITH_DIS_24
+    - [ ] MOV.W Rs, @-ERd
+            : MOV_W_R_R_IND_PRE_DEC
+    - [ ] MOV.W Rs, @aa:8
+            : MOV_W_R_ABS_8
+    - [ ] MOV.W Rs, @aa:16
+            : MOV_W_R_ABS_16
+    - [x] MOV.W Rs, @aa:24
+            : MOV_W_R_ABS_24
+
+* mov.l
+    
+    - [x] MOV.L #xx:8, Rd           
+            : MOV_L_IMM_R
+    - [x] MOV.L Rs, Rd  
+            : MOV_L_R_R
+    - [x] MOV.L @ERs, Rd  
+            : MOV_L_R_IND_R
+    - [x] MOV.L @(d:16, ERs), Rd  
+            : MOV_L_R_IND_WITH_DIS_16_R
+    - [x] MOV.L @(d:24, ERs), Rd  
+            : MOV_L_R_IND_WITH_DIS_24_R
+    - [x] MOV.L @ERs+, Rd  
+            : MOV_L_R_IND_POST_INC_R,
+    - [ ] MOV.L @aa:8, Rd  
+            : MOV_L_ABS_8_R
+    - [ ] MOV.L @aa:16, Rd  
+            : MOV_L_ABS_16_R
+    - [x] MOV.L @aa:24, Rd  
+            : MOV_L_ABS_24_R
+    - [x] MOV.L Rs, @ERd  
+            : MOV_L_R_R_IND
+    - [x] MOV.L Rs, @(d:16, ERd)  
+            : MOV_L_R_R_IND_WITH_DIS_16
+    - [ ] MOV.L Rs, @(d:24, ERd)  
+            : MOV_L_R_R_IND_WITH_DIS_24
+    - [x] MOV.L Rs, @-ERd
+            : MOV_L_R_R_IND_PRE_DEC
+    - [ ] MOV.L Rs, @aa:8
+            : MOV_L_R_ABS_8
+    - [ ] MOV.L Rs, @aa:16
+            : MOV_L_R_ABS_16
+    - [x] MOV.L Rs, @aa:24
+            : MOV_L_R_ABS_24
+
 
 * mov.l
 
@@ -81,6 +133,136 @@ implemented
             : MOV_L_R_IMM_ABS_24
     - [x] MOV.L ERs, @(d:16, ERd)  
             : MOV_L_R_R_IND_WITH_DIS_16
+
+* pop/push
+    - [ ] POP.W Rn
+            : POP_W_R
+    - [ ] POP.L ERn
+            : POP_L_R
+    - [ ] PUSH.W Rn
+            : PUSH_W_R
+    - [ ] PUSH.L ERn
+            : PUSH_L_R
+
+* movfpe
+    - [ ] MOVFPE @aa:16, Rd
+            : MOVFPE_IMM_16_R
+* movtpe
+    - [ ] MOVTPE Rs, @aa:16
+            : MOVTPE_R_IMM_16
+
+* add
+    - [x] ADD.B #xx:8, Rd
+            : ADD_B_IMM_R
+    - [x] ADD.B Rs, Rd
+            : ADD_B_R_R
+    - [x] ADD.W #xx:16, Rd
+            : ADD_W_IMM_R
+    - [ ] ADD.W Rs, Rd
+            : ADD_W_R_R
+    - [x] ADD.L #xx:32, ERd
+            : ADD_L_IMM_R
+    - [x] ADD.L ERs, ERd
+            : ADD_L_R_R
+
+* addx
+    - [ ] ADDX.B #xx:8, Rd
+            : ADDX_B_IMM_R
+    - [ ] ADDX.B Rs, Rd
+            : ADDX_B_R_R
+
+* adds
+    - [x] ADDS.L #1 ERd
+            : ADDS_1
+    - [ ] ADDS.L #2 ERd
+            : ADDS_2
+    - [x] ADDS.L #4 ERd
+            : ADDS_4
+
+* inc
+    - [ ] INC.B Rd
+            : INC_B
+    - [ ] INC.W #1, Rd
+            : INC_W_1_R
+    - [ ] INC.W #2, Rd
+            : INC_W_2_R
+    - [ ] INC.L #1, Rd
+            : INC_L_1_R
+    - [ ] INC.L #2, Rd
+            : INC_L_2_R
+* daa
+    - [ ] DAA Rd
+            : DAA_R
+
+* sub
+    - [x] SUB.B Rs, Rd
+            : SUB_B_R_R
+    - [ ] SUB.W #xx:16, Rd
+            : SUB_W_IMM_R
+    - [x] SUB.W Rs, Rd
+            : SUB_W_R_R
+    - [x] SUB.L #xx:32, ERd
+            : SUB_L_IMM_R
+    - [x] SUB.L ERs, ERd
+            : SUB_L_R_R
+
+* subx
+    - [ ] SUBX #xx:8, Rd
+            : SUBX_IMM_R
+    - [ ] SUBX Rs, Rd
+            : SUBX_R_R
+
+* subs
+    - [x] SUBS #1, ERd
+            : SUBS_1
+    - [ ] SUBS #2, ERd
+            : SUBS_2
+    - [x] SUBS #4, ERd
+            : SUBS_4
+
+* dec
+    - [ ] DEC.B Rd
+            : DEC_B
+    - [x] DEC.W #1, Rd
+            : DEC_W_1
+    - [x] DEC.W #2, Rd
+            : DEC_W_2
+    - [x] DEC.L #1, Rd
+            : DEC_L_1
+    - [ ] DEC.L #2, Rd
+            : DEC_L_2
+
+* das
+    - [ ] DAS Rd
+            : DAS_R
+
+* mulxu
+    - [ ] MULXU.B Rs, Rd
+            : MULXU_B_R_R
+    - [ ] MULXU.W Rs, Rd
+            : MULXU_W_R_R
+
+* mulxs
+    - [ ] MULXS.B Rs, Rd
+            : MULXS_B_R_R
+    - [x] MULXS.W Rs, Rd
+            : MULXS_W_R_R
+
+* cmp
+    - [x] CMP.B #xx:8, Rd
+            : CMP_B_IMM
+    - [x] CMP.B Rs, Rd
+            : CMP_B_R_R
+    - [ ] CMP.W #xx:16, Rd
+            : CMP_W_IMM
+    - [x] CMP.W Rs, Rd
+            : CMP_W_R_R
+    - [x] CMP.L #xx:32, Rd
+            : CMP_L_IMM
+    - [x] CMP.L Rs, Rd
+            : CMP_L_R_R
+ 
+WIP
 
 * bcc
     - [x] beq d:8  
