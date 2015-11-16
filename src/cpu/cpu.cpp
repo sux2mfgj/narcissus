@@ -803,7 +803,7 @@ namespace narcissus {
 
                 case operation::BLE_8:
                 {
-                    auto disp = read_immediate(pc + 1, 1);
+                    auto disp = (std::int8_t)read_immediate(pc + 1, 1);
 
                     pc += 2;
                     if(ccr.zero || (ccr.negative ^ ccr.over_flow))
@@ -886,6 +886,20 @@ namespace narcissus {
                     update_ccr_sub(rd_value, rs_value, result, register_size::BYTE);
 //                     update_ccr_sub(rs_value, rd_value, result, register_size::BYTE);
                     pc += 2;
+                    break;
+                }
+
+                case operation::CMP_W_IMM:
+                {
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
+                    auto imm = (std::uint16_t)read_immediate(pc + 2, 2);
+
+                    auto rd_value = read_register(rd, register_size::WORD);
+
+                    auto result = rd_value - imm;
+                    update_ccr_sub(rd_value, imm, result, register_size::WORD);
+
+                    pc += 4;
                     break;
                 }
 
@@ -1727,9 +1741,7 @@ namespace narcissus {
                                 case 1:
                                     return operation::ADD_W_IMM_R;
                                 case 2:
-                                    //TODO
-                                    //CMP
-                                    return operation::INVALID;
+                                    return operation::CMP_W_IMM;
                                 case 3:
 //                                     return operation::SUB_W_IMM_R;
                                     return operation::INVALID;
