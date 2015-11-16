@@ -1674,7 +1674,7 @@ namespace narcissus {
             ASSERT_EQ(0x78, cpu->memory[addr + 3]);
         }
 
-        TEST(MOV_W_R_IND_WITH_DIS_16, 0)
+        TEST(MOV_W_R_R_IND_WITH_DIS_16, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -1695,7 +1695,7 @@ namespace narcissus {
             cpu->er[2].r = 0x1234;
             cpu->er[6].er = 0x00ffff00;
 
-            ASSERT_EQ(cpu::operation::MOV_W_R_IND_WITH_DIS_16, cpu->detect_operation());
+            ASSERT_EQ(cpu::operation::MOV_W_R_R_IND_WITH_DIS_16, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
 
             auto addr = 0x00ffff00 + (std::int16_t)0xfffa;
@@ -1704,7 +1704,7 @@ namespace narcissus {
 
         }
 
-        TEST(MOV_W_IND_WITH_DIS_16_R, 0)
+        TEST(MOV_W_R_IND_WITH_DIS_16_R, 0)
         {
             array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
             mem[0] = 0x00;
@@ -1728,7 +1728,7 @@ namespace narcissus {
             cpu->memory[addr] = 0x12;
             cpu->memory[addr + 1] = 0x34;
 
-            ASSERT_EQ(cpu::operation::MOV_W_IND_WITH_DIS_16_R, cpu->detect_operation());
+            ASSERT_EQ(cpu::operation::MOV_W_R_IND_WITH_DIS_16_R, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
 
             ASSERT_EQ(cpu->er[3].r, 0x1234);
@@ -1993,7 +1993,7 @@ namespace narcissus {
             ASSERT_EQ(0x102, cpu->cycle());
 
 //             std::cout << std::hex << (std::uint16_t)cpu->ccr.byte << std::endl;
-            ASSERT_EQ(0b10001010, cpu->ccr.byte);
+            ASSERT_EQ(0b10001011, cpu->ccr.byte);
         }
 
 

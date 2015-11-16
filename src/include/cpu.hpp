@@ -45,16 +45,20 @@ namespace narcissus {
             MOV_B_R_IND_WITH_DIS_16_R,    // register indirect with displacement(16 bit)
             MOV_B_R_IND_WITH_DIS_24_R,    // register indirect with displacement(24 bit)
             MOV_B_R_IND_POST_INC_R,       // rd increment after register indirect acdess
-//             MOV_B_ASB_8,                // absolute addressing 8
-//             MOV_B_ASB_16,               // absolute addressing 16
-//             MOV_B_ASB_24,               // absolute addressing 24
+//             MOV_B_ASB_8_R,                // absolute addressing 8
+//             MOV_B_ASB_16_R,               // absolute addressing 16
+//             MOV_B_ASB_24_R,               // absolute addressing 24
+//             MOV_B_R_ABS_8,
+//             MOV_B_R_ABS_16,
+//             MOV_B_R_ABS_24,
 
             MOV_W_IMM_R,
             MOV_W_R_R,
             MOV_W_ABS_24_R,         
             MOV_W_R_ABS_24,
-            MOV_W_R_IND_WITH_DIS_16,
-            MOV_W_IND_WITH_DIS_16_R,
+
+            MOV_W_R_R_IND_WITH_DIS_16,//TODO [WIP] have to fix this line and below.
+            MOV_W_R_IND_WITH_DIS_16_R,
 
 
             MOV_L_IMM_L, 
@@ -108,6 +112,7 @@ namespace narcissus {
             EXTU_W,                     // extend as unsigned
 
             RTS,
+            NOP,
 
             XOR_B_R_R,                  //exclusive or logical direct registers
             XOR_B_IMM_R,
@@ -212,6 +217,12 @@ namespace narcissus {
                 auto write_register(std::uint8_t destination, 
                         std::uint32_t value, register_size size) -> void;
 
+            private:
+                auto detect_mov_0_1_0(void) -> operation;
+                auto detect_mov_6(std::uint8_t num) -> operation;
+                auto detect_mov_7_8(void) -> operation;
+
+
             public:
                 friend class cpu_debuger;
 
@@ -288,8 +299,8 @@ namespace narcissus {
                 FRIEND_TEST(BRA_16, 0);
                 FRIEND_TEST(MOV_L_R_IMM_ABS_24, 0);
                 FRIEND_TEST(MOV_L_R_R_IND_WITH_DIS_16, 0);
-                FRIEND_TEST(MOV_W_R_IND_WITH_DIS_16, 0);
-                FRIEND_TEST(MOV_W_IND_WITH_DIS_16_R, 0);
+                FRIEND_TEST(MOV_W_R_R_IND_WITH_DIS_16, 0);
+                FRIEND_TEST(MOV_W_R_IND_WITH_DIS_16_R, 0);
                 FRIEND_TEST(BGE_8, 0);
                 FRIEND_TEST(BEQ_16, 0);
                 FRIEND_TEST(CMP_L_IMM, 0);
