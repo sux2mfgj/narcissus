@@ -835,7 +835,23 @@ namespace narcissus {
 
                     auto result = rd_value - rs_value;
 
-                    update_ccr_sub(rs_value, rd_value, result, register_size::BYTE);
+                    update_ccr_sub(rd_value, rs_value, result, register_size::BYTE);
+//                     update_ccr_sub(rs_value, rd_value, result, register_size::BYTE);
+                    pc += 2;
+                    break;
+                }
+
+                case operation::CMP_W_R_R:
+                {
+                    auto rs = read_register_fields(pc + 1, value_place::high, false);
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
+
+                    auto rs_value = (std::int16_t)read_register(rs, register_size::WORD);
+                    auto rd_value = (std::int16_t)read_register(rd, register_size::WORD);
+ 
+                    auto result = rd_value - rs_value;
+                    update_ccr_sub(rd_value, rs_value, result, register_size::WORD);
+
                     pc += 2;
                     break;
                 }
@@ -1365,6 +1381,8 @@ namespace narcissus {
                             return operation::INVALID;
                         case 0xc:
                             return operation::CMP_B_R_R;
+                        case 0xd:
+                            return operation::CMP_W_R_R;
                         case 0xf:
                             if(bh == 0){
                                 //TODO

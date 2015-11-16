@@ -92,6 +92,8 @@ namespace narcissus {
 
             CMP_B_IMM,                  // compare register and immediate
             CMP_B_R_R,                  // compare register and  register
+//             CMP_W_IMM,
+            CMP_W_R_R,
             CMP_L_IMM,
             CMP_L_R_R,
 
@@ -320,6 +322,7 @@ namespace narcissus {
                 FRIEND_TEST(DEC_L_1, 0);
                 FRIEND_TEST(ADD_W_IMM_R, 0);
                 FRIEND_TEST(SHAR_W, 0);
+                FRIEND_TEST(CMP_W_R_R, 0);
 
         };
 
