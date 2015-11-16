@@ -201,6 +201,7 @@ namespace narcissus {
 
             XOR_B_R_R,                  //exclusive or logical direct registers
             XOR_B_IMM_R,
+            ORC,            // inclusive or controle register
         };
 
         enum class register_size : std::uint32_t
@@ -406,6 +407,7 @@ namespace narcissus {
                 FRIEND_TEST(BGE_16, 0);
                 FRIEND_TEST(MULXS_W_R_R, 0);
                 FRIEND_TEST(JSR_R, 0);
+                FRIEND_TEST(ORC, 0);
 
         };
 

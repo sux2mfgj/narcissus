@@ -1128,6 +1128,18 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::ORC:
+                {
+                    auto imm = read_immediate(pc + 1, 1);
+
+                    auto result = ccr.byte |  (std::uint8_t)imm;
+
+                    ccr.byte = (std::uint8_t)result;
+
+                    pc += 2;
+                    break;
+                }
+
                 case operation::INVALID:
                       std::clog << "INVALID opecode: " << std::hex << "0x" << std::flush;
                       std::clog << std::setw(2) << std::setfill('0')
@@ -1202,9 +1214,7 @@ namespace narcissus {
                             //LDC
                             return operation::INVALID;
                         case 4:
-                            //TODO
-                            //ORC
-                            return operation::INVALID;
+                            return operation::ORC;
                         case 5:
                             //TODO
                             //XORC
