@@ -201,6 +201,8 @@ namespace narcissus {
 
             XOR_B_R_R,                  //exclusive or logical direct registers
             XOR_B_IMM_R,
+            OR_B_IMM_R,
+//             OR_B_R_R
             ORC,            // inclusive or controle register
         };
 
@@ -410,6 +412,7 @@ namespace narcissus {
                 FRIEND_TEST(ORC, 0);
                 FRIEND_TEST(MOV_L_R_R_IND_WITH_DIS_24, 0);
                 FRIEND_TEST(CMP_W_IMM, 0);
+                FRIEND_TEST(OR_B_IMM_R, 0);
         };
 
     }  // namespace cpu

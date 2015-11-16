@@ -1161,6 +1161,20 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::OR_B_IMM_R:
+                {
+                    auto rd = read_register_fields(pc, value_place::low, false);
+                    auto imm = (std::uint8_t)read_immediate(pc + 1, 1);
+
+                    auto rd_value = (std::uint8_t)read_register(rd, register_size::BYTE);
+
+                    auto result = rd_value | imm;
+                    update_ccr_mov(result, register_size::BYTE);
+
+                    pc += 2;
+                    break;
+                }
+
                 case operation::ORC:
                 {
                     auto imm = read_immediate(pc + 1, 1);
@@ -1819,9 +1833,7 @@ namespace narcissus {
                     //SUBX
                     return operation::INVALID;
                 case 0xc:
-                    //TODO
-                    //OR
-                    return operation::INVALID;
+                    return operation::OR_B_IMM_R;
                 case 0xd:
                     return operation::XOR_B_IMM_R;
                 case 0xe:

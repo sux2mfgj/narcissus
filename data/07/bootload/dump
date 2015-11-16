@@ -136,35 +136,35 @@ Disassembly of section .text:
  214:	19 11       	sub.w	r1,r1
  216:	7a 00 00 ff 	mov.l	#0xfffc30,er0
  21a:	fc 30 
- 21c:	5e 00 04 2e 	jsr	@0x42e:24
- 220:	5e 00 03 e4 	jsr	@0x3e4:24
+ 21c:	5e 00 04 2e 	jsr	@0x42e:24 // memset
+ 220:	5e 00 03 e4 	jsr	@0x3e4:24 //<_softvec_init>
  224:	79 00 00 01 	mov.w	#0x1,r0
- 228:	5e 00 06 76 	jsr	@0x676:24
+ 228:	5e 00 06 76 	jsr	@0x676:24 //<_serial_init>:
  22c:	7a 00 00 00 	mov.l	#0x9d0,er0
  230:	09 d0 
 
 00000232 <.L40>:
- 232:	5e 00 05 b4 	jsr	@0x5b4:24
+ 232:	5e 00 05 b4 	jsr	@0x5b4:24 //<_puts>:
 
 00000236 <.L35>:
  236:	7a 00 00 00 	mov.l	#0x9f5,er0
  23a:	09 f5 
- 23c:	5e 00 05 b4 	jsr	@0x5b4:24
+ 23c:	5e 00 05 b4 	jsr	@0x5b4:24 //<_puts>:
  240:	7a 00 00 ff 	mov.l	#0xfffc30,er0
  244:	fc 30 
- 246:	5e 00 05 d8 	jsr	@0x5d8:24
+ 246:	5e 00 05 d8 	jsr	@0x5d8:24 //<_gets>:
  24a:	7a 01 00 00 	mov.l	#0x9fe,er1
  24e:	09 fe 
  250:	7a 00 00 ff 	mov.l	#0xfffc30,er0
  254:	fc 30 
- 256:	5e 00 04 e2 	jsr	@0x4e2:24
+ 256:	5e 00 04 e2 	jsr	@0x4e2:24 // memset
  25a:	0d 00       	mov.w	r0,r0
  25c:	46 5c       	bne	.+92 (0x2ba)
  25e:	7a 00 00 ff 	mov.l	#0xffdf20,er0
  262:	df 20 
  264:	01 00 6b a0 	mov.l	er0,@0xfffc40:32
  268:	00 ff fc 40 
- 26c:	5e 00 07 94 	jsr	@0x794:24
+ 26c:	5e 00 07 94 	jsr	@0x794:24 //<_xmodem_recv>:
  270:	01 00 6b a0 	mov.l	er0,@0xfffc20:32
  274:	00 ff fc 20 
  278:	1a a2       	sub.l	er2,er2
@@ -207,14 +207,14 @@ Disassembly of section .text:
  2cc:	58 60 00 9c 	bne	.+156 (0x36c)
  2d0:	7a 00 00 00 	mov.l	#0xa3c,er0
  2d4:	0a 3c 
- 2d6:	5e 00 05 b4 	jsr	@0x5b4:24
+ 2d6:	5e 00 05 b4 	jsr	@0x5b4:24 //<_puts>:
  2da:	19 11       	sub.w	r1,r1
  2dc:	01 00 6b 20 	mov.l	@0xfffc20:32,er0
  2e0:	00 ff fc 20 
  2e4:	5e 00 06 12 	jsr	@0x612:24
  2e8:	7a 00 00 00 	mov.l	#0xa19,er0
  2ec:	0a 19 
- 2ee:	5e 00 05 b4 	jsr	@0x5b4:24
+ 2ee:	5e 00 05 b4 	jsr	@0x5b4:24 //<_puts>:
  2f2:	01 00 6b 22 	mov.l	@0xfffc40:32,er2
  2f6:	00 ff fc 40 
  2fa:	01 00 6f e2 	mov.l	er2,@(0xfff8:16,er6)
@@ -233,7 +233,7 @@ Disassembly of section .text:
  316:	1f c5       	cmp.l	er4,er5
  318:	4c 48       	bge	.+72 (0x362)
  31a:	01 00 6f 62 	mov.l	@(0xfff8:16,er6),er2
- 31e:	ff f8 
+ 31e:	ff f:8 
  320:	0a d2       	add.l	er5,er2
  322:	79 01 00 02 	mov.w	#0x2,r1
  326:	1a 80       	sub.l	er0,er0
@@ -255,14 +255,14 @@ Disassembly of section .text:
  348:	46 0a       	bne	.+10 (0x354)
  34a:	7a 00 00 00 	mov.l	#0xa41,er0
  34e:	0a 41 
- 350:	5e 00 05 b4 	jsr	@0x5b4:24
+ 350:	5e 00 05 b4 	jsr	@0x5b4:24 //<_puts>:
 
 00000354 <.L22>:
  354:	7a 00 00 00 	mov.l	#0xa41,er0
  358:	0a 41 
 
 0000035a <.L39>:
- 35a:	5e 00 05 b4 	jsr	@0x5b4:24
+ 35a:	5e 00 05 b4 	jsr	@0x5b4:24 //<_puts>:
  35e:	0b 05       	adds	#1,er5
  360:	40 b4       	bra	.-76 (0x316)
 
@@ -291,13 +291,13 @@ Disassembly of section .text:
 0000039a <.L26>:
  39a:	7a 00 00 00 	mov.l	#0xa5d,er0
  39e:	0a 5d 
- 3a0:	5e 00 05 b4 	jsr	@0x5b4:24
+ 3a0:	5e 00 05 b4 	jsr	@0x5b4:24 //<_puts>:
  3a4:	19 11       	sub.w	r1,r1
  3a6:	0f c0       	mov.l	er4,er0
  3a8:	5e 00 06 12 	jsr	@0x612:24
  3ac:	7a 00 00 00 	mov.l	#0xa19,er0
  3b0:	0a 19 
- 3b2:	5e 00 05 b4 	jsr	@0x5b4:24
+ 3b2:	5e 00 05 b4 	jsr	@0x5b4:24 // <_puts>:
  3b6:	5d 40       	jsr	@er4
  3b8:	58 00 fe 7a 	bra	.-390 (0x236)
 
@@ -672,7 +672,7 @@ Disassembly of section .text:
  65e:	46 d4       	bne	.-44 (0x634)
  660:	0f b0       	mov.l	er3,er0
  662:	0b 00       	adds	#1,er0
- 664:	5e 00 05 b4 	jsr	@0x5b4:24
+ 664:	5e 00 05 b4 	jsr	@0x5b4:24 // <_puts>:
  668:	19 00       	sub.w	r0,r0
  66a:	7a 17 00 00 	add.l	#0xc,er7
  66e:	00 0c 
@@ -992,7 +992,7 @@ Disassembly of section .text:
  97e:	0a b1       	add.l	er3,er1
  980:	01 00 6f 40 	mov.l	@(0xc:16,er4),er0
  984:	00 0c 
- 986:	5e 00 04 48 	jsr	@0x448:24
+ 986:	5e 00 04 48 	jsr	@0x448:24 //<_memcpy>
  98a:	01 00 6f 43 	mov.l	@(0x10:16,er4),er3
  98e:	00 10 
  990:	01 00 6f 40 	mov.l	@(0xc:16,er4),er0
