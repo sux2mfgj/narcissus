@@ -656,6 +656,25 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::MOV_L_R_R_IND_WITH_DIS_24:
+                {
+                    auto ers = read_register_fields(pc + 5, value_place::low, true);
+                    auto erd = read_register_fields(pc + 3, value_place::high, true);
+
+                    auto disp = (std::int32_t)read_immediate(pc + 7, 3);
+
+                    auto ers_value = read_register(ers, register_size::LONG);
+                    auto erd_value = read_register(erd, register_size::LONG);
+
+                    auto addr = erd_value + disp;
+
+                    write_immediate(addr, 4, ers_value);
+                    update_ccr_mov(ers_value, register_size::LONG);
+
+                    pc += 10;
+                    break;
+                }
+
                 case operation::MOV_L_R_IND_POST_INC_R: 
                 {
                     auto ers = read_register_fields(pc + 3, value_place::high, true);
@@ -2467,8 +2486,7 @@ namespace narcissus {
             {
                 if(b4h & 0x8)
                 {
-//                     return operation::MOV_L_R_R_IND_WITH_DIS_24;
-                    return operation::INVALID;
+                    return operation::MOV_L_R_R_IND_WITH_DIS_24;
                 }
                 else {
                     return operation::MOV_L_R_IND_WITH_DIS_24_R;
@@ -2614,7 +2632,7 @@ namespace narcissus {
 
                 }
                 else {
-//                     return operation::MOV_W_R_R_IND_WITH_DIS_24;
+//                     return operation::MOV_L_R_R_IND_WITH_DIS_24;
                     return operation::INVALID;
                 }
             }
