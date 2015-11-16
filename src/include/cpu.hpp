@@ -15,7 +15,7 @@ namespace narcissus {
             INVALID = 0,
 //             ADD_B_IMM,              // immediate
             ADD_B_R_R,              // register to register
-//             ADD_W_IMM,
+            ADD_W_IMM_R,
 //             ADD_W_R_R,
 //             ADD_L_IMM,
             ADD_L_R_R,
@@ -106,6 +106,9 @@ namespace narcissus {
 
             SHLL_L,                     // shift logical left
             SHLR_L,                     // shift logical right
+            SHAR_W,
+//             SHAL_L,
+//             SHAR_L,
 
             JSR_ABS,                    // jump to subroutine use absolute address
             EXTS_L,                     // extend as signed
@@ -315,6 +318,8 @@ namespace narcissus {
                 FRIEND_TEST(XOR_B_IMM_R, 0);
                 FRIEND_TEST(DEC_W_2, 0);
                 FRIEND_TEST(DEC_L_1, 0);
+                FRIEND_TEST(ADD_W_IMM_R, 0);
+                FRIEND_TEST(SHAR_W, 0);
         };
 
     }  // namespace cpu

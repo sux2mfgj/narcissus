@@ -54,6 +54,21 @@ namespace narcissus {
                         pc += 2;
                         break;
                     }
+                case operation::ADD_W_IMM_R:
+                    {
+                        auto rd = read_register_fields(pc + 1, value_place::low, false);
+                        auto imm = (std::int16_t)read_immediate(pc + 2, 2);
+
+                        auto rd_value = (std::int16_t)read_register(rd, register_size::WORD);
+                        auto result = rd_value + imm;
+
+                        write_register(rd, result, register_size::WORD);
+
+                        update_ccr_sub(rd_value, imm, result, register_size::WORD);
+                        
+                        pc += 4;
+                        break;
+                    }
 
                 //                 case ADD_W_IMM:
                 //                 {
@@ -1612,9 +1627,7 @@ namespace narcissus {
                                 case 0:
                                     return operation::MOV_W_IMM_R;
                                 case 1:
-                                    //TODO
-                                    //ADD
-                                    return operation::INVALID;
+                                    return operation::ADD_W_IMM_R;
                                 case 2:
                                     //TODO
                                     //CMP

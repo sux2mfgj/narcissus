@@ -2064,6 +2064,31 @@ namespace narcissus {
             ASSERT_EQ(0x12345678 - 1, cpu->er[2].er);
         }
 
+        TEST(ADD_W_IMM_R, 0){
+            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            //79 12 ff d2     
+            //add.w   #0xffd2,r2
+            mem[0x100] = 0x79;
+            mem[0x101] = 0x12;
+            mem[0x102] = 0xff;
+            mem[0x103] = 0xd2;
+
+            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            cpu->reset_exception();
+
+            cpu->er[2].r = 0x1234;
+
+            ASSERT_EQ(cpu::operation::ADD_W_IMM_R, cpu->detect_operation());
+            ASSERT_EQ(0x104, cpu->cycle());
+
+            ASSERT_EQ(0x1234 + (std::int16_t)0xffd2, cpu->er[2].r);
+        }
+
     }  // namespace cpu
 }  // namespace narcissus
 
