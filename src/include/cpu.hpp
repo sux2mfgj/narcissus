@@ -97,8 +97,9 @@ namespace narcissus {
 
 //             DEC_B,                   // decrement
             DEC_W_1,                      
-//             DEC_W_2,                      
-//             DEC_L,
+            DEC_W_2,                      
+            DEC_L_1,
+//             DEC_L_2,
 
             AND_W_IMM,                      // AND logical
             AND_B_IMM,
@@ -312,6 +313,8 @@ namespace narcissus {
                 FRIEND_TEST(MOV_L_R_IND_R, 0);
                 FRIEND_TEST(CMP_L_R_R, 0);
                 FRIEND_TEST(XOR_B_IMM_R, 0);
+                FRIEND_TEST(DEC_W_2, 0);
+                FRIEND_TEST(DEC_L_1, 0);
         };
 
     }  // namespace cpu

@@ -884,6 +884,34 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::DEC_W_2:
+                {
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
+
+                    auto rd_value = (std::uint16_t)read_register(rd, register_size::WORD);
+                    auto result = rd_value - 2;
+
+                    write_register(rd, result, register_size::WORD);
+                    update_ccr_sub(rd_value, 2, result, register_size::WORD);
+
+                    pc += 2;
+                    break;
+                }
+
+                case operation::DEC_L_1:
+                {
+                    auto erd = read_register_fields(pc + 1, value_place::low, true);
+
+                    auto erd_value = read_register(erd, register_size::LONG);
+
+                    auto result = erd_value - 1;
+                    write_register(erd, result, register_size::LONG);
+                    update_ccr_sub(erd_value, 1, result, register_size::LONG);
+
+                    pc += 2;
+                    break;
+                }
+
                 case operation::AND_B_IMM:
                 {
                     auto rd = read_register_fields(pc, value_place::low, false);
@@ -1291,16 +1319,14 @@ namespace narcissus {
                                 case 5:
                                     return operation::DEC_W_1;
                                 case 7:
-//                                     return operation::DEC_L_1;
-                                    return operation::INVALID;
+                                    return operation::DEC_L_1;
                                 case 8:
 //                                     return operation::SUB_WITH_SIGN_EXT_2;
                                     return operation::INVALID;
                                 case 9:
                                     return operation::SUB_WITH_SIGN_EXT_4;
                                 case 0xd:
-//                                     return operation::DEC_W_2;
-                                    return operation::INVALID;
+                                    return operation::DEC_W_2;
                                 case 0xf:
 //                                     return operation::DEC_L_2;
                                     return operation::INVALID;
@@ -2446,7 +2472,6 @@ namespace narcissus {
                     if(b2h & 0x8)
                     {
                         return operation::MOV_W_R_R_IND_WITH_DIS_16;
-//                         return operation::INVALID;
                     }
                     else {
                         return operation::MOV_W_R_IND_WITH_DIS_16_R;

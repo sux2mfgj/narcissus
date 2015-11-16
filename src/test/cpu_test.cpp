@@ -2019,6 +2019,51 @@ namespace narcissus {
             ASSERT_EQ(0b10000000, (std::uint8_t)cpu->ccr.byte);
         }
 
+        TEST(DEC_W_2, 0){
+            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            //dec.w   #2,r2
+            //1b d2           
+            mem[0x100] = 0x1b;
+            mem[0x101] = 0xd2;
+            
+            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            cpu->reset_exception();
+
+            cpu->er[2].r = 0x1112;
+
+            ASSERT_EQ(cpu::operation::DEC_W_2, cpu->detect_operation());
+            ASSERT_EQ(0x102, cpu->cycle());
+
+            ASSERT_EQ(0x1110, cpu->er[2].r);
+        }
+
+        TEST(DEC_L_1, 0){
+            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            //1b 72           dec.l   #1,er2
+            mem[0x100] = 0x1b;
+            mem[0x101] = 0x72;
+
+            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            cpu->reset_exception();
+
+            cpu->er[2].er = 0x12345678;
+
+            ASSERT_EQ(cpu::operation::DEC_L_1, cpu->detect_operation());
+            ASSERT_EQ(0x102, cpu->cycle());
+
+            ASSERT_EQ(0x12345678 - 1, cpu->er[2].er);
+        }
+
     }  // namespace cpu
 }  // namespace narcissus
 
