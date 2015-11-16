@@ -75,6 +75,11 @@ namespace narcissus {
             MOV_L_R_IMM_ABS_24,
             MOV_L_R_R_IND_WITH_DIS_16,
 
+//             MULXS_B_R_R,
+            MULXS_W_R_R,                //multiply extend as signed
+//             MULXS_L_R_R,
+
+
             BEQ_8,                        // branch equal
             BEQ_16,                        // branch equal
             BRA_8,                        // branch always(true)
@@ -208,6 +213,7 @@ namespace narcissus {
                 auto update_ccr_mov(std::uint64_t value, register_size size) -> void;
                 auto update_ccr_shll(std::uint64_t value, register_size size) -> void;
                 auto update_ccr_shlr(std::uint32_t value, register_size size) -> void;
+                auto update_ccr_mulx(std::uint32_t result, register_size size) -> void;
 
                 //memory
                 auto read_register_fields(std::uint32_t address, value_place place, bool is_32bit)
@@ -227,7 +233,7 @@ namespace narcissus {
                 auto detect_mov_0_1_0(void) -> operation;
                 auto detect_mov_6(std::uint8_t num) -> operation;
                 auto detect_mov_7_8(void) -> operation;
-
+                auto detect_mulx(void) -> operation;
 
             public:
                 friend class cpu_debuger;
@@ -324,6 +330,7 @@ namespace narcissus {
                 FRIEND_TEST(SHAR_W, 0);
                 FRIEND_TEST(CMP_W_R_R, 0);
                 FRIEND_TEST(BGE_16, 0);
+                FRIEND_TEST(MULXS_W_R_R, 0);
 
         };
 

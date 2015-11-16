@@ -702,7 +702,25 @@ namespace narcissus {
 
                     break;
                 }
+                //mulx
 
+                case operation::MULXS_W_R_R:
+                {
+                    auto rs = read_register_fields(pc + 3, value_place::high, false);
+                    auto erd = read_register_fields(pc + 3, value_place::low, true);
+
+                    auto rs_value = read_register(rs, register_size::WORD);
+                    auto erd_value = read_register(erd, register_size::LONG);
+
+                    auto result = (std::int16_t)(erd_value & 0xffff) * (std::int16_t)rs_value;
+
+                    write_register(erd, result, register_size::LONG);
+                    update_ccr_mulx(result, register_size::LONG);
+
+                    pc += 4;
+                    break;
+                }
+                //bcc
                 case operation::BEQ_8: 
                 {
                     auto disp = memory[pc + 1];
@@ -1156,6 +1174,7 @@ namespace narcissus {
                                     //SLEEP
                                     return operation::INVALID;
                                 case 0xc:
+                                    return detect_mulx();
                                 case 0xd:
                                 case 0xf:
                                     //TODO
@@ -2266,6 +2285,15 @@ namespace narcissus {
             ccr.negative = 0;
         }
 
+        auto h8_300::update_ccr_mulx(std::uint32_t result, register_size size) -> void
+        {
+            ccr.negative = result >> (std::uint8_t)size;
+            if(result == 0)
+            {
+                ccr.zero = 1;
+            }
+        }
+
         auto h8_300::read_register_fields(std::uint32_t address, 
                 value_place place, bool is_32bit) -> std::uint8_t
         {
@@ -2578,6 +2606,25 @@ namespace narcissus {
             return operation::INVALID;
         }
 
+        auto h8_300::detect_mulx(void) -> operation
+        {
+            auto b3h = memory[pc + 2] >> 4;
+            auto b3l = memory[pc + 2] & 0xf;
+            if(b3h == 0x5)
+            {
+                if(b3l == 0x0)
+                {
+//                     return operation::MULXS_B_R_R;
+                }
+                else if(b3l == 0x2)
+                {
+                    return operation::MULXS_W_R_R;
+                }
+            }
+
+            return operation::INVALID;
+           
+        }
 
     }  // namespace cpu
 }  // namespace narcissus
