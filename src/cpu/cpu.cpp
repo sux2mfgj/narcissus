@@ -1021,6 +1021,16 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::ANDC:
+                {
+                    auto imm = (std::uint8_t)read_immediate(pc + 1, 1);
+
+                    ccr.byte &= imm;
+                    pc += 2;
+
+                    break;
+                }
+
                 case operation::JSR_ABS: 
                 {
                     auto abs = read_immediate(pc + 1, 3);
@@ -1267,9 +1277,7 @@ namespace narcissus {
                             //XORC
                             return operation::INVALID;
                         case 6:
-                            //TODO
-                            //ANDC
-                            return operation::INVALID;
+                            return operation::ANDC;
                         case 7:
                             //TODO
                             //LDC

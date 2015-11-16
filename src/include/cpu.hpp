@@ -182,6 +182,7 @@ namespace narcissus {
 
             AND_W_IMM,                      // AND logical
             AND_B_IMM,
+            ANDC,
 
             SHLL_L,                     // shift logical left
             SHLR_L,                     // shift logical right
@@ -413,6 +414,7 @@ namespace narcissus {
                 FRIEND_TEST(MOV_L_R_R_IND_WITH_DIS_24, 0);
                 FRIEND_TEST(CMP_W_IMM, 0);
                 FRIEND_TEST(OR_B_IMM_R, 0);
+                FRIEND_TEST(ANDC, 0);
         };
 
     }  // namespace cpu
