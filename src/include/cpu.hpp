@@ -320,6 +320,7 @@ namespace narcissus {
                 FRIEND_TEST(DEC_L_1, 0);
                 FRIEND_TEST(ADD_W_IMM_R, 0);
                 FRIEND_TEST(SHAR_W, 0);
+
         };
 
     }  // namespace cpu

@@ -1016,6 +1016,21 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::SHAR_W:
+                {
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
+
+                    auto rd_value = (std::int16_t)read_register(rd, register_size::WORD);
+
+                    auto result = rd_value >> 1;
+
+                    write_register(rd, result, register_size::WORD);;
+                    update_ccr_shll(result, register_size::WORD);
+
+                    pc += 2;
+                    break;
+                }
+
                 case operation::RTS: 
                 {
                     // memory[sp]: is reserved
@@ -1253,8 +1268,7 @@ namespace narcissus {
 //                                     return operation::SHAR_B;
                                     return operation::INVALID;
                                 case 9:
-//                                     return operation::SHAR_W;
-                                    return operation::INVALID;
+                                    return operation::SHAR_W;
                                 case 0xb:
 //                                     return operation::SHAR_L;
                                     return operation::INVALID;
