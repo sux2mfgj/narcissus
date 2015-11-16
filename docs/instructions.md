@@ -15,10 +15,26 @@ implemented
             : MOV_B_R_IND_WITH_DIS_24_R
     - [x] MOV.B @ERs+, Rd  
             : MOV_B_R_IND_POST_INC_R,
+    - [ ] MOV.B @aa:8, Rd  
+            : MOV_B_ABS_8_R
+    - [ ] MOV.B @aa:16, Rd  
+            : MOV_B_ABS_16_R
+    - [ ] MOV.B @aa:24, Rd  
+            : MOV_B_ABS_24_R
     - [x] MOV.B Rs, @ERd  
             : MOV_B_R_R_IND
     - [x] MOV.B Rs, @(d:16, ERd)  
             : MOV_B_R_R_IND_WITH_DIS_16
+    - [ ] MOV.B Rs, @(d:24, ERd)  
+            : MOV_B_R_R_IND_WITH_DIS_24
+    - [ ] MOV.B Rs, @-ERd
+            : MOV_B_R_R_IND_PRE_DEC
+    - [ ] MOV.B Rs, @aa:8
+            : MOV_B_R_ABS_8
+    - [ ] MOV.B Rs, @aa:16
+            : MOV_B_R_ABS_16
+    - [ ] MOV.B Rs, @aa:24
+            : MOV_B_R_ABS_24
 
 * mov.w
     

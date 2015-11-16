@@ -13,6 +13,61 @@ namespace narcissus {
         enum class operation : std::uint8_t
         {
             INVALID = 0,
+
+            // mov.b
+            MOV_B_IMM_R,
+            MOV_B_R_R,  
+            MOV_B_R_IND_R,              // register indirect (rd = @ers)  
+            MOV_B_R_IND_WITH_DIS_16_R,    // register indirect with displacement(16 bit)
+            MOV_B_R_IND_WITH_DIS_24_R,    // register indirect with displacement(24 bit)
+            MOV_B_R_IND_POST_INC_R,       // rd increment after register indirect acdess
+//             MOV_B_ABS_8_R,                // absolute addressing 8
+//             MOV_B_ABS_16_R,               // absolute addressing 16
+//             MOV_B_ABS_24_R,               // absolute addressing 24
+            MOV_B_R_R_IND,              // register indirect (@erd = rs)
+            MOV_B_R_R_IND_WITH_DIS_16,    // register indirect with displacement(16 bit)
+//             MOV_B_R_R_IND_WITH_DIS_24,    // register indirect with displacement(16 bit)
+//             MOV_B_R_R_IND_PRE_DEC,
+//             MOV_B_R_ABS_8,
+//             MOV_B_R_ABS_16,
+//             MOV_B_R_ABS_24,
+
+            // mov.w
+            MOV_W_IMM_R,
+            MOV_W_R_R,  
+//             MOV_W_R_IND_R,              // register indirect (rd = @ers)  
+            MOV_W_R_IND_WITH_DIS_16_R,    // register indirect with displacement(16 bit)
+//             MOV_W_R_IND_WITH_DIS_24_R,    // register indirect with displacement(24 bit)
+//             MOV_W_R_IND_POST_INC_R,       // rd increment after register indirect acdess
+//             MOV_W_ABS_8_R,                // absolute addressing 8
+//             MOV_W_ABS_16_R,               // absolute addressing 16
+            MOV_W_ABS_24_R,               // absolute addressing 24
+//             MOV_W_R_R_IND,              // register indirect (@erd = rs)
+            MOV_W_R_R_IND_WITH_DIS_16,    // register indirect with displacement(16 bit)
+//             MOV_W_R_R_IND_WITH_DIS_24,    // register indirect with displacement(16 bit)
+//             MOV_W_R_R_IND_PRE_DEC,
+//             MOV_W_R_ABS_8,
+//             MOV_W_R_ABS_16,
+            MOV_W_R_ABS_24,
+
+            // mov.l
+            MOV_L_IMM_R,
+            MOV_L_R_R,  
+            MOV_L_R_IND_R,              // register indirect (rd = @ers)  
+            MOV_L_R_IND_WITH_DIS_16_R,    // register indirect with displacement(16 bit)
+            MOV_L_R_IND_WITH_DIS_24_R,    // register indirect with displacement(24 bit)
+            MOV_L_R_IND_POST_INC_R,       // rd increment after register indirect acdess
+//             MOV_L_ABS_8_R,                // absolute addressing 8
+//             MOV_L_ABS_16_R,               // absolute addressing 16
+            MOV_L_ABS_24_R,               // absolute addressing 24
+            MOV_L_R_R_IND,              // register indirect (@erd = rs)
+            MOV_L_R_R_IND_WITH_DIS_16,    // register indirect with displacement(16 bit)
+//             MOV_L_R_R_IND_WITH_DIS_24,    // register indirect with displacement(16 bit)
+            MOV_L_R_R_IND_PRE_DEC,
+//             MOV_L_R_ABS_8,
+//             MOV_L_R_ABS_16,
+            MOV_L_R_ABS_24,
+
 //             ADD_B_IMM,              // immediate
             ADD_B_R_R,              // register to register
             ADD_W_IMM_R,
@@ -37,44 +92,6 @@ namespace narcissus {
 //             ADDS_2,                     // add 2 with sign extention
             ADDS_4,                     // add 4 with sign extention
             
-            MOV_B_IMM_R,
-            MOV_B_R_R,  
-            MOV_B_R_R_IND,              // register indirect (@erd = rs)
-            MOV_B_R_IND_R,              // register indirect (rd = @ers)  
-            MOV_B_R_R_IND_WITH_DIS_16,    // register indirect with displacement(16 bit)
-            MOV_B_R_IND_WITH_DIS_16_R,    // register indirect with displacement(16 bit)
-            MOV_B_R_IND_WITH_DIS_24_R,    // register indirect with displacement(24 bit)
-            MOV_B_R_IND_POST_INC_R,       // rd increment after register indirect acdess
-//             MOV_B_ASB_8_R,                // absolute addressing 8
-//             MOV_B_ASB_16_R,               // absolute addressing 16
-//             MOV_B_ASB_24_R,               // absolute addressing 24
-//             MOV_B_R_ABS_8,
-//             MOV_B_R_ABS_16,
-//             MOV_B_R_ABS_24,
-
-            MOV_W_IMM_R,
-            MOV_W_R_R,
-            MOV_W_ABS_24_R,         
-            MOV_W_R_ABS_24,
-
-            MOV_W_R_R_IND_WITH_DIS_16,//TODO [WIP] have to fix this line and below.
-            MOV_W_R_IND_WITH_DIS_16_R,
-
-
-            MOV_L_IMM_L, 
-            MOV_L_R_R,
-            MOV_L_R_R_IND,
-            MOV_L_R_IND_R,
-            MOV_L_R_R_IND_PRE_DEC,
-
-            MOV_L_R_IND_WITH_DIS_16_R,
-            MOV_L_R_IND_WITH_DIS_24_R,    // MEMORY to register
-//             MOV_L_R_IND_WITH_DIS_24, // register to memory
-            MOV_L_R_IND_POST_INC_R,
-            MOV_L_IMM_ABS_24_R, 
-            MOV_L_R_IMM_ABS_24,
-            MOV_L_R_R_IND_WITH_DIS_16,
-
 //             MULXS_B_R_R,
             MULXS_W_R_R,                //multiply extend as signed
 //             MULXS_L_R_R,
@@ -260,7 +277,7 @@ namespace narcissus {
                 FRIEND_TEST(MOV_B_IMM_R, 0);
                 FRIEND_TEST(MOV_B_IMM_R, 1);
                 FRIEND_TEST(MOV_W_IMM_R, 0);
-                FRIEND_TEST(MOV_L_IMM_L, 0);
+                FRIEND_TEST(MOV_L_IMM_R, 0);
                 FRIEND_TEST(JSR_ABS, 0);
                 FRIEND_TEST(MOV_L_R_R_IND_PRE_DEC, 0);
                 FRIEND_TEST(MOV_L_R_R, 0);
@@ -307,9 +324,9 @@ namespace narcissus {
                 FRIEND_TEST(CMP_B_R_R, 0);
                 FRIEND_TEST(BLS_8, 0);
                 FRIEND_TEST(BNE_16, 0);
-                FRIEND_TEST(MOV_L_IMM_ABS_24_R, 0);
+                FRIEND_TEST(MOV_L_ABS_24_R, 0);
                 FRIEND_TEST(BRA_16, 0);
-                FRIEND_TEST(MOV_L_R_IMM_ABS_24, 0);
+                FRIEND_TEST(MOV_L_R_ABS_24, 0);
                 FRIEND_TEST(MOV_L_R_R_IND_WITH_DIS_16, 0);
                 FRIEND_TEST(MOV_W_R_R_IND_WITH_DIS_16, 0);
                 FRIEND_TEST(MOV_W_R_IND_WITH_DIS_16_R, 0);

@@ -525,7 +525,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::MOV_L_IMM_L: 
+                case operation::MOV_L_IMM_R: 
                 {
                     auto erd = read_register_fields(pc + 1, value_place::low, true);
     
@@ -675,7 +675,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::MOV_L_IMM_ABS_24_R:
+                case operation::MOV_L_ABS_24_R:
                 {
                     auto erd = read_register_fields(pc + 3, value_place::low, true);
                     auto abs = read_immediate(pc + 5, 3);
@@ -689,7 +689,7 @@ namespace narcissus {
                     break;
                 }
 
-                case operation::MOV_L_R_IMM_ABS_24:
+                case operation::MOV_L_R_ABS_24:
                 {
                     auto ers = read_register_fields(pc + 3, value_place::low, true);
                     auto abs = read_immediate(pc + 5, 3);
@@ -702,8 +702,8 @@ namespace narcissus {
 
                     break;
                 }
-                //mulx
 
+                //mulx
                 case operation::MULXS_W_R_R:
                 {
                     auto rs = read_register_fields(pc + 3, value_place::high, false);
@@ -1714,7 +1714,7 @@ namespace narcissus {
                         case 0xa:
                             switch (bh) {
                                 case 0:
-                                    return operation::MOV_L_IMM_L;
+                                    return operation::MOV_L_IMM_R;
                                 case 1:
                                     return operation::ADD_L_IMM_R;
                                 case 2:
@@ -1819,12 +1819,12 @@ namespace narcissus {
 //                                                         {
 //                                                             if((dh == 2) && !(dl & 0x8) && e == 0)
 //                                                             {
-//                                                                 return operation::MOV_L_IMM_ABS_24_R; 
+//                                                                 return operation::MOV_L_ABS_24_R; 
 //                                                             }
 
 //                                                             if((dh == 0xa) && !(dl & 0x8) && e == 0)
 //                                                             {
-//                                                                 return operation::MOV_L_R_IMM_ABS_24;
+//                                                                 return operation::MOV_L_R_ABS_24;
 //                                                             }
 
 //                                                             return operation::INVALID;
@@ -2190,7 +2190,7 @@ namespace narcissus {
 //                         case 0xa:
 //                             switch (bh) {
 //                                 case 0:
-//                                     return operation::MOV_L_IMM_L;
+//                                     return operation::MOV_L_IMM_R;
 //                                 case 1:
 //                                     return operation::ADD_L_IMM_R;
 
@@ -2410,15 +2410,15 @@ namespace narcissus {
                     case 0xb:
                         switch (b4h) {
                             case 0:
-//                                 return operation::MOV_L_IMM_ABS_16_R
+//                                 return operation::MOV_L_ABS_16_R
                                 return operation::INVALID;
                             case 2:
-                                return operation::MOV_L_IMM_ABS_24_R;
+                                return operation::MOV_L_ABS_24_R;
                             case 8:
-//                                 return operation::MOV_L_R_IMM_ABS_16;
+//                                 return operation::MOV_L_R_ABS_16;
                                 return operation::INVALID;
                             case 0xa:
-                                return operation::MOV_L_R_IMM_ABS_24;
+                                return operation::MOV_L_R_ABS_24;
 //                                 return operation::INVALID;
                             default:
                                 return operation::INVALID;
