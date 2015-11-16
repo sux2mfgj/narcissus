@@ -1197,6 +1197,16 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::SLEEP:
+                {
+                    //TODO
+                    //slepp
+
+                    pc += 2;
+                    break;
+                }
+
+
                 case operation::INVALID:
                       std::clog << "INVALID opecode: " << std::hex << "0x" << std::flush;
                       std::clog << std::setw(2) << std::setfill('0')
@@ -1208,7 +1218,6 @@ namespace narcissus {
                           << std::setfill('0') << (std::uint32_t)pc << std::endl;
 
                     assert(false);
-
 
                 default:
                     std::cout << "implement yet" << std::endl;
@@ -1248,9 +1257,7 @@ namespace narcissus {
                                     //LDC/STC
                                     return operation::INVALID;
                                 case 8:
-                                    //TODO
-                                    //SLEEP
-                                    return operation::INVALID;
+                                    return operation::SLEEP;
                                 case 0xc:
                                     return detect_mulx();
                                 case 0xd:

@@ -147,17 +147,14 @@ namespace narcissus {
             CMP_L_IMM,
             CMP_L_R_R,
 
-
             //TODO [WIP] arrange enum
             // ----
-
 //             SUB_WITH_SIGN_EXT_1,
 //             SUB_WITH_SIGN_EXT_4,            // subtract 4 with sign extention
 
 //             MULXS_B_R_R,
 //             MULXS_W_R_R,                //multiply extend as signed
 //             MULXS_L_R_R,
-
 
             BEQ_8,                        // branch equal
             BEQ_16,                        // branch equal
@@ -205,6 +202,7 @@ namespace narcissus {
             OR_B_IMM_R,
 //             OR_B_R_R
             ORC,            // inclusive or controle register
+            SLEEP,
         };
 
         enum class register_size : std::uint32_t
@@ -415,6 +413,7 @@ namespace narcissus {
                 FRIEND_TEST(CMP_W_IMM, 0);
                 FRIEND_TEST(OR_B_IMM_R, 0);
                 FRIEND_TEST(ANDC, 0);
+                FRIEND_TEST(SLEEP, 0);
         };
 
     }  // namespace cpu
