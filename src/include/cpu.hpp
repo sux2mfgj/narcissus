@@ -88,7 +88,7 @@ namespace narcissus {
             BGT_8,                  // greater or equal
 //             BGT_16,
             BGE_8,                  //branch greater or equal
-//             BGE_16,
+            BGE_16,
 
             CMP_B_IMM,                  // compare register and immediate
             CMP_B_R_R,                  // compare register and  register
@@ -323,6 +323,7 @@ namespace narcissus {
                 FRIEND_TEST(ADD_W_IMM_R, 0);
                 FRIEND_TEST(SHAR_W, 0);
                 FRIEND_TEST(CMP_W_R_R, 0);
+                FRIEND_TEST(BGE_16, 0);
 
         };
 

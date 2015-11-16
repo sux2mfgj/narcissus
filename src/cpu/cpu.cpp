@@ -800,6 +800,17 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::BGE_16:
+                {
+                    auto disp = (std::int16_t)read_immediate(pc + 2, 2);
+                    if(ccr.negative == ccr.over_flow)
+                    {
+                        pc += disp;
+                    }
+                    pc += 4;
+                    break;
+                }
+
                 case operation::BGT_8:
                 {
                     auto disp = (std::int8_t)read_immediate(pc + 1, 1);
@@ -1533,7 +1544,8 @@ namespace narcissus {
                                 case 0xc:
                                     //TODO
                                     //BGE
-                                    return operation::INVALID;
+//                                     return operation::INVALID;
+                                    return operation::BGE_16;
                                 case 0xd:
                                     //TODO
                                     //BLT
