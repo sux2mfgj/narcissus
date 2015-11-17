@@ -38,24 +38,5 @@ int main(int argc, char const* argv[])
     cpu->reset_exception();
 
     cpu->run();
-//     auto before_pc = 0;
-//     auto stop_count = 0;
-
-//     while (true) {
-//         auto pc = cpu->cycle();
-//         std::clog << std::hex << "pc: 0x" << pc << std::endl;
-//         if(before_pc != pc){
-//             before_pc = pc;
-//             stop_count = 0;            
-//         }
-//         else {
-//             if(stop_count++ > 10)
-//             {
-//                 std::clog << "finish" << std::endl;
-//                 break;
-//             }
-//         }
-//     }
-//     
     return 0;
 }

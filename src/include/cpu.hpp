@@ -215,7 +215,8 @@ namespace narcissus {
             LONG = 31
         };
 
-        union register_t {
+        union register_t 
+        {
             register_t() : er(0) {}
 
             std::uint32_t er;
@@ -232,7 +233,8 @@ namespace narcissus {
             };
         };
 
-        union conditional_code_register {
+        union conditional_code_register 
+        {
             conditional_code_register() : byte(0) {}
 
             std::uint8_t byte;
@@ -248,12 +250,46 @@ namespace narcissus {
             };
         };
 
-        class h8_300 {
-
+        class h8_300 
+        {
             enum class value_place : std::uint8_t
             {
                 high, 
                 low,
+            };
+
+            enum class interrupts : std::uint8_t
+            {
+                reset = 0,
+                nmi = 7,
+                // 8 ~ 11
+                trap_0,
+                trap_1,
+                trap_2,
+                trap_3,
+                // 12 ~ 17
+                external_0, 
+                external_1, 
+                external_2, 
+                external_3, 
+                external_4, 
+                external_5, 
+                // 52 ~ 63
+                // sci0
+                eri0 = 52,
+                rxi0,
+                txi0,
+                tei0,
+                // sci1
+                eri1,
+                rxi1,
+                txi1,
+                tei1,
+                // sci2
+                eri2,
+                rxi2,
+                txi2,
+                tei2,
             };
 
             public:
@@ -283,10 +319,10 @@ namespace narcissus {
 
                 std::mutex cv_mutex;
 
-
             public:
                 auto run(void) -> void;
                 auto reset_exception(void) -> void;
+                auto interrupt(interrupts int_num) -> void;
 
             private:
                 auto cycle(void) -> std::uint32_t;
@@ -325,7 +361,6 @@ namespace narcissus {
 
             // use macro for test
             public:
-
                 // for utility function
                 FRIEND_TEST(read_register, 0);
                 FRIEND_TEST(read_register, 1);
@@ -334,14 +369,8 @@ namespace narcissus {
                 FRIEND_TEST(read_value, 0);
                 FRIEND_TEST(write_register, 0);
 
-
                 // for instruction
-//                 FRIEND_TEST(cpu, ADD_B_IMM);
-//                 FRIEND_TEST(cpu, ADD_W_IMM);
-//                 FRIEND_TEST(cpu, ADD_W_R_R);
-//                 FRIEND_TEST(cpu, ADD_L_IMM);
                 FRIEND_TEST(ADD_L_R_R, 0);
-
                 FRIEND_TEST(MOV_B_IMM_R, 0);
                 FRIEND_TEST(MOV_B_IMM_R, 1);
                 FRIEND_TEST(MOV_W_IMM_R, 0);

@@ -14,13 +14,89 @@ namespace narcissus {
 
         auto h8_300::reset_exception() -> void
         {
-            // load pc from memory[0] ~ memory[3]
-            auto reset_addr = read_immediate(0, 4);
+            interrupt(interrupts::reset);
+        }
 
-            pc = reset_addr;
+        auto h8_300::interrupt(interrupts int_num) -> void
+        {
+            switch (int_num) {
+                case interrupts::reset:
+                {
+                    std::cout << "a" << std::endl;
+                    //load pc from memory[0] ~ memory[3]
+                    auto reset_addr = read_immediate(0, 4);
 
-            ccr.byte = 0b00000000;
-            ccr.interrupt_mask = 1;
+                    pc = reset_addr;
+
+                    ccr.byte = 0b00000000;
+                    ccr.interrupt_mask = 1;
+                    break;
+                }
+
+                case interrupts::nmi:
+                {
+                    std::clog << "not implement yet" << std::endl;
+                    assert(false);
+                    break;
+                }
+
+                case interrupts::trap_0:
+                case interrupts::trap_1:
+                case interrupts::trap_2:
+                case interrupts::trap_3:
+                {
+                    std::clog << "not implement yet" << std::endl;
+                    assert(false);
+                    break;
+                }
+
+                case interrupts::external_0:
+                case interrupts::external_1:
+                case interrupts::external_2:
+                case interrupts::external_3:
+                case interrupts::external_4:
+                case interrupts::external_5:
+                {
+                    std::clog << "not implement yet" << std::endl;
+                    assert(false);
+                    break;
+                }
+
+                case interrupts::eri0:
+                case interrupts::rxi0:
+                case interrupts::txi0:
+                case interrupts::tei0:
+                {
+                    std::clog << "not implement yet" << std::endl;
+                    assert(false);
+                    break;
+                }
+
+                case interrupts::eri1:
+                case interrupts::rxi1:
+                case interrupts::txi1:
+                case interrupts::tei1:
+                {
+                    std::clog << "not implement yet" << std::endl;
+                    assert(false);
+                    break;
+                }
+
+                case interrupts::eri2:
+                case interrupts::rxi2:
+                case interrupts::txi2:
+                case interrupts::tei2:
+                {
+                    std::clog << "not implement yet" << std::endl;
+                    assert(false);
+                    break;
+                }
+
+                default:
+                    std::clog << "this interrupt number is invalid: " <<
+                        (std::uint16_t)int_num << std::endl;
+                    assert(false);
+            }
         }
 
         auto h8_300::run() -> void
@@ -2677,7 +2753,6 @@ namespace narcissus {
             return operation::INVALID;
         }
             
-
         auto h8_300::detect_mov_7_8(void) -> operation
         {
             auto b3h = memory[pc + 2] >> 4;
