@@ -9,11 +9,11 @@ namespace narcissus {
 
         TEST(read_register, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0x100] = 0x0a;
             mem[0x101] = 0x00;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
 
             cpu->interrupt(cpu::interrupts::reset);
 
@@ -24,11 +24,11 @@ namespace narcissus {
 
         TEST(read_register, 1)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0x100] = 0x70;
             mem[0x101] = 0x00;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             auto ers = cpu->read_register_fields(0x100, h8_300::value_place::high, true);
@@ -38,12 +38,12 @@ namespace narcissus {
 
         TEST(read_imm, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0x101] = 0x12;
             mem[0x102] = 0x34;
             mem[0x103] = 0x56;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             auto imm = cpu->read_immediate(0x101, 3);
@@ -52,9 +52,9 @@ namespace narcissus {
 
         TEST(write_imm, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->write_immediate(0x100, 3, 0x123456);
@@ -65,9 +65,9 @@ namespace narcissus {
 
         TEST(read_value , 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[2].l = 0x12;
@@ -83,9 +83,9 @@ namespace narcissus {
 
         TEST(write_register, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->write_register(0x2, 0x12, register_size::BYTE);
@@ -103,7 +103,7 @@ namespace narcissus {
         // ADD
         //         TEST(cpu, ADD_B_IMM)
         //         {
-        //            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+        //            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
         //             mem[0] = 0x00;
         //             mem[1] = 0x00;
         //             mem[2] = 0x01;
@@ -113,7 +113,7 @@ namespace narcissus {
         //             mem[0x100] = 0x8a;
         //             mem[0x101] = 0xff;
 
-//         auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+//         auto cpu = cpu::h8_300::create(move(mem));
         //             cpu->interrupt(cpu::interrupts::reset);
 
         //             ASSERT_EQ(cpu::operation::ADD_B_IMM, cpu->detect_operation());
@@ -127,7 +127,7 @@ namespace narcissus {
 
         //         TEST(cpu, ADD_B_R_R)
         //         {
-        //            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+        //            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
         //             mem[0] = 0x00;
         //             mem[1] = 0x00;
         //             mem[2] = 0x01;
@@ -137,7 +137,7 @@ namespace narcissus {
         //             mem[0x100] = 0x08;
         //             mem[0x101] = 0x2c;
 
-//         auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+//         auto cpu = cpu::h8_300::create(move(mem));
         //             cpu->interrupt(cpu::interrupts::reset);
 
         //             cpu->er[2].h = 0x12;
@@ -153,7 +153,7 @@ namespace narcissus {
 
         //         TEST(cpu, ADD_W_IMM)
         //         {
-        //            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+        //            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
         //             mem[0] = 0x00;
         //             mem[1] = 0x00;
         //             mem[2] = 0x01;
@@ -165,7 +165,7 @@ namespace narcissus {
         //             mem[0x102] = 0x12;
         //             mem[0x103] = 0x34;
 
-//         auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+//         auto cpu = cpu::h8_300::create(move(mem));
         //             cpu->interrupt(cpu::interrupts::reset);
 
         //             ASSERT_EQ(cpu::operation::ADD_W_IMM, cpu->detect_operation());
@@ -177,7 +177,7 @@ namespace narcissus {
 
         //         TEST(cpu, ADD_W_R_R)
         //         {
-        //            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+        //            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
         //             mem[0] = 0x00;
         //             mem[1] = 0x00;
         //             mem[2] = 0x01;
@@ -187,7 +187,7 @@ namespace narcissus {
         //             mem[0x100] = 0x09;
         //             mem[0x101] = 0xb6;
 
-//         auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+//         auto cpu = cpu::h8_300::create(move(mem));
         //             cpu->interrupt(cpu::interrupts::reset);
 
         //             cpu->er[3].e = 0x5678;
@@ -200,7 +200,7 @@ namespace narcissus {
 
         //         TEST(cpu, ADD_L_IMM)
         //         {
-        //            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+        //            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
         //             mem[0] = 0x00;
         //             mem[1] = 0x00;
         //             mem[2] = 0x01;
@@ -214,7 +214,7 @@ namespace narcissus {
         //             mem[0x104] = 0x56;
         //             mem[0x105] = 0x78;
 
-//         auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+//         auto cpu = cpu::h8_300::create(move(mem));
         //             cpu->interrupt(cpu::interrupts::reset);
 
         //             ASSERT_EQ(cpu::operation::ADD_L_IMM, cpu->detect_operation());
@@ -225,7 +225,7 @@ namespace narcissus {
 
                 TEST(ADD_L_R_R, 0)
                 {
-                   std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+                   std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
                     mem[0] = 0x00;
                     mem[1] = 0x00;
                     mem[2] = 0x01;
@@ -236,7 +236,7 @@ namespace narcissus {
                     mem[0x100] = 0x0a;
                     mem[0x101] = 0xd2;
 
-                    auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+                    auto cpu = cpu::h8_300::create(move(mem));
                     cpu->interrupt(cpu::interrupts::reset);
 
                     cpu->er[5].er = 0x12345678;
@@ -251,7 +251,7 @@ namespace narcissus {
         // SUB
         TEST(SUB_B_R_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -261,7 +261,7 @@ namespace narcissus {
             mem[0x100] = 0x18;
             mem[0x101] = 0x82;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[2].h = 0x34;
@@ -277,7 +277,7 @@ namespace narcissus {
 
         TEST(SUB_W_R_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -288,7 +288,7 @@ namespace narcissus {
             mem[0x100] = 0x19;
             mem[0x101] = 0x00;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[0].r = 0x1234;
@@ -302,7 +302,7 @@ namespace narcissus {
 
         TEST(SUB_W_R_R, 1)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -313,7 +313,7 @@ namespace narcissus {
             mem[0x100] = 0x19;
             mem[0x101] = 0x03;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[0].r = 0x5555;
@@ -331,7 +331,7 @@ namespace narcissus {
 
         TEST(SUBS_4, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -342,7 +342,7 @@ namespace narcissus {
             mem[0x100] = 0x1b;
             mem[0x101] = 0x97;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[7].er = 0x00ffff00;
@@ -355,7 +355,7 @@ namespace narcissus {
         //MOV
         TEST(MOV_B_IMM_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -365,7 +365,7 @@ namespace narcissus {
             mem[0x100] = 0xf2;
             mem[0x101] = 0x12;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             ASSERT_EQ(cpu::operation::MOV_B_IMM_R, cpu->detect_operation());
@@ -377,7 +377,7 @@ namespace narcissus {
 
         TEST(MOV_B_IMM_R, 1)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -387,7 +387,7 @@ namespace narcissus {
             mem[0x100] = 0xf2;
             mem[0x101] = 0x00;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             ASSERT_EQ(cpu::operation::MOV_B_IMM_R, cpu->detect_operation());
@@ -400,7 +400,7 @@ namespace narcissus {
 
         TEST(MOV_B_R_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -411,7 +411,7 @@ namespace narcissus {
             mem[0x100] = 0x0c;
             mem[0x101] = 0x8c;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[0].l = 0x12;
@@ -425,7 +425,7 @@ namespace narcissus {
         
         TEST(MOV_B_R_R_IND_WITH_DIS_16, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -438,7 +438,7 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0x02;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             //source
@@ -457,7 +457,7 @@ namespace narcissus {
 
         TEST(MOV_B_R_IND_WITH_DIS_16_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -470,7 +470,7 @@ namespace narcissus {
             mem[0x102] = 0x01;
             mem[0x103] = 0x00;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[6].er = 0x100;
@@ -485,7 +485,7 @@ namespace narcissus {
 
         TEST(MOV_B_R_IND_POST_INC_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -496,7 +496,7 @@ namespace narcissus {
             mem[0x100] = 0x6c;
             mem[0x101] = 0x48;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[4].er = 0x120;
@@ -510,7 +510,7 @@ namespace narcissus {
 
         TEST(MOV_W_IMM_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -522,7 +522,7 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0x01;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             ASSERT_EQ(cpu::operation::MOV_W_IMM_R, cpu->detect_operation());
@@ -536,7 +536,7 @@ namespace narcissus {
 
         TEST(MOV_L_IMM_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -552,7 +552,7 @@ namespace narcissus {
             mem[0x104] = 0xff;
             mem[0x105] = 0x00;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             ASSERT_EQ(cpu::operation::MOV_L_IMM_R, cpu->detect_operation());
@@ -564,7 +564,7 @@ namespace narcissus {
 
         TEST(MOV_L_R_R_IND_PRE_DEC, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -576,7 +576,7 @@ namespace narcissus {
             mem[0x102] = 0x6d;
             mem[0x103] = 0xf6;  // 1111 0110
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[6].er = 0x12345678;
@@ -594,7 +594,7 @@ namespace narcissus {
 
         TEST(MOV_L_R_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -604,7 +604,7 @@ namespace narcissus {
             mem[0x100] = 0x0f;
             mem[0x101] = 0xf6;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[7].er = 0x00ffff00;
@@ -618,7 +618,7 @@ namespace narcissus {
 
         TEST(MOV_L_R_IND_WITH_DIS_24_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -638,7 +638,7 @@ namespace narcissus {
             mem[0x108] = 0x02;
             mem[0x109] = 0x38;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[0].er = 0x00000200;
@@ -658,7 +658,7 @@ namespace narcissus {
 
         TEST(MOV_L_R_IND_POST_INC_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -671,7 +671,7 @@ namespace narcissus {
             mem[0x102] = 0x6d;
             mem[0x103] = 0x76;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->sp = 0xffff00;
@@ -696,7 +696,7 @@ namespace narcissus {
         //bcc
         TEST(BEQ_8, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -706,7 +706,7 @@ namespace narcissus {
             mem[0x100] = 0x47;
             mem[0x101] = 0x08;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             //             std::cout << "zero :" << cpu->ccr.zero << std::endl;
@@ -719,7 +719,7 @@ namespace narcissus {
 
         TEST(BRA_8, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -730,7 +730,7 @@ namespace narcissus {
             mem[0x100] = 0x40;
             mem[0x101] = 0xfe;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             ASSERT_EQ(cpu::operation::BRA_8, cpu->detect_operation());
@@ -739,7 +739,7 @@ namespace narcissus {
 
         TEST(BNE_8, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -750,7 +750,7 @@ namespace narcissus {
             mem[0x100] = 0x46;
             mem[0x101] = 0x0a;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->ccr.zero = 0;
@@ -763,7 +763,7 @@ namespace narcissus {
 
         TEST(CMP_B_IMM, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -774,7 +774,7 @@ namespace narcissus {
             mem[0x100] = 0xa8;
             mem[0x101] = 0x0a;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[0].l = 0xa;
@@ -786,7 +786,7 @@ namespace narcissus {
 
         TEST(CMP_B_IMM, 1)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -797,7 +797,7 @@ namespace narcissus {
             mem[0x100] = 0xa8;
             mem[0x101] = 0x0a;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[0].l = 0x9;
@@ -810,7 +810,7 @@ namespace narcissus {
         //jsr
         TEST(JSR_ABS, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -822,7 +822,7 @@ namespace narcissus {
             mem[0x102] = 0x01;
             mem[0x103] = 0x0c;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->sp = 0x00ffff00;
@@ -846,7 +846,7 @@ namespace narcissus {
 
         TEST(EXTS_L, 0) 
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -856,7 +856,7 @@ namespace narcissus {
             mem[0x100] = 0x17;
             mem[0x101] = 0xf0;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[0].er = 0x00008001;
@@ -870,7 +870,7 @@ namespace narcissus {
 
         TEST(EXTS_L, 1) 
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -880,7 +880,7 @@ namespace narcissus {
             mem[0x100] = 0x17;
             mem[0x101] = 0xf0;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[0].er = 0x00010000;
@@ -894,7 +894,7 @@ namespace narcissus {
 
         TEST(SHLL_L, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -904,7 +904,7 @@ namespace narcissus {
             mem[0x100] = 0x10;
             mem[0x101] = 0x30;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[0].er = 0x00000001;
@@ -918,7 +918,7 @@ namespace narcissus {
 
         TEST(RTS, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -936,7 +936,7 @@ namespace narcissus {
             mem[0x110] = 0x54;
             mem[0x111] = 0x70;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->sp = 0x00ffff00;
@@ -954,7 +954,7 @@ namespace narcissus {
 
         TEST(MOV_W_R_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -965,7 +965,7 @@ namespace narcissus {
             mem[0x100] = 0x0d;
             mem[0x101] = 0x05;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[0].r = 0x12;
@@ -978,7 +978,7 @@ namespace narcissus {
 
         TEST(AND_W_IMM, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -991,7 +991,7 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0x80;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[0].r = 0xff0f;
@@ -1004,7 +1004,7 @@ namespace narcissus {
 
         TEST(AND_W_IMM, 1)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1017,7 +1017,7 @@ namespace narcissus {
             mem[0x102] = 0x80;
             mem[0x103] = 0x00;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[0].r = 0x8000;
@@ -1029,8 +1029,8 @@ namespace narcissus {
 
         TEST(register, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            auto cpu = cpu::h8_300::create(move(mem));
 
             cpu->er[0].e = 0x1234;
             cpu->er[0].r = 0x5678;
@@ -1044,7 +1044,7 @@ namespace narcissus {
 
         TEST(AND_B_IMM, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1055,7 +1055,7 @@ namespace narcissus {
             mem[0x100] = 0xea;
             mem[0x101] = 0x7f;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[2].l = 0x7f;
@@ -1068,7 +1068,7 @@ namespace narcissus {
 
         TEST(ADDS_4, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1079,7 +1079,7 @@ namespace narcissus {
             mem[0x100] = 0x0b;
             mem[0x101] = 0x97;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[7].er = 0x12;
@@ -1093,7 +1093,7 @@ namespace narcissus {
 
         TEST(SUB_L_R_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1104,7 +1104,7 @@ namespace narcissus {
             mem[0x100] = 0x1a;
             mem[0x101] = 0x80;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             ASSERT_EQ(cpu::operation::SUB_L_R_R, cpu->detect_operation());
@@ -1114,7 +1114,7 @@ namespace narcissus {
 
         TEST(ADD_B_IMM_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1125,7 +1125,7 @@ namespace narcissus {
             mem[0x100] = 0x88;
             mem[0x101] = 0x10;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[0].l = 0x12;
@@ -1138,7 +1138,7 @@ namespace narcissus {
 
         TEST(ADD_L_IMM_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1153,7 +1153,7 @@ namespace narcissus {
             mem[0x104] = 0xff;
             mem[0x105] = 0xf4;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[7].er = 0x12345678;
@@ -1165,7 +1165,7 @@ namespace narcissus {
 
         TEST(SUBS_1, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1176,7 +1176,7 @@ namespace narcissus {
             mem[0x100] = 0x1b;
             mem[0x101] = 0x03;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[3].er = 0x12345678;
@@ -1189,7 +1189,7 @@ namespace narcissus {
 
         TEST(MOV_B_R_IND_WITH_DIS_24_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1210,7 +1210,7 @@ namespace narcissus {
 
             mem[0x100 + 0x3ea] = 0x12;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[2].er = 0x100;
@@ -1222,7 +1222,7 @@ namespace narcissus {
 
         TEST(SHLR_L, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1233,7 +1233,7 @@ namespace narcissus {
             mem[0x100] = 0x11;
             mem[0x101] = 0x32;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[2].er = 0x00000100;
@@ -1246,7 +1246,7 @@ namespace narcissus {
 
         TEST(DEC_W_1, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1257,7 +1257,7 @@ namespace narcissus {
             mem[0x100] = 0x1b;
             mem[0x101] = 0x50;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[0].r = 0x0100;
@@ -1269,7 +1269,7 @@ namespace narcissus {
 
         TEST(MOV_B_R_R_IND, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1280,7 +1280,7 @@ namespace narcissus {
             mem[0x100] = 0x68;
             mem[0x101] = 0xba;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[2].l = 0x12;
@@ -1294,7 +1294,7 @@ namespace narcissus {
 
         TEST(MOV_B_R_IND_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1305,7 +1305,7 @@ namespace narcissus {
             mem[0x100] = 0x68;
             mem[0x101] = 0x4a;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[4].er = 0x120;
@@ -1318,7 +1318,7 @@ namespace narcissus {
 
         TEST(ADDS_1, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1329,7 +1329,7 @@ namespace narcissus {
             mem[0x100]  = 0x0b;
             mem[0x101]  = 0x00;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[0].er = 0x0fffffff;
@@ -1342,7 +1342,7 @@ namespace narcissus {
 
         TEST(SUB_L_IMM_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1358,7 +1358,7 @@ namespace narcissus {
             mem[0x104] = 0xfc;
             mem[0x105] = 0x20;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[2].er = 0x12345678;
@@ -1371,7 +1371,7 @@ namespace narcissus {
 
         TEST(BLE_8, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1382,7 +1382,7 @@ namespace narcissus {
             mem[0x100] = 0x4f;
             mem[0x101] = 0x0a;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->ccr.zero = 0;
@@ -1395,7 +1395,7 @@ namespace narcissus {
 
         TEST(MOV_W_ABS_24_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1412,7 +1412,7 @@ namespace narcissus {
             mem[0x105] = 0x20;
 
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->memory[0xfffc20] = 0x12;
@@ -1426,7 +1426,7 @@ namespace narcissus {
 
         TEST(MOV_W_R_ABS_24, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1441,7 +1441,7 @@ namespace narcissus {
             mem[0x104] = 0xfc;
             mem[0x105] = 0x20;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[2].er = 0x1234;
@@ -1456,7 +1456,7 @@ namespace narcissus {
 
         TEST(EXTU_W, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1467,7 +1467,7 @@ namespace narcissus {
             mem[0x100] = 0x17;
             mem[0x101] = 0x50;
             
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[0].r = 0x1234;
@@ -1480,7 +1480,7 @@ namespace narcissus {
 
         TEST(CMP_B_R_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1491,7 +1491,7 @@ namespace narcissus {
             mem[0x100] = 0x1c;
             mem[0x101] = 0xab;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[2].l = 0x12;
@@ -1506,7 +1506,7 @@ namespace narcissus {
 
         TEST(BLS_8, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1517,7 +1517,7 @@ namespace narcissus {
             mem[0x100] = 0x43;
             mem[0x101] = 0x06;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->ccr.carry = 1;
@@ -1528,7 +1528,7 @@ namespace narcissus {
 
         TEST(BNE_16, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1540,7 +1540,7 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0x9c;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             ASSERT_EQ(cpu::operation::BNE_16, cpu->detect_operation());
@@ -1550,7 +1550,7 @@ namespace narcissus {
 
         TEST(MOV_L_ABS_24_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1568,7 +1568,7 @@ namespace narcissus {
             mem[0x106] = 0xfc;
             mem[0x107] = 0x20;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->memory[0xfffc20] = 0x12;
@@ -1585,7 +1585,7 @@ namespace narcissus {
 
         TEST(BRA_16, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x02;
@@ -1598,7 +1598,7 @@ namespace narcissus {
             mem[0x2a2] = 0xfe;
             mem[0x2a3] = 0xbc;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             ASSERT_EQ(cpu::operation::BRA_16, cpu->detect_operation());
@@ -1607,7 +1607,7 @@ namespace narcissus {
 
         TEST(MOV_L_R_ABS_24, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1625,7 +1625,7 @@ namespace narcissus {
             mem[0x106] = 0xfc;
             mem[0x107] = 0x40;
             
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[0].er = 0x12345678;
@@ -1641,7 +1641,7 @@ namespace narcissus {
 
         TEST(MOV_L_R_R_IND_WITH_DIS_16, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1657,7 +1657,7 @@ namespace narcissus {
             mem[0x104] = 0xff;
             mem[0x105] = 0xfc;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[0].er = 0x12345678;
@@ -1675,7 +1675,7 @@ namespace narcissus {
 
         TEST(MOV_W_R_R_IND_WITH_DIS_16, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1688,7 +1688,7 @@ namespace narcissus {
             mem[0x102] = 0xff;
             mem[0x103] = 0xfa;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[2].r = 0x1234;
@@ -1705,7 +1705,7 @@ namespace narcissus {
 
         TEST(MOV_W_R_IND_WITH_DIS_16_R, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1718,7 +1718,7 @@ namespace narcissus {
             mem[0x102] = 0xff;
             mem[0x103] = 0xfa;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             auto addr = 0x00ffff00 + (std::int16_t)0xfffa;
@@ -1735,7 +1735,7 @@ namespace narcissus {
 
         TEST(BGE_8, 0)
         {
-           std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1746,7 +1746,7 @@ namespace narcissus {
             mem[0x100] = 0x4c;
             mem[0x101] = 0x0a;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->ccr.negative = 1;
@@ -1758,7 +1758,7 @@ namespace narcissus {
         }
 
         TEST(BEQ_16, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1771,7 +1771,7 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0xbe;
             
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->ccr.zero = 1;
@@ -1781,7 +1781,7 @@ namespace narcissus {
         }
 
         TEST(CMP_L_IMM, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1797,7 +1797,7 @@ namespace narcissus {
             mem[0x104] = 0x84;
             mem[0x105] = 0x7f;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[4].er = 0x1e847f;
@@ -1809,7 +1809,7 @@ namespace narcissus {
         }
 
         TEST(MOV_L_R_IND_WITH_DIS_16_R, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1825,7 +1825,7 @@ namespace narcissus {
             mem[0x104] = 0xff;
             mem[0x105] = 0xfc;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[6].er = 0x00ffff00;
@@ -1842,7 +1842,7 @@ namespace narcissus {
         }
 
         TEST(XOR_B_R_R, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1853,7 +1853,7 @@ namespace narcissus {
             mem[0x100] = 0x15;
             mem[0x101] = 0x8a;
             
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[0].l = 0x12;
@@ -1866,7 +1866,7 @@ namespace narcissus {
         }
 
         TEST(BGT_8, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1877,7 +1877,7 @@ namespace narcissus {
             mem[0x100] = 0x4e;
             mem[0x101] = 0x10;
             
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->ccr.zero = 0;
@@ -1889,7 +1889,7 @@ namespace narcissus {
         }
 
         TEST(MOV_L_R_R_IND, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1901,7 +1901,7 @@ namespace narcissus {
             mem[0x102] = 0x69;
             mem[0x103] = 0x23;
             
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
             
             cpu->er[2].er = 0x00000200;
@@ -1917,7 +1917,7 @@ namespace narcissus {
         }
 
         TEST(ADD_B_R_R, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1928,7 +1928,7 @@ namespace narcissus {
             mem[0x100] = 0x08;
             mem[0x101] = 0x8b;
             
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[0].l = 0x12;
@@ -1941,7 +1941,7 @@ namespace narcissus {
         }
 
         TEST(MOV_L_R_IND_R, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1954,7 +1954,7 @@ namespace narcissus {
             mem[0x102] = 0x69;
             mem[0x103] = 0xa3;
             
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[3].er = 0x12345678;
@@ -1970,7 +1970,7 @@ namespace narcissus {
         }
 
         TEST(CMP_L_R_R, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1981,7 +1981,7 @@ namespace narcissus {
             mem[0x100] = 0x1f;
             mem[0x101] = 0xc5;
             
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[5].er = 0x12345678;
@@ -1996,7 +1996,7 @@ namespace narcissus {
 
 
         TEST(XOR_B_IMM_R, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2007,7 +2007,7 @@ namespace narcissus {
             mem[0x100] = 0xda;
             mem[0x101] = 0x07;
             
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[2].l = 0x8;
@@ -2018,7 +2018,7 @@ namespace narcissus {
         }
 
         TEST(DEC_W_2, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2029,7 +2029,7 @@ namespace narcissus {
             mem[0x100] = 0x1b;
             mem[0x101] = 0xd2;
             
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[2].r = 0x1112;
@@ -2041,7 +2041,7 @@ namespace narcissus {
         }
 
         TEST(DEC_L_1, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2051,7 +2051,7 @@ namespace narcissus {
             mem[0x100] = 0x1b;
             mem[0x101] = 0x72;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[2].er = 0x12345678;
@@ -2063,7 +2063,7 @@ namespace narcissus {
         }
 
         TEST(ADD_W_IMM_R, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2076,7 +2076,7 @@ namespace narcissus {
             mem[0x102] = 0xff;
             mem[0x103] = 0xd2;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[2].r = 0x1234;
@@ -2088,7 +2088,7 @@ namespace narcissus {
         }
 
         TEST(SHAR_W, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2099,7 +2099,7 @@ namespace narcissus {
             mem[0x100] = 0x11;
             mem[0x101] = 0x92;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[2].r = 0x1234;
@@ -2111,7 +2111,7 @@ namespace narcissus {
         }
 
         TEST(CMP_W_R_R, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2122,7 +2122,7 @@ namespace narcissus {
             mem[0x100] = 0x1d;
             mem[0x101] = 0x23;
             
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             ASSERT_EQ(cpu::operation::CMP_W_R_R, cpu->detect_operation());
@@ -2132,7 +2132,7 @@ namespace narcissus {
         }
 
         TEST(BGE_16, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2144,7 +2144,7 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0xe2;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->ccr.negative = 0;
@@ -2155,7 +2155,7 @@ namespace narcissus {
         }
 
         TEST(MULXS_W_R_R, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2168,7 +2168,7 @@ namespace narcissus {
             mem[0x102] = 0x52;
             mem[0x103] = 0x32;
             
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[2].er = 0x12345678;
@@ -2181,7 +2181,7 @@ namespace narcissus {
         }
 
         TEST(JSR_R, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2191,7 +2191,7 @@ namespace narcissus {
             //jsr @er4
             mem[0x100] = 0x5d;
             mem[0x101] = 0x40;
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[4].er = 0x400;
@@ -2201,7 +2201,7 @@ namespace narcissus {
         }
 
         TEST(ORC, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2212,7 +2212,7 @@ namespace narcissus {
             mem[0x100] = 0x04;
             mem[0x101] = 0xc0;
             
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             ASSERT_EQ(cpu::operation::ORC, cpu->detect_operation());
@@ -2220,7 +2220,7 @@ namespace narcissus {
         }
 
         TEST(MOV_L_R_R_IND_WITH_DIS_24, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2241,7 +2241,7 @@ namespace narcissus {
             mem[0x108] = 0xbf;
             mem[0x109] = 0x20;
             
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[1].er = 0x12345678; // src
@@ -2258,7 +2258,7 @@ namespace narcissus {
         }
 
         TEST(CMP_W_IMM, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2271,7 +2271,7 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0x02;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[4].er = 0x12345678;
@@ -2283,7 +2283,7 @@ namespace narcissus {
         }
 
         TEST(OR_B_IMM_R, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2294,7 +2294,7 @@ namespace narcissus {
             mem[0x100] = 0xca;
             mem[0x101] = 0x40;
 
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             cpu->er[2].l = 0x40;
@@ -2306,7 +2306,7 @@ namespace narcissus {
         }
 
         TEST(ANDC, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2317,7 +2317,7 @@ namespace narcissus {
             mem[0x100] = 0x06;
             mem[0x101] = 0x3f;
             
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             ASSERT_EQ(cpu::operation::ANDC, cpu->detect_operation());
@@ -2325,7 +2325,7 @@ namespace narcissus {
         }
 
         TEST(SLEEP, 0){
-            std::array<std::uint8_t, cpu::ROM_SIZE> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2336,7 +2336,7 @@ namespace narcissus {
             mem[0x100] = 0x01;
             mem[0x101] = 0x80;
             
-            auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+            auto cpu = cpu::h8_300::create(move(mem));
             cpu->interrupt(cpu::interrupts::reset);
 
             ASSERT_EQ(cpu::operation::SLEEP, cpu->detect_operation());
