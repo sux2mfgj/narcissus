@@ -1,7 +1,6 @@
-#include <string>
+#include <cassert>
 
 #include <cpu.hpp>
-#include <cassert>
 
 namespace narcissus {
     namespace cpu {
@@ -11,11 +10,6 @@ namespace narcissus {
             c_variable_ptr(std::make_shared<std::condition_variable>()), 
             memory(move(mem), c_variable_ptr, is_sleep)
         {}
-
-        auto h8_300::reset_exception() -> void
-        {
-            interrupt(interrupts::reset);
-        }
 
         auto h8_300::interrupt(interrupts int_num) -> void
         {

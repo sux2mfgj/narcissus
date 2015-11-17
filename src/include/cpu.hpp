@@ -250,46 +250,46 @@ namespace narcissus {
             };
         };
 
+        enum class interrupts : std::uint8_t
+        {
+            reset = 0,
+            nmi = 7,
+            // 8 ~ 11
+            trap_0,
+            trap_1,
+            trap_2,
+            trap_3,
+            // 12 ~ 17
+            external_0, 
+            external_1, 
+            external_2, 
+            external_3, 
+            external_4, 
+            external_5, 
+            // 52 ~ 63
+            // sci0
+            eri0 = 52,
+            rxi0,
+            txi0,
+            tei0,
+            // sci1
+            eri1,
+            rxi1,
+            txi1,
+            tei1,
+            // sci2
+            eri2,
+            rxi2,
+            txi2,
+            tei2,
+        };
+
         class h8_300 
         {
             enum class value_place : std::uint8_t
             {
                 high, 
                 low,
-            };
-
-            enum class interrupts : std::uint8_t
-            {
-                reset = 0,
-                nmi = 7,
-                // 8 ~ 11
-                trap_0,
-                trap_1,
-                trap_2,
-                trap_3,
-                // 12 ~ 17
-                external_0, 
-                external_1, 
-                external_2, 
-                external_3, 
-                external_4, 
-                external_5, 
-                // 52 ~ 63
-                // sci0
-                eri0 = 52,
-                rxi0,
-                txi0,
-                tei0,
-                // sci1
-                eri1,
-                rxi1,
-                txi1,
-                tei1,
-                // sci2
-                eri2,
-                rxi2,
-                txi2,
-                tei2,
             };
 
             public:

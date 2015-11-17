@@ -1,13 +1,9 @@
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <memory>
-#include <vector>
-#include <algorithm>
 
 #include <cpu.hpp>
 #include <debug.hpp>
-
 
 int main(int argc, char const* argv[])
 {
@@ -35,7 +31,7 @@ int main(int argc, char const* argv[])
 
     auto cpu = std::make_shared<cpu::h8_300>(move(mem));
     cpu::cpu_debuger debug(cpu);
-    cpu->reset_exception();
+    cpu->interrupt(cpu::interrupts::reset);
 
     cpu->run();
     return 0;
