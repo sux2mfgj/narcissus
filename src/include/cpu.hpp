@@ -11,7 +11,7 @@
 #include <mcu.hpp>
 
 namespace narcissus {
-    namespace cpu {
+    namespace h8_3069f {
 
         enum class operation : std::uint8_t
         {
@@ -284,8 +284,8 @@ namespace narcissus {
             tei2,
         };
 
-        class h8_300 
-            : public std::enable_shared_from_this<h8_300>
+        class cpu 
+            : public std::enable_shared_from_this<cpu>
         {
             enum class value_place : std::uint8_t
             {
@@ -297,16 +297,16 @@ namespace narcissus {
                 class create_helper;
 
             public:
-                static std::shared_ptr<h8_300> create(std::array<std::uint8_t, 
+                static std::shared_ptr<cpu> create(std::array<std::uint8_t, 
                         (std::uint32_t)mem_info::rom_size>&& mem);
-                virtual ~h8_300() = default;;
+                virtual ~cpu() = default;;
 
             private:
-                h8_300(std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size>&& mem);
-                h8_300(h8_300 const&) = delete;
-                h8_300(h8_300&&) = delete;
-                h8_300& operator =(h8_300 const&) = delete;
-                h8_300& operator =(h8_300&&) = delete;
+                cpu(std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size>&& mem);
+                cpu(cpu const&) = delete;
+                cpu(cpu&&) = delete;
+                cpu& operator =(cpu const&) = delete;
+                cpu& operator =(cpu&&) = delete;
 
             private:
                 // registers
@@ -460,14 +460,14 @@ namespace narcissus {
                 FRIEND_TEST(SLEEP, 0);
         };
 
-        class h8_300::create_helper : public h8_300
+        class cpu::create_helper : public cpu
         {
             public:
 
                 create_helper(std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size>&& mem)
-                    : h8_300(std::move(mem))
+                    : cpu(std::move(mem))
                 {}
         };
 
-    }  // namespace cpu
+    }  // namespace h8_3069f
 }  // namespace narcissus

@@ -3,23 +3,23 @@
 #include <cpu.hpp>
 
 namespace narcissus {
-    namespace cpu {
+    namespace h8_3069f {
 
-        h8_300::h8_300(std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size>&& mem)
+        cpu::cpu(std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size>&& mem)
             : er(), sp(), ccr(), pc(), is_sleep(std::make_shared<bool>(false)),
             c_variable_ptr(
                     std::make_shared<std::condition_variable>()), 
                 memory(move(mem), c_variable_ptr, is_sleep)
         {}
 
-        std::shared_ptr<h8_300> h8_300::create(
+        std::shared_ptr<cpu> cpu::create(
                 std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size>&& mem)
         {
             auto p = std::make_shared<create_helper>(std::move(mem));
             return std::move(p);
         }
 
-        auto h8_300::interrupt(interrupts int_num) -> void
+        auto cpu::interrupt(interrupts int_num) -> void
         {
             switch (int_num) {
                 case interrupts::reset:
@@ -101,7 +101,7 @@ namespace narcissus {
             }
         }
 
-        auto h8_300::run() -> void
+        auto cpu::run() -> void
         {
             std::uint32_t before_pc;
             auto limit = 0;
@@ -134,7 +134,7 @@ namespace narcissus {
             }
         }
 
-        auto h8_300::cycle() -> std::uint32_t
+        auto cpu::cycle() -> std::uint32_t
         {
 
             switch (detect_operation()) {
@@ -1266,7 +1266,7 @@ namespace narcissus {
             return pc; 
         }
 
-        auto h8_300::detect_operation() -> operation
+        auto cpu::detect_operation() -> operation
         {
             std::uint8_t op = memory[pc];
 
@@ -1900,7 +1900,7 @@ namespace narcissus {
             }
         }
 
-        auto h8_300::update_ccr_sub(std::uint32_t value_0,
+        auto cpu::update_ccr_sub(std::uint32_t value_0,
                 std::uint32_t value_1,
                 std::uint64_t result,
                 register_size r_size)
@@ -1924,7 +1924,7 @@ namespace narcissus {
             ccr.over_flow = sign_0 != sign_1 && sign_1 != sign_result;
         }
 
-        auto h8_300::update_ccr_mov(std::uint64_t value, register_size size)
+        auto cpu::update_ccr_mov(std::uint64_t value, register_size size)
             -> void
         {
             ccr.over_flow = 0;
@@ -1938,21 +1938,21 @@ namespace narcissus {
             ccr.negative = (value >> (std::uint32_t)size) & 0x1;
         }
 
-        auto h8_300::update_ccr_shll(std::uint64_t value, register_size size)
+        auto cpu::update_ccr_shll(std::uint64_t value, register_size size)
             -> void
         {
             update_ccr_mov(value, size);
             ccr.carry = 0x00010000 & value;
         }
 
-        auto h8_300::update_ccr_shlr(std::uint32_t value, register_size size)
+        auto cpu::update_ccr_shlr(std::uint32_t value, register_size size)
             -> void
         {
             update_ccr_shll(value, size);
             ccr.negative = 0;
         }
 
-        auto h8_300::update_ccr_mulx(std::uint32_t result, register_size size) -> void
+        auto cpu::update_ccr_mulx(std::uint32_t result, register_size size) -> void
         {
             ccr.negative = result >> (std::uint8_t)size;
             if(result == 0)
@@ -1961,7 +1961,7 @@ namespace narcissus {
             }
         }
 
-        auto h8_300::read_register_fields(std::uint32_t address, 
+        auto cpu::read_register_fields(std::uint32_t address, 
                 value_place place, bool is_32bit) -> std::uint8_t
         {
             auto reg = memory[address];
@@ -1984,7 +1984,7 @@ namespace narcissus {
             }
         }
 
-        auto h8_300::read_immediate(std::uint32_t address, 
+        auto cpu::read_immediate(std::uint32_t address, 
                 std::uint8_t number_of_byte) -> std::uint32_t
         {
             auto imm = (std::uint32_t)memory[address] << (8 * (number_of_byte - 1));
@@ -1996,7 +1996,7 @@ namespace narcissus {
             return imm;
         }
 
-        auto h8_300::write_immediate(std::uint32_t base, 
+        auto cpu::write_immediate(std::uint32_t base, 
                 std::uint8_t number_of_byte, std::uint32_t immediate) -> void
         {
             for(auto i = 0; i < number_of_byte; ++i)
@@ -2005,7 +2005,7 @@ namespace narcissus {
             }
         }
 
-        auto h8_300::read_register(std::uint8_t source, register_size size) 
+        auto cpu::read_register(std::uint8_t source, register_size size) 
             -> std::uint32_t
         {
             auto reg = er[source & 0x7];
@@ -2029,7 +2029,7 @@ namespace narcissus {
             }
         }
 
-        auto h8_300::write_register(std::uint8_t destination, 
+        auto cpu::write_register(std::uint8_t destination, 
                         std::uint32_t value, register_size size) -> void
         {
             auto &reg = er[destination & 0x7];
@@ -2056,7 +2056,7 @@ namespace narcissus {
             }
         }
 
-        auto h8_300::detect_mov_0_1_0(void) -> operation
+        auto cpu::detect_mov_0_1_0(void) -> operation
         {
             auto b3h = memory[pc + 2] >> 4;
             auto b3l = memory[pc + 2] & 0xf;
@@ -2130,7 +2130,7 @@ namespace narcissus {
             
         }
 
-        auto h8_300::detect_mov_6(std::uint8_t num) -> operation
+        auto cpu::detect_mov_6(std::uint8_t num) -> operation
         {
             auto b2h = memory[pc + 1] >> 4;
             auto b2l = memory[pc + 1] & 0xf;
@@ -2237,7 +2237,7 @@ namespace narcissus {
             return operation::INVALID;
         }
             
-        auto h8_300::detect_mov_7_8(void) -> operation
+        auto cpu::detect_mov_7_8(void) -> operation
         {
             auto b3h = memory[pc + 2] >> 4;
             auto b3l = memory[pc + 2] & 0xf;
@@ -2271,7 +2271,7 @@ namespace narcissus {
             return operation::INVALID;
         }
 
-        auto h8_300::detect_mulx(void) -> operation
+        auto cpu::detect_mulx(void) -> operation
         {
             auto b3h = memory[pc + 2] >> 4;
             auto b3l = memory[pc + 2] & 0xf;
@@ -2291,5 +2291,5 @@ namespace narcissus {
            
         }
 
-    }  // namespace cpu
+    }  // namespace h8_3069f
 }  // namespace narcissus

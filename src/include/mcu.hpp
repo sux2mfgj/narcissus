@@ -10,9 +10,9 @@
 #include <sci.hpp>
 
 namespace narcissus {
-    namespace cpu {
+    namespace h8_3069f {
 
-        class h8_300;
+        class cpu;
         class sci;
 
         enum class mem_info : std::uint32_t
@@ -40,7 +40,7 @@ namespace narcissus {
                
             public:
                 auto operator[] (std::uint32_t address) -> std::uint8_t&;
-                auto before_run(std::shared_ptr<h8_300>) -> void;
+                auto before_run(std::shared_ptr<cpu>) -> void;
 
             private:
                 std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size> rom;
@@ -48,5 +48,5 @@ namespace narcissus {
                 std::shared_ptr<sci> sci_1;
         };
 
-    } // namespace cpu
+    } // namespace h8_3069f
 } // namespace narcissus

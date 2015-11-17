@@ -4,7 +4,7 @@
 #include <iostream>
 
 namespace narcissus {
-    namespace cpu {
+    namespace h8_3069f {
 
         mcu::mcu(std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size>&& init_rom,
                 std::shared_ptr<std::condition_variable> c_variable_ptr,
@@ -13,7 +13,7 @@ namespace narcissus {
             sci_1(std::make_shared<sci>(c_variable_ptr, is_sleep))
         {}
 
-        auto mcu::before_run(std::shared_ptr<h8_300> c) -> void
+        auto mcu::before_run(std::shared_ptr<cpu> c) -> void
         {
 
         }
@@ -47,5 +47,5 @@ namespace narcissus {
             assert(false);
         }
 
-    } // namespace cpu
+    } // namespace h8_3069f
 } // namespace narcissus

@@ -4,25 +4,25 @@
 #include <ostream>
 
 namespace narcissus {
-    namespace cpu {
+    namespace h8_3069f {
 
         class cpu_debuger 
         {
             public:
-                cpu_debuger(std::shared_ptr<h8_300> c): cpu(c){}
+                cpu_debuger(std::shared_ptr<cpu> c): controller(c){}
                  
             private:
-                std::shared_ptr<h8_300> cpu;
+                std::shared_ptr<cpu> controller;
 
             public:
                 auto values(void) const -> std::string
                 {
                     std::ostringstream os;
-                    for(auto i = 0; i < cpu->er.size(); ++i){
-                        os << std::hex << i << ":" << cpu->er[i].er << std::endl;;
+                    for(auto i = 0; i < controller->er.size(); ++i){
+                        os << std::hex << i << ":" << controller->er[i].er << std::endl;;
                     }
 
-                    os << std::hex << "ccr: "<< (std::uint16_t)cpu->ccr.byte << std::endl;
+                    os << std::hex << "ccr: "<< (std::uint16_t)controller->ccr.byte << std::endl;
                     return os.str();
                 }
         };
@@ -36,5 +36,5 @@ namespace narcissus {
             return os;
         }
         
-    } // namespace cpu
+    } // namespace h8_3069f
 } // namespace narcissus

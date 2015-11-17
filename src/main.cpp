@@ -13,7 +13,7 @@ int main(int argc, char const* argv[])
     fstream file;
     char buf[16];
 
-    array<uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+    array<uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
 
     if(argc < 2){
         return -1;
@@ -29,9 +29,9 @@ int main(int argc, char const* argv[])
     }
     file.close();
 
-    auto cpu = cpu::h8_300::create(move(mem));
-    cpu::cpu_debuger debug(cpu);
-    cpu->interrupt(cpu::interrupts::reset);
+    auto cpu = h8_3069f::cpu::create(move(mem));
+    h8_3069f::cpu_debuger debug(cpu);
+    cpu->interrupt(h8_3069f::interrupts::reset);
 
     cpu->run();
     return 0;

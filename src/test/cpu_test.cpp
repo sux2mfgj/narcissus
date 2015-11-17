@@ -5,46 +5,46 @@
 #include <cpu.hpp>
 
 namespace narcissus {
-    namespace cpu {
+    namespace h8_3069f {
 
         TEST(read_register, 0)
         {
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0x100] = 0x0a;
             mem[0x101] = 0x00;
 
-            auto cpu = cpu::h8_300::create(move(mem));
+            auto cpu = h8_3069f::cpu::create(move(mem));
 
-            cpu->interrupt(cpu::interrupts::reset);
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
-            auto rs = cpu->read_register_fields(0x100, h8_300::value_place::low, false);
+            auto rs = cpu->read_register_fields(0x100, cpu::value_place::low, false);
 
             ASSERT_EQ(0xa, rs);
         }
 
         TEST(read_register, 1)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0x100] = 0x70;
             mem[0x101] = 0x00;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
-            auto ers = cpu->read_register_fields(0x100, h8_300::value_place::high, true);
+            auto ers = cpu->read_register_fields(0x100, cpu::value_place::high, true);
 
             ASSERT_EQ(0x7, ers);
         }
 
         TEST(read_imm, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0x101] = 0x12;
             mem[0x102] = 0x34;
             mem[0x103] = 0x56;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             auto imm = cpu->read_immediate(0x101, 3);
             ASSERT_EQ(0x123456, imm);
@@ -52,10 +52,10 @@ namespace narcissus {
 
         TEST(write_imm, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->write_immediate(0x100, 3, 0x123456);
             ASSERT_EQ(cpu->memory[0x100], 0x12);
@@ -65,10 +65,10 @@ namespace narcissus {
 
         TEST(read_value , 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].l = 0x12;
             cpu->er[2].h = 0x34;
@@ -83,10 +83,10 @@ namespace narcissus {
 
         TEST(write_register, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->write_register(0x2, 0x12, register_size::BYTE);
             std::cout << cpu->er[2].er << std::endl;
@@ -103,7 +103,7 @@ namespace narcissus {
         // ADD
         //         TEST(cpu, ADD_B_IMM)
         //         {
-        //            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+        //            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
         //             mem[0] = 0x00;
         //             mem[1] = 0x00;
         //             mem[2] = 0x01;
@@ -113,10 +113,10 @@ namespace narcissus {
         //             mem[0x100] = 0x8a;
         //             mem[0x101] = 0xff;
 
-//         auto cpu = cpu::h8_300::create(move(mem));
-        //             cpu->interrupt(cpu::interrupts::reset);
+//         auto cpu = h8_3069f::cpu::create(move(mem));
+        //             cpu->interrupt(h8_3069f::interrupts::reset);
 
-        //             ASSERT_EQ(cpu::operation::ADD_B_IMM, cpu->detect_operation());
+        //             ASSERT_EQ(h8_3069f::operation::ADD_B_IMM, cpu->detect_operation());
 
         //             ASSERT_EQ(true, cpu->cycle());
 
@@ -127,7 +127,7 @@ namespace narcissus {
 
         //         TEST(cpu, ADD_B_R_R)
         //         {
-        //            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+        //            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
         //             mem[0] = 0x00;
         //             mem[1] = 0x00;
         //             mem[2] = 0x01;
@@ -137,12 +137,12 @@ namespace narcissus {
         //             mem[0x100] = 0x08;
         //             mem[0x101] = 0x2c;
 
-//         auto cpu = cpu::h8_300::create(move(mem));
-        //             cpu->interrupt(cpu::interrupts::reset);
+//         auto cpu = h8_3069f::cpu::create(move(mem));
+        //             cpu->interrupt(h8_3069f::interrupts::reset);
 
         //             cpu->er[2].h = 0x12;
 
-        //             ASSERT_EQ(cpu::operation::ADD_B_R_R, cpu->detect_operation());
+        //             ASSERT_EQ(h8_3069f::operation::ADD_B_R_R, cpu->detect_operation());
 
         //             ASSERT_EQ(true, cpu->cycle());
 
@@ -153,7 +153,7 @@ namespace narcissus {
 
         //         TEST(cpu, ADD_W_IMM)
         //         {
-        //            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+        //            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
         //             mem[0] = 0x00;
         //             mem[1] = 0x00;
         //             mem[2] = 0x01;
@@ -165,10 +165,10 @@ namespace narcissus {
         //             mem[0x102] = 0x12;
         //             mem[0x103] = 0x34;
 
-//         auto cpu = cpu::h8_300::create(move(mem));
-        //             cpu->interrupt(cpu::interrupts::reset);
+//         auto cpu = h8_3069f::cpu::create(move(mem));
+        //             cpu->interrupt(h8_3069f::interrupts::reset);
 
-        //             ASSERT_EQ(cpu::operation::ADD_W_IMM, cpu->detect_operation());
+        //             ASSERT_EQ(h8_3069f::operation::ADD_W_IMM, cpu->detect_operation());
 
         //             ASSERT_EQ(true, cpu->cycle());
         //             ASSERT_EQ(cpu->er[3].e, 0x1234);
@@ -177,7 +177,7 @@ namespace narcissus {
 
         //         TEST(cpu, ADD_W_R_R)
         //         {
-        //            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+        //            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
         //             mem[0] = 0x00;
         //             mem[1] = 0x00;
         //             mem[2] = 0x01;
@@ -187,12 +187,12 @@ namespace narcissus {
         //             mem[0x100] = 0x09;
         //             mem[0x101] = 0xb6;
 
-//         auto cpu = cpu::h8_300::create(move(mem));
-        //             cpu->interrupt(cpu::interrupts::reset);
+//         auto cpu = h8_3069f::cpu::create(move(mem));
+        //             cpu->interrupt(h8_3069f::interrupts::reset);
 
         //             cpu->er[3].e = 0x5678;
 
-        //             ASSERT_EQ(cpu::operation::ADD_W_R_R, cpu->detect_operation());
+        //             ASSERT_EQ(h8_3069f::operation::ADD_W_R_R, cpu->detect_operation());
         //             ASSERT_EQ(true, cpu->cycle());
         //             ASSERT_EQ(cpu->er[6].r, 0x5678);
         //             ASSERT_EQ(cpu->pc, 0x102);
@@ -200,7 +200,7 @@ namespace narcissus {
 
         //         TEST(cpu, ADD_L_IMM)
         //         {
-        //            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+        //            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
         //             mem[0] = 0x00;
         //             mem[1] = 0x00;
         //             mem[2] = 0x01;
@@ -214,10 +214,10 @@ namespace narcissus {
         //             mem[0x104] = 0x56;
         //             mem[0x105] = 0x78;
 
-//         auto cpu = cpu::h8_300::create(move(mem));
-        //             cpu->interrupt(cpu::interrupts::reset);
+//         auto cpu = h8_3069f::cpu::create(move(mem));
+        //             cpu->interrupt(h8_3069f::interrupts::reset);
 
-        //             ASSERT_EQ(cpu::operation::ADD_L_IMM, cpu->detect_operation());
+        //             ASSERT_EQ(h8_3069f::operation::ADD_L_IMM, cpu->detect_operation());
         //             ASSERT_EQ(true, cpu->cycle());
         //             ASSERT_EQ(cpu->er[5].er, 0x12345678);
         //             ASSERT_EQ(cpu->pc, 0x106);
@@ -225,7 +225,7 @@ namespace narcissus {
 
                 TEST(ADD_L_R_R, 0)
                 {
-                   std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+                   std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
                     mem[0] = 0x00;
                     mem[1] = 0x00;
                     mem[2] = 0x01;
@@ -236,14 +236,14 @@ namespace narcissus {
                     mem[0x100] = 0x0a;
                     mem[0x101] = 0xd2;
 
-                    auto cpu = cpu::h8_300::create(move(mem));
-                    cpu->interrupt(cpu::interrupts::reset);
+                    auto cpu = h8_3069f::cpu::create(move(mem));
+                    cpu->interrupt(h8_3069f::interrupts::reset);
 
                     cpu->er[5].er = 0x12345678;
                     cpu->er[2].er = 0x87654321;
 
 
-                    ASSERT_EQ(cpu::operation::ADD_L_R_R, cpu->detect_operation());
+                    ASSERT_EQ(h8_3069f::operation::ADD_L_R_R, cpu->detect_operation());
                     ASSERT_EQ(0x102, cpu->cycle());
                     ASSERT_EQ(0x99999999, cpu->er[2].er);
                 }
@@ -251,7 +251,7 @@ namespace narcissus {
         // SUB
         TEST(SUB_B_R_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -261,13 +261,13 @@ namespace narcissus {
             mem[0x100] = 0x18;
             mem[0x101] = 0x82;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].h = 0x34;
             cpu->er[0].l = 0x45;
 
-            ASSERT_EQ(cpu::operation::SUB_B_R_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::SUB_B_R_R, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ((0x34 - 0x45) & 0xff, cpu->er[2].h);
 
@@ -277,7 +277,7 @@ namespace narcissus {
 
         TEST(SUB_W_R_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -288,12 +288,12 @@ namespace narcissus {
             mem[0x100] = 0x19;
             mem[0x101] = 0x00;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].r = 0x1234;
 
-            ASSERT_EQ(cpu::operation::SUB_W_R_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::SUB_W_R_R, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0x0, cpu->er[0].r);
 
@@ -302,7 +302,7 @@ namespace narcissus {
 
         TEST(SUB_W_R_R, 1)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -313,13 +313,13 @@ namespace narcissus {
             mem[0x100] = 0x19;
             mem[0x101] = 0x03;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].r = 0x5555;
             cpu->er[3].r = 0x1111;
 
-            ASSERT_EQ(cpu::operation::SUB_W_R_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::SUB_W_R_R, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ((0x1111 - 0x5555) & 0xffff, cpu->er[3].r);
 
@@ -331,7 +331,7 @@ namespace narcissus {
 
         TEST(SUBS_4, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -342,12 +342,12 @@ namespace narcissus {
             mem[0x100] = 0x1b;
             mem[0x101] = 0x97;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[7].er = 0x00ffff00;
 
-            ASSERT_EQ(cpu::operation::SUBS_4, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::SUBS_4, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0x00ffff00 - 4, cpu->er[7].er);
         }
@@ -355,7 +355,7 @@ namespace narcissus {
         //MOV
         TEST(MOV_B_IMM_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -365,10 +365,10 @@ namespace narcissus {
             mem[0x100] = 0xf2;
             mem[0x101] = 0x12;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
-            ASSERT_EQ(cpu::operation::MOV_B_IMM_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_B_IMM_R, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(cpu->er[2].h, 0x12);
 
@@ -377,7 +377,7 @@ namespace narcissus {
 
         TEST(MOV_B_IMM_R, 1)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -387,10 +387,10 @@ namespace narcissus {
             mem[0x100] = 0xf2;
             mem[0x101] = 0x00;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
-            ASSERT_EQ(cpu::operation::MOV_B_IMM_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_B_IMM_R, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(cpu->er[2].h, 0x0);
 
@@ -400,7 +400,7 @@ namespace narcissus {
 
         TEST(MOV_B_R_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -411,12 +411,12 @@ namespace narcissus {
             mem[0x100] = 0x0c;
             mem[0x101] = 0x8c;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].l = 0x12;
 
-            ASSERT_EQ(cpu::operation::MOV_B_R_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_B_R_R, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(cpu->er[4].l, 0x12);
             ASSERT_EQ(0b10000000, cpu->ccr.byte);
@@ -425,7 +425,7 @@ namespace narcissus {
         
         TEST(MOV_B_R_R_IND_WITH_DIS_16, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -438,8 +438,8 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0x02;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             //source
             cpu->er[0].l = 0x12;
@@ -447,7 +447,7 @@ namespace narcissus {
             //destination
             cpu->er[3].er = 0x00000200;
 
-            ASSERT_EQ(cpu::operation::MOV_B_R_R_IND_WITH_DIS_16, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_B_R_R_IND_WITH_DIS_16, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
             ASSERT_EQ(0x12, cpu->memory[0x200 + 0x2]);
 
@@ -457,7 +457,7 @@ namespace narcissus {
 
         TEST(MOV_B_R_IND_WITH_DIS_16_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -470,13 +470,13 @@ namespace narcissus {
             mem[0x102] = 0x01;
             mem[0x103] = 0x00;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[6].er = 0x100;
             cpu->memory[0x200] = 0x12;
 
-            ASSERT_EQ(cpu::operation::MOV_B_R_IND_WITH_DIS_16_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_B_R_IND_WITH_DIS_16_R, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
             ASSERT_EQ(0x12, cpu->er[2].l);
 
@@ -485,7 +485,7 @@ namespace narcissus {
 
         TEST(MOV_B_R_IND_POST_INC_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -496,13 +496,13 @@ namespace narcissus {
             mem[0x100] = 0x6c;
             mem[0x101] = 0x48;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[4].er = 0x120;
             cpu->memory[0x120] = 0x12;
 
-            ASSERT_EQ(cpu::operation::MOV_B_R_IND_POST_INC_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_B_R_IND_POST_INC_R, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0x12, cpu->er[0].l);
             ASSERT_EQ(0x121, cpu->er[4].er);
@@ -510,7 +510,7 @@ namespace narcissus {
 
         TEST(MOV_W_IMM_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -522,10 +522,10 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0x01;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
-            ASSERT_EQ(cpu::operation::MOV_W_IMM_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_W_IMM_R, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
             ASSERT_EQ(0x0001, cpu->er[0].r);
 
@@ -536,7 +536,7 @@ namespace narcissus {
 
         TEST(MOV_L_IMM_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -552,10 +552,10 @@ namespace narcissus {
             mem[0x104] = 0xff;
             mem[0x105] = 0x00;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
-            ASSERT_EQ(cpu::operation::MOV_L_IMM_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_L_IMM_R, cpu->detect_operation());
             ASSERT_EQ(0x106, cpu->cycle());
             ASSERT_EQ(cpu->er[7].er, 0x00ffff00);
 
@@ -564,7 +564,7 @@ namespace narcissus {
 
         TEST(MOV_L_R_R_IND_PRE_DEC, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -576,13 +576,13 @@ namespace narcissus {
             mem[0x102] = 0x6d;
             mem[0x103] = 0xf6;  // 1111 0110
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[6].er = 0x12345678;
             cpu->sp = 0x00ffff00;
 
-            ASSERT_EQ(cpu::operation::MOV_L_R_R_IND_PRE_DEC, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_L_R_R_IND_PRE_DEC, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
             ASSERT_EQ(0x12, cpu->memory[0xffff00 - 4]);
             ASSERT_EQ(0x34, cpu->memory[0xffff00 - 3]);
@@ -594,7 +594,7 @@ namespace narcissus {
 
         TEST(MOV_L_R_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -604,12 +604,12 @@ namespace narcissus {
             mem[0x100] = 0x0f;
             mem[0x101] = 0xf6;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[7].er = 0x00ffff00;
 
-            ASSERT_EQ(cpu::operation::MOV_L_R_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_L_R_R, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0x00ffff00, cpu->er[6].er);
 
@@ -618,7 +618,7 @@ namespace narcissus {
 
         TEST(MOV_L_R_IND_WITH_DIS_24_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -638,8 +638,8 @@ namespace narcissus {
             mem[0x108] = 0x02;
             mem[0x109] = 0x38;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].er = 0x00000200;
 
@@ -649,7 +649,7 @@ namespace narcissus {
             cpu->memory[addr + 2] = 0x56;
             cpu->memory[addr + 3] = 0x78;
 
-            ASSERT_EQ(cpu::operation::MOV_L_R_IND_WITH_DIS_24_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_L_R_IND_WITH_DIS_24_R, cpu->detect_operation());
             ASSERT_EQ(0x10a, cpu->cycle());
             ASSERT_EQ(cpu->er[3].er, 0x12345678);
 
@@ -658,7 +658,7 @@ namespace narcissus {
 
         TEST(MOV_L_R_IND_POST_INC_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -671,8 +671,8 @@ namespace narcissus {
             mem[0x102] = 0x6d;
             mem[0x103] = 0x76;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->sp = 0xffff00;
             auto value = 0x12345678;
@@ -687,7 +687,7 @@ namespace narcissus {
             //             }
             //             std::cout << cpu->memory[cpu->sp] << std::endl;
 
-            ASSERT_EQ(cpu::operation::MOV_L_R_IND_POST_INC_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_L_R_IND_POST_INC_R, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
             ASSERT_EQ(0x12345678, cpu->er[6].er);
 
@@ -696,7 +696,7 @@ namespace narcissus {
         //bcc
         TEST(BEQ_8, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -706,20 +706,20 @@ namespace narcissus {
             mem[0x100] = 0x47;
             mem[0x101] = 0x08;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             //             std::cout << "zero :" << cpu->ccr.zero << std::endl;
             cpu->ccr.zero = 1;
             //             std::cout << "zero :" << cpu->ccr.zero << std::endl;
 
-            ASSERT_EQ(cpu::operation::BEQ_8, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::BEQ_8, cpu->detect_operation());
             ASSERT_EQ(0x10a, cpu->cycle());
         }
 
         TEST(BRA_8, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -730,16 +730,16 @@ namespace narcissus {
             mem[0x100] = 0x40;
             mem[0x101] = 0xfe;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
-            ASSERT_EQ(cpu::operation::BRA_8, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::BRA_8, cpu->detect_operation());
             ASSERT_EQ(0x100, cpu->cycle());
         }
 
         TEST(BNE_8, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -750,12 +750,12 @@ namespace narcissus {
             mem[0x100] = 0x46;
             mem[0x101] = 0x0a;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->ccr.zero = 0;
 
-            ASSERT_EQ(cpu::operation::BNE_8, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::BNE_8, cpu->detect_operation());
             ASSERT_EQ(0x102 + 0xa, cpu->cycle());
 
 
@@ -763,7 +763,7 @@ namespace narcissus {
 
         TEST(CMP_B_IMM, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -774,19 +774,19 @@ namespace narcissus {
             mem[0x100] = 0xa8;
             mem[0x101] = 0x0a;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].l = 0xa;
 
-            ASSERT_EQ(cpu::operation::CMP_B_IMM, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::CMP_B_IMM, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0b10000100, cpu->ccr.byte);
         }
 
         TEST(CMP_B_IMM, 1)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -797,12 +797,12 @@ namespace narcissus {
             mem[0x100] = 0xa8;
             mem[0x101] = 0x0a;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].l = 0x9;
 
-            ASSERT_EQ(cpu::operation::CMP_B_IMM, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::CMP_B_IMM, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0b10001001, cpu->ccr.byte);
         }
@@ -810,7 +810,7 @@ namespace narcissus {
         //jsr
         TEST(JSR_ABS, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -822,12 +822,12 @@ namespace narcissus {
             mem[0x102] = 0x01;
             mem[0x103] = 0x0c;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->sp = 0x00ffff00;
 
-            ASSERT_EQ(cpu::operation::JSR_ABS, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::JSR_ABS, cpu->detect_operation());
             ASSERT_EQ(0x10c, cpu->cycle());
 
             //             cout << "0x" << cpu->sp << endl;
@@ -846,7 +846,7 @@ namespace narcissus {
 
         TEST(EXTS_L, 0) 
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -856,12 +856,12 @@ namespace narcissus {
             mem[0x100] = 0x17;
             mem[0x101] = 0xf0;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].er = 0x00008001;
 
-            ASSERT_EQ(cpu::operation::EXTS_L, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::EXTS_L, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0xffff8001, cpu->er[0].er);
 
@@ -870,7 +870,7 @@ namespace narcissus {
 
         TEST(EXTS_L, 1) 
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -880,12 +880,12 @@ namespace narcissus {
             mem[0x100] = 0x17;
             mem[0x101] = 0xf0;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].er = 0x00010000;
 
-            ASSERT_EQ(cpu::operation::EXTS_L, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::EXTS_L, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0x00000000, cpu->er[0].er);
 
@@ -894,7 +894,7 @@ namespace narcissus {
 
         TEST(SHLL_L, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -904,12 +904,12 @@ namespace narcissus {
             mem[0x100] = 0x10;
             mem[0x101] = 0x30;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].er = 0x00000001;
 
-            ASSERT_EQ(cpu::operation::SHLL_L, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::SHLL_L, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0x00000002, cpu->er[0].er);
 
@@ -918,7 +918,7 @@ namespace narcissus {
 
         TEST(RTS, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -936,17 +936,17 @@ namespace narcissus {
             mem[0x110] = 0x54;
             mem[0x111] = 0x70;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->sp = 0x00ffff00;
 
             // jsr 
-            ASSERT_EQ(cpu::operation::JSR_ABS, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::JSR_ABS, cpu->detect_operation());
             ASSERT_EQ(0x110, cpu->cycle());
             //             std::cout << "jsr" << std::endl;
             // rts
-            ASSERT_EQ(cpu::operation::RTS, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::RTS, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
 
 
@@ -954,7 +954,7 @@ namespace narcissus {
 
         TEST(MOV_W_R_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -965,12 +965,12 @@ namespace narcissus {
             mem[0x100] = 0x0d;
             mem[0x101] = 0x05;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].r = 0x12;
 
-            ASSERT_EQ(cpu::operation::MOV_W_R_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_W_R_R, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0x12, cpu->er[5].r);
 
@@ -978,7 +978,7 @@ namespace narcissus {
 
         TEST(AND_W_IMM, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -991,12 +991,12 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0x80;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].r = 0xff0f;
 
-            ASSERT_EQ(cpu::operation::AND_W_IMM, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::AND_W_IMM, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
             ASSERT_EQ(0x0000, cpu->er[0].r);
             ASSERT_EQ(0b10000100, cpu->ccr.byte);
@@ -1004,7 +1004,7 @@ namespace narcissus {
 
         TEST(AND_W_IMM, 1)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1017,20 +1017,20 @@ namespace narcissus {
             mem[0x102] = 0x80;
             mem[0x103] = 0x00;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].r = 0x8000;
 
-            ASSERT_EQ(cpu::operation::AND_W_IMM, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::AND_W_IMM, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
             ASSERT_EQ(0b10001000, cpu->ccr.byte);
         }
 
         TEST(register, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
-            auto cpu = cpu::h8_300::create(move(mem));
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
+            auto cpu = h8_3069f::cpu::create(move(mem));
 
             cpu->er[0].e = 0x1234;
             cpu->er[0].r = 0x5678;
@@ -1044,7 +1044,7 @@ namespace narcissus {
 
         TEST(AND_B_IMM, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1055,12 +1055,12 @@ namespace narcissus {
             mem[0x100] = 0xea;
             mem[0x101] = 0x7f;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].l = 0x7f;
 
-            ASSERT_EQ(cpu::operation::AND_B_IMM, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::AND_B_IMM, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0b10000000, cpu->ccr.byte);
             ASSERT_EQ(cpu->er[2].l, 0x7f);
@@ -1068,7 +1068,7 @@ namespace narcissus {
 
         TEST(ADDS_4, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1079,12 +1079,12 @@ namespace narcissus {
             mem[0x100] = 0x0b;
             mem[0x101] = 0x97;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[7].er = 0x12;
 
-            ASSERT_EQ(cpu::operation::ADDS_4, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::ADDS_4, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0b10000000, cpu->ccr.byte);
             ASSERT_EQ(cpu->er[7].er, 0x12 + 4);
@@ -1093,7 +1093,7 @@ namespace narcissus {
 
         TEST(SUB_L_R_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1104,17 +1104,17 @@ namespace narcissus {
             mem[0x100] = 0x1a;
             mem[0x101] = 0x80;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
-            ASSERT_EQ(cpu::operation::SUB_L_R_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::SUB_L_R_R, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0x00000000, cpu->er[0].er);
         }
 
         TEST(ADD_B_IMM_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1125,12 +1125,12 @@ namespace narcissus {
             mem[0x100] = 0x88;
             mem[0x101] = 0x10;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].l = 0x12;
 
-            ASSERT_EQ(cpu::operation::ADD_B_IMM_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::ADD_B_IMM_R, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0x22, cpu->er[0].l);
 
@@ -1138,7 +1138,7 @@ namespace narcissus {
 
         TEST(ADD_L_IMM_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1153,19 +1153,19 @@ namespace narcissus {
             mem[0x104] = 0xff;
             mem[0x105] = 0xf4;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[7].er = 0x12345678;
 
-            ASSERT_EQ(cpu::operation::ADD_L_IMM_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::ADD_L_IMM_R, cpu->detect_operation());
             ASSERT_EQ(0x106, cpu->cycle());
             ASSERT_EQ((std::int32_t)0x12345678+ (std::int32_t)0xfffffff4, cpu->er[7].er);
         }
 
         TEST(SUBS_1, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1176,12 +1176,12 @@ namespace narcissus {
             mem[0x100] = 0x1b;
             mem[0x101] = 0x03;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[3].er = 0x12345678;
 
-            ASSERT_EQ(cpu::operation::SUBS_1, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::SUBS_1, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0x12345678 - 1, cpu->er[3].er);
 
@@ -1189,7 +1189,7 @@ namespace narcissus {
 
         TEST(MOV_B_R_IND_WITH_DIS_24_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1210,19 +1210,19 @@ namespace narcissus {
 
             mem[0x100 + 0x3ea] = 0x12;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].er = 0x100;
 
-            ASSERT_EQ(cpu::operation::MOV_B_R_IND_WITH_DIS_24_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_B_R_IND_WITH_DIS_24_R, cpu->detect_operation());
             ASSERT_EQ(0x108, cpu->cycle());
             ASSERT_EQ(0x12, cpu->er[2].l);
         }
 
         TEST(SHLR_L, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1233,12 +1233,12 @@ namespace narcissus {
             mem[0x100] = 0x11;
             mem[0x101] = 0x32;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].er = 0x00000100;
 
-            ASSERT_EQ(cpu::operation::SHLR_L, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::SHLR_L, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0x00000080, cpu->er[2].er);
 
@@ -1246,7 +1246,7 @@ namespace narcissus {
 
         TEST(DEC_W_1, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1257,19 +1257,19 @@ namespace narcissus {
             mem[0x100] = 0x1b;
             mem[0x101] = 0x50;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].r = 0x0100;
 
-            ASSERT_EQ(cpu::operation::DEC_W_1, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::DEC_W_1, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0x00ff, cpu->er[0].r);
         }
 
         TEST(MOV_B_R_R_IND, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1280,13 +1280,13 @@ namespace narcissus {
             mem[0x100] = 0x68;
             mem[0x101] = 0xba;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].l = 0x12;
             cpu->er[3].er = 0xffff00;
 
-            ASSERT_EQ(cpu::operation::MOV_B_R_R_IND, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_B_R_R_IND, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
  
             ASSERT_EQ(0x12, cpu->memory[0xffff00]);
@@ -1294,7 +1294,7 @@ namespace narcissus {
 
         TEST(MOV_B_R_IND_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1305,20 +1305,20 @@ namespace narcissus {
             mem[0x100] = 0x68;
             mem[0x101] = 0x4a;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[4].er = 0x120;
             cpu->memory[0x120] = 0x12;
 
-            ASSERT_EQ(cpu::operation::MOV_B_R_IND_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_B_R_IND_R, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0x12, cpu->er[2].l);
         }
 
         TEST(ADDS_1, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1329,12 +1329,12 @@ namespace narcissus {
             mem[0x100]  = 0x0b;
             mem[0x101]  = 0x00;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].er = 0x0fffffff;
 
-            ASSERT_EQ(cpu::operation::ADDS_1, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::ADDS_1, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
  
             ASSERT_EQ(0x10000000, cpu->er[0].er);
@@ -1342,7 +1342,7 @@ namespace narcissus {
 
         TEST(SUB_L_IMM_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1358,12 +1358,12 @@ namespace narcissus {
             mem[0x104] = 0xfc;
             mem[0x105] = 0x20;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].er = 0x12345678;
 
-            ASSERT_EQ(cpu::operation::SUB_L_IMM_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::SUB_L_IMM_R, cpu->detect_operation());
             ASSERT_EQ(0x106, cpu->cycle());
 
             ASSERT_EQ(0x12345678 - 0xfffc20, cpu->er[2].er);
@@ -1371,7 +1371,7 @@ namespace narcissus {
 
         TEST(BLE_8, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1382,20 +1382,20 @@ namespace narcissus {
             mem[0x100] = 0x4f;
             mem[0x101] = 0x0a;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->ccr.zero = 0;
             cpu->ccr.negative = 0;
             cpu->ccr.over_flow = 1;
 
-            ASSERT_EQ(cpu::operation::BLE_8, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::BLE_8, cpu->detect_operation());
             ASSERT_EQ(0x102 + 0xa, cpu->cycle());
         }
 
         TEST(MOV_W_ABS_24_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1412,13 +1412,13 @@ namespace narcissus {
             mem[0x105] = 0x20;
 
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->memory[0xfffc20] = 0x12;
             cpu->memory[0xfffc21] = 0x34;
 
-            ASSERT_EQ(cpu::operation::MOV_W_ABS_24_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_W_ABS_24_R, cpu->detect_operation());
             ASSERT_EQ(0x106, cpu->cycle());
 
             ASSERT_EQ(0x1234, cpu->er[0].er);
@@ -1426,7 +1426,7 @@ namespace narcissus {
 
         TEST(MOV_W_R_ABS_24, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1441,12 +1441,12 @@ namespace narcissus {
             mem[0x104] = 0xfc;
             mem[0x105] = 0x20;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].er = 0x1234;
 
-            ASSERT_EQ(cpu::operation::MOV_W_R_ABS_24, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_W_R_ABS_24, cpu->detect_operation());
             ASSERT_EQ(0x106, cpu->cycle());
 
             ASSERT_EQ(0x12, cpu->memory[0xfffc20]);
@@ -1456,7 +1456,7 @@ namespace narcissus {
 
         TEST(EXTU_W, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1467,12 +1467,12 @@ namespace narcissus {
             mem[0x100] = 0x17;
             mem[0x101] = 0x50;
             
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].r = 0x1234;
  
-            ASSERT_EQ(cpu::operation::EXTU_W, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::EXTU_W, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
 
             ASSERT_EQ(cpu->er[0].r, 0x0034);
@@ -1480,7 +1480,7 @@ namespace narcissus {
 
         TEST(CMP_B_R_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1491,13 +1491,13 @@ namespace narcissus {
             mem[0x100] = 0x1c;
             mem[0x101] = 0xab;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].l = 0x12;
             cpu->er[3].l = 0x12;
 
-            ASSERT_EQ(cpu::operation::CMP_B_R_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::CMP_B_R_R, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
 
             //TODO
@@ -1506,7 +1506,7 @@ namespace narcissus {
 
         TEST(BLS_8, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1517,18 +1517,18 @@ namespace narcissus {
             mem[0x100] = 0x43;
             mem[0x101] = 0x06;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->ccr.carry = 1;
 
-            ASSERT_EQ(cpu::operation::BLS_8, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::BLS_8, cpu->detect_operation());
             ASSERT_EQ(0x102 + 6, cpu->cycle());
         }
 
         TEST(BNE_16, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1540,17 +1540,17 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0x9c;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
-            ASSERT_EQ(cpu::operation::BNE_16, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::BNE_16, cpu->detect_operation());
             ASSERT_EQ(0x104 + 0x9c, cpu->cycle());
 
         }
 
         TEST(MOV_L_ABS_24_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1568,15 +1568,15 @@ namespace narcissus {
             mem[0x106] = 0xfc;
             mem[0x107] = 0x20;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->memory[0xfffc20] = 0x12;
             cpu->memory[0xfffc21] = 0x34;
             cpu->memory[0xfffc22] = 0x56;
             cpu->memory[0xfffc23] = 0x78;
 
-            ASSERT_EQ(cpu::operation::MOV_L_ABS_24_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_L_ABS_24_R, cpu->detect_operation());
             ASSERT_EQ(0x108, cpu->cycle());
 
             ASSERT_EQ(0x12345678, cpu->er[0].er);
@@ -1585,7 +1585,7 @@ namespace narcissus {
 
         TEST(BRA_16, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x02;
@@ -1598,16 +1598,16 @@ namespace narcissus {
             mem[0x2a2] = 0xfe;
             mem[0x2a3] = 0xbc;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
-            ASSERT_EQ(cpu::operation::BRA_16, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::BRA_16, cpu->detect_operation());
             ASSERT_EQ(0x160, cpu->cycle());
         }
 
         TEST(MOV_L_R_ABS_24, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1625,12 +1625,12 @@ namespace narcissus {
             mem[0x106] = 0xfc;
             mem[0x107] = 0x40;
             
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].er = 0x12345678;
 
-            ASSERT_EQ(cpu::operation::MOV_L_R_ABS_24, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_L_R_ABS_24, cpu->detect_operation());
             ASSERT_EQ(0x108, cpu->cycle());
 
             ASSERT_EQ(0x12, cpu->memory[0xfffc40]);
@@ -1641,7 +1641,7 @@ namespace narcissus {
 
         TEST(MOV_L_R_R_IND_WITH_DIS_16, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1657,13 +1657,13 @@ namespace narcissus {
             mem[0x104] = 0xff;
             mem[0x105] = 0xfc;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].er = 0x12345678;
             cpu->er[6].er = 0x00ffff00;
 
-            ASSERT_EQ(cpu::operation::MOV_L_R_R_IND_WITH_DIS_16, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_L_R_R_IND_WITH_DIS_16, cpu->detect_operation());
             ASSERT_EQ(0x106, cpu->cycle());
 
             auto addr = 0xffff00 + (std::int16_t)0xfffc;
@@ -1675,7 +1675,7 @@ namespace narcissus {
 
         TEST(MOV_W_R_R_IND_WITH_DIS_16, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1688,13 +1688,13 @@ namespace narcissus {
             mem[0x102] = 0xff;
             mem[0x103] = 0xfa;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].r = 0x1234;
             cpu->er[6].er = 0x00ffff00;
 
-            ASSERT_EQ(cpu::operation::MOV_W_R_R_IND_WITH_DIS_16, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_W_R_R_IND_WITH_DIS_16, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
 
             auto addr = 0x00ffff00 + (std::int16_t)0xfffa;
@@ -1705,7 +1705,7 @@ namespace narcissus {
 
         TEST(MOV_W_R_IND_WITH_DIS_16_R, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1718,8 +1718,8 @@ namespace narcissus {
             mem[0x102] = 0xff;
             mem[0x103] = 0xfa;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             auto addr = 0x00ffff00 + (std::int16_t)0xfffa;
 
@@ -1727,7 +1727,7 @@ namespace narcissus {
             cpu->memory[addr] = 0x12;
             cpu->memory[addr + 1] = 0x34;
 
-            ASSERT_EQ(cpu::operation::MOV_W_R_IND_WITH_DIS_16_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_W_R_IND_WITH_DIS_16_R, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
 
             ASSERT_EQ(cpu->er[3].r, 0x1234);
@@ -1735,7 +1735,7 @@ namespace narcissus {
 
         TEST(BGE_8, 0)
         {
-           std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+           std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1746,19 +1746,19 @@ namespace narcissus {
             mem[0x100] = 0x4c;
             mem[0x101] = 0x0a;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->ccr.negative = 1;
             cpu->ccr.over_flow = 1;
 
-            ASSERT_EQ(cpu::operation::BGE_8, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::BGE_8, cpu->detect_operation());
             ASSERT_EQ(0x102 + 10, cpu->cycle());
 
         }
 
         TEST(BEQ_16, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1771,17 +1771,17 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0xbe;
             
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->ccr.zero = 1;
 
-            ASSERT_EQ(cpu::operation::BEQ_16, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::BEQ_16, cpu->detect_operation());
             ASSERT_EQ(0x104 + 190, cpu->cycle());
         }
 
         TEST(CMP_L_IMM, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1797,19 +1797,19 @@ namespace narcissus {
             mem[0x104] = 0x84;
             mem[0x105] = 0x7f;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[4].er = 0x1e847f;
 
-            ASSERT_EQ(cpu::operation::CMP_L_IMM, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::CMP_L_IMM, cpu->detect_operation());
             ASSERT_EQ(0x106, cpu->cycle());
 
             ASSERT_EQ(0b10000100, cpu->ccr.byte);
         }
 
         TEST(MOV_L_R_IND_WITH_DIS_16_R, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1825,8 +1825,8 @@ namespace narcissus {
             mem[0x104] = 0xff;
             mem[0x105] = 0xfc;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[6].er = 0x00ffff00;
             auto addr = 0x00ffff00 + (std::int16_t)0xfffc;
@@ -1835,14 +1835,14 @@ namespace narcissus {
             cpu->memory[addr + 2] = 0x56;
             cpu->memory[addr + 3] = 0x78;
 
-            ASSERT_EQ(cpu::operation::MOV_L_R_IND_WITH_DIS_16_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_L_R_IND_WITH_DIS_16_R, cpu->detect_operation());
             ASSERT_EQ(0x106, cpu->cycle());
 
             ASSERT_EQ(cpu->er[4].er, 0x12345678);
         }
 
         TEST(XOR_B_R_R, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1853,20 +1853,20 @@ namespace narcissus {
             mem[0x100] = 0x15;
             mem[0x101] = 0x8a;
             
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].l = 0x12;
             cpu->er[2].l = 0x34;
             
-            ASSERT_EQ(cpu::operation::XOR_B_R_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::XOR_B_R_R, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
 
             ASSERT_EQ(0x12 ^ 0x34, cpu->er[2].l);
         }
 
         TEST(BGT_8, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1877,19 +1877,19 @@ namespace narcissus {
             mem[0x100] = 0x4e;
             mem[0x101] = 0x10;
             
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->ccr.zero = 0;
             cpu->ccr.negative = 1;
             cpu->ccr.over_flow = 1;
 
-            ASSERT_EQ(cpu::operation::BGT_8, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::BGT_8, cpu->detect_operation());
             ASSERT_EQ(0x102 + 16, cpu->cycle());
         }
 
         TEST(MOV_L_R_R_IND, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1901,8 +1901,8 @@ namespace narcissus {
             mem[0x102] = 0x69;
             mem[0x103] = 0x23;
             
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
             
             cpu->er[2].er = 0x00000200;
             cpu->memory[0x200] = 0x12;
@@ -1910,14 +1910,14 @@ namespace narcissus {
             cpu->memory[0x202] = 0x56;
             cpu->memory[0x203] = 0x78;
 
-            ASSERT_EQ(cpu::operation::MOV_L_R_R_IND, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_L_R_R_IND, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
 
             ASSERT_EQ(0x12345678, cpu->er[3].er);
         }
 
         TEST(ADD_B_R_R, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1928,20 +1928,20 @@ namespace narcissus {
             mem[0x100] = 0x08;
             mem[0x101] = 0x8b;
             
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].l = 0x12;
             cpu->er[3].l = 0x34;
 
-            ASSERT_EQ(cpu::operation::ADD_B_R_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::ADD_B_R_R, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
 
             ASSERT_EQ(0x12 + 0x34, cpu->er[3].l);
         }
 
         TEST(MOV_L_R_IND_R, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1954,13 +1954,13 @@ namespace narcissus {
             mem[0x102] = 0x69;
             mem[0x103] = 0xa3;
             
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[3].er = 0x12345678;
             cpu->er[2].er = 0x200;
 
-            ASSERT_EQ(cpu::operation::MOV_L_R_IND_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_L_R_IND_R, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
 
             ASSERT_EQ(cpu->memory[0x200], 0x12);
@@ -1970,7 +1970,7 @@ namespace narcissus {
         }
 
         TEST(CMP_L_R_R, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -1981,13 +1981,13 @@ namespace narcissus {
             mem[0x100] = 0x1f;
             mem[0x101] = 0xc5;
             
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[5].er = 0x12345678;
             cpu->er[4].er = 0x87654321;
 
-            ASSERT_EQ(cpu::operation::CMP_L_R_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::CMP_L_R_R, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
 
 //             std::cout << std::hex << (std::uint16_t)cpu->ccr.byte << std::endl;
@@ -1996,7 +1996,7 @@ namespace narcissus {
 
 
         TEST(XOR_B_IMM_R, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2007,18 +2007,18 @@ namespace narcissus {
             mem[0x100] = 0xda;
             mem[0x101] = 0x07;
             
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].l = 0x8;
 
-            ASSERT_EQ(cpu::operation::XOR_B_IMM_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::XOR_B_IMM_R, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
             ASSERT_EQ(0b10000000, (std::uint8_t)cpu->ccr.byte);
         }
 
         TEST(DEC_W_2, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2029,19 +2029,19 @@ namespace narcissus {
             mem[0x100] = 0x1b;
             mem[0x101] = 0xd2;
             
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].r = 0x1112;
 
-            ASSERT_EQ(cpu::operation::DEC_W_2, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::DEC_W_2, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
 
             ASSERT_EQ(0x1110, cpu->er[2].r);
         }
 
         TEST(DEC_L_1, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2051,19 +2051,19 @@ namespace narcissus {
             mem[0x100] = 0x1b;
             mem[0x101] = 0x72;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].er = 0x12345678;
 
-            ASSERT_EQ(cpu::operation::DEC_L_1, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::DEC_L_1, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
 
             ASSERT_EQ(0x12345678 - 1, cpu->er[2].er);
         }
 
         TEST(ADD_W_IMM_R, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2076,19 +2076,19 @@ namespace narcissus {
             mem[0x102] = 0xff;
             mem[0x103] = 0xd2;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].r = 0x1234;
 
-            ASSERT_EQ(cpu::operation::ADD_W_IMM_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::ADD_W_IMM_R, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
 
             ASSERT_EQ(0x1234 + (std::int16_t)0xffd2, cpu->er[2].r);
         }
 
         TEST(SHAR_W, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2099,19 +2099,19 @@ namespace narcissus {
             mem[0x100] = 0x11;
             mem[0x101] = 0x92;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].r = 0x1234;
 
-            ASSERT_EQ(cpu::operation::SHAR_W, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::SHAR_W, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
 
             ASSERT_EQ(0x1234 >> 1, cpu->er[2].r);
         }
 
         TEST(CMP_W_R_R, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2122,17 +2122,17 @@ namespace narcissus {
             mem[0x100] = 0x1d;
             mem[0x101] = 0x23;
             
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
-            ASSERT_EQ(cpu::operation::CMP_W_R_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::CMP_W_R_R, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
 
             ASSERT_EQ(0b10000100, cpu->ccr.byte);
         }
 
         TEST(BGE_16, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2144,18 +2144,18 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0xe2;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->ccr.negative = 0;
             cpu->ccr.over_flow = 0;
 
-            ASSERT_EQ(cpu::operation::BGE_16, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::BGE_16, cpu->detect_operation());
             ASSERT_EQ(0x104 + 226, cpu->cycle());
         }
 
         TEST(MULXS_W_R_R, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2168,20 +2168,20 @@ namespace narcissus {
             mem[0x102] = 0x52;
             mem[0x103] = 0x32;
             
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].er = 0x12345678;
             cpu->er[3].r = 0x1234;
 
-            ASSERT_EQ(cpu::operation::MULXS_W_R_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MULXS_W_R_R, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
 
             ASSERT_EQ((std::int16_t)0x5678 * (std::int16_t)0x1234, cpu->er[2].er);
         }
 
         TEST(JSR_R, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2191,17 +2191,17 @@ namespace narcissus {
             //jsr @er4
             mem[0x100] = 0x5d;
             mem[0x101] = 0x40;
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[4].er = 0x400;
 
-            ASSERT_EQ(cpu::operation::JSR_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::JSR_R, cpu->detect_operation());
             ASSERT_EQ(0x400, cpu->cycle());
         }
 
         TEST(ORC, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2212,15 +2212,15 @@ namespace narcissus {
             mem[0x100] = 0x04;
             mem[0x101] = 0xc0;
             
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
-            ASSERT_EQ(cpu::operation::ORC, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::ORC, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
         }
 
         TEST(MOV_L_R_R_IND_WITH_DIS_24, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2241,13 +2241,13 @@ namespace narcissus {
             mem[0x108] = 0xbf;
             mem[0x109] = 0x20;
             
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[1].er = 0x12345678; // src
             cpu->er[0].er = 0x00000200; // dest
 
-            ASSERT_EQ(cpu::operation::MOV_L_R_R_IND_WITH_DIS_24, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::MOV_L_R_R_IND_WITH_DIS_24, cpu->detect_operation());
             ASSERT_EQ(0x10a, cpu->cycle());
 
             auto addr = 0x200 + (std::int32_t)0xffbf20;
@@ -2258,7 +2258,7 @@ namespace narcissus {
         }
 
         TEST(CMP_W_IMM, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2271,19 +2271,19 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0x02;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[4].er = 0x12345678;
 
-            ASSERT_EQ(cpu::operation::CMP_W_IMM, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::CMP_W_IMM, cpu->detect_operation());
             ASSERT_EQ(0x104, cpu->cycle());
 
             ASSERT_EQ(0b10000000, cpu->ccr.byte);
         }
 
         TEST(OR_B_IMM_R, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2294,19 +2294,19 @@ namespace narcissus {
             mem[0x100] = 0xca;
             mem[0x101] = 0x40;
 
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].l = 0x40;
 
-            ASSERT_EQ(cpu::operation::OR_B_IMM_R, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::OR_B_IMM_R, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
 
             ASSERT_EQ(0b10000000, cpu->ccr.byte);
         }
 
         TEST(ANDC, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2317,15 +2317,15 @@ namespace narcissus {
             mem[0x100] = 0x06;
             mem[0x101] = 0x3f;
             
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
-            ASSERT_EQ(cpu::operation::ANDC, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::ANDC, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
         }
 
         TEST(SLEEP, 0){
-            std::array<std::uint8_t, (std::uint32_t)cpu::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2336,10 +2336,10 @@ namespace narcissus {
             mem[0x100] = 0x01;
             mem[0x101] = 0x80;
             
-            auto cpu = cpu::h8_300::create(move(mem));
-            cpu->interrupt(cpu::interrupts::reset);
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
 
-            ASSERT_EQ(cpu::operation::SLEEP, cpu->detect_operation());
+            ASSERT_EQ(h8_3069f::operation::SLEEP, cpu->detect_operation());
             ASSERT_EQ(0x102, cpu->cycle());
         }
 

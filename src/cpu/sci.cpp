@@ -7,7 +7,7 @@
 #include <cassert>
 
 namespace narcissus {
-    namespace cpu{
+    namespace h8_3069f{
 
         sci::sci(std::shared_ptr<std::condition_variable> cv, 
                 std::shared_ptr<bool> is_s)
@@ -65,9 +65,9 @@ namespace narcissus {
             }
         }
 
-        auto sci::before_run(std::shared_ptr<h8_300> c) -> void
+        auto sci::before_run(std::shared_ptr<cpu> c) -> void
         {
-//             cpu = c;
+//            controller = c; 
         }
 
         auto sci::work() -> void
@@ -95,5 +95,5 @@ namespace narcissus {
         }
 
 
-    } // namespace sci
+    } // namespace h8_3069f
 } // namespace narcissus

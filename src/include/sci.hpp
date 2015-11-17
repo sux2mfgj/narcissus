@@ -9,7 +9,7 @@
 
 namespace narcissus {
 
-    namespace cpu{
+    namespace h8_3069f{
 
         enum class ssr_bits : std::uint8_t
         {
@@ -34,7 +34,7 @@ namespace narcissus {
             scmr = 1 << 6,
         };
 
-        class h8_300;
+        class cpu;
 
         class sci {
 
@@ -45,7 +45,7 @@ namespace narcissus {
 
             public:
                 auto operator[](std::uint32_t address) -> std::uint8_t&;
-                auto before_run(std::shared_ptr<h8_300> c) -> void;
+                auto before_run(std::shared_ptr<cpu> c) -> void;
 
             private:
                 std::uint8_t rsr;
@@ -65,7 +65,7 @@ namespace narcissus {
 
                 std::shared_ptr<std::condition_variable> c_variable_ptr;
                 std::shared_ptr<bool> is_sleep;
-                std::weak_ptr<h8_300> cpu;
+                std::weak_ptr<cpu> controller;
 
             private:
                 auto work(void) -> void;
