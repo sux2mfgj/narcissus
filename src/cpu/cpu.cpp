@@ -7,9 +7,18 @@ namespace narcissus {
 
         h8_300::h8_300(std::array<std::uint8_t, ROM_SIZE>&& mem)
             : er(), sp(), ccr(), pc(), is_sleep(std::make_shared<bool>(false)),
-            c_variable_ptr(std::make_shared<std::condition_variable>()), 
-            memory(move(mem), c_variable_ptr, is_sleep)
+            c_variable_ptr(
+                    std::make_shared<std::condition_variable>()), 
+                memory(move(mem), c_variable_ptr, shared_from_this(), is_sleep)
         {}
+
+        std::shared_ptr<h8_300> h8_300::create(
+                std::array<std::uint8_t, ROM_SIZE>&& mem)
+        {
+            auto p = std::make_shared<create_helper>(std::move(mem));
+            p->shared_from_this();
+            return std::move(p);
+        }
 
         auto h8_300::interrupt(interrupts int_num) -> void
         {

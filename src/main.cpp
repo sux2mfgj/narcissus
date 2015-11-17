@@ -29,10 +29,11 @@ int main(int argc, char const* argv[])
     }
     file.close();
 
-    auto cpu = std::make_shared<cpu::h8_300>(move(mem));
-    cpu::cpu_debuger debug(cpu);
-    cpu->interrupt(cpu::interrupts::reset);
+    auto cpu = cpu::h8_300::create(move(mem));
+//     auto cpu = std::make_shared<cpu::h8_300>(move(mem));
+//     cpu::cpu_debuger debug(cpu);
+//     cpu->interrupt(cpu::interrupts::reset);
 
-    cpu->run();
+//     cpu->run();
     return 0;
 }

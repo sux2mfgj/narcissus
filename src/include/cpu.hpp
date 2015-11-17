@@ -285,6 +285,7 @@ namespace narcissus {
         };
 
         class h8_300 
+            : public std::enable_shared_from_this<h8_300>
         {
             enum class value_place : std::uint8_t
             {
@@ -292,11 +293,15 @@ namespace narcissus {
                 low,
             };
 
+            private:
+                class create_helper;
+
             public:
-                h8_300(std::array<std::uint8_t, ROM_SIZE>&& mem);
+                static std::shared_ptr<h8_300> create(std::array<std::uint8_t, ROM_SIZE>&& mem);
                 virtual ~h8_300() = default;;
 
             private:
+                h8_300(std::array<std::uint8_t, ROM_SIZE>&& mem);
                 h8_300(h8_300 const&) = delete;
                 h8_300(h8_300&&) = delete;
                 h8_300& operator =(h8_300 const&) = delete;
@@ -454,5 +459,19 @@ namespace narcissus {
                 FRIEND_TEST(SLEEP, 0);
         };
 
+        class h8_300::create_helper : public h8_300
+        {
+            public:
+//                 h8_300 h8;
+
+                create_helper(std::array<std::uint8_t, ROM_SIZE>&& mem)
+                    : h8_300(std::move(mem))
+                {}
+
+//                 template<class Args> 
+//                 explicit create_helper(Args&& args)
+//                     : h8(std::forward<Args>(args))
+//                 {}
+        };
     }  // namespace cpu
 }  // namespace narcissus
