@@ -3,12 +3,13 @@
 #include <cpu.hpp>
 #include <cassert>
 
-
 namespace narcissus {
     namespace cpu {
 
         h8_300::h8_300(std::array<std::uint8_t, ROM_SIZE>&& mem)
-            : er(), sp(), ccr(), pc(), memory(move(mem))
+            : er(), sp(), ccr(), pc(), is_sleep(std::make_shared<bool>(false)),
+            c_variable_ptr(std::make_shared<std::condition_variable>()), 
+            memory(move(mem), c_variable_ptr, is_sleep)
         {}
 
         auto h8_300::reset_exception() -> void
@@ -20,6 +21,37 @@ namespace narcissus {
 
             ccr.byte = 0b00000000;
             ccr.interrupt_mask = 1;
+        }
+
+        auto h8_300::run() -> void
+        {
+            std::uint32_t before_pc;
+            auto limit = 0;
+
+            std::clog << "start" << std::endl;
+
+            while (true) {
+                auto pc = cycle();
+                std::clog << std::hex << "pc: 0x" << pc << std::endl;
+
+                if(before_pc != pc){
+                    before_pc = pc;
+                    limit = 0;            
+                }
+                else {
+                    if(limit++ > 10)
+                    {
+                        std::clog << "finish" << std::endl;
+                        break;
+                    }
+                }
+
+                if(*is_sleep)
+                {
+                    std::unique_lock<std::mutex> lock(cv_mutex);
+                    c_variable_ptr->wait(lock, [this]{return !*is_sleep;});
+                }
+            }
         }
 
         auto h8_300::cycle() -> std::uint32_t
@@ -1201,6 +1233,7 @@ namespace narcissus {
                 {
                     //TODO
                     //slepp
+                    *is_sleep = true;
 
                     pc += 2;
                     break;

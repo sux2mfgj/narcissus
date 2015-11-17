@@ -9,10 +9,13 @@
 namespace narcissus {
     namespace sci {
 
-        sci::sci()
+        sci::sci(std::shared_ptr<std::condition_variable> cv, 
+                std::shared_ptr<bool> is_s)
             : rsr(), rdr(), tsr(), tdr(), smr(), scr(), 
-            ssr((std::uint8_t)ssr_bits::rdrf), brr(), scmr(), access_flags(0)
+            ssr((std::uint8_t)ssr_bits::rdrf), brr(), scmr(), access_flags(0),
+            is_sleep(is_s)
         {
+            c_variable_ptr = cv;
             read_thread = std::thread(
                     [&]{
                         while (true) {
@@ -20,7 +23,8 @@ namespace narcissus {
                             std::cin.read(&buf, sizeof(buf));
                             read_buffer.push((std::uint8_t)buf);
                             ssr |= (std::uint8_t)ssr_bits::rdrf;
-//                             std::clog << "in now: " << (std::uint8_t)buf << std::endl;
+                            *is_sleep = false;
+                            c_variable_ptr->notify_all();
                         }
                     });
             read_thread.detach();

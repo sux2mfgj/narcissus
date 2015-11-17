@@ -7,10 +7,12 @@
 namespace narcissus {
     namespace cpu {
 
-        mcu::mcu(std::array<std::uint8_t, ROM_SIZE>&& init_rom) 
+        mcu::mcu(std::array<std::uint8_t, ROM_SIZE>&& init_rom,
+                std::shared_ptr<std::condition_variable> c_variable_ptr,
+                std::shared_ptr<bool> is_sleep) 
             : rom(move(init_rom)), ram() 
         {
-            sci_1 = std::make_shared<sci::sci>();
+            sci_1 = std::make_shared<sci::sci>(c_variable_ptr, is_sleep);
         }
 
         auto mcu::operator[] (std::uint32_t address)

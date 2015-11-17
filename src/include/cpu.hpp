@@ -2,6 +2,9 @@
 
 #include <cstdint>
 #include <array>
+#include <condition_variable>
+#include <thread>
+#include <memory>
 
 #include <gtest/gtest.h>
 
@@ -274,13 +277,19 @@ namespace narcissus {
                 conditional_code_register ccr;
                 std::uint32_t pc;
 
+                std::shared_ptr<bool> is_sleep;
+                std::shared_ptr<std::condition_variable> c_variable_ptr;
                 mcu memory;
 
+                std::mutex cv_mutex;
+
+
             public:
-                auto cycle(void) -> std::uint32_t;
+                auto run(void) -> void;
                 auto reset_exception(void) -> void;
 
             private:
+                auto cycle(void) -> std::uint32_t;
                 auto detect_operation(void) -> operation;
 
                 //for ccr

@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <queue>
 #include <thread>
+#include <condition_variable>
+#include <memory>
 
 namespace narcissus {
     namespace sci {
@@ -34,7 +36,8 @@ namespace narcissus {
         class sci {
             
             public:
-                sci();
+                sci(std::shared_ptr<std::condition_variable> cv, 
+                        std::shared_ptr<bool> is_s);
                 virtual ~sci();
                 auto operator[](std::uint32_t address) -> std::uint8_t&;
 
@@ -53,6 +56,9 @@ namespace narcissus {
 
                 std::thread read_thread;
                 std::queue<std::uint8_t> read_buffer;
+
+                std::shared_ptr<std::condition_variable> c_variable_ptr;
+                std::shared_ptr<bool> is_sleep;
 
             private:
                 auto work(void) -> void;

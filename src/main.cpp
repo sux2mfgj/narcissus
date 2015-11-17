@@ -37,30 +37,25 @@ int main(int argc, char const* argv[])
     cpu::cpu_debuger debug(cpu);
     cpu->reset_exception();
 
-    std::clog << "start" << std::endl;
+    cpu->run();
+//     auto before_pc = 0;
+//     auto stop_count = 0;
 
-    auto before_pc = 0;
-    auto stop_count = 0;
-
-    while (true) {
-        auto pc = cpu->cycle();
-        std::clog << std::hex << "pc: 0x" << pc << std::endl;
-//         if(pc == 0x244)
-//         {
-//             std::clog<< debug << std::endl;
+//     while (true) {
+//         auto pc = cpu->cycle();
+//         std::clog << std::hex << "pc: 0x" << pc << std::endl;
+//         if(before_pc != pc){
+//             before_pc = pc;
+//             stop_count = 0;            
 //         }
-        if(before_pc != pc){
-            before_pc = pc;
-            stop_count = 0;            
-        }
-        else {
-            if(stop_count++ > 10)
-            {
-                std::clog << "finish" << std::endl;
-                break;
-            }
-        }
-    }
-    
+//         else {
+//             if(stop_count++ > 10)
+//             {
+//                 std::clog << "finish" << std::endl;
+//                 break;
+//             }
+//         }
+//     }
+//     
     return 0;
 }
