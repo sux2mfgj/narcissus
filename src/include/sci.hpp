@@ -7,8 +7,11 @@
 #include <condition_variable>
 #include <memory>
 
+// #include <cpu.hpp>
+
 namespace narcissus {
-    namespace sci {
+
+    namespace cpu{
 
         enum class ssr_bits : std::uint8_t
         {
@@ -33,13 +36,18 @@ namespace narcissus {
             scmr = 1 << 6,
         };
 
+        class h8_300;
+
         class sci {
-            
+
             public:
                 sci(std::shared_ptr<std::condition_variable> cv, 
                         std::shared_ptr<bool> is_s);
                 virtual ~sci();
+
+            public:
                 auto operator[](std::uint32_t address) -> std::uint8_t&;
+                auto before_run(std::shared_ptr<h8_300> c) -> void;
 
             private:
                 std::uint8_t rsr;
@@ -59,6 +67,7 @@ namespace narcissus {
 
                 std::shared_ptr<std::condition_variable> c_variable_ptr;
                 std::shared_ptr<bool> is_sleep;
+                std::weak_ptr<h8_300> cpu;
 
             private:
                 auto work(void) -> void;
@@ -69,6 +78,5 @@ namespace narcissus {
                 FRIEND_TEST(PUTC_SERIAL, 0);
 
         };
-
     } // namespace sci
 } // namespace narcissus

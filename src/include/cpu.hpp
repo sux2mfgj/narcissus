@@ -297,11 +297,12 @@ namespace narcissus {
                 class create_helper;
 
             public:
-                static std::shared_ptr<h8_300> create(std::array<std::uint8_t, ROM_SIZE>&& mem);
+                static std::shared_ptr<h8_300> create(std::array<std::uint8_t, 
+                        (std::uint32_t)mem_info::rom_size>&& mem);
                 virtual ~h8_300() = default;;
 
             private:
-                h8_300(std::array<std::uint8_t, ROM_SIZE>&& mem);
+                h8_300(std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size>&& mem);
                 h8_300(h8_300 const&) = delete;
                 h8_300(h8_300&&) = delete;
                 h8_300& operator =(h8_300 const&) = delete;
@@ -464,7 +465,7 @@ namespace narcissus {
             public:
 //                 h8_300 h8;
 
-                create_helper(std::array<std::uint8_t, ROM_SIZE>&& mem)
+                create_helper(std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size>&& mem)
                     : h8_300(std::move(mem))
                 {}
 

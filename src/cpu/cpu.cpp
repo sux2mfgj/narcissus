@@ -5,18 +5,18 @@
 namespace narcissus {
     namespace cpu {
 
-        h8_300::h8_300(std::array<std::uint8_t, ROM_SIZE>&& mem)
+        h8_300::h8_300(std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size>&& mem)
             : er(), sp(), ccr(), pc(), is_sleep(std::make_shared<bool>(false)),
             c_variable_ptr(
                     std::make_shared<std::condition_variable>()), 
-                memory(move(mem), c_variable_ptr, shared_from_this(), is_sleep)
+                memory(move(mem), c_variable_ptr, is_sleep)
         {}
 
         std::shared_ptr<h8_300> h8_300::create(
-                std::array<std::uint8_t, ROM_SIZE>&& mem)
+                std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size>&& mem)
         {
             auto p = std::make_shared<create_helper>(std::move(mem));
-            p->shared_from_this();
+//             p->shared_from_this();
             return std::move(p);
         }
 
@@ -106,6 +106,8 @@ namespace narcissus {
         {
             std::uint32_t before_pc;
             auto limit = 0;
+
+            memory.before_run(shared_from_this());
 
             std::clog << "start" << std::endl;
 
