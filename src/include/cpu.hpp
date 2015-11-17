@@ -463,16 +463,11 @@ namespace narcissus {
         class h8_300::create_helper : public h8_300
         {
             public:
-//                 h8_300 h8;
 
                 create_helper(std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size>&& mem)
                     : h8_300(std::move(mem))
                 {}
-
-//                 template<class Args> 
-//                 explicit create_helper(Args&& args)
-//                     : h8(std::forward<Args>(args))
-//                 {}
         };
+
     }  // namespace cpu
 }  // namespace narcissus

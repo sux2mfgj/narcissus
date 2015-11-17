@@ -7,8 +7,6 @@
 #include <condition_variable>
 #include <memory>
 
-// #include <cpu.hpp>
-
 namespace narcissus {
 
     namespace cpu{
@@ -71,11 +69,6 @@ namespace narcissus {
 
             private:
                 auto work(void) -> void;
-
-            // for test
-            private:
-                FRIEND_TEST(ACCESS_FLAG, 0);
-                FRIEND_TEST(PUTC_SERIAL, 0);
 
         };
     } // namespace sci

@@ -7,7 +7,6 @@
 #include <condition_variable>
 #include <mutex>
 
-// #include <cpu.hpp>
 #include <sci.hpp>
 
 namespace narcissus {

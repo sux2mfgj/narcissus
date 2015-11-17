@@ -35,6 +35,8 @@ namespace narcissus {
             //add MMI/O
             //TODO
             //consider about sci0 and sci2.
+            
+            //for sci1
             if(address >= (std::uint32_t)mem_info::sci1_base_addr 
                     && address < (std::uint32_t)mem_info::sci2_base_addr)
             {
