@@ -16,7 +16,6 @@ namespace narcissus {
                 std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size>&& mem)
         {
             auto p = std::make_shared<create_helper>(std::move(mem));
-//             p->shared_from_this();
             return std::move(p);
         }
 
@@ -139,98 +138,39 @@ namespace narcissus {
         {
 
             switch (detect_operation()) {
-                //                 case ADD_B_IMM: {
-                //                     auto rd = memory[pc] & 0x0f;
-                //                     auto imm = memory[pc + 1];
-                //                     if (!register_write_immediate(rd, imm,
-                //                     register_size::BYTE)) {
-                //                         return false;
-                //                     }
-
-                //                     pc += 2;
-                //                     break;
-                //                 }
 
                 case operation::ADD_B_R_R:
-                    {
-                        auto rs = read_register_fields(pc + 1, value_place::high, false);
-                        auto rd = read_register_fields(pc + 1, value_place::low, false);
+                {
+                    auto rs = read_register_fields(pc + 1, value_place::high, false);
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
 
-                        auto rs_value = read_register(rs, register_size::BYTE);
-                        auto rd_value = read_register(rd, register_size::BYTE);
+                    auto rs_value = read_register(rs, register_size::BYTE);
+                    auto rd_value = read_register(rd, register_size::BYTE);
 
-                        auto result = rs_value + rd_value;
-                        write_register(rd, result, register_size::BYTE);
+                    auto result = rs_value + rd_value;
+                    write_register(rd, result, register_size::BYTE);
 
-                        update_ccr_sub(rd_value, rs_value, result, register_size::BYTE);
+                    update_ccr_sub(rd_value, rs_value, result, register_size::BYTE);
 
-                        pc += 2;
-                        break;
-                    }
+                    pc += 2;
+                    break;
+                }
+
                 case operation::ADD_W_IMM_R:
-                    {
-                        auto rd = read_register_fields(pc + 1, value_place::low, false);
-                        auto imm = (std::int16_t)read_immediate(pc + 2, 2);
+                {
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
+                    auto imm = (std::int16_t)read_immediate(pc + 2, 2);
 
-                        auto rd_value = (std::int16_t)read_register(rd, register_size::WORD);
-                        auto result = rd_value + imm;
+                    auto rd_value = (std::int16_t)read_register(rd, register_size::WORD);
+                    auto result = rd_value + imm;
 
-                        write_register(rd, result, register_size::WORD);
+                    write_register(rd, result, register_size::WORD);
 
-                        update_ccr_sub(rd_value, imm, result, register_size::WORD);
-                        
-                        pc += 4;
-                        break;
-                    }
-
-                //                 case ADD_W_IMM:
-                //                 {
-                //                     auto rd = (memory[pc + 1] & 0xf);
-                //                     std::uint16_t imm = std::uint16_t(memory[pc + 2])
-                //                     << 8;
-                //                     imm |= std::uint16_t(memory[pc + 3]);
-
-                //                     if(!register_write_immediate(rd, imm,
-                //                     register_size::WORD))
-                //                     {
-                //                         return false;
-                //                     }
-
-                //                     pc += 4;
-                //                     break;
-                //                 }
-
-                //                 case ADD_W_R_R:
-                //                 {
-                //                     auto rs = (memory[pc + 1] & 0xf0) >> 4;
-                //                     auto rd = (memory[pc + 1] & 0x0f);
-
-                //                     if(!register_write_register(rd, rs,
-                //                     register_size::WORD)){
-                //                         return false;
-                //                     }
-
-                //                     pc += 2;
-
-                //                     break;
-                //                 }
-
-                //                 case ADD_L_IMM:
-                //                 {
-                //                     std::uint8_t erd = memory[pc + 1] & 0x7;
-                //                     auto imm = std::uint32_t(memory[pc + 2]) << 24;
-                //                     imm |= std::uint32_t(memory[pc + 3]) << 16;
-                //                     imm |= std::uint32_t(memory[pc + 4]) << 8;
-                //                     imm |= std::uint32_t(memory[pc + 5]);
-
-                //                     if(!register_write_immediate(std::uint8_t(erd),
-                //                     imm, register_size::LONG)){
-                //                         return false;
-                //                     }
-
-                //                     pc += 6;
-                //                     break;
-                //                 }
+                    update_ccr_sub(rd_value, imm, result, register_size::WORD);
+                    
+                    pc += 4;
+                    break;
+                }
 
                 case operation::ADD_L_R_R:
                 {
@@ -454,22 +394,6 @@ namespace narcissus {
 
                     break;
                 }
-
-                    //                 case operation::MOV_B_R_IND:
-                    //                 {
-                    //                     auto erd = (memory[pc + 1] & 0x70) >> 4;
-                    //                     auto rs = memory[pc + 1] & 0x8;
-
-                    //                     auto src_value = er[rs & 0x7].read(rs,
-                    //                     register_size::BYTE);
-                    //                     auto dest_value = er[erd & 0x7].read(erd,
-                    //                     register_size::LONG);
-                    //                     memory[dest_value] = src_value;
-                    //
-                    //                     update_ccr_mov(src_value, register_size::BYTE);
-                    //                     pc += 2;
-                    //                     break;
-                    //                 }
 
                 case operation::MOV_B_R_IND_WITH_DIS_16_R: 
                 {
@@ -1320,8 +1244,8 @@ namespace narcissus {
                     break;
                 }
 
-
                 case operation::INVALID:
+                {
                       std::clog << "INVALID opecode: " << std::hex << "0x" << std::flush;
                       std::clog << std::setw(2) << std::setfill('0')
                           << (std::uint16_t)(memory[pc]) << std::flush;
@@ -1332,6 +1256,7 @@ namespace narcissus {
                           << std::setfill('0') << (std::uint32_t)pc << std::endl;
 
                     assert(false);
+                }
 
                 default:
                     std::cout << "implement yet" << std::endl;
@@ -1973,452 +1898,6 @@ namespace narcissus {
                 default:
                     return operation::INVALID;
             }
-
-//             switch (ah) {
-//                 case 0:
-//                     switch (al) {
-//                         case 1:
-//                             switch (bh) {
-//                                 case 0:
-//                                     switch (bl) {
-//                                         case 0:
-//                                             switch (ch) {
-//                                                 case 6:
-//                                                 {
-//                                                     auto dh = memory[pc + 3] >> 4;
-//                                                     auto dl = memory[pc + 3] & 0xf;
-//                                                     auto e = memory[pc + 4];
-//                                                     switch (cl) {
-//                                                         case 9:
-//                                                         {
-//                                                             if(!(dh&0x8) && !(dl&0x8))
-//                                                             {
-//                                                                 return operation::MOV_L_R_R_IND;
-//                                                             }
-//                                                             if((dh&0x8) && !(dl&0x8))
-//                                                             {
-//                                                                 return operation::MOV_L_R_IND_R;
-//                                                             }
-
-//                                                             return operation::INVALID;
-//                                                         }
-
-//                                                         case 0xb:
-//                                                         {
-//                                                             if((dh == 2) && !(dl & 0x8) && e == 0)
-//                                                             {
-//                                                                 return operation::MOV_L_ABS_24_R; 
-//                                                             }
-
-//                                                             if((dh == 0xa) && !(dl & 0x8) && e == 0)
-//                                                             {
-//                                                                 return operation::MOV_L_R_ABS_24;
-//                                                             }
-
-//                                                             return operation::INVALID;
-//                                                         }
-//                                                         case 0xd: 
-//                                                         {
-//                                                             if ((dh & 0x8) && !(dl &0x8)) {
-//                                                                 return operation::MOV_L_R_R_IND_PRE_DEC;
-//                                                             }
-//                                                             return operation::
-//                                                                 MOV_L_R_IND_POST_INC_R;
-//                                                         }
-
-//                                                         case 0xf:
-//                                                         {
-//                                                             if((dh & 0x8) && !(dl & 0x8))
-//                                                             {
-//                                                                 return operation::MOV_L_R_R_IND_WITH_DIS_16;
-//                                                             }
-
-//                                                             if(!(dh & 0x8) && !(dl & 0x8)){
-//                                                                 return operation::MOV_L_R_IND_WITH_DIS_16_R;
-//                                                             }
-//                                                             return operation::INVALID;
-
-//                                                         }
-
-//                                                     default:
-//                                                             return operation::INVALID;
-//                                                     }
-//                                                 }
-//                                                 case 7:
-//                                                     switch (cl) {
-//                                                         case 8: {
-//                                                                     auto t =
-//                                                                         memory[pc + 5] >> 4;
-//                                                                     switch (t) {
-//                                                                         case 0x2:
-//                                                                             return operation::
-//                                                                                 MOV_L_R_IND_WITH_DIS_24_R;
-//                                                                         default:
-//                                                                             return operation::INVALID;
-//                                                                     }
-//                                                                 }
-//                                                         default:
-//                                                                 return operation::INVALID;
-//                                                     }
-//                                                 default:
-//                                                     return operation::INVALID;
-//                                             }
-//                                         default:
-//                                             return operation::INVALID;
-//                                     }
-//                                 default:
-//                                     return operation::INVALID;
-//                             }
-//                         case 8:
-//                             return operation::ADD_B_R_R;
-//                         case 9:
-//                                                         return operation::ADD_W_R_R;
-//                             return operation::INVALID;
-//                         case 0xa:
-//                             if((bh & 0x8) && !(bl & 0x8)){
-//                                 return operation::ADD_L_R_R;
-//                             }
-//                             switch (bh) {
-//                                 default:
-//                                     return operation::INVALID;
-//                             }
-
-//                         case 0xb:
-//                             switch (bh) {
-//                                 case 0x0:
-//                                     return operation::ADDS_1;
-//                                 case 0x8:
-//                                     return operation::ADDS_2;
-//                                     return operation::INVALID;
-//                                 case 0x9:
-//                                     return operation::ADDS_4;
-
-//                                 default:
-//                                     return operation::INVALID;
-//                             }
-
-//                         case 0xc:
-//                             return operation::MOV_B_R_R;
-
-//                         case 0xd:
-//                             return operation::MOV_W_R_R;
-
-//                         case 0xf:
-//                             return operation::MOV_L_R_R;
-
-//                         default:
-//                             return operation::INVALID;
-//                     }
-//                 case 1:
-//                     switch (al) {
-//                         case 0:
-//                             switch (bh) {
-//                                 case 3:
-//                                     return operation::SHLL_L;
-//                                 default:
-//                                     return operation::INVALID;
-//                             }
-//                         case 1:
-//                             switch (bh) {
-//                                 case 3:
-//                                 {
-//                                     auto t = bl & 0x8;
-//                                     if(t == 0x0){
-//                                         return operation::SHLR_L;
-//                                     }
-//                                     return operation::INVALID;
-//                                 }
-//                                 default:
-//                                     return operation::INVALID;
-//                             }
-
-//                         case 5:
-//                             return operation::XOR_B_R_R;
-
-//                         case 7:
-//                             switch (bh) {
-//                                 case 5:
-//                                     return operation::EXTU_W;
-
-//                                 case 0xf:
-//                                     return operation::EXTS_L;
-
-//                                 default:
-//                                     return operation::INVALID;
-//                             }
-//                         case 8:
-//                             return operation::SUB_B_R_R;
-
-//                         case 9:
-//                             return operation::SUB_W_R_R;
-
-//                         case 0xa:
-//                             if((bh >> 3) & 0x1){
-//                                 return operation::SUB_L_R_R;
-//                             }
-//                             return operation::INVALID;
-
-//                         case 0xb:
-//                             switch (bh) {
-//                                 case 0:
-//                                     return operation::SUBS_1;
-//                                 case 5:
-//                                     return operation::DEC_W_1;
-//                                 case 8:
-//                                     return operation::SUBS_2;
-//                                     return operation::INVALID;
-//                                 case 9:
-//                                     return operation::SUBS_4;
-//                                 case 0xd:
-//                                     return operation::DEC_W_2;
-
-//                                 default:
-//                                     return operation::INVALID;
-//                             }
-
-//                         case 0xc:
-//                             return operation::CMP_B_R_R;
-
-//                         case 0xf:
-//                             if((bh & 0x8) && !(bl & 0x8)){
-//                                 return operation::CMP_L_R_R;
-//                             }
-
-//                         default:
-//                             return operation::INVALID;
-//                     }
-
-//                 case 4:
-//                     switch (al) {
-//                         case 0:
-//                             return operation::BRA_8;
-
-//                         case 3:
-//                             return operation::BLS_8;
-
-//                         case 6:
-//                             return operation::BNE_8;
-
-//                         case 7:
-//                             return operation::BEQ_8;
-
-//                         case 0xc:
-//                             return operation::BGE_8;
-
-//                         case 0xe:
-//                             return operation::BGT_8;
-
-//                         case 0xf:
-//                             return operation::BLE_8;
-
-//                         default:
-//                             return operation::INVALID;
-//                     }
-
-//                 case 5:
-//                     switch (al) {
-//                         case 0x4:
-//                             switch (bh) {
-//                                 case 0x7:
-//                                     switch (bl) {
-//                                         case 0x0:
-//                                             return operation::RTS;
-
-//                                         default:
-//                                             return operation::INVALID;
-//                                     }
-//                                 default:
-//                                     return operation::INVALID;
-//                             }
-
-//                         case 8:
-//                             switch (bh) {
-//                                 case 0:
-//                                     switch (bl) {
-//                                         case 0:
-//                                             return operation::BRA_16;
-
-//                                         default:
-//                                             return operation::INVALID;
-//                                     }
-//                                 case 6:
-//                                     switch (bl) {
-//                                         case 0:
-//                                             return operation::BNE_16;
-//                                         default:
-//                                             return operation::INVALID;
-//                                     }
-//                                 case 7:
-//                                     switch (bl) {
-//                                         case 0:
-//                                             return operation::BEQ_16;
-//                                         default:
-//                                             return operation::INVALID;
-//                                     }
-//                                 default:
-//                                     return operation::INVALID;
-//                             }
-
-//                         case 0xe:
-//                             return operation::JSR_ABS;
-
-//                         default:
-//                             return operation::INVALID;
-//                     }
-
-//                 case 6:
-//                     switch (al) {
-//                         case 0x8:
-//                             if((bh & 0x8) == 0x8){
-//                                 return operation::MOV_B_R_R_IND;
-//                             }
-//                             else {
-//                                 return operation::MOV_B_R_IND_R;
-//                             }
-
-//                         case 0xb:
-//                             switch (bh) {
-//                                 case 2:
-//                                     if((ch == 0) && (cl == 0)){
-//                                         return operation::MOV_W_ABS_24_R;
-//                                     }
-//                                     return operation::INVALID;
-
-//                                 case 0xa:
-//                                     if((ch == 0) && (cl == 0))
-//                                     {
-//                                         return operation::MOV_W_R_ABS_24;
-//                                     }
-//                                     return operation::INVALID;
-
-//                                 default:
-//                                     return operation::INVALID;
-//                             }
-
-
-//                         case 0xc:
-//                             return operation::MOV_B_R_IND_POST_INC_R;
-
-//                         case 0xe:
-//                             {
-//                                 auto t = memory[pc + 1] >> 7;
-//                                 switch (t) {
-//                                     case 0:
-//                                         return operation::MOV_B_R_IND_WITH_DIS_16_R;
-
-//                                     case 1:
-//                                         return operation::MOV_B_R_R_IND_WITH_DIS_16;
-
-//                                     default:
-//                                         return operation::INVALID;
-//                                 }
-//                             }
-//                         case 0xf:
-//                             {
-//                                 if(bh & 0x8) 
-//                                 {
-//                                     return operation::MOV_W_R_IND_WITH_DIS_16;
-//                                 }
-//                                 else {
-//                                     return operation::MOV_W_IND_WITH_DIS_16_R;
-//                                 }
-//                             }
-//                         default:
-//                             return operation::INVALID;
-//                     }
-
-//                 case 7:
-//                     switch (al) {
-//                         case 8:
-//                         {
-//                             auto t = bh >> 3;
-//                             if (t == 0x0) {
-//                                 switch (bl) {
-//                                     case 0:
-//                                         switch (ch) {
-//                                             case 6:
-//                                                 switch (cl) {
-//                                                     case 0xa:
-//                                                     {
-//                                                         auto dh = memory[pc + 3] >> 4;
-//                                                         auto dl = memory[pc + 3] & 0xf;
-//                                                         auto eh = memory[pc + 4] >> 4;
-//                                                         auto el = memory[pc + 4] & 0xf;
-//                                                         if(dh == 0x2 && eh == 0 && el == 0){
-//                                                             return operation::MOV_B_R_IND_WITH_DIS_24_R;
-//                                                         }
-//                                                         return operation::INVALID;
-//                                                     }
-//                                                     default:
-//                                                         return operation::INVALID;
-//                                                 }
-//                                             default:
-//                                                 return operation::INVALID;
-//                                         }
-
-//                                     default:
-//                                         return operation::INVALID;
-//                                 }
-//                             }
-//                             return operation::INVALID;
-//                         }
-//                         case 9:
-//                             switch (bh) {
-//                                 case 1:
-//                                     return operation::INVALID;
-//                                 case 0:
-//                                     return operation::MOV_W_IMM_R;
-//                                 case 6:
-//                                     return operation::AND_W_IMM;
-//                                 default:
-//                                     return operation::INVALID;
-//                             }
-
-
-//                         case 0xa:
-//                             switch (bh) {
-//                                 case 0:
-//                                     return operation::MOV_L_IMM_R;
-//                                 case 1:
-//                                     return operation::ADD_L_IMM_R;
-
-//                                 case 2:
-//                                     if(!(bl & 0x8)){
-//                                         return operation::CMP_L_IMM;
-//                                     }
-//                                     return operation::INVALID;
-//                                 case 3:
-//                                     if((bl & 0x8) == 0x0)
-//                                     {
-//                                         return operation::SUB_L_IMM_R;
-//                                     }
-//                                     return operation::INVALID;
-
-//                                 default:
-//                                     return operation::INVALID;
-//                             }
-//                         default:
-//                             return operation::INVALID;
-//                     }
-
-//                 case 8:
-//                     return operation::ADD_B_IMM_R;
-
-//                 case 0xa:
-//                     return operation::CMP_B_IMM;
-
-//                 case 0xd:
-//                     return operation::XOR_B_IMM_R;
-
-//                 case 0xe:
-//                     return operation::AND_B_IMM;
-
-//                 case 0xf:
-//                     return operation::MOV_B_IMM_R;
-
-//                 default:
-//                     return operation::INVALID;
-//             }
         }
 
         auto h8_300::update_ccr_sub(std::uint32_t value_0,
