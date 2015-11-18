@@ -479,9 +479,28 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::MOV_B_R_R_IND_WITH_DIS_24:
+                {
+                    auto erd = read_register_fields(pc + 1, value_place::high, true);
+                    auto rs = read_register_fields(pc + 3, value_place::low, false);
+
+                    auto disp = (std::int32_t)read_immediate(pc + 5, 3);
+
+                    auto result = read_register(rs, register_size::BYTE);
+
+                    auto addr = read_register(erd, register_size::LONG);
+
+                    addr += disp;
+
+                    write_immediate(addr, 1, result);
+                    update_ccr_mov(result, register_size::BYTE);
+
+                    pc += 8;
+                    break;
+                }
+
                 case operation::MOV_B_R_IND_POST_INC_R:
                 {
-        
                     auto ers = read_register_fields(pc + 1, value_place::high, true);
                     auto rd = read_register_fields(pc + 1, value_place::low, false);
 
@@ -494,7 +513,6 @@ namespace narcissus {
                     pc += 2;
                     break;
                 }
-
 
                 case operation::MOV_W_IMM_R: 
                 {
@@ -2278,19 +2296,22 @@ namespace narcissus {
                 {
                     return operation::MOV_B_R_IND_WITH_DIS_24_R;
                 }
-                else {
-//                     return operation::MOV_B_R_R_IND_WITH_DIS_24;
-                    return operation::INVALID;
+                else 
+                {
+                    return operation::MOV_B_R_R_IND_WITH_DIS_24;
+//                     return operation::INVALID;
                 }
             }
-            else {
+            else 
+            {
                 if(b4h == 0x2)
                 {
 //                     return operation::MOV_W_R_IND_WITH_DIS_24_R;
                     return operation::INVALID;
 
                 }
-                else {
+                else 
+                {
 //                     return operation::MOV_L_R_R_IND_WITH_DIS_24;
                     return operation::INVALID;
                 }

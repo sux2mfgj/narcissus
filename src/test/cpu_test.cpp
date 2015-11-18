@@ -2343,6 +2343,38 @@ namespace narcissus {
             ASSERT_EQ(0x102, cpu->cycle());
         }
 
+        TEST(MOV_B_R_R_IND_WITH_DIS_24, 0){
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            // mov.b   r0l,@(0xffc5ec:32,er2)
+            //78 20 6a a8     
+            //00 ff c5 ec
+            mem[0x100] = 0x78;
+            mem[0x101] = 0x20;
+            mem[0x102] = 0x6a;
+            mem[0x103] = 0xa8;
+            mem[0x104] = 0x00;
+            mem[0x105] = 0xff;
+            mem[0x106] = 0xc5;
+            mem[0x107] = 0xec;
+
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
+
+            cpu->er[0].l = 0x12;
+            cpu->er[2].er = 0x00000000;
+            cpu->ccr.interrupt_mask = 1;
+
+            ASSERT_EQ(h8_3069f::operation::MOV_B_R_R_IND_WITH_DIS_24, cpu->detect_operation());
+            ASSERT_EQ(0x108, cpu->cycle());
+
+            auto addr = (std::int32_t)0xffc5ec;
+            ASSERT_EQ(0x12, cpu->memory[addr]);
+        }
 
     }  // namespace cpu
 }  // namespace narcissus

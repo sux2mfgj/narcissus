@@ -29,7 +29,7 @@ namespace narcissus {
 //             MOV_B_ABS_24_R,               // absolute addressing 24
             MOV_B_R_R_IND,              // register indirect (@erd = rs)
             MOV_B_R_R_IND_WITH_DIS_16,    // register indirect with displacement(16 bit)
-//             MOV_B_R_R_IND_WITH_DIS_24,    // register indirect with displacement(16 bit)
+            MOV_B_R_R_IND_WITH_DIS_24,    // register indirect with displacement(16 bit)
 //             MOV_B_R_R_IND_PRE_DEC,
 //             MOV_B_R_ABS_8,
 //             MOV_B_R_ABS_16,
@@ -458,6 +458,7 @@ namespace narcissus {
                 FRIEND_TEST(OR_B_IMM_R, 0);
                 FRIEND_TEST(ANDC, 0);
                 FRIEND_TEST(SLEEP, 0);
+                FRIEND_TEST(MOV_B_R_R_IND_WITH_DIS_24, 0);
         };
 
         class cpu::create_helper : public cpu
