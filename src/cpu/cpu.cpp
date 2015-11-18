@@ -21,10 +21,10 @@ namespace narcissus {
 
         auto cpu::interrupt(interrupts int_num) -> void
         {
+            std::clog << "reach interrupt func" << std::endl;
             switch (int_num) {
                 case interrupts::reset:
                 {
-                    std::cout << "a" << std::endl;
                     //load pc from memory[0] ~ memory[3]
                     auto reset_addr = read_immediate(0, 4);
 
@@ -74,11 +74,34 @@ namespace narcissus {
                     break;
                 }
 
-                case interrupts::eri1:
                 case interrupts::rxi1:
+                {
+                    std::clog << "interrupt" << std::endl;
+                    std::clog << std::hex << (std::uint16_t)ccr.interrupt_mask << std::endl;
+                    if(ccr.interrupt_mask)
+                    {
+                        std::clog << "return rxi1" << std::endl;
+                        return;
+                    }
+                    sp -= 4;
+
+                    write_immediate(sp + 1, 1, (std::uint8_t)(pc >> 24));
+                    write_immediate(sp + 2, 1, (std::uint8_t)(pc >> 16));
+                    write_immediate(sp + 3, 1, (std::uint8_t)(pc >> 8));
+                    write_immediate(sp + 4, 1, (std::uint8_t)(pc));
+                    write_immediate(sp, 1, ccr.byte);
+
+                    auto jmp_addr = read_immediate(0x0000e4, 4);
+                    pc = jmp_addr;
+
+                    std::clog << "reach rxi1 end" << std::endl;
+                    break;
+                }
                 case interrupts::txi1:
+                case interrupts::eri1:
                 case interrupts::tei1:
                 {
+                    std::clog << "interrupt" << std::endl;
                     std::clog << "not implement yet" << std::endl;
                     assert(false);
                     break;
@@ -98,7 +121,11 @@ namespace narcissus {
                     std::clog << "this interrupt number is invalid: " <<
                         (std::uint16_t)int_num << std::endl;
                     assert(false);
+
             }
+
+            *is_sleep = false;
+            std::clog << "return from interrupt func" << std::endl;
         }
 
         auto cpu::run() -> void
@@ -128,6 +155,7 @@ namespace narcissus {
 
                 if(*is_sleep)
                 {
+                    std::clog << "ccr: " << (std::uint16_t)ccr.byte << std::endl;
                     std::unique_lock<std::mutex> lock(cv_mutex);
                     c_variable_ptr->wait(lock, [this]{return !*is_sleep;});
                 }

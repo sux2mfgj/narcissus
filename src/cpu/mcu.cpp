@@ -15,7 +15,7 @@ namespace narcissus {
 
         auto mcu::before_run(std::shared_ptr<cpu> c) -> void
         {
-
+            sci_1->before_run(c);
         }
 
         auto mcu::operator[] (std::uint32_t address)
