@@ -15,12 +15,15 @@ Disassembly of section .text:
 00ffc02c <_intr>:
   ffc02c:	01 00 6d f6 	mov.l	er6,@-er7
   ffc030:	0f f6       	mov.l	er7,er6
-  ffc032:	5e ff c2 b2 	jsr	@0xffc2b2:24
+  ffc032:	5e ff c2 b2 	jsr	@0xffc2b2:24 // getc
   ffc036:	17 50       	extu.w	r0
   ffc038:	6b 21 00 ff 	mov.w	@0xffc60c:32,r1
   ffc03c:	c6 0c 
+    // if (r0 == '\n'){ ...
   ffc03e:	79 20 00 0a 	cmp.w	#0xa,r0
   ffc042:	47 16       	beq	.+22 (0xffc05a)
+
+    // if (c != '\n'){...
   ffc044:	0d 12       	mov.w	r1,r2
   ffc046:	17 f2       	exts.l	er2
   ffc048:	78 20 6a a8 	mov.b	r0l,@(0xffc5ec:32,er2)
@@ -30,6 +33,7 @@ Disassembly of section .text:
   ffc056:	c6 0c 
   ffc058:	40 5c       	bra	.+92 (0xffc0b6)
 
+    // if(c == '\n') {
 00ffc05a <.L2>:
   ffc05a:	0d 13       	mov.w	r1,r3
   ffc05c:	17 f3       	exts.l	er3
@@ -44,25 +48,29 @@ Disassembly of section .text:
   ffc078:	c5 a8 
   ffc07a:	7a 00 00 ff 	mov.l	#0xffc5ec,er0
   ffc07e:	c5 ec 
-  ffc080:	5e ff c2 42 	jsr	@0xffc242:24
+  ffc080:	5e ff c2 42 	jsr	@0xffc242:24 // strcmp
   ffc084:	0d 00       	mov.w	r0,r0
   ffc086:	46 12       	bne	.+18 (0xffc09a)
+
+
   ffc088:	7a 00 00 ff 	mov.l	#0xffc5f0,er0
   ffc08c:	c5 f0 
-  ffc08e:	5e ff c2 e2 	jsr	@0xffc2e2:24
+  ffc08e:	5e ff c2 e2 	jsr	@0xffc2e2:24 //puts
   ffc092:	7a 00 00 ff 	mov.l	#0xffc5cd,er0
   ffc096:	c5 cd 
   ffc098:	40 06       	bra	.+6 (0xffc0a0)
 
+    // if (buf != "echo"){
 00ffc09a <.L4>:
   ffc09a:	7a 00 00 ff 	mov.l	#0xffc5ad,er0
   ffc09e:	c5 ad 
 
 00ffc0a0 <.L6>:
-  ffc0a0:	5e ff c2 e2 	jsr	@0xffc2e2:24
+  ffc0a0:	5e ff c2 e2 	jsr	@0xffc2e2:24 //puts
   ffc0a4:	7a 00 00 ff 	mov.l	#0xffc5b7,er0
   ffc0a8:	c5 b7 
-  ffc0aa:	5e ff c2 e2 	jsr	@0xffc2e2:24
+    // puts(">");
+  ffc0aa:	5e ff c2 e2 	jsr	@0xffc2e2:24 //puts
   ffc0ae:	19 22       	sub.w	r2,r2
   ffc0b0:	6b a2 00 ff 	mov.w	r2,@0xffc60c:32
   ffc0b4:	c6 0c 
@@ -77,7 +85,7 @@ Disassembly of section .text:
   ffc0c2:	04 c0       	orc	#0xc0,ccr
   ffc0c4:	7a 00 00 ff 	mov.l	#0xffc5ba,er0
   ffc0c8:	c5 ba 
-  ffc0ca:	5e ff c2 e2 	jsr	@0xffc2e2:24
+  ffc0ca:	5e ff c2 e2 	jsr	@0xffc2e2:24 //puts
   ffc0ce:	7a 01 00 ff 	mov.l	#0xffc02c,er1
   ffc0d2:	c0 2c 
   ffc0d4:	79 00 00 02 	mov.w	#0x2,r0
@@ -86,7 +94,7 @@ Disassembly of section .text:
   ffc0e0:	5e ff c5 5c 	jsr	@0xffc55c:24
   ffc0e4:	7a 00 00 ff 	mov.l	#0xffc5b7,er0
   ffc0e8:	c5 b7 
-  ffc0ea:	5e ff c2 e2 	jsr	@0xffc2e2:24
+  ffc0ea:	5e ff c2 e2 	jsr	@0xffc2e2:24 //puts
   ffc0ee:	06 3f       	andc	#0x3f,ccr
 
 00ffc0f0 <.L8>:
@@ -399,7 +407,7 @@ Disassembly of section .text:
   ffc316:	19 44       	sub.w	r4,r4
 
 00ffc318 <.L77>:
-  ffc318:	5e ff c2 b2 	jsr	@0xffc2b2:24
+  ffc318:	5e ff c2 b2 	jsr	@0xffc2b2:24 // getc
   ffc31c:	a8 0a       	cmp.b	#0xa,r0l
   ffc31e:	46 02       	bne	.+2 (0xffc322)
   ffc320:	18 88       	sub.b	r0l,r0l
@@ -459,7 +467,7 @@ Disassembly of section .text:
   ffc38c:	46 d4       	bne	.-44 (0xffc362)
   ffc38e:	0f b0       	mov.l	er3,er0
   ffc390:	0b 00       	adds	#1,er0
-  ffc392:	5e ff c2 e2 	jsr	@0xffc2e2:24
+  ffc392:	5e ff c2 e2 	jsr	@0xffc2e2:24 // puts
   ffc396:	19 00       	sub.w	r0,r0
   ffc398:	7a 17 00 00 	add.l	#0xc,er7
   ffc39c:	00 0c 
