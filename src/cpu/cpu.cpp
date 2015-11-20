@@ -1151,6 +1151,7 @@ namespace narcissus {
                 {
                     auto abs = read_immediate(pc + 1, 3);
 
+                    //TODO have to fix?
                     pc += 4;
 
                     memory[--sp] = (std::uint8_t)(pc & 0x0000ff);
@@ -1167,6 +1168,7 @@ namespace narcissus {
                     auto ern = read_register_fields(pc + 1, value_place::high, true);
                     auto ern_value = read_register(ern, register_size::LONG);
 
+                    pc += 2;
                     sp -= 4;
                     memory[sp] = (std::uint8_t)(pc >> 24);
                     memory[sp + 1] = (std::uint8_t)(pc >> 16);
