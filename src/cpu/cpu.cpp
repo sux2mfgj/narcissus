@@ -22,9 +22,25 @@ namespace narcissus {
 
         auto cpu::interrupt(interrupts int_num) -> bool
         {
-            if(int_num != interrupts::reset && ccr.interrupt_mask)
+            if(int_num != interrupts::reset)
             {
-                return false;
+                if(ccr.interrupt_mask)
+                {
+                    return false;
+                }
+                else 
+                {
+                    // save pc and ccr to stack
+                    sp -= 4;
+                    write_immediate(sp, 1, (std::uint8_t)(pc >> 24));
+                    write_immediate(sp + 1, 1, (std::uint8_t)(pc >> 16));
+                    write_immediate(sp + 2, 1, (std::uint8_t)(pc >> 8));
+                    write_immediate(sp + 3, 1, (std::uint8_t)(pc));
+                    write_immediate(sp, 1, ccr.byte);
+
+                    // I = 1
+                    ccr.interrupt_mask = 1;
+                }
             }
 
             switch (int_num) {
@@ -84,22 +100,17 @@ namespace narcissus {
                 {
                     std::clog << "interrupt" << std::endl;
                     std::clog << std::hex << (std::uint16_t)ccr.interrupt_mask << std::endl;
-//                     if(ccr.interrupt_mask)
-//                     {
-//                         std::clog << "return rxi1" << std::endl;
-//                         return;
-//                     }
 
                     // save pc and ccr to stack
-                    sp -= 4;
+//                     sp -= 4;
 //                     write_immediate(sp, 1, (std::uint8_t)(pc >> 24));
 //                     write_immediate(sp + 1, 1, (std::uint8_t)(pc >> 16));
 //                     write_immediate(sp + 2, 1, (std::uint8_t)(pc >> 8));
 //                     write_immediate(sp + 3, 1, (std::uint8_t)(pc));
-                    write_immediate(sp, 1, ccr.byte);
+//                     write_immediate(sp, 1, ccr.byte);
 
                     // I = 1
-                    ccr.interrupt_mask = 1;
+//                     ccr.interrupt_mask = 1;
 
                     auto jmp_addr = read_immediate(0x0000e4, 4);
                     pc = jmp_addr;
@@ -1157,13 +1168,12 @@ namespace narcissus {
                 {
                     auto abs = read_immediate(pc + 1, 3);
 
-                    //TODO have to fix?
                     pc += 4;
-
-                    memory[--sp] = (std::uint8_t)(pc & 0x0000ff);
-                    memory[--sp] = (std::uint8_t)((pc >> 8) & 0x0000ff);
-                    memory[--sp] = (std::uint8_t)((pc >> 16) & 0x0000ff);
-                    memory[--sp] = 0x00;
+                    sp -= 4;
+                    memory[sp] = (std::uint8_t)(pc >> 24);
+                    memory[sp + 1] = (std::uint8_t)(pc >> 16);
+                    memory[sp + 2] = (std::uint8_t)(pc >> 8);
+                    memory[sp + 3] = (std::uint8_t)pc;
 
                     pc = abs;
                     break;
@@ -1719,8 +1729,10 @@ namespace narcissus {
                             //DIVXU
                             return operation::INVALID;
                         case 4:
-                        case 6:
                             return operation::RTS;
+                        case 6:
+//                             return operation::RTE;
+                            return operation::INVALID;
                         case 5:
                             //TODO
                             //BSR
