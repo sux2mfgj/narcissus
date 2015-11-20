@@ -197,7 +197,8 @@ namespace narcissus {
 
             EXTU_W,                     // extend as unsigned
 
-            RTS,
+            RTS,                    // return from subroutine
+            RTE,                    // return from exception
             NOP,
 
             XOR_B_R_R,                  //exclusive or logical direct registers
@@ -459,6 +460,7 @@ namespace narcissus {
                 FRIEND_TEST(ANDC, 0);
                 FRIEND_TEST(SLEEP, 0);
                 FRIEND_TEST(MOV_B_R_R_IND_WITH_DIS_24, 0);
+                FRIEND_TEST(RTE, 0);
         };
 
         class cpu::create_helper : public cpu

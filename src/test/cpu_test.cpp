@@ -2195,6 +2195,7 @@ namespace narcissus {
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[4].er = 0x400;
+            cpu->sp = 0xffff00;
 
             ASSERT_EQ(h8_3069f::operation::JSR_R, cpu->detect_operation());
             ASSERT_EQ(0x400, cpu->cycle());
@@ -2374,6 +2375,33 @@ namespace narcissus {
 
             auto addr = (std::int32_t)0xffc5ec;
             ASSERT_EQ(0x12, cpu->memory[addr]);
+        }
+
+        TEST(RTE, 0){
+            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            // 56 70           
+            // rte
+            mem[0x100] = 0x56;
+            mem[0x101] = 0x70;
+            
+            auto cpu = h8_3069f::cpu::create(move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
+
+            cpu->sp = 0x00ffff00 - 4;
+            cpu->memory[cpu->sp] = 0b10001011;
+            cpu->memory[cpu->sp + 1] = 0x34;
+            cpu->memory[cpu->sp + 2] = 0x56;
+            cpu->memory[cpu->sp + 3] = 0x78;
+
+            ASSERT_EQ(h8_3069f::operation::RTE, cpu->detect_operation());
+            ASSERT_EQ(0x00345678, cpu->cycle());
+
+            ASSERT_EQ(0x00ffff00, cpu->sp);
         }
 
     }  // namespace cpu

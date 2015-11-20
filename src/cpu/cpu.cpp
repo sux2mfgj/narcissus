@@ -214,7 +214,6 @@ namespace narcissus {
 
         auto cpu::cycle() -> std::uint32_t
         {
-
             switch (detect_operation()) {
 
                 case operation::ADD_B_R_R:
@@ -1280,6 +1279,17 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::RTE:
+                {
+                    auto ccr_t = (std::uint8_t)read_immediate(sp++, 1);
+                    auto addr = (std::uint32_t)read_immediate(sp, 3);
+                    sp += 3;
+
+                    pc = addr;
+                    ccr.byte = ccr_t;
+                    break;
+                }
+
                 case operation::XOR_B_R_R:
                 {
                     auto rs = read_register_fields(pc + 1, value_place::high, false);
@@ -1365,7 +1375,6 @@ namespace narcissus {
                     std::cout << "implement yet" << std::endl;
                     assert(false);
             }
-
             return pc; 
         }
 
@@ -1731,8 +1740,7 @@ namespace narcissus {
                         case 4:
                             return operation::RTS;
                         case 6:
-//                             return operation::RTE;
-                            return operation::INVALID;
+                            return operation::RTE;
                         case 5:
                             //TODO
                             //BSR
