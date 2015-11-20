@@ -1,4 +1,5 @@
 #include <cassert>
+#include <sstream>
 
 #include <cpu.hpp>
 
@@ -21,7 +22,6 @@ namespace narcissus {
 
         auto cpu::interrupt(interrupts int_num) -> void
         {
-            std::clog << "reach interrupt func" << std::endl;
             switch (int_num) {
                 case interrupts::reset:
                 {
@@ -32,7 +32,8 @@ namespace narcissus {
 
                     ccr.byte = 0b00000000;
                     ccr.interrupt_mask = 1;
-                    break;
+
+                    return;
                 }
 
                 case interrupts::nmi:
@@ -83,13 +84,17 @@ namespace narcissus {
                         std::clog << "return rxi1" << std::endl;
                         return;
                     }
-                    sp -= 4;
 
-                    write_immediate(sp + 1, 1, (std::uint8_t)(pc >> 24));
-                    write_immediate(sp + 2, 1, (std::uint8_t)(pc >> 16));
-                    write_immediate(sp + 3, 1, (std::uint8_t)(pc >> 8));
-                    write_immediate(sp + 4, 1, (std::uint8_t)(pc));
+                    // save pc and ccr to stack
+                    sp -= 4;
+//                     write_immediate(sp, 1, (std::uint8_t)(pc >> 24));
+//                     write_immediate(sp + 1, 1, (std::uint8_t)(pc >> 16));
+//                     write_immediate(sp + 2, 1, (std::uint8_t)(pc >> 8));
+//                     write_immediate(sp + 3, 1, (std::uint8_t)(pc));
                     write_immediate(sp, 1, ccr.byte);
+
+                    // I = 1
+                    ccr.interrupt_mask = 1;
 
                     auto jmp_addr = read_immediate(0x0000e4, 4);
                     pc = jmp_addr;
@@ -97,6 +102,7 @@ namespace narcissus {
                     std::clog << "reach rxi1 end" << std::endl;
                     break;
                 }
+
                 case interrupts::txi1:
                 case interrupts::eri1:
                 case interrupts::tei1:
@@ -139,7 +145,33 @@ namespace narcissus {
 
             while (true) {
                 auto pc = cycle();
-                std::clog << std::hex << "pc: 0x" << pc << std::endl;
+                std::clog << std::hex << " - pc: 0x" << pc << std::endl;
+
+                auto s = [this](auto sp) -> std::string
+                { 
+                    std::ostringstream os;
+                    os << "0x"
+                        << std::hex
+                        << (std::uint32_t)memory[sp]
+                        << (std::uint32_t)memory[sp + 1]
+                        << (std::uint32_t)memory[sp + 2]
+                        << (std::uint32_t)memory[sp + 3];
+
+                    return os.str();
+                };
+
+                std::clog << s(sp) << std::endl;
+                std::clog << s(sp + 4) << std::endl;
+                std::clog << s(sp + 8) << std::endl;
+                std::clog << s(sp + 12) << std::endl;
+//                 std::clog << std::hex << "stack_top: 0x" 
+//                     << (std::uint32_t)memory[sp] 
+//                     << (std::uint32_t)memory[sp+1] 
+//                     << (std::uint32_t)memory[sp+2] 
+//                     << (std::uint32_t)memory[sp+3] 
+//                     << std::endl;
+
+
 
                 if(before_pc != pc){
                     before_pc = pc;
@@ -153,6 +185,7 @@ namespace narcissus {
                     }
                 }
 
+                //TODO 
                 if(*is_sleep)
                 {
                     std::clog << "ccr: " << (std::uint16_t)ccr.byte << std::endl;
@@ -1133,6 +1166,12 @@ namespace narcissus {
                 {
                     auto ern = read_register_fields(pc + 1, value_place::high, true);
                     auto ern_value = read_register(ern, register_size::LONG);
+
+                    sp -= 4;
+                    memory[sp] = (std::uint8_t)(pc >> 24);
+                    memory[sp + 1] = (std::uint8_t)(pc >> 16);
+                    memory[sp + 2] = (std::uint8_t)(pc >> 8);
+                    memory[sp + 3] = (std::uint8_t)pc;
 
                     pc = ern_value;
                     break;

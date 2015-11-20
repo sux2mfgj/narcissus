@@ -13,7 +13,7 @@ Disassembly of section .text:
   ffc02a:	40 fe       	bra	.-2 (0xffc02a)
 
 00ffc02c <_intr>:
-  ffc02c:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc02c:	01 00 6d f6 	mov.l	er6,@-er7 // push er6
   ffc030:	0f f6       	mov.l	er7,er6
   ffc032:	5e ff c2 b2 	jsr	@0xffc2b2:24 // getc
   ffc036:	17 50       	extu.w	r0
