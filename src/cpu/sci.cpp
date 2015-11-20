@@ -74,19 +74,19 @@ namespace narcissus {
         {
            controller = c; 
            read_thread = std::thread(
-                    [&]{
-                        while (true) {
+                    [&]
+                    {
+                        while (true) 
+                        {
+
                             char buf;
                             std::cin.read(&buf, sizeof(buf));
                             read_buffer.push((std::uint8_t)buf);
                             ssr |= (std::uint8_t)ssr_bits::rdrf;
 
-                            std::clog << "read_value" << std::endl;
                             if(auto ptr = controller.lock()){
                                 ptr->interrupt(h8_3069f::interrupts::rxi1);
-                                std::clog << "after_0" << std::endl;
                                 c_variable_ptr->notify_all();
-                                std::clog << "after_1" << std::endl;
                             }
                         }
                     });

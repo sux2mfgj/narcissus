@@ -20,8 +20,13 @@ namespace narcissus {
             return std::move(p);
         }
 
-        auto cpu::interrupt(interrupts int_num) -> void
+        auto cpu::interrupt(interrupts int_num) -> bool
         {
+            if(int_num != interrupts::reset && ccr.interrupt_mask)
+            {
+                return false;
+            }
+
             switch (int_num) {
                 case interrupts::reset:
                 {
@@ -33,7 +38,7 @@ namespace narcissus {
                     ccr.byte = 0b00000000;
                     ccr.interrupt_mask = 1;
 
-                    return;
+                    return true;
                 }
 
                 case interrupts::nmi:
@@ -79,11 +84,11 @@ namespace narcissus {
                 {
                     std::clog << "interrupt" << std::endl;
                     std::clog << std::hex << (std::uint16_t)ccr.interrupt_mask << std::endl;
-                    if(ccr.interrupt_mask)
-                    {
-                        std::clog << "return rxi1" << std::endl;
-                        return;
-                    }
+//                     if(ccr.interrupt_mask)
+//                     {
+//                         std::clog << "return rxi1" << std::endl;
+//                         return;
+//                     }
 
                     // save pc and ccr to stack
                     sp -= 4;
@@ -132,6 +137,7 @@ namespace narcissus {
 
             *is_sleep = false;
             std::clog << "return from interrupt func" << std::endl;
+            return true;
         }
 
         auto cpu::run() -> void

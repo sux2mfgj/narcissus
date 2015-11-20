@@ -328,7 +328,7 @@ namespace narcissus {
             public:
                 auto run(void) -> void;
                 auto reset_exception(void) -> void;
-                auto interrupt(interrupts int_num) -> void;
+                auto interrupt(interrupts int_num) -> bool;
 
             private:
                 auto cycle(void) -> std::uint32_t;
