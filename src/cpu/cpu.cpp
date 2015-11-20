@@ -181,14 +181,6 @@ namespace narcissus {
                 std::clog << s(sp + 4) << std::endl;
                 std::clog << s(sp + 8) << std::endl;
                 std::clog << s(sp + 12) << std::endl;
-//                 std::clog << std::hex << "stack_top: 0x" 
-//                     << (std::uint32_t)memory[sp] 
-//                     << (std::uint32_t)memory[sp+1] 
-//                     << (std::uint32_t)memory[sp+2] 
-//                     << (std::uint32_t)memory[sp+3] 
-//                     << std::endl;
-
-
 
                 if(before_pc != pc){
                     before_pc = pc;

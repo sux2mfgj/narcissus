@@ -15,25 +15,8 @@ namespace narcissus {
                 std::shared_ptr<bool> is_s)
             : rsr(), rdr(), tsr(), tdr(), smr(), scr(), 
             ssr((std::uint8_t)ssr_bits::rdrf), brr(), scmr(), access_flags(0),
-            is_sleep(is_s)
-        {
-            c_variable_ptr = cv;
-//             read_thread = std::thread(
-//                     [&]{
-//                         while (true) {
-//                             char buf;
-//                             std::cin.read(&buf, sizeof(buf));
-//                             read_buffer.push((std::uint8_t)buf);
-//                             ssr |= (std::uint8_t)ssr_bits::rdrf;
-
-//                             if(!controller.lock()){
-//                                 controller->interrupt(interrupts::rxi1);
-//                             }
-//                             c_variable_ptr->notify_all();
-//                         }
-//                     });
-//             read_thread.detach();
-        } 
+            c_variable_ptr(cv), is_sleep(is_s), is_dirty_ssr(false)
+        {} 
 
         sci::~sci()
         {
@@ -55,6 +38,8 @@ namespace narcissus {
                 case 0x3:
                     return tdr;
                 case 0x4:
+//                     is_dirty_ssr = true;
+//                     c_variable_ptr->notify_all();
                     return ssr;
                 case 0x5:
                     rdr = (std::uint8_t)read_buffer.front();
@@ -78,7 +63,6 @@ namespace narcissus {
                     {
                         while (true) 
                         {
-
                             char buf;
                             std::cin.read(&buf, sizeof(buf));
                             read_buffer.push((std::uint8_t)buf);
@@ -92,13 +76,46 @@ namespace narcissus {
                     });
             read_thread.detach();
 
+//             ssr_thread = std::thread(
+//                     [&]
+//                     {
+//                         while (true)
+//                         {
+//                             if(access_flags & (std::uint8_t)access_flag::ssr)
+//                             {
+//                                 if(!(ssr & (std::uint8_t)ssr_bits::tdre))
+//                                 {
+//                                     std::cout << tdr << std::flush;
+
+//                                     std::clog << std::hex << "out(hex): " << (std::uint16_t)tdr 
+//                                         << "(" << (char)tdr << ")"<<std::endl;
+
+//                                     ssr |= (std::uint8_t)ssr_bits::tdre;
+//                                 }
+
+//                                 if(!(ssr & (std::uint8_t)ssr_bits::rdrf))
+//                                 {
+//                                     if(!read_buffer.empty()){
+//                                         ssr |= (std::uint8_t)ssr_bits::rdrf;
+//                                     }
+//                                 }
+
+//                                 access_flags &= ~(std::uint8_t)access_flag::ssr;
+//                                 is_dirty_ssr = false;
+//                                 std::unique_lock<std::mutex> locker(cv_mutex);
+//                                 c_variable_ptr->wait(locker, [&]{return is_dirty_ssr;});
+//                             }
+//                         }
+//                     });
+//             ssr_thread.detach();
         }
 
         auto sci::work() -> void
         {
             if(access_flags & (std::uint8_t)access_flag::ssr){
 
-                if((ssr & (std::uint8_t)ssr_bits::tdre) != (std::uint8_t)ssr_bits::tdre){
+                if((ssr & (std::uint8_t)ssr_bits::tdre) != (std::uint8_t)ssr_bits::tdre)
+                {
                     std::cout << tdr << std::flush;
 
                     std::clog << std::hex << "out(hex): " << (std::uint16_t)tdr 
@@ -117,7 +134,6 @@ namespace narcissus {
                 access_flags &= ~(std::uint8_t)access_flag::ssr;
             }
         }
-
 
     } // namespace h8_3069f
 } // namespace narcissus

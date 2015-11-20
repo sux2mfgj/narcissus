@@ -61,10 +61,14 @@ namespace narcissus {
                 std::uint8_t access_flags;
 
                 std::thread read_thread;
+                std::thread ssr_thread;
                 std::queue<std::uint8_t> read_buffer;
 
                 std::shared_ptr<std::condition_variable> c_variable_ptr;
+                std::mutex cv_mutex;
+                bool is_dirty_ssr;
                 std::shared_ptr<bool> is_sleep;
+
                 std::weak_ptr<cpu> controller;
 
             private:
