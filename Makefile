@@ -1,7 +1,7 @@
 
 TARGET := narcissus
 
-BIN_FILE := ./data/08/bootload/kzload.bin
+BIN_FILE := ./osbook_03/08/bootload/kzload.bin
 
 all: $(TARGET)
 
