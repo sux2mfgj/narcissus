@@ -1349,6 +1349,26 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::TRAPA:
+                {
+                    auto imm = (std::uint8_t)read_immediate(pc + 1, 1) >> 4;
+
+                    auto next_pc = read_immediate(0x20 + (4 * imm), 4);
+                    
+                    sp -= 4;
+                    memory[sp] = (std::uint8_t)(pc >> 24);
+                    memory[sp + 1] = (std::uint8_t)(pc >> 16);
+                    memory[sp + 2] = (std::uint8_t)(pc >> 8);
+                    memory[sp + 3] = (std::uint8_t)(pc);
+
+                    memory[sp] = ccr.byte;
+
+                    pc = next_pc;
+                    ccr.interrupt_mask = 1;
+
+                    break;
+                }
+
                 case operation::INVALID:
                 {
                       std::clog << "INVALID opecode: " << std::hex << "0x" << std::flush;
@@ -1738,9 +1758,7 @@ namespace narcissus {
                             //BSR
                             return operation::INVALID;
                         case 7:
-                            //TODO
-                            //TRAPA
-                            return operation::INVALID;
+                            return operation::TRAPA;
                         case 8:
                             switch (bh) {
                                 case 0:

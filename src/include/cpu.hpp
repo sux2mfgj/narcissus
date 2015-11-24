@@ -207,6 +207,7 @@ namespace narcissus {
 //             OR_B_R_R
             ORC,            // inclusive or controle register
             SLEEP,
+            TRAPA,
         };
 
         enum class register_size : std::uint32_t
@@ -461,6 +462,7 @@ namespace narcissus {
                 FRIEND_TEST(SLEEP, 0);
                 FRIEND_TEST(MOV_B_R_R_IND_WITH_DIS_24, 0);
                 FRIEND_TEST(RTE, 0);
+                FRIEND_TEST(TRAPA, 0);
         };
 
         class cpu::create_helper : public cpu
@@ -473,4 +475,5 @@ namespace narcissus {
         };
 
     }  // namespace h8_3069f
+
 }  // namespace narcissus
