@@ -438,7 +438,10 @@ namespace narcissus {
                     auto rs = read_register_fields(pc + 1, value_place::low, false);
 
                     auto dest_addr = read_register(erd, register_size::LONG);
-                    auto result = read_register(rs, register_size::BYTE);
+                    auto result = (std::uint8_t)read_register(rs, register_size::BYTE);
+                    std::clog << "mov_b_r_r_ind: [0x" << std::hex << dest_addr << "] <- 0x"
+                        << (std::uint16_t)result << std::endl;
+
                     write_immediate(dest_addr, 1, result);
 
                     update_ccr_mov(result, register_size::BYTE);
@@ -2179,6 +2182,7 @@ namespace narcissus {
         }
 
         auto cpu::detect_mov_0_1_0(void) -> operation
+
         {
             auto b3h = memory[pc + 2] >> 4;
             auto b3l = memory[pc + 2] & 0xf;
