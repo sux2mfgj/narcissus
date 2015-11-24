@@ -43,7 +43,7 @@ namespace narcissus {
                 return (*sci_1)[address];
             }
 
-            std::cout << "memory access error: 0x"<< address << std::endl;
+            std::clog << std::hex << "memory access error: 0x"<< address << std::endl;
             assert(false);
         }
 
