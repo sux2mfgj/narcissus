@@ -8,9 +8,9 @@ namespace narcissus {
 
         mcu::mcu(std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size>&& init_rom,
                 std::shared_ptr<std::condition_variable> c_variable_ptr,
-                std::shared_ptr<bool> is_sleep) 
+                std::shared_ptr<bool> is_sleep, std::shared_ptr<std::mutex> m) 
             : rom(move(init_rom)), ram(),
-            sci_1(std::make_shared<sci>(c_variable_ptr, is_sleep))
+            sci_1(std::make_shared<sci>(c_variable_ptr, is_sleep, m))
         {}
 
         auto mcu::before_run(std::shared_ptr<cpu> c) -> void
@@ -43,7 +43,7 @@ namespace narcissus {
                 return (*sci_1)[address];
             }
 
-            std::clog << std::hex << "memory access error: 0x"<< address << std::endl;
+            std::clog << "memory access error: 0x" << std::hex << address << std::endl;
             assert(false);
         }
 

@@ -40,7 +40,7 @@ namespace narcissus {
 
             public:
                 sci(std::shared_ptr<std::condition_variable> cv, 
-                        std::shared_ptr<bool> is_s);
+                        std::shared_ptr<bool> is_s, std::shared_ptr<std::mutex> m);
                 virtual ~sci();
 
             public:
@@ -65,7 +65,7 @@ namespace narcissus {
                 std::queue<std::uint8_t> read_buffer;
 
                 std::shared_ptr<std::condition_variable> c_variable_ptr;
-                std::mutex cv_mutex;
+                std::shared_ptr<std::mutex> cv_mutex_ptr;
                 bool is_dirty_ssr;
                 std::shared_ptr<bool> is_sleep;
 

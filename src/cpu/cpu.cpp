@@ -10,7 +10,8 @@ namespace narcissus {
             : er(), sp(), ccr(), pc(), is_sleep(std::make_shared<bool>(false)),
             c_variable_ptr(
                     std::make_shared<std::condition_variable>()), 
-                memory(move(mem), c_variable_ptr, is_sleep)
+            cv_mutex_ptr(std::make_shared<std::mutex>()),
+            memory(move(mem), c_variable_ptr, is_sleep, cv_mutex_ptr)
         {}
 
         std::shared_ptr<cpu> cpu::create(
@@ -22,6 +23,7 @@ namespace narcissus {
 
         auto cpu::interrupt(interrupts int_num) -> bool
         {
+            std::unique_lock<std::mutex> lock(*cv_mutex_ptr);
             if(int_num != interrupts::reset)
             {
                 if(ccr.interrupt_mask)
@@ -98,23 +100,10 @@ namespace narcissus {
 
                 case interrupts::rxi1:
                 {
-                    std::clog << "interrupt" << std::endl;
-                    std::clog << std::hex << (std::uint16_t)ccr.interrupt_mask << std::endl;
-
-                    // save pc and ccr to stack
-//                     sp -= 4;
-//                     write_immediate(sp, 1, (std::uint8_t)(pc >> 24));
-//                     write_immediate(sp + 1, 1, (std::uint8_t)(pc >> 16));
-//                     write_immediate(sp + 2, 1, (std::uint8_t)(pc >> 8));
-//                     write_immediate(sp + 3, 1, (std::uint8_t)(pc));
-//                     write_immediate(sp, 1, ccr.byte);
-
-                    // I = 1
-//                     ccr.interrupt_mask = 1;
-
                     auto jmp_addr = read_immediate(0x0000e4, 4);
                     pc = jmp_addr;
 
+                    std::clog << std::hex << "rxi pc : 0x" << pc << std::endl;
                     std::clog << "reach rxi1 end" << std::endl;
                     break;
                 }
@@ -147,7 +136,6 @@ namespace narcissus {
             }
 
             *is_sleep = false;
-            std::clog << "return from interrupt func" << std::endl;
             return true;
         }
 
@@ -162,6 +150,9 @@ namespace narcissus {
 
             while (true) {
                 auto pc = cycle();
+                
+
+                // for debug
                 std::clog << std::hex << " - pc: 0x" << pc << std::endl;
 
                 auto s = [this](auto sp) -> std::string
@@ -176,6 +167,12 @@ namespace narcissus {
 
                     return os.str();
                 };
+
+                for (auto r: er) {
+                    std::clog << std::hex << " 0x" << r.er;
+                }
+                std::clog << std::hex << " 0x" << sp;
+                std::clog << std::endl;
 
                 std::clog << s(sp) << std::endl;
                 std::clog << s(sp + 4) << std::endl;
@@ -197,8 +194,8 @@ namespace narcissus {
                 //TODO 
                 if(*is_sleep)
                 {
-                    std::clog << "ccr: " << (std::uint16_t)ccr.byte << std::endl;
-                    std::unique_lock<std::mutex> lock(cv_mutex);
+                    std::clog << std::hex << "ccr: " << (std::uint16_t)ccr.byte << std::endl;
+                    std::unique_lock<std::mutex> lock(*cv_mutex_ptr);
                     c_variable_ptr->wait(lock, [this]{return !*is_sleep;});
                 }
             }
@@ -206,6 +203,8 @@ namespace narcissus {
 
         auto cpu::cycle() -> std::uint32_t
         {
+            
+            std::unique_lock<std::mutex> lock(*cv_mutex_ptr);
             switch (detect_operation()) {
 
                 case operation::ADD_B_R_R:

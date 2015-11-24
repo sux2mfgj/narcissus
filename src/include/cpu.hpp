@@ -323,9 +323,9 @@ namespace narcissus {
 
                 std::shared_ptr<bool> is_sleep;
                 std::shared_ptr<std::condition_variable> c_variable_ptr;
+                std::shared_ptr<std::mutex> cv_mutex_ptr;
                 mcu memory;
 
-                std::mutex cv_mutex;
 
             public:
                 auto run(void) -> void;
@@ -463,6 +463,7 @@ namespace narcissus {
                 FRIEND_TEST(MOV_B_R_R_IND_WITH_DIS_24, 0);
                 FRIEND_TEST(RTE, 0);
                 FRIEND_TEST(TRAPA, 0);
+                FRIEND_TEST(er7, 0);
         };
 
         class cpu::create_helper : public cpu

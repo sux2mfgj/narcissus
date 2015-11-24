@@ -35,7 +35,7 @@ namespace narcissus {
             public:
                 mcu(std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size>&& init_rom,
                         std::shared_ptr<std::condition_variable> c_variable_ptr,
-                        std::shared_ptr<bool> is_sleep);
+                        std::shared_ptr<bool> is_sleep, std::shared_ptr<std::mutex> m);
                 virtual ~mcu() = default;
                
             public:

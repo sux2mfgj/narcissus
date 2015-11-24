@@ -12,10 +12,10 @@ namespace narcissus {
     namespace h8_3069f{
 
         sci::sci(std::shared_ptr<std::condition_variable> cv, 
-                std::shared_ptr<bool> is_s)
+                std::shared_ptr<bool> is_s, std::shared_ptr<std::mutex> m)
             : rsr(), rdr(), tsr(), tdr(), smr(), scr(), 
             ssr((std::uint8_t)ssr_bits::rdrf), brr(), scmr(), access_flags(0),
-            c_variable_ptr(cv), is_sleep(is_s), is_dirty_ssr(false)
+            c_variable_ptr(cv), is_sleep(is_s), is_dirty_ssr(false), cv_mutex_ptr(m)
         {} 
 
         sci::~sci()
@@ -75,39 +75,6 @@ namespace narcissus {
                         }
                     });
             read_thread.detach();
-
-//             ssr_thread = std::thread(
-//                     [&]
-//                     {
-//                         while (true)
-//                         {
-//                             if(access_flags & (std::uint8_t)access_flag::ssr)
-//                             {
-//                                 if(!(ssr & (std::uint8_t)ssr_bits::tdre))
-//                                 {
-//                                     std::cout << tdr << std::flush;
-
-//                                     std::clog << std::hex << "out(hex): " << (std::uint16_t)tdr 
-//                                         << "(" << (char)tdr << ")"<<std::endl;
-
-//                                     ssr |= (std::uint8_t)ssr_bits::tdre;
-//                                 }
-
-//                                 if(!(ssr & (std::uint8_t)ssr_bits::rdrf))
-//                                 {
-//                                     if(!read_buffer.empty()){
-//                                         ssr |= (std::uint8_t)ssr_bits::rdrf;
-//                                     }
-//                                 }
-
-//                                 access_flags &= ~(std::uint8_t)access_flag::ssr;
-//                                 is_dirty_ssr = false;
-//                                 std::unique_lock<std::mutex> locker(cv_mutex);
-//                                 c_variable_ptr->wait(locker, [&]{return is_dirty_ssr;});
-//                             }
-//                         }
-//                     });
-//             ssr_thread.detach();
         }
 
         auto sci::work() -> void
