@@ -1,4 +1,3 @@
-
 TARGET := narcissus
 
 BIN_FILE := ./osbook_03/08/bootload/kzload.bin
@@ -12,12 +11,9 @@ $(TARGET):
 
 test: $(TARGET)
 	cd build; ctest -VV
-
-debug: $(TARGET)
-	./build/debug $(BIN_FILE)
   
 run: $(TARGET)
-	./build/narcissus $(BIN_FILE)
+	./build/narcissus -i $(BIN_FILE)
 
 serial: $(TARGET)
 	socat -d -d pty,raw,echo=0 "exec:./build/narcissus $(BIN_FILE),pty,raw,echo=0"

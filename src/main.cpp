@@ -12,15 +12,17 @@ int main(int argc, char const* argv[])
     using namespace narcissus;
     namespace po = boost::program_options;
 
-    try {
-            
-        // program_options
+    po::variables_map vm;
+    // program_options
+    auto error_message("error:\n\t");
+    try 
+    {
         po::options_description desc("Allowd options");
         desc.add_options()
-            ("help", "print this menu")
+            ("help,h", "print this menu")
+            ("image,i", po::value<std::string>(), "run image to <file_path>")
         ;
 
-        po::variables_map vm;
         po::store(po::parse_command_line(argc, argv, desc), vm);
         po::notify(vm);
 
@@ -29,30 +31,27 @@ int main(int argc, char const* argv[])
             std::cout << desc << std::endl;
             return 0;
         }
-    } catch (std::exception& e) 
+
+        if(!vm.count("image"))
+        {
+            std::cerr << error_message << "you should set --image options" << std::endl;
+            return 1;
+        }
+    } 
+    catch (std::exception& e) 
     {
-        std::cerr << "error: \n\t"
-            << e.what() << std::endl;
+        std::cerr << error_message << e.what() << std::endl;
         return 1;
     }
 
-
     std::fstream file;
-    char buf[16];
-
     std::array<uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
 
-    if(argc < 2){
-        return -1;
-    }
-    file.open(argv[1], std::ios::in | std::ios::binary);
+    file.open(vm["image"].as<std::string>(), std::ios::in | std::ios::binary);
 
     auto i = 0;
     while (!file.eof()) {
-        file.read(buf, sizeof(buf));
-        for(auto j = 0; j < file.gcount(); j++){
-            mem[i++] = buf[j];
-        }
+        mem[i++] = (std::uint8_t)file.get();
     }
     file.close();
 
