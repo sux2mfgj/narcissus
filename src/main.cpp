@@ -1,11 +1,12 @@
 #include <iostream>
 #include <fstream>
 #include <memory>
+#include <cstdbool>
 
 #include <boost/program_options.hpp>
 
 #include <cpu.hpp>
-#include <debug.hpp>
+#include <gdb_server.hpp>
 
 int main(int argc, char const* argv[])
 {
@@ -21,6 +22,7 @@ int main(int argc, char const* argv[])
         desc.add_options()
             ("help,h", "print this menu")
             ("image,i", po::value<std::string>(), "run image to <file_path>")
+            ("debug,d", "enable debug mode")
         ;
 
         po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -49,14 +51,23 @@ int main(int argc, char const* argv[])
 
     file.open(vm["image"].as<std::string>(), std::ios::in | std::ios::binary);
 
-    auto i = 0;
-    while (!file.eof()) {
-        mem[i++] = (std::uint8_t)file.get();
+    {
+        auto i = 0;
+        while (!file.eof()) {
+            mem[i++] = (std::uint8_t)file.get();
+        }
     }
     file.close();
 
+    // for gdb 
+//     debug::gdb_server gdb;
+    if(vm.count("debug"))
+    {
+        std::cout << "debug mode start" << std::endl; 
+    }
+
     auto cpu = h8_3069f::cpu::create(move(mem));
-    h8_3069f::cpu_debuger debug(cpu);
+//     h8_3069f::cpu_debuger debug(cpu);
     cpu->interrupt(h8_3069f::interrupts::reset);
 
     cpu->run();
