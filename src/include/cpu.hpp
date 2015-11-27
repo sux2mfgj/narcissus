@@ -9,6 +9,8 @@
 #include <gtest/gtest.h>
 
 #include <mcu.hpp>
+#include <narcissus.hpp>
+#include <gdb.hpp>
 
 namespace narcissus {
     namespace h8_3069f {
@@ -287,7 +289,8 @@ namespace narcissus {
         };
 
         class cpu 
-            : public std::enable_shared_from_this<cpu>
+            : public std::enable_shared_from_this<cpu>,
+            public narcissus
         {
             enum class value_place : std::uint8_t
             {
@@ -295,16 +298,11 @@ namespace narcissus {
                 low,
             };
 
-            private:
-                class create_helper;
-
             public:
-                static std::shared_ptr<cpu> create(std::array<std::uint8_t, 
-                        (std::uint32_t)mem_info::rom_size>&& mem);
                 virtual ~cpu() = default;;
+                cpu(std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size>&& mem);
 
             private:
-                cpu(std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size>&& mem);
                 cpu(cpu const&) = delete;
                 cpu(cpu&&) = delete;
                 cpu& operator =(cpu const&) = delete;
@@ -326,15 +324,14 @@ namespace narcissus {
                 std::shared_ptr<std::mutex> cv_mutex_ptr;
                 mcu memory;
 
-
             public:
                 auto run(void) -> void;
-                auto reset_exception(void) -> void;
                 auto interrupt(interrupts int_num) -> bool;
 
             private:
                 auto cycle(void) -> std::uint32_t;
                 auto detect_operation(void) -> operation;
+                auto before_run(void) -> void;
 
                 //for ccr
                 auto update_ccr_sub(std::uint32_t value_0, std::uint32_t value_1, 
@@ -365,7 +362,8 @@ namespace narcissus {
                 auto detect_mulx(void) -> operation;
 
             public:
-                friend class cpu_debuger;
+//                 friend class cpu_debuger;
+                friend class gdb_server;
 
             // use macro for test
             public:
@@ -464,15 +462,6 @@ namespace narcissus {
                 FRIEND_TEST(RTE, 0);
                 FRIEND_TEST(TRAPA, 0);
                 FRIEND_TEST(er7, 0);
-        };
-
-        class cpu::create_helper : public cpu
-        {
-            public:
-
-                create_helper(std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size>&& mem)
-                    : cpu(std::move(mem))
-                {}
         };
 
     }  // namespace h8_3069f

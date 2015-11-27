@@ -13,7 +13,7 @@ namespace narcissus {
             mem[0x100] = 0x0a;
             mem[0x101] = 0x00;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
 
             cpu->interrupt(h8_3069f::interrupts::reset);
 
@@ -28,7 +28,7 @@ namespace narcissus {
             mem[0x100] = 0x70;
             mem[0x101] = 0x00;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             auto ers = cpu->read_register_fields(0x100, cpu::value_place::high, true);
@@ -43,7 +43,7 @@ namespace narcissus {
             mem[0x102] = 0x34;
             mem[0x103] = 0x56;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             auto imm = cpu->read_immediate(0x101, 3);
@@ -54,7 +54,7 @@ namespace narcissus {
         {
            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->write_immediate(0x100, 3, 0x123456);
@@ -67,7 +67,7 @@ namespace narcissus {
         {
            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].l = 0x12;
@@ -85,7 +85,7 @@ namespace narcissus {
         {
            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->write_register(0x2, 0x12, register_size::BYTE);
@@ -114,7 +114,7 @@ namespace narcissus {
                     mem[0x100] = 0x0a;
                     mem[0x101] = 0xd2;
 
-                    auto cpu = h8_3069f::cpu::create(move(mem));
+                    auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
                     cpu->interrupt(h8_3069f::interrupts::reset);
 
                     cpu->er[5].er = 0x12345678;
@@ -139,7 +139,7 @@ namespace narcissus {
             mem[0x100] = 0x18;
             mem[0x101] = 0x82;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].h = 0x34;
@@ -166,7 +166,7 @@ namespace narcissus {
             mem[0x100] = 0x19;
             mem[0x101] = 0x00;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].r = 0x1234;
@@ -191,7 +191,7 @@ namespace narcissus {
             mem[0x100] = 0x19;
             mem[0x101] = 0x03;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].r = 0x5555;
@@ -220,7 +220,7 @@ namespace narcissus {
             mem[0x100] = 0x1b;
             mem[0x101] = 0x97;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[7].er = 0x00ffff00;
@@ -243,7 +243,7 @@ namespace narcissus {
             mem[0x100] = 0xf2;
             mem[0x101] = 0x12;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             ASSERT_EQ(h8_3069f::operation::MOV_B_IMM_R, cpu->detect_operation());
@@ -265,7 +265,7 @@ namespace narcissus {
             mem[0x100] = 0xf2;
             mem[0x101] = 0x00;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             ASSERT_EQ(h8_3069f::operation::MOV_B_IMM_R, cpu->detect_operation());
@@ -289,7 +289,7 @@ namespace narcissus {
             mem[0x100] = 0x0c;
             mem[0x101] = 0x8c;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].l = 0x12;
@@ -315,7 +315,7 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0x02;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             //source
@@ -346,7 +346,7 @@ namespace narcissus {
             mem[0x102] = 0x01;
             mem[0x103] = 0x00;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[6].er = 0x100;
@@ -372,7 +372,7 @@ namespace narcissus {
             mem[0x100] = 0x6c;
             mem[0x101] = 0x48;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[4].er = 0x120;
@@ -398,7 +398,7 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0x01;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             ASSERT_EQ(h8_3069f::operation::MOV_W_IMM_R, cpu->detect_operation());
@@ -426,7 +426,7 @@ namespace narcissus {
             mem[0x104] = 0xff;
             mem[0x105] = 0x00;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             ASSERT_EQ(h8_3069f::operation::MOV_L_IMM_R, cpu->detect_operation());
@@ -450,7 +450,7 @@ namespace narcissus {
             mem[0x102] = 0x6d;
             mem[0x103] = 0xf6;  // 1111 0110
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[6].er = 0x12345678;
@@ -478,7 +478,7 @@ namespace narcissus {
             mem[0x100] = 0x0f;
             mem[0x101] = 0xf6;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[7].er = 0x00ffff00;
@@ -512,7 +512,7 @@ namespace narcissus {
             mem[0x108] = 0x02;
             mem[0x109] = 0x38;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].er = 0x00000200;
@@ -545,7 +545,7 @@ namespace narcissus {
             mem[0x102] = 0x6d;
             mem[0x103] = 0x76;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->sp = 0xffff00;
@@ -580,7 +580,7 @@ namespace narcissus {
             mem[0x100] = 0x47;
             mem[0x101] = 0x08;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             //             std::cout << "zero :" << cpu->ccr.zero << std::endl;
@@ -604,7 +604,7 @@ namespace narcissus {
             mem[0x100] = 0x40;
             mem[0x101] = 0xfe;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             ASSERT_EQ(h8_3069f::operation::BRA_8, cpu->detect_operation());
@@ -624,7 +624,7 @@ namespace narcissus {
             mem[0x100] = 0x46;
             mem[0x101] = 0x0a;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->ccr.zero = 0;
@@ -648,7 +648,7 @@ namespace narcissus {
             mem[0x100] = 0xa8;
             mem[0x101] = 0x0a;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].l = 0xa;
@@ -671,7 +671,7 @@ namespace narcissus {
             mem[0x100] = 0xa8;
             mem[0x101] = 0x0a;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].l = 0x9;
@@ -696,7 +696,7 @@ namespace narcissus {
             mem[0x102] = 0x01;
             mem[0x103] = 0x0c;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->sp = 0x00ffff00;
@@ -730,7 +730,7 @@ namespace narcissus {
             mem[0x100] = 0x17;
             mem[0x101] = 0xf0;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].er = 0x00008001;
@@ -754,7 +754,7 @@ namespace narcissus {
             mem[0x100] = 0x17;
             mem[0x101] = 0xf0;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].er = 0x00010000;
@@ -778,7 +778,7 @@ namespace narcissus {
             mem[0x100] = 0x10;
             mem[0x101] = 0x30;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].er = 0x00000001;
@@ -810,7 +810,7 @@ namespace narcissus {
             mem[0x110] = 0x54;
             mem[0x111] = 0x70;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->sp = 0x00ffff00;
@@ -839,7 +839,7 @@ namespace narcissus {
             mem[0x100] = 0x0d;
             mem[0x101] = 0x05;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].r = 0x12;
@@ -865,7 +865,7 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0x80;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].r = 0xff0f;
@@ -891,7 +891,7 @@ namespace narcissus {
             mem[0x102] = 0x80;
             mem[0x103] = 0x00;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].r = 0x8000;
@@ -904,7 +904,7 @@ namespace narcissus {
         TEST(register, 0)
         {
            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
 
             cpu->er[0].e = 0x1234;
             cpu->er[0].r = 0x5678;
@@ -929,7 +929,7 @@ namespace narcissus {
             mem[0x100] = 0xea;
             mem[0x101] = 0x7f;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].l = 0x7f;
@@ -953,7 +953,7 @@ namespace narcissus {
             mem[0x100] = 0x0b;
             mem[0x101] = 0x97;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[7].er = 0x12;
@@ -978,7 +978,7 @@ namespace narcissus {
             mem[0x100] = 0x1a;
             mem[0x101] = 0x80;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             ASSERT_EQ(h8_3069f::operation::SUB_L_R_R, cpu->detect_operation());
@@ -999,7 +999,7 @@ namespace narcissus {
             mem[0x100] = 0x88;
             mem[0x101] = 0x10;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].l = 0x12;
@@ -1027,7 +1027,7 @@ namespace narcissus {
             mem[0x104] = 0xff;
             mem[0x105] = 0xf4;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[7].er = 0x12345678;
@@ -1050,7 +1050,7 @@ namespace narcissus {
             mem[0x100] = 0x1b;
             mem[0x101] = 0x03;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[3].er = 0x12345678;
@@ -1084,7 +1084,7 @@ namespace narcissus {
 
             mem[0x100 + 0x3ea] = 0x12;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].er = 0x100;
@@ -1107,7 +1107,7 @@ namespace narcissus {
             mem[0x100] = 0x11;
             mem[0x101] = 0x32;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].er = 0x00000100;
@@ -1131,7 +1131,7 @@ namespace narcissus {
             mem[0x100] = 0x1b;
             mem[0x101] = 0x50;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].r = 0x0100;
@@ -1154,7 +1154,7 @@ namespace narcissus {
             mem[0x100] = 0x68;
             mem[0x101] = 0xba;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].l = 0x12;
@@ -1179,7 +1179,7 @@ namespace narcissus {
             mem[0x100] = 0x68;
             mem[0x101] = 0x4a;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[4].er = 0x120;
@@ -1203,7 +1203,7 @@ namespace narcissus {
             mem[0x100]  = 0x0b;
             mem[0x101]  = 0x00;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].er = 0x0fffffff;
@@ -1232,7 +1232,7 @@ namespace narcissus {
             mem[0x104] = 0xfc;
             mem[0x105] = 0x20;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].er = 0x12345678;
@@ -1256,7 +1256,7 @@ namespace narcissus {
             mem[0x100] = 0x4f;
             mem[0x101] = 0x0a;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->ccr.zero = 0;
@@ -1286,7 +1286,7 @@ namespace narcissus {
             mem[0x105] = 0x20;
 
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->memory[0xfffc20] = 0x12;
@@ -1315,7 +1315,7 @@ namespace narcissus {
             mem[0x104] = 0xfc;
             mem[0x105] = 0x20;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].er = 0x1234;
@@ -1341,7 +1341,7 @@ namespace narcissus {
             mem[0x100] = 0x17;
             mem[0x101] = 0x50;
             
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].r = 0x1234;
@@ -1365,7 +1365,7 @@ namespace narcissus {
             mem[0x100] = 0x1c;
             mem[0x101] = 0xab;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].l = 0x12;
@@ -1391,7 +1391,7 @@ namespace narcissus {
             mem[0x100] = 0x43;
             mem[0x101] = 0x06;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->ccr.carry = 1;
@@ -1414,7 +1414,7 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0x9c;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             ASSERT_EQ(h8_3069f::operation::BNE_16, cpu->detect_operation());
@@ -1442,7 +1442,7 @@ namespace narcissus {
             mem[0x106] = 0xfc;
             mem[0x107] = 0x20;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->memory[0xfffc20] = 0x12;
@@ -1472,7 +1472,7 @@ namespace narcissus {
             mem[0x2a2] = 0xfe;
             mem[0x2a3] = 0xbc;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             ASSERT_EQ(h8_3069f::operation::BRA_16, cpu->detect_operation());
@@ -1499,7 +1499,7 @@ namespace narcissus {
             mem[0x106] = 0xfc;
             mem[0x107] = 0x40;
             
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].er = 0x12345678;
@@ -1531,7 +1531,7 @@ namespace narcissus {
             mem[0x104] = 0xff;
             mem[0x105] = 0xfc;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].er = 0x12345678;
@@ -1562,7 +1562,7 @@ namespace narcissus {
             mem[0x102] = 0xff;
             mem[0x103] = 0xfa;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].r = 0x1234;
@@ -1592,7 +1592,7 @@ namespace narcissus {
             mem[0x102] = 0xff;
             mem[0x103] = 0xfa;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             auto addr = 0x00ffff00 + (std::int16_t)0xfffa;
@@ -1620,7 +1620,7 @@ namespace narcissus {
             mem[0x100] = 0x4c;
             mem[0x101] = 0x0a;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->ccr.negative = 1;
@@ -1645,7 +1645,7 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0xbe;
             
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->ccr.zero = 1;
@@ -1671,7 +1671,7 @@ namespace narcissus {
             mem[0x104] = 0x84;
             mem[0x105] = 0x7f;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[4].er = 0x1e847f;
@@ -1699,7 +1699,7 @@ namespace narcissus {
             mem[0x104] = 0xff;
             mem[0x105] = 0xfc;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[6].er = 0x00ffff00;
@@ -1727,7 +1727,7 @@ namespace narcissus {
             mem[0x100] = 0x15;
             mem[0x101] = 0x8a;
             
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].l = 0x12;
@@ -1751,7 +1751,7 @@ namespace narcissus {
             mem[0x100] = 0x4e;
             mem[0x101] = 0x10;
             
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->ccr.zero = 0;
@@ -1775,7 +1775,7 @@ namespace narcissus {
             mem[0x102] = 0x69;
             mem[0x103] = 0x23;
             
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
             
             cpu->er[2].er = 0x00000200;
@@ -1802,7 +1802,7 @@ namespace narcissus {
             mem[0x100] = 0x08;
             mem[0x101] = 0x8b;
             
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].l = 0x12;
@@ -1828,7 +1828,7 @@ namespace narcissus {
             mem[0x102] = 0x69;
             mem[0x103] = 0xa3;
             
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[3].er = 0x12345678;
@@ -1855,7 +1855,7 @@ namespace narcissus {
             mem[0x100] = 0x1f;
             mem[0x101] = 0xc5;
             
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[5].er = 0x12345678;
@@ -1881,7 +1881,7 @@ namespace narcissus {
             mem[0x100] = 0xda;
             mem[0x101] = 0x07;
             
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].l = 0x8;
@@ -1903,7 +1903,7 @@ namespace narcissus {
             mem[0x100] = 0x1b;
             mem[0x101] = 0xd2;
             
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].r = 0x1112;
@@ -1925,7 +1925,7 @@ namespace narcissus {
             mem[0x100] = 0x1b;
             mem[0x101] = 0x72;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].er = 0x12345678;
@@ -1950,7 +1950,7 @@ namespace narcissus {
             mem[0x102] = 0xff;
             mem[0x103] = 0xd2;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].r = 0x1234;
@@ -1973,7 +1973,7 @@ namespace narcissus {
             mem[0x100] = 0x11;
             mem[0x101] = 0x92;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].r = 0x1234;
@@ -1996,7 +1996,7 @@ namespace narcissus {
             mem[0x100] = 0x1d;
             mem[0x101] = 0x23;
             
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             ASSERT_EQ(h8_3069f::operation::CMP_W_R_R, cpu->detect_operation());
@@ -2018,7 +2018,7 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0xe2;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->ccr.negative = 0;
@@ -2042,7 +2042,7 @@ namespace narcissus {
             mem[0x102] = 0x52;
             mem[0x103] = 0x32;
             
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].er = 0x12345678;
@@ -2065,7 +2065,7 @@ namespace narcissus {
             //jsr @er4
             mem[0x100] = 0x5d;
             mem[0x101] = 0x40;
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[4].er = 0x400;
@@ -2087,7 +2087,7 @@ namespace narcissus {
             mem[0x100] = 0x04;
             mem[0x101] = 0xc0;
             
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             ASSERT_EQ(h8_3069f::operation::ORC, cpu->detect_operation());
@@ -2116,7 +2116,7 @@ namespace narcissus {
             mem[0x108] = 0xbf;
             mem[0x109] = 0x20;
             
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[1].er = 0x12345678; // src
@@ -2146,7 +2146,7 @@ namespace narcissus {
             mem[0x102] = 0x00;
             mem[0x103] = 0x02;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[4].er = 0x12345678;
@@ -2169,7 +2169,7 @@ namespace narcissus {
             mem[0x100] = 0xca;
             mem[0x101] = 0x40;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[2].l = 0x40;
@@ -2192,7 +2192,7 @@ namespace narcissus {
             mem[0x100] = 0x06;
             mem[0x101] = 0x3f;
             
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             ASSERT_EQ(h8_3069f::operation::ANDC, cpu->detect_operation());
@@ -2211,7 +2211,7 @@ namespace narcissus {
             mem[0x100] = 0x01;
             mem[0x101] = 0x80;
             
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             ASSERT_EQ(h8_3069f::operation::SLEEP, cpu->detect_operation());
@@ -2237,7 +2237,7 @@ namespace narcissus {
             mem[0x106] = 0xc5;
             mem[0x107] = 0xec;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[0].l = 0x12;
@@ -2263,7 +2263,7 @@ namespace narcissus {
             mem[0x100] = 0x56;
             mem[0x101] = 0x70;
             
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->sp = 0x00ffff00 - 4;
@@ -2291,7 +2291,7 @@ namespace narcissus {
             mem[0x100] = 0x57;
             mem[0x101] = 0x00;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->sp = 0x00ffff00;
@@ -2319,7 +2319,7 @@ namespace narcissus {
             mem[2] = 0x01;
             mem[3] = 0x00;
 
-            auto cpu = h8_3069f::cpu::create(move(mem));
+            auto cpu =std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
             cpu->er[7].er = 0x12345678;

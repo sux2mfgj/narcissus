@@ -14,13 +14,6 @@ namespace narcissus {
             memory(move(mem), c_variable_ptr, is_sleep, cv_mutex_ptr)
         {}
 
-        std::shared_ptr<cpu> cpu::create(
-                std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size>&& mem)
-        {
-            auto p = std::make_shared<create_helper>(std::move(mem));
-            return std::move(p);
-        }
-
         auto cpu::interrupt(interrupts int_num) -> bool
         {
             std::unique_lock<std::mutex> lock(*cv_mutex_ptr);
@@ -139,19 +132,24 @@ namespace narcissus {
             return true;
         }
 
+        auto cpu::before_run(void) -> void
+        {
+            memory.before_run(shared_from_this());
+        }
+
         auto cpu::run() -> void
         {
             std::uint32_t before_pc;
             auto limit = 0;
 
-            memory.before_run(shared_from_this());
+//             memory.before_run(shared_from_this());
+            before_run();
 
             std::clog << "start" << std::endl;
 
             while (true) {
                 auto pc = cycle();
                 
-
                 // for debug
                 std::clog << std::hex << " - pc: 0x" << pc << std::endl;
 
@@ -203,7 +201,6 @@ namespace narcissus {
 
         auto cpu::cycle() -> std::uint32_t
         {
-            
             std::unique_lock<std::mutex> lock(*cv_mutex_ptr);
             switch (detect_operation()) {
 
