@@ -126,11 +126,23 @@ namespace narcissus {
                                             {
                                                 //TODO $qTfV#81
                                                 ack();
-//                                                 std::string qtdv("QTDV:0000000000000000:0000000000000000:1:74657374DA");
-                                                std::string qtdv("1:0000000000000000:1:61");
-                                                stream << "$" << qtdv << "#"
+                                                std::string qtfv("1:0000000000000000:1:61");
+                                                stream << "$" << qtfv << "#"
                                                     << std::hex << std::setfill('0') << std::setw(2)
-                                                    << (check_sum(qtdv.c_str()) % 0x100);
+                                                    << (check_sum(qtfv.c_str()) % 0x100);
+                                                return stream.str();
+                                            }
+
+                                        case 's':
+                                            {
+                                                //$qTsV#8e
+                                                ack();
+//                                                 std::string qtsv("1:0000000000000000:1:61");
+                                                std::string qtsv("l");
+
+                                                stream << "$" << qtsv << "#"
+                                                    << std::hex << std::setfill('0') << std::setw(2)
+                                                    << (check_sum(qtsv.c_str()) % 0x100);
                                                 return stream.str();
                                             }
                                     }
