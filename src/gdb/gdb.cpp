@@ -68,8 +68,10 @@ namespace narcissus {
                 return "";
             }
 
-            std::string return_packet;
             std::stringstream stream;
+            auto ack = [this]{
+                boost::asio::write(socket_, boost::asio::buffer("+", 1));
+            };
 
             switch (data[++i]) {
                 // read register
@@ -91,23 +93,12 @@ namespace narcissus {
 
                 case 'q':
                     {
-                        //$qSupported:multiprocess+;swbreak+;hwbreak+;qRelocInsn+#c9
 
                         switch (data[++i]) {
                             case 'S':
                                 {
-                                    //TODO: qSupported
-                                    //                         stream << "$+#" << std::hex << (check_sum("+") % 0x100);
-
-                                    //                         std::cout << stream.str() << std::endl;
-
-                                    //                         boost::asio::write(socket_, boost::asio::buffer(stream.str().c_str(), 5));
-
-                                    std::string ack("+");
-                                    boost::asio::write(socket_, boost::asio::buffer(ack.c_str(), 1));
-
-                                    stream.str(std::string());
-                                    stream.clear();
+                                    //$qSupported:multiprocess+;swbreak+;hwbreak+;qRelocInsn+#c9
+                                    ack();
 //                                     std::string stubfeature("multiprocess-;swbreak-;hwbreak-;qRelocInsn-");
                                     std::string stubfeature("multiprocess-");
 
@@ -118,18 +109,27 @@ namespace narcissus {
                                 }
                             case 'T':
                                 {
-                                //TODO $qTStatus#49
-                                std::string ack("+");
-                                boost::asio::write(socket_, boost::asio::buffer(ack.c_str(), 1));
+                                    switch (data[++i]) {
+                                        case 'S':
+                                            {
+                                                //$qTStatus#49
+                                                ack();
 
-                                stream.str(std::string());
-                                stream.clear();
+                                                std::string stubfeature("T0;tnotrun:0");
+                                                stream << "$" << stubfeature << "#" 
+                                                    << std::hex << std::setfill('0') << std::setw(2) 
+                                                    << (check_sum(stubfeature.c_str()) % 0x100);
+                                                return stream.str();
+                                            }
 
-                                std::string stubfeature("T0;tnotrun:0");
-                                stream << "$" << stubfeature << "#" 
-                                    << std::hex << std::setfill('0') << std::setw(2) 
-                                    << (check_sum(stubfeature.c_str()) % 0x100);
-                                return stream.str();
+                                        case 'f':
+                                            {
+                                                //TODO $qTfV#81
+                                                ack();
+//                                                 assert(false);
+                                                return "";
+                                            }
+                                    }
                                 }
                         }
                     }
