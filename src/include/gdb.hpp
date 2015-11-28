@@ -35,9 +35,22 @@ namespace narcissus {
             boost::asio::ip::tcp::acceptor acceptor_;
             boost::asio::ip::tcp::socket socket_;
 
-
-
     };
+
+    namespace  {
+        constexpr auto check_sum(const char* text) -> std::uint32_t
+        {
+            if(text[0] == '\0')
+            {
+                return 0;
+            }
+            else 
+            {
+                return check_sum(&text[1]) + (std::uint8_t)text[0];
+            }
+        }
+
+    } // namespace 
 
     //XXX
     } // namespace h8_3069f

@@ -24,25 +24,27 @@ namespace narcissus {
         {
             while (true) 
             {
-                std::cout << "#a" << std::endl;
                 std::array<char, 1024> data{0};
 
                 boost::system::error_code error;
                 size_t length = socket_.read_some(boost::asio::buffer(data), error);
                 if(error == boost::asio::error::eof)
                 {
+                    std::cout << "eof" << std::endl;
                     break;
                 }
                 else if(error)
                 {
                     throw boost::system::system_error(error);
                 }
-                std::cout << std::string(data.data()) << std::endl;
+                std::cout << "receive: " << std::string(data.data()) << std::endl;
 
                 auto r = work(data, length);
-                std::cout << "#b" << std::endl;
-                boost::asio::write(socket_, boost::asio::buffer(r.c_str(), r.length()));
-                std::cout << "#c" << std::endl;
+                if(!r.empty())
+                {
+                    std::cout << "send:    " << r.c_str() << std::endl;
+                    boost::asio::write(socket_, boost::asio::buffer(r.c_str(), r.length()));
+                }
             }
         }
         catch(std::exception& e)
@@ -67,8 +69,8 @@ namespace narcissus {
         }
 
         std::string return_packet;
+        std::stringstream stream;
 
-        std::cout << data[i+1] << std::endl;
         switch (data[++i]) {
             // read register
             case '?':
@@ -94,30 +96,55 @@ namespace narcissus {
                 switch (data[++i]) {
                     case 'S':
                         //TODO: qSupported
-                        return "multiprocess-";
+//                         stream << "$+#" << std::hex << (check_sum("+") % 0x100);
+
+//                         std::cout << stream.str() << std::endl;
+
+//                         boost::asio::write(socket_, boost::asio::buffer(stream.str().c_str(), 5));
+
+                        stream.str(std::string());
+                        stream.clear();
+//                         stream << "$qSupported:multiprocess-#" 
+                        stream << "$#" 
+                            << std::hex << std::setfill('0') << std::setw(2) 
+                            << (check_sum("") % 0x100);
+                        return stream.str();
 
                     case 'T':
                         //TODO $qTStatus#49
-                        return "tnotrun:0";
+                        stream.str(std::string());
+                        stream.clear();
+
+                        stream << "$T0;tnotrun:0#" << std::setfill('0') 
+                            << std::setw(2) << std::hex << (check_sum("T0;tnotrun:0") % 0x100); 
+                        return stream.str();
+//                         return std::string("$tnotrun:0#") + std::string(check_sum("tnotrun:0"));
                 }
             }
 
             case '+':
             {
-                //TODO
-                return "+";
+                return "";
             }
 
-            case 'H':
+//             case 'H':
+//             {
+//                 return "OK";
+//             }
+
+            default:
             {
-                return "OK";
+                boost::asio::write(socket_, boost::asio::buffer("+", 1));
+//                 boost::asio::write(socket_, boost::asio::buffer("$#00", 4));
+
+                return "$#00";
             }
         }
         std::cout << "reach end [work]" << std::endl;
         assert(false);
     }
 
-    auto gdb_server::interrupt(::narcissus::h8_3069f::interrupts int_num) -> bool
+        auto gdb_server::interrupt(::narcissus::h8_3069f::interrupts int_num) -> bool
     {
         return cpu_->interrupt(int_num);
     }
