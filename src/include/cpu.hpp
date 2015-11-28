@@ -362,7 +362,6 @@ namespace narcissus {
                 auto detect_mulx(void) -> operation;
 
             public:
-//                 friend class cpu_debuger;
                 friend class gdb_server;
 
             // use macro for test
