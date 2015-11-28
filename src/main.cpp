@@ -1,11 +1,11 @@
 #include <iostream>
+
 #include <fstream>
 #include <memory>
 
 #include <boost/program_options.hpp>
 
 #include <cpu.hpp>
-#include <debug.hpp>
 
 int main(int argc, char const* argv[])
 {
@@ -56,7 +56,6 @@ int main(int argc, char const* argv[])
     file.close();
 
     auto cpu = h8_3069f::cpu::create(move(mem));
-    h8_3069f::cpu_debuger debug(cpu);
     cpu->interrupt(h8_3069f::interrupts::reset);
 
     cpu->run();

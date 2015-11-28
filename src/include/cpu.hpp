@@ -364,9 +364,6 @@ namespace narcissus {
                 auto detect_mov_7_8(void) -> operation;
                 auto detect_mulx(void) -> operation;
 
-            public:
-                friend class cpu_debuger;
-
             // use macro for test
             public:
                 // for utility function
