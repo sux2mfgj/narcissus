@@ -15,6 +15,9 @@ test: $(TARGET)
 run: $(TARGET)
 	./build/narcissus -i $(BIN_FILE)
 
+gdb: $(TARGET)
+	./build/narcissus -i $(BIN_FILE)  -d 
+
 serial: $(TARGET)
 	socat -d -d pty,raw,echo=0 "exec:./build/narcissus $(BIN_FILE),pty,raw,echo=0"
 

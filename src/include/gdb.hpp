@@ -27,8 +27,7 @@ namespace narcissus {
                 auto interrupt(h8_3069f::interrupts) -> bool;
 
             private:
-                //             auto read_packet(std::array<char, 1024>, size_t length) -> void;
-                auto work(std::array<char, 1024>& data, size_t length) -> std::string;
+                auto work(std::array<char, 1024>& data, size_t length) -> void;
 
             private:
                 std::shared_ptr<h8_3069f::cpu> cpu_;
