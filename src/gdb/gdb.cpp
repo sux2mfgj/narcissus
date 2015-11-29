@@ -119,8 +119,19 @@ namespace narcissus {
                         auto pc = cpu_->cycle();
                         assert(false);
                     }
+
+                case 'v':
+                    {
+                        //$vCont?#49+
+                        ack();
+                        reply("vCont;c;s");
+                        break;
+                    }
+
                 case 'p':
                     {
+                        //TODO
+                        // reply register value
                         ack();
                         reply("1234");
                         break;
