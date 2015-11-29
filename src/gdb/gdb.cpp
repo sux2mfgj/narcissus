@@ -116,8 +116,13 @@ namespace narcissus {
                     // single step
                 case 's':
                     {
+                        //$s#73
+                        ack();
                         auto pc = cpu_->cycle();
-                        assert(false);
+                        //TODO
+                        //reply important register value
+                        reply("S00");
+                        break;
                     }
 
                 case 'v':
@@ -131,9 +136,32 @@ namespace narcissus {
                 case 'p':
                     {
                         //TODO
+                        //$pc#d3
+                        //$p9#a9+
                         // reply register value
                         ack();
-                        reply("1234");
+                        switch(data[++i])
+                        {
+                            case '0' + 9:
+                                {
+                                    std::stringstream stream;
+                                    stream << std::hex << std::setw(4) << std::setfill('0')
+                                        << cpu_->pc;
+                                    reply(stream.str());
+                                    break;
+                                }
+
+                            case 'a':
+                            case 'a' + 1:
+                            case 'a' + 2:
+                                {
+                                    reply("0000");
+                                    break;
+                                }
+
+                            default:
+                                assert(false);
+                        }
                         break;
                     }
 
@@ -270,7 +298,8 @@ namespace narcissus {
                                         }
                                         buf[j] = data[++i];
                                     }
-                                    cpu_->pc = std::stoi(std::string(buf));
+                                    cpu_->pc = std::stoi(std::string(buf), nullptr, 16);
+                                    std::cout << "pc :" << cpu_->pc << std::endl;
                                     break;
                                 }
                                 
@@ -326,9 +355,14 @@ namespace narcissus {
 //                         std::string value(buf);
 
 //                         std::cout << "value : " << value << std::endl;
-                        if(std::stoi(length, nullptr, 16) != 0){
-                            cpu_->memory[std::stoi(addr, nullptr, 16)] = (std::uint8_t)data[++i];
+                        int len = std::stoi(length, nullptr, 16);
+                        for(auto j = 0; j < len; ++j)
+                        {
+                            cpu_->memory[std::stoi(addr, nullptr, 16) + j] = (std::uint8_t)data[++i];
+
                         }
+//                         if(len != 0){
+//                         }
 
                         std::cout << "OK" << std::endl;
                         reply("OK");
