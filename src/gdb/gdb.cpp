@@ -39,13 +39,7 @@ namespace narcissus {
                     }
                     std::cout << "receive: " << std::string(data.data()) << std::endl;
 
-//                     auto r = work(data, length);
                     work(data, length);
-//                     if(!r.empty())
-//                     {
-//                         std::cout << "send:    " << r.c_str() << std::endl;
-//                         boost::asio::write(socket_, boost::asio::buffer(r.c_str(), r.length()));
-//                     }
                 }
             }
             catch(std::exception& e)
@@ -71,7 +65,6 @@ namespace narcissus {
                 return;
             }
 
-            std::stringstream stream;
             auto ack = [this]
             {
                 boost::asio::write(socket_, boost::asio::buffer("+", 1));
@@ -87,6 +80,19 @@ namespace narcissus {
                 boost::asio::write(socket_, boost::asio::buffer(stream.str().c_str(), stream.str().length()));
             };
 
+            auto read_register = [this]() -> std::string
+            {
+                std::stringstream stream;
+                stream << std::hex;
+                for (auto&& c : cpu_->er) {
+                    stream << std::setw(4) << std::setfill('0') << c.r; 
+                }
+                stream << cpu_->sp << (std::uint16_t)cpu_->ccr.byte << cpu_->pc;
+                std::cout << stream.str() << std::endl;
+                return stream.str();
+            };
+
+
             switch (data[++i]) {
                 // read register
                 case '?':
@@ -94,18 +100,30 @@ namespace narcissus {
                         //$?#3f
                         ack();
 //                         reply("T001");
-                        reply("S00");
+                        reply("S000");
                         break;
                     }
                     // return cpu register
                 case 'g':
-                    assert(false);
-                    break;
+                    {
+                        ack();
+                        //0000 0000 0000 0000 0000 0000 0000 08 0100
+//                         reply(read_register());
+                        reply("012345670123456701234567012345670123");
+
+                        break;
+                    }
                     // single step
                 case 's':
                     {
                         auto pc = cpu_->cycle();
                         assert(false);
+                    }
+                case 'p':
+                    {
+                        ack();
+                        reply("1234");
+                        break;
                     }
 
                 case 'q':
@@ -122,7 +140,7 @@ namespace narcissus {
                                 {
                                     //$qC#b4
                                     ack();
-                                    reply("QC0");
+                                    reply("QC00");
                                     break;
                                 }
                             case 'S':
@@ -200,6 +218,59 @@ namespace narcissus {
                         break;
                     }
 
+                case 'X':
+                    {
+                        //$X0,0:#1e
+                        ack();
+                        char buf[8];
+
+                        // read addr
+                        for (auto j = 0; j < 8; j++) 
+                        {
+                            if(data[i + 1] == ',' ){
+                                buf[j] = '\0';
+                                ++i;
+                                break;
+                            }
+                            buf[j] = data[++i];
+                        }
+                        std::string addr(buf);
+                        std::cout << "addr : " << addr << std::endl;
+
+                        // read length
+                        for (auto j = 0;; j++) 
+                        {
+                            if(data[i+1] == ':') 
+                            {
+                                buf[j] = '\0';
+                                ++i;
+                                break;
+                            }
+                            buf[j] = data[++i];
+                        }
+                        std::string length(buf);
+
+                        std::cout << "length : " << length << std::endl;
+
+//                         std::uint8_t
+//                         for(auto j = 0; j < std::stoi(length); ++j)
+//                         {
+//                             buf[j] = data[++i];
+//                         }
+//                         buf[std::stoi(length)] = '\0';
+
+//                         std::string value(buf);
+
+//                         std::cout << "value : " << value << std::endl;
+                        if(std::stoi(length, nullptr, 16) != 0){
+                            cpu_->memory[std::stoi(addr, nullptr, 16)] = (std::uint8_t)data[++i];
+                        }
+
+                        std::cout << "OK" << std::endl;
+                        reply("OK");
+                        break;
+                    }
+
                 default:
                     {
                         //TODO
@@ -207,7 +278,7 @@ namespace narcissus {
                         //$Hg0#df
 //                         ack();
 //                         reply("");
-//                         break;
+                        break;
                     }
             }
         }

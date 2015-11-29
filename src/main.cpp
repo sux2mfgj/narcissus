@@ -39,9 +39,9 @@ int main(int argc, char const* argv[])
             return 0;
         }
 
-        if(!vm.count("image"))
+        if(!vm.count("image") && !vm.count("debug"))
         {
-            std::cerr << error_message << "you should set --image options" << std::endl;
+            std::cerr << error_message << "you should set --image or --debug option" << std::endl;
             return 1;
         }
     } 
@@ -54,15 +54,16 @@ int main(int argc, char const* argv[])
     std::fstream file;
     std::array<uint8_t, (std::uint32_t)na::h8_3069f::mem_info::rom_size> mem = {0};
 
-    file.open(vm["image"].as<std::string>(), std::ios::in | std::ios::binary);
-
-    {
-        auto i = 0;
-        while (!file.eof()) {
-            mem[i++] = (std::uint8_t)file.get();
+    if(vm.count("image")){
+        file.open(vm["image"].as<std::string>(), std::ios::in | std::ios::binary);
+        {
+            auto i = 0;
+            while (!file.eof()) {
+                mem[i++] = (std::uint8_t)file.get();
+            }
         }
+        file.close();
     }
-    file.close();
 
     // for signal handler and server
     boost::asio::io_service io_service;
