@@ -54,6 +54,7 @@ namespace narcissus {
             }
         }
 
+        //TODO
         auto gdb_server::work(std::array<char, 1024>& data, size_t length) 
             -> void
         {
@@ -92,7 +93,8 @@ namespace narcissus {
                     {
                         //$?#3f
                         ack();
-                        reply("T001");
+//                         reply("T001");
+                        reply("S00");
                         break;
                     }
                     // return cpu register
@@ -119,7 +121,9 @@ namespace narcissus {
                             case 'C':
                                 {
                                     //$qC#b4
-                                    assert(false);
+                                    ack();
+                                    reply("QC0");
+                                    break;
                                 }
                             case 'S':
                                 {
@@ -188,13 +192,22 @@ namespace narcissus {
                         break;
                     }
 
-                default:
+                case 'H':
                     {
-                        //TODO
                         //$Hg0#df
                         ack();
                         reply("");
                         break;
+                    }
+
+                default:
+                    {
+                        //TODO
+                        assert(false);
+                        //$Hg0#df
+//                         ack();
+//                         reply("");
+//                         break;
                     }
             }
         }
