@@ -106,11 +106,16 @@ namespace narcissus {
                     // return cpu register
                 case 'g':
                     {
+                        //0000000000000000000000000000fffef884020c
                         ack();
-                        //0000 0000 0000 0000 0000 0000 0000 08 0100
-//                         reply(read_register());
-                        reply("012345670123456701234567012345670123");
-
+                        std::stringstream stream;
+                        for (auto&& r : cpu_->er) {
+                            stream << std::hex << std::setw(8) << std::setfill('0') << r.er;
+                        }
+                        stream << std::setw(8) << std::setfill('0') << std::hex << cpu_->sp;
+                        stream << std::setw(8) << std::setfill('0') << std::hex << (std::uint16_t)cpu_->ccr.byte;
+                        stream << std::setw(8) << std::setfill('0') << std::hex << cpu_->pc;
+                        reply(stream.str());
                         break;
                     }
                     // single step
@@ -137,13 +142,49 @@ namespace narcissus {
                     {
                         //TODO
                         //$pc#d3
-                        //$p9#a9+
                         // reply register value
                         ack();
                         switch(data[++i])
                         {
+                            
+                            case '0':
+                            case '0' + 1:
+                            case '0' + 2:
+                            case '0' + 3:
+                            case '0' + 4:
+                            case '0' + 5:
+                            case '0' + 6:
+                                {
+                                    //$p6#a6+
+                                    std::stringstream stream;
+                                    stream << std::hex << std::setw(8) << std::setfill('0')
+                                        << cpu_->er['0' - data[i]].er;
+                                    reply(stream.str());
+                                    break;
+                                }
+
+                            case '0' + 7:
+                                {
+                                    //$p7#a7
+                                    std::stringstream stream;
+                                    stream << std::hex << std::setw(8) << std::setfill('0')
+                                        << cpu_->sp;
+                                    reply(stream.str());
+                                    break;
+                                }
+
+                            case '0' + 8:
+                                {
+                                    std::stringstream stream;
+                                    stream << std::hex << std::setw(4) << std::setfill('0')
+                                        << (std::uint16_t)cpu_->ccr.byte;
+                                    reply(stream.str());
+                                    break;
+                                }
+
                             case '0' + 9:
                                 {
+                                    //$p9#a9+
                                     std::stringstream stream;
                                     stream << std::hex << std::setw(4) << std::setfill('0')
                                         << cpu_->pc;
@@ -182,11 +223,18 @@ namespace narcissus {
                                     reply("QC00");
                                     break;
                                 }
+                            case 'O':
+                                {
+                                    //$qOffsets#4b
+                                    ack();
+                                    reply("Text=00000000;Data=00fffc20;Bss=00fffc30");
+                                    break;
+                                }
                             case 'S':
                                 {
                                     //$qSupported:multiprocess+;swbreak+;hwbreak+;qRelocInsn+#c9
                                     ack();
-                                    reply("multiprocess-");
+                                    reply("multiprocess-;qRelocInsn-");
                                     break;
                                 }
                             case 'T':
@@ -215,9 +263,11 @@ namespace narcissus {
                                                 reply("l");
                                                 break;
                                             }
-
+                                        default:
+                                            assert(false);
                                     }
                                 }
+                                break;
                             case 'f':
                                 {
                                     switch(data[++i]){
@@ -228,19 +278,33 @@ namespace narcissus {
                                                 reply("m 0");
                                                 break;
                                             }
+
+                                        default:
+                                            assert(false);
                                     }
+                                    break;
                                 }
                             case 's':
-                            {
-                                switch (data[++i]) {
-                                    case 'T':
-                                        //$qsThreadInfo#c8+
-                                        ack();
-                                        reply("l");
-                                        break;
+                                {
+                                    switch (data[++i]) {
+                                        case 'T':
+                                            //$qsThreadInfo#c8+
+                                            ack();
+                                            reply("l");
+                                            break;
+
+                                        default:
+                                            assert(false);
+                                    }
+                                    break;
                                 }
-                            }
+
+                            default:
+                                {
+                                    assert(false);
+                                }
                         }
+                        break;
                     }
 
                 case '+':
