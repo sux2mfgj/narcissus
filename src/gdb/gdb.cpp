@@ -218,6 +218,59 @@ namespace narcissus {
                         break;
                     }
 
+                case 'P':
+                    {
+                        //$P9=0100#87
+                        // register write
+                        ack();
+
+                        char reg_num = data[++i] - '0';
+                        switch (reg_num) {
+                            case 0:
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 4:
+                            case 5:
+                            case 6:
+                                //er register
+                                assert(false);
+                                break;
+
+                            case 7:
+                                // sp
+                                assert(false);
+                                break;
+                            case 8:
+                                // ccr
+                                assert(false);
+                                break;
+                            case 9:
+                                {
+                                    // pc
+                                    char buf[8];
+                                    ++i;
+                                    for(auto j = 0;; ++j)
+                                    {
+                                        if(data[i + 1] == '#')
+                                        {
+                                            buf[j] = '\0';
+                                            break;
+                                        }
+                                        buf[j] = data[++i];
+                                    }
+                                    cpu_->pc = std::stoi(std::string(buf));
+                                    break;
+                                }
+                                
+                            default:
+                                assert(false);
+                        }
+
+                        reply("OK");
+                        break;
+                    }
+
                 case 'X':
                     {
                         //$X0,0:#1e
