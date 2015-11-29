@@ -93,20 +93,12 @@ namespace narcissus {
                         //$?#3f
                         ack();
                         reply("T001");
-//                         std::string reply("T001");
-//                         stream << "$" << reply << "#" 
-//                             << std::hex << std::setfill('0') << std::setw(2) 
-//                             << (check_sum(reply.c_str()) % 0x100);
-
-//                         return stream.str();
                         break;
                     }
-
                     // return cpu register
                 case 'g':
                     assert(false);
                     break;
-
                     // single step
                 case 's':
                     {
@@ -116,27 +108,25 @@ namespace narcissus {
 
                 case 'q':
                     {
-
                         switch (data[++i]) {
-                            case 'a':
+                            case 'A':
                                 {
                                     //$qAttached#8f
                                     ack();
                                     reply("l");
                                     break;
                                 }
+                            case 'C':
+                                {
+                                    //$qC#b4
+                                    assert(false);
+                                }
                             case 'S':
                                 {
                                     //$qSupported:multiprocess+;swbreak+;hwbreak+;qRelocInsn+#c9
                                     ack();
                                     reply("multiprocess-");
-//                                     std::string stubfeature("multiprocess-");
-
-//                                     stream << "$" << stubfeature << "#" 
-//                                         << std::hex << std::setfill('0') << std::setw(2) 
-//                                         << (check_sum(stubfeature.c_str()) % 0x100);
                                     break;
-//                                     return stream.str();
                                 }
                             case 'T':
                                 {
@@ -147,12 +137,6 @@ namespace narcissus {
                                                 ack();
                                                 reply("T0;tnotrun:0");
                                                 break;
-
-//                                                 std::string stubfeature("T0;tnotrun:0");
-//                                                 stream << "$" << stubfeature << "#" 
-//                                                     << std::hex << std::setfill('0') << std::setw(2) 
-//                                                     << (check_sum(stubfeature.c_str()) % 0x100);
-//                                                 return stream.str();
                                             }
 
                                         case 'f':
@@ -161,11 +145,6 @@ namespace narcissus {
                                                 ack();
                                                 reply("1:0000000000000000:1:61");
                                                 break;
-//                                                 std::string qtfv("1:0000000000000000:1:61");
-//                                                 stream << "$" << qtfv << "#"
-//                                                     << std::hex << std::setfill('0') << std::setw(2)
-//                                                     << (check_sum(qtfv.c_str()) % 0x100);
-//                                                 return stream.str();
                                             }
 
                                         case 's':
@@ -174,13 +153,6 @@ namespace narcissus {
                                                 ack();
                                                 reply("l");
                                                 break;
-//                                                 std::string qtsv("1:0000000000000000:1:61");
-//                                                 std::string qtsv("l");
-
-//                                                 stream << "$" << qtsv << "#"
-//                                                     << std::hex << std::setfill('0') << std::setw(2)
-//                                                     << (check_sum(qtsv.c_str()) % 0x100);
-//                                                 return stream.str();
                                             }
 
                                     }
@@ -194,9 +166,7 @@ namespace narcissus {
                                                 ack();
                                                 reply("m 0");
                                                 break;
-//                                                 return reply("m 0");
                                             }
-
                                     }
                                 }
                             case 's':
@@ -216,26 +186,15 @@ namespace narcissus {
                     {
                         reply("");
                         break;
-//                         return "";
                     }
-
-                    //             case 'H':
-                    //             {
-                    //                 return "OK";
-                    //             }
 
                 default:
                     {
                         //TODO
                         //$Hg0#df
-                        
-//                         assert(false);
                         ack();
                         reply("");
                         break;
-//                         boost::asio::write(socket_, boost::asio::buffer("+", 1));
-                        //                 boost::asio::write(socket_, boost::asio::buffer("$#00", 4));
-//                         return "$#00";
                     }
             }
         }
