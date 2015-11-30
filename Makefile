@@ -1,6 +1,8 @@
 TARGET := narcissus
 
 BIN_FILE := ./osbook_03/08/bootload/kzload.bin
+ELF_FILE := ./kzload.elf
+GDB := h8300-elf-gdb
 
 all: $(TARGET)
 
@@ -19,7 +21,7 @@ gdb: $(TARGET)
 	./build/narcissus -i $(BIN_FILE) -d 
 
 serial: $(TARGET)
-	socat -d -d pty,raw,echo=0 "exec:./build/narcissus $(BIN_FILE),pty,raw,echo=0"
+	socat -d -d pty,raw,echo=0 "exec:./build/narcissus -i $(BIN_FILE) -d,pty,raw,echo=0"
 
 clean:
 	rm -rf build
