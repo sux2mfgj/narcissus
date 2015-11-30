@@ -3,6 +3,7 @@
 #include <fstream>
 #include <memory>
 #include <cstdbool>
+#include <cassert>
 
 #include <boost/program_options.hpp>
 #include <boost/asio.hpp>
@@ -27,6 +28,7 @@ int main(int argc, char const* argv[])
             ("image,i", po::value<std::string>(), "run image to <file_path>")
             ("debug,d", "enable debug mode")
             ("port,p", po::value<std::uint16_t>()->default_value(2159), "for remote debug port")
+            ("elf,e", po::value<std::string>(), "elf file")
 //             ("version,v", "narcissus v0.01")
         ;
 
@@ -39,9 +41,10 @@ int main(int argc, char const* argv[])
             return 0;
         }
 
-        if(!vm.count("image") && !vm.count("debug"))
+        if(!vm.count("image") && !vm.count("debug") && !vm.count("elf"))
         {
-            std::cerr << error_message << "you should set --image or --debug option" << std::endl;
+            std::cerr << error_message 
+                << "you should set at least --image or --debug or --elf option" << std::endl;
             return 1;
         }
     } 
@@ -54,6 +57,7 @@ int main(int argc, char const* argv[])
     std::fstream file;
     std::array<uint8_t, (std::uint32_t)na::h8_3069f::mem_info::rom_size> mem = {0};
 
+    //TODO for elf
     if(vm.count("image")){
         file.open(vm["image"].as<std::string>(), std::ios::in | std::ios::binary);
         {
@@ -63,6 +67,11 @@ int main(int argc, char const* argv[])
             }
         }
         file.close();
+    }
+
+    if(vm.count("elf"))
+    {
+        assert(false);
     }
 
     // for signal handler and server

@@ -118,6 +118,53 @@ namespace narcissus {
                         reply(stream.str());
                         break;
                     }
+
+                case 'm':
+                    {
+                        //$m208,4#67
+                        ack();
+                        char buf[10];
+                        for(auto j = 0; j < 8; ++j)
+                        {
+                            if(data[i + 1] == ',')
+                            {
+                                buf[j] = '\0';
+                                break;
+                            }
+
+                            buf[j] = data[++i];
+                        }
+                        std::cout << std::string(buf) << std::endl;
+                        int addr = std::stoi(std::string(buf), nullptr, 16);
+                        std::cout << addr << std::endl;
+
+                        i++;
+                        for(auto j = 0; j < 9; ++j)
+                        {
+                            if(data[i + 1] == '#')
+                            {
+                                buf[j] = '\0';
+                                break;
+                            }
+
+                            buf[j] = data[++i];
+                        }
+                        std::cout << std::string(buf) << std::endl;
+                        int length = std::stoi(std::string(buf), nullptr, 16);
+                        std::cout << length << std::endl;
+
+                        std::stringstream stream;
+                        for(auto j= 0; j< length; ++j)
+                        {
+                            stream << std::hex << std::setw('2') << std::setfill('0') 
+                                << (std::uint16_t)cpu_->memory[addr + j];
+                        }
+                        std::cout << stream.str() << std::endl;
+
+                        reply(stream.str());
+                        break;
+                    }
+
                     // single step
                 case 's':
                     {

@@ -30,6 +30,7 @@ add_subdirectory(googletest/googletest)
 add_subdirectory(src/test)
 add_subdirectory(src/cpu)
 add_subdirectory(src/gdb)
+#add_subdirectory(src/elf)
 
 include_directories(
     src/include
@@ -44,6 +45,7 @@ target_link_libraries(
     narcissus
     cpu
     gdb 
+    #elf
     pthread
     ${Boost_LIBRARIES}
 ) 
