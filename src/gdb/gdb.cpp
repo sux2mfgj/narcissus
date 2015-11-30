@@ -1,6 +1,8 @@
 #include <gdb.hpp>
+
 #include <array>
 #include <cassert>
+#include <algorithm>
 
 namespace narcissus {
 
@@ -13,7 +15,7 @@ namespace narcissus {
                 std::uint16_t port)
             : cpu_(std::make_shared<h8_3069f::cpu>(std::move(memory))), 
             acceptor_(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port)),
-            socket_(io_service)
+            socket_(io_service), break_point_list_()
         {}
 
         auto gdb_server::run() -> void
@@ -91,7 +93,6 @@ namespace narcissus {
                 std::cout << stream.str() << std::endl;
                 return stream.str();
             };
-
 
             switch (data[++i]) {
                 // read register
@@ -281,7 +282,7 @@ namespace narcissus {
                                 {
                                     //$qSupported:multiprocess+;swbreak+;hwbreak+;qRelocInsn+#c9
                                     ack();
-                                    reply("multiprocess-;qRelocInsn-");
+                                    reply("multiprocess-;swbreak+;qRelocInsn-");
                                     break;
                                 }
                             case 'T':
@@ -291,7 +292,8 @@ namespace narcissus {
                                             {
                                                 //$qTStatus#49
                                                 ack();
-                                                reply("T0;tnotrun:0");
+//                                                 reply("T0;tstop:0");
+                                                reply("T0");
                                                 break;
                                             }
 
@@ -350,6 +352,95 @@ namespace narcissus {
                                 {
                                     assert(false);
                                 }
+                        }
+                        break;
+                    }
+
+                
+                // remove break point
+                case 'z':
+                    {
+                        switch (data[++i]) {
+                            case '0':
+                                {
+                                    ack();
+                                    //$z0,210,2#c7
+                                    if(break_point_list_.size() == 0)
+                                    {
+                                        //TODO
+                                        reply("E");
+                                        break;
+                                    }
+
+                                    ++i;
+                                    char buf[9];
+                                    for(auto j = 0; j < 9; ++j)
+                                    {
+                                        if(data[i + 1] == ',')
+                                        {
+                                            buf[j] = '\0';
+                                            break;
+                                        }
+
+                                        buf[j]  = data[++i];
+                                    }
+                                    std::cout << buf << std::endl;
+                                    auto b_addr = std::stoi(std::string(buf), nullptr, 16);
+                                    std::cout << b_addr << std::endl;
+
+                                    auto itr = 
+                                        std::find(break_point_list_.begin(), break_point_list_.end(), b_addr);
+
+                                    if(itr != break_point_list_.end())
+                                    {
+                                        break_point_list_.erase(itr);
+                                        reply("OK");
+                                    }
+                                    else {
+                                        //TODO add error code after "Ew"
+                                        reply("E");
+                                    }
+
+                                    break;
+                                }
+                            default:
+                                assert(false);
+                        }
+                        break;
+                    }
+
+                // insert break point
+                case 'Z':
+                    {
+                        switch (data[++i]) {
+                            case '0':
+                                {
+                                    //$Z0,766,2#0f
+                                    //TODO
+                                    ack();
+                                    char buf[9];
+                                    ++i;
+                                    for(auto j = 0; j < 9; ++j)
+                                    {
+                                        if(data[i + 1] == ',')
+                                        {
+                                            buf[j] = '\0';
+                                            break;
+                                        }
+
+                                        buf[j]  = data[++i];
+                                    }
+                                    std::cout << buf << std::endl;
+                                    auto b_addr = std::stoi(std::string(buf), nullptr, 16);
+                                    std::cout << b_addr << std::endl;
+
+                                    break_point_list_.push_back(b_addr);
+                                    reply("OK");
+                                    break;
+                                }
+                                
+                            default:
+                                assert(false);
                         }
                         break;
                     }

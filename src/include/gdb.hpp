@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 #include <boost/asio.hpp>
 
@@ -34,6 +35,8 @@ namespace narcissus {
                 boost::asio::ip::tcp::acceptor acceptor_;
                 boost::asio::ip::tcp::socket socket_;
 
+                std::vector<std::uint32_t> break_point_list_;
+                
         };
 
         namespace  {
