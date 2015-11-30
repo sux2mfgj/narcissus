@@ -5,8 +5,6 @@
 #include <algorithm>
 
 namespace narcissus {
-
-    //XXX
     namespace h8_3069f {
 
         gdb_server::gdb_server(
@@ -39,7 +37,7 @@ namespace narcissus {
                     {
                         throw boost::system::system_error(error);
                     }
-                    std::cout << "receive: " << std::string(data.data()) << std::endl;
+                    std::clog << "receive: " << std::string(data.data()) << std::endl;
 
                     work(data, length);
                 }
@@ -90,7 +88,6 @@ namespace narcissus {
                     stream << std::setw(4) << std::setfill('0') << c.r; 
                 }
                 stream << cpu_->sp << (std::uint16_t)cpu_->ccr.byte << cpu_->pc;
-                std::cout << stream.str() << std::endl;
                 return stream.str();
             };
 
@@ -100,7 +97,6 @@ namespace narcissus {
                     {
                         //$?#3f
                         ack();
-//                         reply("T001");
                         reply("S000");
                         break;
                     }
@@ -153,9 +149,7 @@ namespace narcissus {
 
                             buf[j] = data[++i];
                         }
-                        std::cout << std::string(buf) << std::endl;
                         int addr = std::stoi(std::string(buf), nullptr, 16);
-                        std::cout << addr << std::endl;
 
                         i++;
                         for(auto j = 0; j < 9; ++j)
@@ -168,9 +162,7 @@ namespace narcissus {
 
                             buf[j] = data[++i];
                         }
-                        std::cout << std::string(buf) << std::endl;
                         int length = std::stoi(std::string(buf), nullptr, 16);
-                        std::cout << length << std::endl;
 
                         std::stringstream stream;
                         for(auto j= 0; j< length; ++j)
@@ -178,7 +170,6 @@ namespace narcissus {
                             stream << std::hex << std::setw('2') << std::setfill('0') 
                                 << (std::uint16_t)cpu_->memory[addr + j];
                         }
-                        std::cout << stream.str() << std::endl;
 
                         reply(stream.str());
                         break;
@@ -205,7 +196,6 @@ namespace narcissus {
 
                 case 'p':
                     {
-                        //TODO
                         //$pc#d3
                         // reply register value
                         ack();
@@ -399,9 +389,7 @@ namespace narcissus {
 
                                         buf[j]  = data[++i];
                                     }
-                                    std::cout << buf << std::endl;
                                     auto b_addr = std::stoi(std::string(buf), nullptr, 16);
-                                    std::cout << b_addr << std::endl;
 
                                     auto itr = 
                                         std::find(break_point_list_.begin(), break_point_list_.end(), b_addr);
@@ -444,9 +432,7 @@ namespace narcissus {
 
                                         buf[j]  = data[++i];
                                     }
-                                    std::cout << buf << std::endl;
                                     auto b_addr = std::stoi(std::string(buf), nullptr, 16);
-                                    std::cout << b_addr << std::endl;
 
                                     break_point_list_.push_back(b_addr);
                                     reply("OK");
@@ -472,11 +458,10 @@ namespace narcissus {
                         reply("");
                         break;
                     }
-
+                // register write
                 case 'P':
                     {
                         //$P9=0100#87
-                        // register write
                         ack();
 
                         char reg_num = data[++i] - '0';
@@ -515,7 +500,6 @@ namespace narcissus {
                                         buf[j] = data[++i];
                                     }
                                     cpu_->pc = std::stoi(std::string(buf), nullptr, 16);
-                                    std::cout << "pc :" << cpu_->pc << std::endl;
                                     break;
                                 }
                                 
@@ -544,7 +528,6 @@ namespace narcissus {
                             buf[j] = data[++i];
                         }
                         std::string addr(buf);
-                        std::cout << "addr : " << addr << std::endl;
 
                         // read length
                         for (auto j = 0;; j++) 
@@ -559,28 +542,13 @@ namespace narcissus {
                         }
                         std::string length(buf);
 
-                        std::cout << "length : " << length << std::endl;
-
-//                         std::uint8_t
-//                         for(auto j = 0; j < std::stoi(length); ++j)
-//                         {
-//                             buf[j] = data[++i];
-//                         }
-//                         buf[std::stoi(length)] = '\0';
-
-//                         std::string value(buf);
-
-//                         std::cout << "value : " << value << std::endl;
                         int len = std::stoi(length, nullptr, 16);
                         for(auto j = 0; j < len; ++j)
                         {
                             cpu_->memory[std::stoi(addr, nullptr, 16) + j] = (std::uint8_t)data[++i];
 
                         }
-//                         if(len != 0){
-//                         }
 
-                        std::cout << "OK" << std::endl;
                         reply("OK");
                         break;
                     }
@@ -589,9 +557,6 @@ namespace narcissus {
                     {
                         //TODO
                         assert(false);
-                        //$Hg0#df
-//                         ack();
-//                         reply("");
                         break;
                     }
             }
@@ -601,8 +566,6 @@ namespace narcissus {
         {
             return cpu_->interrupt(int_num);
         }
-
-        //XXX
     } // namespace h8_3069f
 
 } // namespace narcissus

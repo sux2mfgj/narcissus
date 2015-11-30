@@ -10,7 +10,6 @@
 
 namespace narcissus {
 
-    //XXX
     namespace h8_3069f {
 
         class gdb_server 
@@ -54,6 +53,5 @@ namespace narcissus {
 
         } // namespace 
 
-        //XXX
     } // namespace h8_3069f
 } // namespace narcissus
