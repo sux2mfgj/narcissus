@@ -104,6 +104,24 @@ namespace narcissus {
                         reply("S000");
                         break;
                     }
+                // continue
+                case 'c':
+                    {
+                        ack();
+                        while (true) {
+                            auto pc = cpu_->cycle();
+                            if(break_point_list_.size() != 0)
+                            {
+                                auto itr = std::find(break_point_list_.begin(), break_point_list_.end(), pc);
+                                if(itr != break_point_list_.end())
+                                {
+                                    reply("S00;swbreak");
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    }
                     // return cpu register
                 case 'g':
                     {
@@ -165,7 +183,6 @@ namespace narcissus {
                         reply(stream.str());
                         break;
                     }
-
                     // single step
                 case 's':
                     {
@@ -355,8 +372,6 @@ namespace narcissus {
                         }
                         break;
                     }
-
-                
                 // remove break point
                 case 'z':
                     {
@@ -408,7 +423,6 @@ namespace narcissus {
                         }
                         break;
                     }
-
                 // insert break point
                 case 'Z':
                     {
