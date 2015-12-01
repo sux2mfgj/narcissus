@@ -1,4 +1,4 @@
-PREFIX  = /usr/local
+PREFIX  = /home/hima/local
 ARCH    = h8300-elf
 BINDIR  = $(PREFIX)/bin
 ADDNAME = $(ARCH)-

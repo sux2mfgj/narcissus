@@ -2313,7 +2313,8 @@ namespace narcissus {
 
         TEST(er7, 0)
         {
-            std::array<std::uint8_t, (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
+            std::array<std::uint8_t,
+                (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
             mem[0] = 0x00;
             mem[1] = 0x00;
             mem[2] = 0x01;
@@ -2328,6 +2329,32 @@ namespace narcissus {
             cpu->sp = 0x87654321;
             ASSERT_EQ(cpu->er[7].er, 0x87654321);
         }
+
+        TEST(OR_W_IMM_R, 0)
+        {
+            std::array<std::uint8_t, 
+                (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            //79 4a c0 00     
+            //or.w    #0xc000,e2
+            mem[0x100] = 0x79;
+            mem[0x101] = 0x4a;
+            mem[0x102] = 0xc0;
+            mem[0x103] = 0x00;
+
+            auto cpu = std::make_shared<h8_3069f::cpu>(std::move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
+
+            cpu->er[2].e = 0xffff;
+
+            ASSERT_EQ(0x104, cpu->cycle());
+            ASSERT_EQ(0xffff, cpu->er[2].e);
+        }
+        
 
     }  // namespace cpu
 }  // namespace narcissus

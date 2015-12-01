@@ -207,6 +207,9 @@ namespace narcissus {
             XOR_B_IMM_R,
             OR_B_IMM_R,
 //             OR_B_R_R
+            OR_W_IMM_R,
+//             OR_W_R_R,
+
             ORC,            // inclusive or controle register
             SLEEP,
             TRAPA,
@@ -461,6 +464,7 @@ namespace narcissus {
                 FRIEND_TEST(RTE, 0);
                 FRIEND_TEST(TRAPA, 0);
                 FRIEND_TEST(er7, 0);
+                FRIEND_TEST(OR_W_IMM_R, 0);
         };
 
     }  // namespace h8_3069f

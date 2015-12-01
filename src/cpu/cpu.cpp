@@ -166,17 +166,30 @@ namespace narcissus {
                     return os.str();
                 };
 
-                for (auto r: er) {
-                    std::clog << std::hex << " 0x" << r.er;
-                }
-                std::clog << std::hex << " 0x" << sp;
-                std::clog << std::endl;
+//                 for (auto r: er) {
+//                     std::clog << std::hex << " 0x" << r.er;
+//                 }
+//                 std::clog << std::hex << " 0x" << sp;
+//                 std::clog << std::endl;
 
-                std::clog << s(sp) << std::endl;
-                std::clog << s(sp + 4) << std::endl;
-                std::clog << s(sp + 8) << std::endl;
-                std::clog << s(sp + 12) << std::endl;
+//                 std::clog << s(sp) << std::endl;
+//                 std::clog << s(sp + 4) << std::endl;
+//                 std::clog << s(sp + 8) << std::endl;
+//                 std::clog << s(sp + 12) << std::endl;
 
+//                 std::clog << std::hex << "0x" << std::setw(6) << std::setfill('0') << pc << std::endl;
+//                 for (auto&& r : er) {
+//                     std::clog << std::hex << " 0x" << std::setw(8) << std::setfill('0') << r.er;
+//                 }
+//                 std::clog << std::endl;
+//                 if(er[0].er == 4)
+//                 {
+//                     std::clog << std::hex << "[0x" 
+//                         << std::setw(8) << std::setfill('0') << memory[0xfffc24 + er[0].er] << "]"
+//                         << std::endl;
+//                 }
+
+                //TODO
                 if(before_pc != pc){
                     before_pc = pc;
                     limit = 0;            
@@ -731,8 +744,24 @@ namespace narcissus {
                     auto erd = read_register_fields(pc + 5, value_place::low, true);
 
                     auto disp = read_immediate(pc + 7, 3);
+//                     std::clog 
+//                         << "disp: 0x" << std::hex 
+//                         << std::setw(8) << std::setfill('0') 
+//                         << disp 
+//                         << " ers: 0x" << std::hex 
+//                         << read_register(ers, register_size::LONG)
+//                         << std::setw(8) << std::setfill('0') 
+//                         << std::endl;
 
                     auto addr = (std::int32_t)(er[ers].er) + (std::int32_t)disp;
+
+//                     std::clog << "addr 0x" 
+//                         << std::hex << std::setw(8) << std::setfill('0') 
+//                         << addr << std::endl;
+
+//                     std::clog << "val 0x" 
+//                         << std::hex << std::setw(8) << std::setfill('0')
+//                         << read_immediate(addr, 4) << std::endl;
 
                     auto dest_value = read_immediate(addr, 4);
 
@@ -1326,6 +1355,24 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::OR_W_IMM_R:
+                {
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
+                    auto imm = read_immediate(pc + 2, 2);
+
+                    auto rd_value = 
+                        (std::uint16_t)read_register(rd, register_size::WORD);
+
+                    auto result = rd_value | (std::uint16_t)imm;
+                    update_ccr_mov(result, register_size::WORD);
+
+                    pc += 4;
+                    break;
+                }
+
+//                 case operation::OR_W_R_R:
+//                 {}
+
                 case operation::ORC:
                 {
                     auto imm = read_immediate(pc + 1, 1);
@@ -1863,7 +1910,7 @@ namespace narcissus {
                             return operation::INVALID;
                         case 4:
                             //TODO
-                            //OR
+//                             return operation::OR_W_R_R;
                             return operation::INVALID;
                         case 5:
                             //TODO
@@ -1936,9 +1983,7 @@ namespace narcissus {
 //                                     return operation::SUB_W_IMM_R;
                                     return operation::INVALID;
                                 case 4:
-                                    //TODO
-                                    //OR
-                                    return operation::INVALID;
+                                    return operation::OR_W_IMM_R;
                                 case 5:
                                     //TODO
                                     //XOR

@@ -106,6 +106,13 @@ namespace narcissus {
                         ack();
                         while (true) {
                             auto pc = cpu_->cycle();
+                            std::clog << std::hex 
+                                << "0x" << std::setw(6) << std::setfill('0') << pc << std::endl;
+//                             for (auto&& r : cpu_->er) {
+//                                 std::clog << std::hex << " 0x" << std::setw(8) << std::setfill('0') << r.er;
+//                             }
+//                             std::clog << std::endl;
+
                             if(break_point_list_.size() != 0)
                             {
                                 auto itr = std::find(break_point_list_.begin(), break_point_list_.end(), pc);

@@ -875,6 +875,7 @@ Disassembly of section .text:
  864:	15 8a       	xor.b	r0l,r2l
  866:	aa ff       	cmp.b	#0xff,r2l
  868:	46 64       	bne	.+100 (0x8ce)
+
  86a:	18 aa       	sub.b	r2l,r2l
  86c:	6e ea ff f2 	mov.b	r2l,@(0xfff2:16,er6)
  870:	79 05 00 7f 	mov.w	#0x7f,r5
