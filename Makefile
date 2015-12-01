@@ -21,7 +21,11 @@ gdb: $(TARGET)
 	./build/narcissus -i $(BIN_FILE) -d 
 
 serial: $(TARGET)
+	socat -d -d pty,raw,echo=0 "exec:./build/narcissus -i $(BIN_FILE),pty,raw,echo=0"
+
+serial_gdb: $(TARGET)
 	socat -d -d pty,raw,echo=0 "exec:./build/narcissus -i $(BIN_FILE) -d,pty,raw,echo=0"
+
 
 clean:
 	rm -rf build

@@ -58,37 +58,37 @@ static int xmodem_read_block(unsigned char block_number, char *buf)
 
 long xmodem_recv(char *buf)
 {
-  int r, receiving = 0;
-  long size = 0;
-  unsigned char c, block_number = 1;
+    int r, receiving = 0;
+    long size = 0;
+    unsigned char c, block_number = 1;
 
-  while (1) {
-    if (!receiving)
-      xmodem_wait(); /* 受信開始されるまで送信要求を出す */
+    while (1) {
+        if (!receiving)
+            xmodem_wait(); /* 受信開始されるまで送信要求を出す */
 
-    c = serial_recv_byte(SERIAL_DEFAULT_DEVICE);
+        c = serial_recv_byte(SERIAL_DEFAULT_DEVICE);
 
-    if (c == XMODEM_EOT) { /* 受信終了 */
-      serial_send_byte(SERIAL_DEFAULT_DEVICE, XMODEM_ACK);
-      break;
-    } else if (c == XMODEM_CAN) { /* 受信中断 */
-      return -1;
-    } else if (c == XMODEM_SOH) { /* 受信開始 */
-      receiving++;
-      r = xmodem_read_block(block_number, buf); /* ブロック単位での受信 */
-      if (r < 0) { /* 受信エラー */
-	serial_send_byte(SERIAL_DEFAULT_DEVICE, XMODEM_NAK);
-      } else { /* 正常受信 */
-	block_number++;
-	size += r;
-	buf  += r;
-	serial_send_byte(SERIAL_DEFAULT_DEVICE, XMODEM_ACK);
-      }
-    } else {
-      if (receiving)
-	return -1;
+        if (c == XMODEM_EOT) { /* 受信終了 */
+            serial_send_byte(SERIAL_DEFAULT_DEVICE, XMODEM_ACK);
+            break;
+        } else if (c == XMODEM_CAN) { /* 受信中断 */
+            return -1;
+        } else if (c == XMODEM_SOH) { /* 受信開始 */
+            receiving++;
+            r = xmodem_read_block(block_number, buf); /* ブロック単位での受信 */
+            if (r < 0) { /* 受信エラー */
+                serial_send_byte(SERIAL_DEFAULT_DEVICE, XMODEM_NAK);
+            } else { /* 正常受信 */
+                block_number++;
+                size += r;
+                buf  += r;
+                serial_send_byte(SERIAL_DEFAULT_DEVICE, XMODEM_ACK);
+            }
+        } else {
+            if (receiving)
+                return -1;
+        }
     }
-  }
 
-  return size;
+    return size;
 }
