@@ -172,12 +172,17 @@ namespace narcissus {
                         int length = std::stoi(std::string(buf), nullptr, 16);
 
                         std::stringstream stream;
+                        stream << std::hex;
                         for(auto j= 0; j< length; ++j)
                         {
-                            stream << std::hex << std::setw('2') << std::setfill('0') 
+                            stream << std::setw(2) << std::setfill('0') 
                                 << (std::uint16_t)cpu_->memory[addr + j];
                         }
 
+                        
+                        std::clog << std::hex 
+                            << "memory[0x" << std::setw(2)<< addr << "] == 0x" 
+                            << stream.str() << std::endl;
                         reply(stream.str());
                         break;
                     }
