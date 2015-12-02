@@ -2354,6 +2354,34 @@ namespace narcissus {
             ASSERT_EQ(0x104, cpu->cycle());
             ASSERT_EQ(0xffff, cpu->er[2].e);
         }
+
+        //TODO
+        //WIP
+        //73 0a           btst    #0x0,r2l
+        //
+
+        TEST(BTST_IMM_R, 0)
+        {
+            std::array<std::uint8_t, 
+                (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            //73 0a           
+            //btst    #0x0,r2l
+            mem[0x100] = 0x73;
+            mem[0x101] = 0x0a;
+
+            auto cpu = std::make_shared<h8_3069f::cpu>(std::move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
+
+            cpu->er[2].l = 0b00000001;
+            
+            ASSERT_EQ(0x102, cpu->cycle());
+            ASSERT_EQ(0b10000100, cpu->ccr.byte);
+        }
         
 
     }  // namespace cpu

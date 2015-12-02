@@ -1415,6 +1415,21 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::BTST_IMM_R:
+                {
+                    auto imm = (std::uint8_t)read_immediate(pc + 1, 1) >> 4;
+                    auto rd = read_register_fields(pc + 1, value_place::low, false);
+
+                    auto rd_value = read_register(rd, register_size::BYTE);
+                    auto and_value = 1 << imm;
+
+                    auto result = rd_value & and_value;
+                    ccr.zero = result;
+                    
+                    pc += 2;
+                    break;
+                }
+
                 case operation::INVALID:
                 {
                       std::clog << "INVALID opecode: " << std::hex << "0x" << std::flush;
@@ -1950,9 +1965,7 @@ namespace narcissus {
                             //BCLR
                             return operation::INVALID;
                         case 3:
-                            //TODO
-                            //BTST
-                            return operation::INVALID;
+                            return operation::BTST_IMM_R;
                         case 4:
                             //TODO
                             //BOR
