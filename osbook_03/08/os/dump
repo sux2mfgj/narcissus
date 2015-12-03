@@ -34,6 +34,7 @@ Disassembly of section .text:
   ffc066:	ca 86 
   ffc068:	7a 00 00 ff 	mov.l	#0xffc9f8,er0
   ffc06c:	c9 f8 
+  // call kz_run
   ffc06e:	5e ff c9 92 	jsr	@0xffc992:24
   ffc072:	0b 97       	adds	#4,er7
   ffc074:	0b 97       	adds	#4,er7
@@ -658,7 +659,7 @@ Disassembly of section .text:
   ffc588:	01 00 6b a2 	mov.l	er2,@0xffcb24:32 
   ffc58c:	00 ff cb 24 
   ffc590:	46 08       	bne	.+8 (0xffc59a)
-    // readyque.tail = NULL
+  // readyque.tail = NULL
   ffc592:	01 00 6b a2 	mov.l	er2,@0xffcb28:32
   ffc596:	00 ff cb 28 
 
@@ -771,6 +772,7 @@ Disassembly of section .text:
   ffc67a:	8a 30       	add.b	#0x30,r2l
   ffc67c:	19 11       	sub.w	r1,r1
   ffc67e:	0f c0       	mov.l	er4,er0
+  // call memset
   ffc680:	5e ff c1 22 	jsr	@0xffc122:24
   ffc684:	0f d1       	mov.l	er5,er1
   ffc686:	0f c0       	mov.l	er4,er0
@@ -794,6 +796,7 @@ Disassembly of section .text:
   ffc6bc:	19 11       	sub.w	r1,r1
   ffc6be:	01 00 6b 20 	mov.l	@0xffcb20:32,er0
   ffc6c2:	00 ff cb 20 
+  // call memset
   ffc6c6:	5e ff c1 22 	jsr	@0xffc122:24
   ffc6ca:	01 00 6b 22 	mov.l	@0xffcb20:32,er2
   ffc6ce:	00 ff cb 20 
@@ -850,6 +853,7 @@ Disassembly of section .text:
   ffc768:	19 11       	sub.w	r1,r1
   ffc76a:	01 00 6b 20 	mov.l	@0xffcb2c:32,er0
   ffc76e:	00 ff cb 2c 
+  // call memset
   ffc772:	5e ff c1 22 	jsr	@0xffc122:24 //memset
   ffc776:	19 00       	sub.w	r0,r0
   ffc778:	01 00 6d 76 	mov.l	@er7+,er6
@@ -1016,26 +1020,30 @@ Disassembly of section .text:
   ffc8e2:	01 00 6b a2 	mov.l	er2,@0xffcb28:32
   ffc8e6:	00 ff cb 28 
   ffc8ea:	01 00 6b a2 	mov.l	er2,@0xffcb24:32 
-  //readyque.head
+  // readyque.head
   ffc8ee:	00 ff cb 24 
   ffc8f2:	79 02 01 20 	mov.w	#0x120,r2
   ffc8f6:	19 11       	sub.w	r1,r1
   ffc8f8:	7a 00 00 ff 	mov.l	#0xffcb30,er0
   ffc8fc:	cb 30 
-  ffc8fe:	5e ff c1 22 	jsr	@0xffc122:24
+  // call memset
+  ffc8fe:	5e ff c1 22 	jsr	@0xffc122:24 
   ffc902:	1a a2       	sub.l	er2,er2
   ffc904:	8a 0c       	add.b	#0xc,r2l
   ffc906:	19 11       	sub.w	r1,r1
   ffc908:	7a 00 00 ff 	mov.l	#0xffcc50,er0
   ffc90c:	cc 50 
+  // call memset
   ffc90e:	5e ff c1 22 	jsr	@0xffc122:24
   ffc912:	7a 01 00 ff 	mov.l	#0xffc7cc,er1
   ffc916:	c7 cc 
   ffc918:	79 00 00 01 	mov.w	#0x1,r0
+  // call setinstr
   ffc91c:	5e ff c7 7e 	jsr	@0xffc77e:24
   ffc920:	7a 01 00 ff 	mov.l	#0xffc83c,er1
   ffc924:	c8 3c 
   ffc926:	19 00       	sub.w	r0,r0
+  // call setintr
   ffc928:	5e ff c7 7e 	jsr	@0xffc77e:24
   ffc92c:	01 00 6f 62 	mov.l	@(0xc:16,er6),er2
   ffc930:	00 0c 
@@ -1046,12 +1054,14 @@ Disassembly of section .text:
   ffc940:	0f d1       	mov.l	er5,er1
   ffc942:	01 00 6f 60 	mov.l	@(0xfffc:16,er6),er0
   ffc946:	ff fc 
+  // call thread_run
   ffc948:	5e ff c6 20 	jsr	@0xffc620:24
   ffc94c:	01 00 6b a0 	mov.l	er0,@0xffcb2c:32
   ffc950:	00 ff cb 2c 
   ffc954:	7a 10 00 00 	add.l	#0x2c,er0
   ffc958:	00 2c 
-  ffc95a:	5e ff c0 2c 	jsr	@0xffc02c:24 //dispatch
+  // call dispatch
+  ffc95a:	5e ff c0 2c 	jsr	@0xffc02c:24 
   ffc95e:	0b 97       	adds	#4,er7
   ffc960:	0b 97       	adds	#4,er7
   ffc962:	01 00 6d 75 	mov.l	@er7+,er5

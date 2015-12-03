@@ -179,10 +179,6 @@ namespace narcissus {
                                 << (std::uint16_t)cpu_->memory[addr + j];
                         }
 
-                        
-                        std::clog << std::hex 
-                            << "memory[0x" << std::setw(2)<< addr << "] == 0x" 
-                            << stream.str() << std::endl;
                         reply(stream.str());
                         break;
                     }
@@ -192,6 +188,8 @@ namespace narcissus {
                         //$s#73
                         ack();
                         auto pc = cpu_->cycle();
+                        std::clog << std::hex 
+                            << "0x" << std::setw(6) << std::setfill('0') << pc << std::endl;
                         //TODO
                         //reply important register value
                         reply("S00");

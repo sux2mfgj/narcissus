@@ -190,32 +190,34 @@ namespace narcissus {
 //                 }
 
                 //TODO
-                if(before_pc != pc){
-                    before_pc = pc;
-                    limit = 0;            
-                }
-                else {
-                    if(limit++ > 10)
-                    {
-                        std::clog << "finish" << std::endl;
-                        break;
-                    }
-                }
+//                 if(before_pc != pc){
+//                     before_pc = pc;
+//                     limit = 0;            
+//                 }
+//                 else {
+//                     if(limit++ > 10)
+//                     {
+//                         std::clog << "finish" << std::endl;
+//                         break;
+//                     }
+//                 }
 
                 //TODO 
-                if(*is_sleep)
-                {
-                    std::clog << std::hex << "ccr: " << (std::uint16_t)ccr.byte << std::endl;
-                    std::unique_lock<std::mutex> lock(*cv_mutex_ptr);
-                    c_variable_ptr->wait(lock, [this]{return !*is_sleep;});
-                }
+//                 if(*is_sleep)
+//                 {
+//                     std::clog << std::hex << "ccr: " << (std::uint16_t)ccr.byte << std::endl;
+//                     std::unique_lock<std::mutex> lock(*cv_mutex_ptr);
+//                     c_variable_ptr->wait(lock, [this]{return !*is_sleep;});
+//                 }
             }
         }
 
         auto cpu::cycle() -> std::uint32_t
         {
             std::unique_lock<std::mutex> lock(*cv_mutex_ptr);
-            switch (detect_operation()) {
+            auto ope = detect_operation();
+            std::clog << "ope: " << (std::uint32_t)ope << std::endl;
+            switch (ope) {
 
                 case operation::ADD_B_R_R:
                 {
@@ -671,6 +673,8 @@ namespace narcissus {
 
                     update_ccr_mov(imm, register_size::LONG);
                     pc += 6;
+                    std::clog << "mov_l_imm_r: 0x" 
+                        << std::hex << pc << std::endl;
                     break;
                 }
 
@@ -854,6 +858,9 @@ namespace narcissus {
                     auto result = read_immediate(abs, 4);
                     write_register(erd, result, register_size::LONG);
 
+                    std::clog << "mov_l_abs_24_r [result]: 0x" 
+                        << std::hex << result << std::endl;
+                        
                     update_ccr_mov(result, register_size::LONG);
                     pc += 8;
 
@@ -1197,6 +1204,7 @@ namespace narcissus {
 
                 case operation::JSR_ABS: 
                 {
+                    std::clog << "jsr @aa:24" << std::endl;
                     auto abs = read_immediate(pc + 1, 3);
 
                     pc += 4;
@@ -1206,6 +1214,7 @@ namespace narcissus {
                     memory[sp + 2] = (std::uint8_t)(pc >> 8);
                     memory[sp + 3] = (std::uint8_t)pc;
 
+                    std::clog << "addr: 0x" << std::hex << abs << std::endl;
                     pc = abs;
                     break;
                 }
@@ -1404,6 +1413,13 @@ namespace narcissus {
                     *is_sleep = true;
 
                     pc += 2;
+
+//                     if(*is_sleep)
+//                     {
+//                         std::clog << std::hex << "ccr: " << (std::uint16_t)ccr.byte << std::endl;
+                    std::unique_lock<std::mutex> lock(*cv_mutex_ptr);
+                    c_variable_ptr->wait(lock, [this]{return !*is_sleep;});
+//                     }
                     break;
                 }
 
@@ -1413,6 +1429,7 @@ namespace narcissus {
 
                     auto next_pc = read_immediate(0x20 + (4 * imm), 4);
                     
+                    pc += 2;
                     sp -= 4;
                     memory[sp] = (std::uint8_t)(pc >> 24);
                     memory[sp + 1] = (std::uint8_t)(pc >> 16);
@@ -2247,7 +2264,6 @@ namespace narcissus {
         }
 
         auto cpu::detect_mov_0_1_0(void) -> operation
-
         {
             auto b3h = memory[pc + 2] >> 4;
             auto b3l = memory[pc + 2] & 0xf;
