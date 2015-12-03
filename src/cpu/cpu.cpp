@@ -932,6 +932,18 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::BHI_16:
+                {
+                    auto disp = (std::int16_t)read_immediate(pc + 2, 2);
+                    pc += 4;
+                    if(!(ccr.carry & ccr.zero))
+                    {
+                        pc += disp;
+                    }
+
+                    break;
+                }
+
                 case operation::BNE_8:
                 {
                     auto disp = memory[pc + 1];
@@ -1829,9 +1841,7 @@ namespace narcissus {
                                     //BRN
                                     return operation::INVALID;
                                 case 2:
-                                    //TODO
-                                    //BHI
-                                    return operation::INVALID;
+                                    return operation::BHI_16;
                                 case 3:
                                     //TODO
                                     //BLS
