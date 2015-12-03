@@ -6,7 +6,8 @@
 namespace narcissus {
     namespace h8_3069f {
 
-        cpu::cpu(std::array<std::uint8_t, (std::uint32_t)mem_info::rom_size>&& mem)
+        cpu::cpu(std::array<std::uint8_t, 
+                (std::uint32_t)mem_info::rom_size>&& mem)
             : er(), sp(), ccr(), pc(), is_sleep(std::make_shared<bool>(false)),
             c_variable_ptr(
                     std::make_shared<std::condition_variable>()), 
@@ -142,7 +143,6 @@ namespace narcissus {
             std::uint32_t before_pc;
             auto limit = 0;
 
-//             memory.before_run(shared_from_this());
             before_run();
 
             std::clog << "start" << std::endl;
@@ -215,9 +215,7 @@ namespace narcissus {
         auto cpu::cycle() -> std::uint32_t
         {
             std::unique_lock<std::mutex> lock(*cv_mutex_ptr);
-            auto ope = detect_operation();
-            std::clog << "ope: " << (std::uint32_t)ope << std::endl;
-            switch (ope) {
+            switch (detect_operation()) {
 
                 case operation::ADD_B_R_R:
                 {
@@ -943,7 +941,7 @@ namespace narcissus {
                 {
                     auto disp = (std::int16_t)read_immediate(pc + 2, 2);
                     pc += 4;
-                    if(!(ccr.carry & ccr.zero))
+                    if(!(ccr.carry | ccr.zero))
                     {
                         pc += disp;
                     }
@@ -1270,6 +1268,19 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::EXTU_L:
+                {
+                    auto erd = read_register_fields(pc + 1, value_place::low, true);
+                    auto erd_value = read_register(erd, register_size::LONG);
+
+                    auto result = erd_value & 0x0000ffff;
+                    write_register(erd, result, register_size::LONG);
+                    update_ccr_mov(result, register_size::LONG);
+
+                    pc += 2;
+                    break;
+                }
+
                 case operation::SHLL_L: 
                 {
                     auto erd = read_register_fields(pc + 1, value_place::low, true);
@@ -1410,16 +1421,13 @@ namespace narcissus {
                 {
                     //TODO
                     //slepp
+                    std::unique_lock<std::mutex> lock(*cv_mutex_ptr);
                     *is_sleep = true;
 
                     pc += 2;
 
-//                     if(*is_sleep)
-//                     {
-//                         std::clog << std::hex << "ccr: " << (std::uint16_t)ccr.byte << std::endl;
-                    std::unique_lock<std::mutex> lock(*cv_mutex_ptr);
                     c_variable_ptr->wait(lock, [this]{return !*is_sleep;});
-//                     }
+                    std::cout << "after" << std::endl;
                     break;
                 }
 
@@ -1677,8 +1685,7 @@ namespace narcissus {
                                 case 5:
                                     return operation::EXTU_W;
                                 case 7:
-//                                     return operation::EXTU_L;
-                                    return operation::INVALID;
+                                    return operation::EXTU_L;
                                 case 8:
 //                                     return operation::NEG_B;
                                     return operation::INVALID;

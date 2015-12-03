@@ -200,6 +200,7 @@ namespace narcissus {
             EXTS_L,                     // extend as signed
 
             EXTU_W,                     // extend as unsigned
+            EXTU_L,
 
             RTS,                    // return from subroutine
             RTE,                    // return from exception
@@ -475,6 +476,7 @@ namespace narcissus {
                 FRIEND_TEST(OR_W_IMM_R, 0);
                 FRIEND_TEST(BTST_IMM_R, 0);
                 FRIEND_TEST(BHI_16, 0);
+                FRIEND_TEST(EXTU_L, 0);
         };
 
     }  // namespace h8_3069f
