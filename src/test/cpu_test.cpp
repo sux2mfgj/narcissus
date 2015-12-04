@@ -2395,7 +2395,7 @@ namespace narcissus {
             auto cpu = std::make_shared<h8_3069f::cpu>(std::move(mem));
             cpu->interrupt(h8_3069f::interrupts::reset);
 
-            cpu->er[2].l = 0b00000001;
+            cpu->er[2].l = 0b00000000;
             
             ASSERT_EQ(h8_3069f::operation::BTST_IMM_R, 
                     cpu->detect_operation());
