@@ -725,6 +725,8 @@ Disassembly of section .text:
   ffc64c:	01 00 6b 23 	mov.l	@0xffd128:32,er3
   ffc650:	00 ff d1 28 
   ffc654:	46 06       	bne	.+6 (0xffc65c)
+  // current == NULL
+  // return -1;
   ffc656:	79 00 ff ff 	mov.w	#0xffff,r0
   ffc65a:	40 60       	bra	.+96 (0xffc6bc)
 
@@ -732,6 +734,8 @@ Disassembly of section .text:
   ffc65c:	6e 3a 00 1f 	mov.b	@(0x1f:16,er3),r2l
   ffc660:	73 0a       	btst	#0x0,r2l
   ffc662:	47 06       	beq	.+6 (0xffc66a)
+  // if (current->flags & KZ_THREAD_FLAG_READY)
+  // return 1;
   ffc664:	79 00 00 01 	mov.w	#0x1,r0
   ffc668:	40 52       	bra	.+82 (0xffc6bc)
 
@@ -811,6 +815,7 @@ Disassembly of section .text:
   ffc71a:	7a 02 00 ff 	mov.l	#0xffd12c,er2
   ffc71e:	d1 2c 
 
+  // search TCB(Task Controlle Block)?
 00ffc720 <.L17>:
   ffc720:	0f a5       	mov.l	er2,er5
   ffc722:	01 00 69 02 	mov.l	@er0,er2
@@ -825,6 +830,7 @@ Disassembly of section .text:
   ffc738:	79 23 00 05 	cmp.w	#0x5,r3
   ffc73c:	4f e2       	ble	.-30 (0xffc720)
 
+  // cannot found TCB
 00ffc73e <.L14>:
   ffc73e:	79 23 00 06 	cmp.w	#0x6,r3
   ffc742:	46 08       	bne	.+8 (0xffc74c)
@@ -837,10 +843,12 @@ Disassembly of section .text:
   ffc74e:	8a 38       	add.b	#0x38,r2l
   ffc750:	19 11       	sub.w	r1,r1
   ffc752:	0f d0       	mov.l	er5,er0
+  // call memset
   ffc754:	5e ff c1 9a 	jsr	@0xffc19a:24
   ffc758:	0f c1       	mov.l	er4,er1
   ffc75a:	0f d0       	mov.l	er5,er0
   ffc75c:	0b 90       	adds	#4,er0
+  // call strcpy
   ffc75e:	5e ff c2 30 	jsr	@0xffc230:24
   ffc762:	1a 80       	sub.l	er0,er0
   ffc764:	01 00 69 d0 	mov.l	er0,@er5
@@ -864,6 +872,7 @@ Disassembly of section .text:
   ffc79e:	19 11       	sub.w	r1,r1
   ffc7a0:	01 00 6b 20 	mov.l	@0xffd0a4:32,er0
   ffc7a4:	00 ff d0 a4 
+  // call memset
   ffc7a8:	5e ff c1 9a 	jsr	@0xffc19a:24
   ffc7ac:	01 00 6b 22 	mov.l	@0xffd0a4:32,er2
   ffc7b0:	00 ff d0 a4 
@@ -895,9 +904,11 @@ Disassembly of section .text:
   ffc800:	01 00 6d b5 	mov.l	er5,@-er3
   ffc804:	01 00 6f d3 	mov.l	er3,@(0x34:16,er5)
   ffc808:	00 34 
+  // call putcurrent
   ffc80a:	5e ff c6 46 	jsr	@0xffc646:24
   ffc80e:	01 00 6b a5 	mov.l	er5,@0xffd128:32
   ffc812:	00 ff d1 28 
+  // call putcurrent
   ffc816:	5e ff c6 46 	jsr	@0xffc646:24
   ffc81a:	01 00 6b 20 	mov.l	@0xffd128:32,er0
   ffc81e:	00 ff d1 28 
@@ -925,6 +936,7 @@ Disassembly of section .text:
   ffc856:	19 11       	sub.w	r1,r1
   ffc858:	01 00 6b 20 	mov.l	@0xffd128:32,er0
   ffc85c:	00 ff d1 28 
+  // call memset
   ffc860:	5e ff c1 9a 	jsr	@0xffc19a:24
   ffc864:	19 00       	sub.w	r0,r0
   ffc866:	01 00 6d 76 	mov.l	@er7+,er6
@@ -984,6 +996,7 @@ Disassembly of section .text:
   ffc8f6:	ce 00 
   ffc8f8:	59 20       	jmp	@er2
 
+  // call_functions ?
 00ffc8fa <.L28>:
   ffc8fa:	01 00 6f 52 	mov.l	@(0x10:16,er5),er2
   ffc8fe:	00 10 
@@ -996,6 +1009,7 @@ Disassembly of section .text:
   ffc918:	01 00 6f 51 	mov.l	@(0x4:16,er5),er1
   ffc91c:	00 04 
   ffc91e:	01 00 69 50 	mov.l	@er5,er0
+    // call thread_run
   ffc922:	5e ff c6 f4 	jsr	@0xffc6f4:24
   ffc926:	7a 17 00 00 	add.l	#0xc,er7
   ffc92a:	00 0c 
@@ -1008,6 +1022,7 @@ Disassembly of section .text:
   ffc938:	40 56       	bra	.+86 (0xffc990)
 
 00ffc93a <.L30>:
+  // call putcurrent
   ffc93a:	5e ff c6 46 	jsr	@0xffc646:24
 
 00ffc93e <.L32>:
@@ -1017,16 +1032,21 @@ Disassembly of section .text:
 
 00ffc944 <.L34>:
   ffc944:	01 00 69 54 	mov.l	@er5,er4
+
+  // call putcurrent
+
   ffc948:	5e ff c6 46 	jsr	@0xffc646:24
   ffc94c:	01 00 6b a4 	mov.l	er4,@0xffd128:32
   ffc950:	00 ff d1 28 
-  ffc954:	5e ff c6 46 	jsr	@0xffc646:24
+   // call putcurrent
+ ffc954:	5e ff c6 46 	jsr	@0xffc646:24
   ffc958:	19 22       	sub.w	r2,r2
   ffc95a:	6f d2 00 04 	mov.w	r2,@(0x4:16,er5)
   ffc95e:	40 30       	bra	.+48 (0xffc990)
 
 00ffc960 <.L36>:
-  ffc960:	5e ff c6 46 	jsr	@0xffc646:24
+    // call putcurrent
+ffc960:	5e ff c6 46 	jsr	@0xffc646:24
   ffc964:	01 00 6b 22 	mov.l	@0xffd128:32,er2
   ffc968:	00 ff d1 28 
   ffc96c:	01 00 69 d2 	mov.l	er2,@er5
@@ -1042,6 +1062,7 @@ Disassembly of section .text:
   ffc984:	6f a3 00 14 	mov.w	r3,@(0x14:16,er2)
 
 00ffc988 <.L39>:
+  // call putcurrent
   ffc988:	5e ff c6 46 	jsr	@0xffc646:24
   ffc98c:	6f d4 00 02 	mov.w	r4,@(0x2:16,er5)
 
@@ -1140,18 +1161,24 @@ Disassembly of section .text:
   ffca76:	19 11       	sub.w	r1,r1
   ffca78:	7a 00 00 ff 	mov.l	#0xffd0a8,er0
   ffca7c:	d0 a8 
+// call memset
+
   ffca7e:	5e ff c1 9a 	jsr	@0xffc19a:24
   ffca82:	7a 02 00 00 	mov.l	#0x150,er2
   ffca86:	01 50 
   ffca88:	19 11       	sub.w	r1,r1
   ffca8a:	7a 00 00 ff 	mov.l	#0xffd12c,er0
   ffca8e:	d1 2c 
+// call memset
+
   ffca90:	5e ff c1 9a 	jsr	@0xffc19a:24
   ffca94:	1a a2       	sub.l	er2,er2
   ffca96:	8a 0c       	add.b	#0xc,r2l
   ffca98:	19 11       	sub.w	r1,r1
   ffca9a:	7a 00 00 ff 	mov.l	#0xffd27c,er0
   ffca9e:	d2 7c 
+// call memset
+
   ffcaa0:	5e ff c1 9a 	jsr	@0xffc19a:24
   ffcaa4:	7a 01 00 ff 	mov.l	#0xffc8ba,er1
   ffcaa8:	c8 ba 
@@ -1220,6 +1247,7 @@ Disassembly of section .text:
   ffcb68:	7a 11 ff ff 	add.l	#0xffffffe8,er1
   ffcb6c:	ff e8 
   ffcb6e:	19 00       	sub.w	r0,r0
+  // call kz_syscall
   ffcb70:	5e ff cb 0e 	jsr	@0xffcb0e:24
   ffcb74:	01 00 6f 60 	mov.l	@(0xfffc:16,er6),er0
   ffcb78:	ff fc 
@@ -1233,6 +1261,7 @@ Disassembly of section .text:
   ffcb8a:	0f f6       	mov.l	er7,er6
   ffcb8c:	1a 91       	sub.l	er1,er1
   ffcb8e:	79 00 00 01 	mov.w	#0x1,r0
+  // call kz_syscall
   ffcb92:	5e ff cb 0e 	jsr	@0xffcb0e:24
   ffcb96:	01 00 6d 76 	mov.l	@er7+,er6
   ffcb9a:	54 70       	rts	
@@ -1246,6 +1275,7 @@ Disassembly of section .text:
   ffcbaa:	7a 11 ff ff 	add.l	#0xffffffe8,er1
   ffcbae:	ff e8 
   ffcbb0:	79 00 00 02 	mov.w	#0x2,r0
+  // call kz_syscall
   ffcbb4:	5e ff cb 0e 	jsr	@0xffcb0e:24
   ffcbb8:	6f 60 ff e8 	mov.w	@(0xffe8:16,er6),r0
   ffcbbc:	7a 17 00 00 	add.l	#0x18,er7
@@ -1262,6 +1292,7 @@ Disassembly of section .text:
   ffcbd6:	7a 11 ff ff 	add.l	#0xffffffe8,er1
   ffcbda:	ff e8 
   ffcbdc:	79 00 00 03 	mov.w	#0x3,r0
+  // call kz_syscall
   ffcbe0:	5e ff cb 0e 	jsr	@0xffcb0e:24
   ffcbe4:	6f 60 ff e8 	mov.w	@(0xffe8:16,er6),r0
   ffcbe8:	7a 17 00 00 	add.l	#0x18,er7
@@ -1280,6 +1311,7 @@ Disassembly of section .text:
   ffcc08:	7a 11 ff ff 	add.l	#0xffffffe8,er1
   ffcc0c:	ff e8 
   ffcc0e:	79 00 00 04 	mov.w	#0x4,r0
+  // call kz_syscall
   ffcc12:	5e ff cb 0e 	jsr	@0xffcb0e:24
   ffcc16:	6f 60 ff ec 	mov.w	@(0xffec:16,er6),r0
   ffcc1a:	7a 17 00 00 	add.l	#0x18,er7
@@ -1296,6 +1328,7 @@ Disassembly of section .text:
   ffcc34:	7a 11 ff ff 	add.l	#0xffffffe8,er1
   ffcc38:	ff e8 
   ffcc3a:	79 00 00 05 	mov.w	#0x5,r0
+  // call kz_syscall
   ffcc3e:	5e ff cb 0e 	jsr	@0xffcb0e:24
   ffcc42:	01 00 6f 60 	mov.l	@(0xffe8:16,er6),er0
   ffcc46:	ff e8 
@@ -1314,6 +1347,7 @@ Disassembly of section .text:
   ffcc66:	7a 11 ff ff 	add.l	#0xffffffe8,er1
   ffcc6a:	ff e8 
   ffcc6c:	79 00 00 06 	mov.w	#0x6,r0
+  // call kz_syscall
   ffcc70:	5e ff cb 0e 	jsr	@0xffcb0e:24
   ffcc74:	6f 60 ff ea 	mov.w	@(0xffea:16,er6),r0
   ffcc78:	7a 17 00 00 	add.l	#0x18,er7

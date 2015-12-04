@@ -1233,6 +1233,17 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::JMP_R:
+                {
+                    auto ern = read_register_fields(pc + 1, value_place::high, true);
+                    auto next_pc = read_register(ern, register_size::LONG);
+
+                    pc = next_pc;
+                    break;
+                }
+//                 case operation::JMP_ABS:{}
+//                 case operation::JMP_ABS_IND:{}
+
                 case operation::EXTS_L: 
                 {
                     auto erd = read_register_fields(pc + 1, value_place::low, true);
@@ -1460,7 +1471,7 @@ namespace narcissus {
                     auto rd_value = read_register(rd, register_size::BYTE);
                     auto and_value = 1 << imm;
 
-                    auto result = rd_value & and_value;
+                    auto result = !(rd_value & and_value);
                     ccr.zero = result;
                     
                     pc += 2;
@@ -1919,10 +1930,13 @@ namespace narcissus {
                                     return operation::INVALID;
                             }
                         case 9:
+                            return operation::JMP_R;
                         case 0xa:
+//                             return operation::JMP_ABS;
                         case 0xb:
                             //TODO
                             //JMP
+                            // return operation::JMP_ABS_IND;
                             return operation::INVALID;
                         case 0xc:
                             //TODO

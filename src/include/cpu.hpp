@@ -197,6 +197,11 @@ namespace narcissus {
             JSR_R,
             JSR_ABS,                    // jump to subroutine use absolute address
 //             JSR_ABS_IND,
+
+            JMP_R,
+//             JMP_ABS,
+//             JMP_ABS_IND,
+
             EXTS_L,                     // extend as signed
 
             EXTU_W,                     // extend as unsigned
@@ -477,6 +482,7 @@ namespace narcissus {
                 FRIEND_TEST(BTST_IMM_R, 0);
                 FRIEND_TEST(BHI_16, 0);
                 FRIEND_TEST(EXTU_L, 0);
+                FRIEND_TEST(JMP_R, 0);
         };
 
     }  // namespace h8_3069f
