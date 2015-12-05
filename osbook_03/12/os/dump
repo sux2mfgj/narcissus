@@ -1,0 +1,2449 @@
+
+kozos.elf:     file format elf32-h8300
+
+
+Disassembly of section .text:
+
+00ffc020 <_start>:
+  ffc020:	7a 07 00 ff 	mov.l	#0xffff00,er7
+  ffc024:	ff 00 
+  ffc026:	5e ff c0 b6 	jsr	@0xffc0b6:24
+
+00ffc02a <.L11>:
+  ffc02a:	40 fe       	bra	.-2 (0xffc02a)
+
+00ffc02c <_dispatch>:
+  ffc02c:	01 00 69 07 	mov.l	@er0,er7
+  ffc030:	01 00 6d 70 	mov.l	@er7+,er0
+  ffc034:	01 00 6d 71 	mov.l	@er7+,er1
+  ffc038:	01 00 6d 72 	mov.l	@er7+,er2
+  ffc03c:	01 00 6d 73 	mov.l	@er7+,er3
+  ffc040:	01 00 6d 74 	mov.l	@er7+,er4
+  ffc044:	01 00 6d 75 	mov.l	@er7+,er5
+  ffc048:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc04c:	56 70       	rte	
+
+00ffc04e <_start_threads>:
+  ffc04e:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc052:	0f f6       	mov.l	er7,er6
+  ffc054:	01 00 6d f4 	mov.l	er4,@-er7
+  ffc058:	01 00 6d f5 	mov.l	er5,@-er7
+  ffc05c:	1a c4       	sub.l	er4,er4
+  ffc05e:	01 00 6d f4 	mov.l	er4,@-er7
+  ffc062:	01 00 6d f4 	mov.l	er4,@-er7
+  ffc066:	79 05 02 00 	mov.w	#0x200,r5
+  ffc06a:	01 00 6d f5 	mov.l	er5,@-er7
+  ffc06e:	79 02 00 01 	mov.w	#0x1,r2
+  ffc072:	7a 01 00 ff 	mov.l	#0xffd5e8,er1
+  ffc076:	d5 e8 
+  ffc078:	7a 00 00 ff 	mov.l	#0xffd3d0,er0
+  ffc07c:	d3 d0 
+  ffc07e:	5e ff cd 2e 	jsr	@0xffcd2e:24
+  ffc082:	01 00 6d f4 	mov.l	er4,@-er7
+  ffc086:	01 00 6d f4 	mov.l	er4,@-er7
+  ffc08a:	01 00 6d f5 	mov.l	er5,@-er7
+  ffc08e:	79 02 00 08 	mov.w	#0x8,r2
+  ffc092:	7a 01 00 ff 	mov.l	#0xffd5f0,er1
+  ffc096:	d5 f0 
+  ffc098:	7a 00 00 ff 	mov.l	#0xffd51a,er0
+  ffc09c:	d5 1a 
+  ffc09e:	5e ff cd 2e 	jsr	@0xffcd2e:24
+  ffc0a2:	79 00 00 0f 	mov.w	#0xf,r0
+  ffc0a6:	5e ff ce 54 	jsr	@0xffce54:24
+  ffc0aa:	06 3f       	andc	#0x3f,ccr
+  ffc0ac:	7a 17 00 00 	add.l	#0x18,er7
+  ffc0b0:	00 18 
+
+00ffc0b2 <.L2>:
+  ffc0b2:	01 80       	sleep	
+  ffc0b4:	40 fc       	bra	.-4 (0xffc0b2)
+
+00ffc0b6 <_main>:
+  ffc0b6:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc0ba:	0f f6       	mov.l	er7,er6
+  ffc0bc:	04 c0       	orc	#0xc0,ccr
+  ffc0be:	7a 00 00 ff 	mov.l	#0xffd5f8,er0
+  ffc0c2:	d5 f8 
+  ffc0c4:	5e ff c2 e8 	jsr	@0xffc2e8:24
+  ffc0c8:	1a a2       	sub.l	er2,er2
+  ffc0ca:	01 00 6d f2 	mov.l	er2,@-er7
+  ffc0ce:	01 00 6d f2 	mov.l	er2,@-er7
+  ffc0d2:	79 02 01 00 	mov.w	#0x100,r2
+  ffc0d6:	01 00 6d f2 	mov.l	er2,@-er7
+  ffc0da:	19 22       	sub.w	r2,r2
+  ffc0dc:	7a 01 00 ff 	mov.l	#0xffd60d,er1
+  ffc0e0:	d6 0d 
+  ffc0e2:	7a 00 00 ff 	mov.l	#0xffc04e,er0
+  ffc0e6:	c0 4e 
+  ffc0e8:	5e ff cc 22 	jsr	@0xffcc22:24
+  ffc0ec:	7a 17 00 00 	add.l	#0xc,er7
+  ffc0f0:	00 0c 
+  ffc0f2:	19 00       	sub.w	r0,r0
+  ffc0f4:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc0f8:	54 70       	rts	
+
+00ffc0fa <_softvec_setintr>:
+  ffc0fa:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc0fe:	0f f6       	mov.l	er7,er6
+  ffc100:	17 f0       	exts.l	er0
+  ffc102:	10 30       	shll.l	er0
+  ffc104:	10 30       	shll.l	er0
+  ffc106:	01 00 78 80 	mov.l	er1,@(0xffbf20:32,er0)
+  ffc10a:	6b a1 00 ff 
+  ffc10e:	bf 20 
+  ffc110:	19 00       	sub.w	r0,r0
+  ffc112:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc116:	54 70       	rts	
+
+00ffc118 <_softvec_init>:
+  ffc118:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc11c:	0f f6       	mov.l	er7,er6
+  ffc11e:	01 00 6d f4 	mov.l	er4,@-er7
+  ffc122:	19 44       	sub.w	r4,r4
+
+00ffc124 <.L6>:
+  ffc124:	1a 91       	sub.l	er1,er1
+  ffc126:	0d 40       	mov.w	r4,r0
+  ffc128:	5e ff c0 fa 	jsr	@0xffc0fa:24
+  ffc12c:	0b 04       	adds	#1,er4
+  ffc12e:	79 24 00 02 	cmp.w	#0x2,r4
+  ffc132:	4f f0       	ble	.-16 (0xffc124)
+  ffc134:	19 00       	sub.w	r0,r0
+  ffc136:	01 00 6d 74 	mov.l	@er7+,er4
+  ffc13a:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc13e:	54 70       	rts	
+
+00ffc140 <_interrupt>:
+  ffc140:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc144:	0f f6       	mov.l	er7,er6
+  ffc146:	0d 02       	mov.w	r0,r2
+  ffc148:	17 f2       	exts.l	er2
+  ffc14a:	10 32       	shll.l	er2
+  ffc14c:	10 32       	shll.l	er2
+  ffc14e:	01 00 78 20 	mov.l	@(0xffbf20:32,er2),er2
+  ffc152:	6b 22 00 ff 
+  ffc156:	bf 20 
+  ffc158:	47 02       	beq	.+2 (0xffc15c)
+  ffc15a:	5d 20       	jsr	@er2
+
+00ffc15c <.L9>:
+  ffc15c:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc160:	54 70       	rts	
+
+00ffc162 <_memset>:
+  ffc162:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc166:	0f f6       	mov.l	er7,er6
+  ffc168:	0f 83       	mov.l	er0,er3
+
+00ffc16a <.L8>:
+  ffc16a:	0f a2       	mov.l	er2,er2
+  ffc16c:	4f 08       	ble	.+8 (0xffc176)
+  ffc16e:	68 b9       	mov.b	r1l,@er3
+  ffc170:	0b 03       	adds	#1,er3
+  ffc172:	1b 02       	subs	#1,er2
+  ffc174:	40 f4       	bra	.-12 (0xffc16a)
+
+00ffc176 <.L7>:
+  ffc176:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc17a:	54 70       	rts	
+
+00ffc17c <_memcpy>:
+  ffc17c:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc180:	0f f6       	mov.l	er7,er6
+  ffc182:	01 00 6d f4 	mov.l	er4,@-er7
+  ffc186:	0f 84       	mov.l	er0,er4
+  ffc188:	0f a3       	mov.l	er2,er3
+
+00ffc18a <.L16>:
+  ffc18a:	0f b3       	mov.l	er3,er3
+  ffc18c:	4f 0a       	ble	.+10 (0xffc198)
+  ffc18e:	6c 1a       	mov.b	@er1+,r2l
+  ffc190:	68 8a       	mov.b	r2l,@er0
+  ffc192:	0b 00       	adds	#1,er0
+  ffc194:	1b 03       	subs	#1,er3
+  ffc196:	40 f2       	bra	.-14 (0xffc18a)
+
+00ffc198 <.L15>:
+  ffc198:	0f c0       	mov.l	er4,er0
+  ffc19a:	01 00 6d 74 	mov.l	@er7+,er4
+  ffc19e:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc1a2:	54 70       	rts	
+
+00ffc1a4 <_memcmp>:
+  ffc1a4:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc1a8:	0f f6       	mov.l	er7,er6
+  ffc1aa:	01 00 6d f4 	mov.l	er4,@-er7
+  ffc1ae:	0f 84       	mov.l	er0,er4
+
+00ffc1b0 <.L27>:
+  ffc1b0:	0f a2       	mov.l	er2,er2
+  ffc1b2:	4f 1e       	ble	.+30 (0xffc1d2)
+  ffc1b4:	68 48       	mov.b	@er4,r0l
+  ffc1b6:	68 1b       	mov.b	@er1,r3l
+  ffc1b8:	1c b8       	cmp.b	r3l,r0l
+  ffc1ba:	47 0e       	beq	.+14 (0xffc1ca)
+  ffc1bc:	43 06       	bls	.+6 (0xffc1c4)
+  ffc1be:	79 00 00 01 	mov.w	#0x1,r0
+  ffc1c2:	40 10       	bra	.+16 (0xffc1d4)
+
+00ffc1c4 <.L22>:
+  ffc1c4:	79 00 ff ff 	mov.w	#0xffff,r0
+  ffc1c8:	40 0a       	bra	.+10 (0xffc1d4)
+
+00ffc1ca <.L21>:
+  ffc1ca:	0b 04       	adds	#1,er4
+  ffc1cc:	0b 01       	adds	#1,er1
+  ffc1ce:	1b 02       	subs	#1,er2
+  ffc1d0:	40 de       	bra	.-34 (0xffc1b0)
+
+00ffc1d2 <.L26>:
+  ffc1d2:	19 00       	sub.w	r0,r0
+
+00ffc1d4 <.L17>:
+  ffc1d4:	01 00 6d 74 	mov.l	@er7+,er4
+  ffc1d8:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc1dc:	54 70       	rts	
+
+00ffc1de <_strlen>:
+  ffc1de:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc1e2:	0f f6       	mov.l	er7,er6
+  ffc1e4:	19 33       	sub.w	r3,r3
+
+00ffc1e6 <.L35>:
+  ffc1e6:	68 0a       	mov.b	@er0,r2l
+  ffc1e8:	47 06       	beq	.+6 (0xffc1f0)
+  ffc1ea:	0b 00       	adds	#1,er0
+  ffc1ec:	0b 03       	adds	#1,er3
+  ffc1ee:	40 f6       	bra	.-10 (0xffc1e6)
+
+00ffc1f0 <.L34>:
+  ffc1f0:	0d 30       	mov.w	r3,r0
+  ffc1f2:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc1f6:	54 70       	rts	
+
+00ffc1f8 <_strcpy>:
+  ffc1f8:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc1fc:	0f f6       	mov.l	er7,er6
+  ffc1fe:	0f 83       	mov.l	er0,er3
+
+00ffc200 <.L37>:
+  ffc200:	68 1a       	mov.b	@er1,r2l
+  ffc202:	68 8a       	mov.b	r2l,@er0
+  ffc204:	68 1a       	mov.b	@er1,r2l
+  ffc206:	47 06       	beq	.+6 (0xffc20e)
+  ffc208:	0b 00       	adds	#1,er0
+  ffc20a:	0b 01       	adds	#1,er1
+  ffc20c:	40 f2       	bra	.-14 (0xffc200)
+
+00ffc20e <.L38>:
+  ffc20e:	0f b0       	mov.l	er3,er0
+  ffc210:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc214:	54 70       	rts	
+
+00ffc216 <_strcmp>:
+  ffc216:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc21a:	0f f6       	mov.l	er7,er6
+
+00ffc21c <.L55>:
+  ffc21c:	68 0a       	mov.b	@er0,r2l
+  ffc21e:	46 04       	bne	.+4 (0xffc224)
+  ffc220:	68 1a       	mov.b	@er1,r2l
+  ffc222:	47 1c       	beq	.+28 (0xffc240)
+
+00ffc224 <.L53>:
+  ffc224:	68 0b       	mov.b	@er0,r3l
+  ffc226:	68 1a       	mov.b	@er1,r2l
+  ffc228:	1c ab       	cmp.b	r2l,r3l
+  ffc22a:	47 0e       	beq	.+14 (0xffc23a)
+  ffc22c:	43 06       	bls	.+6 (0xffc234)
+  ffc22e:	79 00 00 01 	mov.w	#0x1,r0
+  ffc232:	40 0e       	bra	.+14 (0xffc242)
+
+00ffc234 <.L46>:
+  ffc234:	79 00 ff ff 	mov.w	#0xffff,r0
+  ffc238:	40 08       	bra	.+8 (0xffc242)
+
+00ffc23a <.L45>:
+  ffc23a:	0b 00       	adds	#1,er0
+  ffc23c:	0b 01       	adds	#1,er1
+  ffc23e:	40 dc       	bra	.-36 (0xffc21c)
+
+00ffc240 <.L50>:
+  ffc240:	19 00       	sub.w	r0,r0
+
+00ffc242 <.L41>:
+  ffc242:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc246:	54 70       	rts	
+
+00ffc248 <_strncmp>:
+  ffc248:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc24c:	0f f6       	mov.l	er7,er6
+  ffc24e:	01 00 6d f4 	mov.l	er4,@-er7
+  ffc252:	0f 84       	mov.l	er0,er4
+  ffc254:	0d 20       	mov.w	r2,r0
+  ffc256:	40 1a       	bra	.+26 (0xffc272)
+
+00ffc258 <.L63>:
+  ffc258:	68 1a       	mov.b	@er1,r2l
+  ffc25a:	1c ab       	cmp.b	r2l,r3l
+  ffc25c:	47 0e       	beq	.+14 (0xffc26c)
+  ffc25e:	43 06       	bls	.+6 (0xffc266)
+  ffc260:	79 00 00 01 	mov.w	#0x1,r0
+  ffc264:	40 1a       	bra	.+26 (0xffc280)
+
+00ffc266 <.L61>:
+  ffc266:	79 00 ff ff 	mov.w	#0xffff,r0
+  ffc26a:	40 14       	bra	.+20 (0xffc280)
+
+00ffc26c <.L60>:
+  ffc26c:	0b 04       	adds	#1,er4
+  ffc26e:	0b 01       	adds	#1,er1
+  ffc270:	1b 00       	subs	#1,er0
+
+00ffc272 <.L57>:
+  ffc272:	68 4b       	mov.b	@er4,r3l
+  ffc274:	46 04       	bne	.+4 (0xffc27a)
+  ffc276:	68 1a       	mov.b	@er1,r2l
+  ffc278:	47 04       	beq	.+4 (0xffc27e)
+
+00ffc27a <.L59>:
+  ffc27a:	0d 00       	mov.w	r0,r0
+  ffc27c:	4e da       	bgt	.-38 (0xffc258)
+
+00ffc27e <.L58>:
+  ffc27e:	19 00       	sub.w	r0,r0
+
+00ffc280 <.L56>:
+  ffc280:	01 00 6d 74 	mov.l	@er7+,er4
+  ffc284:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc288:	54 70       	rts	
+
+00ffc28a <_putc>:
+  ffc28a:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc28e:	0f f6       	mov.l	er7,er6
+  ffc290:	01 00 6d f4 	mov.l	er4,@-er7
+  ffc294:	0c 8c       	mov.b	r0l,r4l
+  ffc296:	a8 0a       	cmp.b	#0xa,r0l
+  ffc298:	46 0a       	bne	.+10 (0xffc2a4)
+  ffc29a:	f9 0d       	mov.b	#0xd,r1l
+  ffc29c:	79 00 00 01 	mov.w	#0x1,r0
+  ffc2a0:	5e ff c4 04 	jsr	@0xffc404:24
+
+00ffc2a4 <.L65>:
+  ffc2a4:	0c c9       	mov.b	r4l,r1l
+  ffc2a6:	79 00 00 01 	mov.w	#0x1,r0
+  ffc2aa:	5e ff c4 04 	jsr	@0xffc404:24
+  ffc2ae:	01 00 6d 74 	mov.l	@er7+,er4
+  ffc2b2:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc2b6:	54 70       	rts	
+
+00ffc2b8 <_getc>:
+  ffc2b8:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc2bc:	0f f6       	mov.l	er7,er6
+  ffc2be:	01 00 6d f4 	mov.l	er4,@-er7
+  ffc2c2:	79 00 00 01 	mov.w	#0x1,r0
+  ffc2c6:	5e ff c4 7e 	jsr	@0xffc47e:24
+  ffc2ca:	a8 0d       	cmp.b	#0xd,r0l
+  ffc2cc:	47 04       	beq	.+4 (0xffc2d2)
+  ffc2ce:	0c 8c       	mov.b	r0l,r4l
+  ffc2d0:	40 02       	bra	.+2 (0xffc2d4)
+
+00ffc2d2 <.L67>:
+  ffc2d2:	fc 0a       	mov.b	#0xa,r4l
+
+00ffc2d4 <.L68>:
+  ffc2d4:	0c c8       	mov.b	r4l,r0l
+  ffc2d6:	5e ff c2 8a 	jsr	@0xffc28a:24
+  ffc2da:	0c c8       	mov.b	r4l,r0l
+  ffc2dc:	17 50       	extu.w	r0
+  ffc2de:	01 00 6d 74 	mov.l	@er7+,er4
+  ffc2e2:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc2e6:	54 70       	rts	
+
+00ffc2e8 <_puts>:
+  ffc2e8:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc2ec:	0f f6       	mov.l	er7,er6
+  ffc2ee:	01 00 6d f4 	mov.l	er4,@-er7
+  ffc2f2:	0f 84       	mov.l	er0,er4
+
+00ffc2f4 <.L75>:
+  ffc2f4:	68 4a       	mov.b	@er4,r2l
+  ffc2f6:	47 08       	beq	.+8 (0xffc300)
+  ffc2f8:	6c 48       	mov.b	@er4+,r0l
+  ffc2fa:	5e ff c2 8a 	jsr	@0xffc28a:24
+  ffc2fe:	40 f4       	bra	.-12 (0xffc2f4)
+
+00ffc300 <.L74>:
+  ffc300:	19 00       	sub.w	r0,r0
+  ffc302:	01 00 6d 74 	mov.l	@er7+,er4
+  ffc306:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc30a:	54 70       	rts	
+
+00ffc30c <_gets>:
+  ffc30c:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc310:	0f f6       	mov.l	er7,er6
+  ffc312:	01 00 6d f4 	mov.l	er4,@-er7
+  ffc316:	01 00 6d f5 	mov.l	er5,@-er7
+  ffc31a:	0f 85       	mov.l	er0,er5
+  ffc31c:	19 44       	sub.w	r4,r4
+
+00ffc31e <.L77>:
+  ffc31e:	5e ff c2 b8 	jsr	@0xffc2b8:24
+  ffc322:	a8 0a       	cmp.b	#0xa,r0l
+  ffc324:	46 02       	bne	.+2 (0xffc328)
+  ffc326:	18 88       	sub.b	r0l,r0l
+
+00ffc328 <.L80>:
+  ffc328:	0d 42       	mov.w	r4,r2
+  ffc32a:	17 f2       	exts.l	er2
+  ffc32c:	0a d2       	add.l	er5,er2
+  ffc32e:	68 a8       	mov.b	r0l,@er2
+  ffc330:	0b 04       	adds	#1,er4
+  ffc332:	46 ea       	bne	.-22 (0xffc31e)
+  ffc334:	0d 40       	mov.w	r4,r0
+  ffc336:	1b 00       	subs	#1,er0
+  ffc338:	01 00 6d 75 	mov.l	@er7+,er5
+  ffc33c:	01 00 6d 74 	mov.l	@er7+,er4
+  ffc340:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc344:	54 70       	rts	
+
+00ffc346 <_putxval>:
+  ffc346:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc34a:	0f f6       	mov.l	er7,er6
+  ffc34c:	7a 17 ff ff 	add.l	#0xfffffff4,er7
+  ffc350:	ff f4 
+  ffc352:	18 aa       	sub.b	r2l,r2l
+  ffc354:	6e ea ff fc 	mov.b	r2l,@(0xfffc:16,er6)
+  ffc358:	0f e3       	mov.l	er6,er3
+  ffc35a:	1b 93       	subs	#4,er3
+  ffc35c:	1b 03       	subs	#1,er3
+  ffc35e:	0f 80       	mov.l	er0,er0
+  ffc360:	46 06       	bne	.+6 (0xffc368)
+  ffc362:	0d 11       	mov.w	r1,r1
+  ffc364:	46 02       	bne	.+2 (0xffc368)
+  ffc366:	0b 01       	adds	#1,er1
+
+00ffc368 <.L94>:
+  ffc368:	1a a2       	sub.l	er2,er2
+  ffc36a:	0c 8a       	mov.b	r0l,r2l
+  ffc36c:	ea 0f       	and.b	#0xf,r2l
+  ffc36e:	78 20 6a 2a 	mov.b	@(0xffd612:32,er2),r2l
+  ffc372:	00 ff d6 12 
+  ffc376:	68 ba       	mov.b	r2l,@er3
+  ffc378:	1b 03       	subs	#1,er3
+  ffc37a:	0f 82       	mov.l	er0,er2
+  ffc37c:	11 32       	shlr.l	er2
+  ffc37e:	11 32       	shlr.l	er2
+  ffc380:	11 32       	shlr.l	er2
+  ffc382:	11 32       	shlr.l	er2
+  ffc384:	0f a0       	mov.l	er2,er0
+  ffc386:	0d 11       	mov.w	r1,r1
+  ffc388:	47 02       	beq	.+2 (0xffc38c)
+  ffc38a:	1b 01       	subs	#1,er1
+
+00ffc38c <.L83>:
+  ffc38c:	0f a2       	mov.l	er2,er2
+  ffc38e:	46 d8       	bne	.-40 (0xffc368)
+  ffc390:	0d 11       	mov.w	r1,r1
+  ffc392:	46 d4       	bne	.-44 (0xffc368)
+  ffc394:	0f b0       	mov.l	er3,er0
+  ffc396:	0b 00       	adds	#1,er0
+  ffc398:	5e ff c2 e8 	jsr	@0xffc2e8:24
+  ffc39c:	19 00       	sub.w	r0,r0
+  ffc39e:	7a 17 00 00 	add.l	#0xc,er7
+  ffc3a2:	00 0c 
+  ffc3a4:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc3a8:	54 70       	rts	
+
+00ffc3aa <_serial_init>:
+  ffc3aa:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc3ae:	0f f6       	mov.l	er7,er6
+  ffc3b0:	17 f0       	exts.l	er0
+  ffc3b2:	10 30       	shll.l	er0
+  ffc3b4:	10 30       	shll.l	er0
+  ffc3b6:	01 00 78 00 	mov.l	@(0xffd65c:32,er0),er3
+  ffc3ba:	6b 23 00 ff 
+  ffc3be:	d6 5c 
+  ffc3c0:	18 88       	sub.b	r0l,r0l
+  ffc3c2:	6e b8 00 02 	mov.b	r0l,@(0x2:16,er3)
+  ffc3c6:	68 b8       	mov.b	r0l,@er3
+  ffc3c8:	fa 40       	mov.b	#0x40,r2l
+  ffc3ca:	6e ba 00 01 	mov.b	r2l,@(0x1:16,er3)
+  ffc3ce:	fa 30       	mov.b	#0x30,r2l
+  ffc3d0:	6e ba 00 02 	mov.b	r2l,@(0x2:16,er3)
+  ffc3d4:	6e b8 00 04 	mov.b	r0l,@(0x4:16,er3)
+  ffc3d8:	19 00       	sub.w	r0,r0
+  ffc3da:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc3de:	54 70       	rts	
+
+00ffc3e0 <_serial_is_send_enable>:
+  ffc3e0:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc3e4:	0f f6       	mov.l	er7,er6
+  ffc3e6:	17 f0       	exts.l	er0
+  ffc3e8:	10 30       	shll.l	er0
+  ffc3ea:	10 30       	shll.l	er0
+  ffc3ec:	01 00 78 00 	mov.l	@(0xffd65c:32,er0),er2
+  ffc3f0:	6b 22 00 ff 
+  ffc3f4:	d6 5c 
+  ffc3f6:	6e 28 00 04 	mov.b	@(0x4:16,er2),r0l
+  ffc3fa:	79 60 00 80 	and.w	#0x80,r0
+  ffc3fe:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc402:	54 70       	rts	
+
+00ffc404 <_serial_send_byte>:
+  ffc404:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc408:	0f f6       	mov.l	er7,er6
+  ffc40a:	1b 97       	subs	#4,er7
+  ffc40c:	01 00 6d f4 	mov.l	er4,@-er7
+  ffc410:	01 00 6d f5 	mov.l	er5,@-er7
+  ffc414:	0d 05       	mov.w	r0,r5
+  ffc416:	6e e9 ff ff 	mov.b	r1l,@(0xffff:16,er6)
+  ffc41a:	0d 02       	mov.w	r0,r2
+  ffc41c:	17 f2       	exts.l	er2
+  ffc41e:	10 32       	shll.l	er2
+  ffc420:	10 32       	shll.l	er2
+  ffc422:	01 00 78 20 	mov.l	@(0xffd65c:32,er2),er4
+  ffc426:	6b 24 00 ff 
+  ffc42a:	d6 5c 
+
+00ffc42c <.L4>:
+  ffc42c:	0d 50       	mov.w	r5,r0
+  ffc42e:	5e ff c3 e0 	jsr	@0xffc3e0:24
+  ffc432:	0d 00       	mov.w	r0,r0
+  ffc434:	47 f6       	beq	.-10 (0xffc42c)
+  ffc436:	6e 6a ff ff 	mov.b	@(0xffff:16,er6),r2l
+  ffc43a:	6e ca 00 03 	mov.b	r2l,@(0x3:16,er4)
+  ffc43e:	6e 4a 00 04 	mov.b	@(0x4:16,er4),r2l
+  ffc442:	ea 7f       	and.b	#0x7f,r2l
+  ffc444:	6e ca 00 04 	mov.b	r2l,@(0x4:16,er4)
+  ffc448:	19 00       	sub.w	r0,r0
+  ffc44a:	01 00 6d 75 	mov.l	@er7+,er5
+  ffc44e:	01 00 6d 74 	mov.l	@er7+,er4
+  ffc452:	0b 97       	adds	#4,er7
+  ffc454:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc458:	54 70       	rts	
+
+00ffc45a <_serial_is_recv_enable>:
+  ffc45a:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc45e:	0f f6       	mov.l	er7,er6
+  ffc460:	17 f0       	exts.l	er0
+  ffc462:	10 30       	shll.l	er0
+  ffc464:	10 30       	shll.l	er0
+  ffc466:	01 00 78 00 	mov.l	@(0xffd65c:32,er0),er2
+  ffc46a:	6b 22 00 ff 
+  ffc46e:	d6 5c 
+  ffc470:	6e 28 00 04 	mov.b	@(0x4:16,er2),r0l
+  ffc474:	79 60 00 40 	and.w	#0x40,r0
+  ffc478:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc47c:	54 70       	rts	
+
+00ffc47e <_serial_recv_byte>:
+  ffc47e:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc482:	0f f6       	mov.l	er7,er6
+  ffc484:	01 00 6d f4 	mov.l	er4,@-er7
+  ffc488:	01 00 6d f5 	mov.l	er5,@-er7
+  ffc48c:	0d 05       	mov.w	r0,r5
+  ffc48e:	0d 02       	mov.w	r0,r2
+  ffc490:	17 f2       	exts.l	er2
+  ffc492:	10 32       	shll.l	er2
+  ffc494:	10 32       	shll.l	er2
+  ffc496:	01 00 78 20 	mov.l	@(0xffd65c:32,er2),er4
+  ffc49a:	6b 24 00 ff 
+  ffc49e:	d6 5c 
+
+00ffc4a0 <.L8>:
+  ffc4a0:	0d 50       	mov.w	r5,r0
+  ffc4a2:	5e ff c4 5a 	jsr	@0xffc45a:24
+  ffc4a6:	0d 00       	mov.w	r0,r0
+  ffc4a8:	47 f6       	beq	.-10 (0xffc4a0)
+  ffc4aa:	6e 48 00 05 	mov.b	@(0x5:16,er4),r0l
+  ffc4ae:	6e 4a 00 04 	mov.b	@(0x4:16,er4),r2l
+  ffc4b2:	ea bf       	and.b	#0xbf,r2l
+  ffc4b4:	6e ca 00 04 	mov.b	r2l,@(0x4:16,er4)
+  ffc4b8:	17 50       	extu.w	r0
+  ffc4ba:	01 00 6d 75 	mov.l	@er7+,er5
+  ffc4be:	01 00 6d 74 	mov.l	@er7+,er4
+  ffc4c2:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc4c6:	54 70       	rts	
+
+00ffc4c8 <_serial_intr_is_send_enable>:
+  ffc4c8:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc4cc:	0f f6       	mov.l	er7,er6
+  ffc4ce:	17 f0       	exts.l	er0
+  ffc4d0:	10 30       	shll.l	er0
+  ffc4d2:	10 30       	shll.l	er0
+  ffc4d4:	01 00 78 00 	mov.l	@(0xffd65c:32,er0),er2
+  ffc4d8:	6b 22 00 ff 
+  ffc4dc:	d6 5c 
+  ffc4de:	19 00       	sub.w	r0,r0
+  ffc4e0:	6e 2a 00 02 	mov.b	@(0x2:16,er2),r2l
+  ffc4e4:	4c 02       	bge	.+2 (0xffc4e8)
+  ffc4e6:	0b 00       	adds	#1,er0
+
+00ffc4e8 <.L11>:
+  ffc4e8:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc4ec:	54 70       	rts	
+
+00ffc4ee <_serial_intr_send_enable>:
+  ffc4ee:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc4f2:	0f f6       	mov.l	er7,er6
+  ffc4f4:	17 f0       	exts.l	er0
+  ffc4f6:	10 30       	shll.l	er0
+  ffc4f8:	10 30       	shll.l	er0
+  ffc4fa:	01 00 78 00 	mov.l	@(0xffd65c:32,er0),er3
+  ffc4fe:	6b 23 00 ff 
+  ffc502:	d6 5c 
+  ffc504:	6e 3a 00 02 	mov.b	@(0x2:16,er3),r2l
+  ffc508:	ca 80       	or.b	#0x80,r2l
+  ffc50a:	6e ba 00 02 	mov.b	r2l,@(0x2:16,er3)
+  ffc50e:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc512:	54 70       	rts	
+
+00ffc514 <_serial_intr_send_disable>:
+  ffc514:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc518:	0f f6       	mov.l	er7,er6
+  ffc51a:	17 f0       	exts.l	er0
+  ffc51c:	10 30       	shll.l	er0
+  ffc51e:	10 30       	shll.l	er0
+  ffc520:	01 00 78 00 	mov.l	@(0xffd65c:32,er0),er3
+  ffc524:	6b 23 00 ff 
+  ffc528:	d6 5c 
+  ffc52a:	6e 3a 00 02 	mov.b	@(0x2:16,er3),r2l
+  ffc52e:	ea 7f       	and.b	#0x7f,r2l
+  ffc530:	6e ba 00 02 	mov.b	r2l,@(0x2:16,er3)
+  ffc534:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc538:	54 70       	rts	
+
+00ffc53a <_serial_intr_is_recv_enable>:
+  ffc53a:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc53e:	0f f6       	mov.l	er7,er6
+  ffc540:	17 f0       	exts.l	er0
+  ffc542:	10 30       	shll.l	er0
+  ffc544:	10 30       	shll.l	er0
+  ffc546:	01 00 78 00 	mov.l	@(0xffd65c:32,er0),er2
+  ffc54a:	6b 22 00 ff 
+  ffc54e:	d6 5c 
+  ffc550:	6e 28 00 02 	mov.b	@(0x2:16,er2),r0l
+  ffc554:	77 68       	bld	#0x6,r0l
+  ffc556:	01 f0 65 00 	xor.l	er0,er0
+  ffc55a:	12 30       	rotxl.l	er0
+  ffc55c:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc560:	54 70       	rts	
+
+00ffc562 <_serial_intr_recv_enable>:
+  ffc562:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc566:	0f f6       	mov.l	er7,er6
+  ffc568:	17 f0       	exts.l	er0
+  ffc56a:	10 30       	shll.l	er0
+  ffc56c:	10 30       	shll.l	er0
+  ffc56e:	01 00 78 00 	mov.l	@(0xffd65c:32,er0),er3
+  ffc572:	6b 23 00 ff 
+  ffc576:	d6 5c 
+  ffc578:	6e 3a 00 02 	mov.b	@(0x2:16,er3),r2l
+  ffc57c:	ca 40       	or.b	#0x40,r2l
+  ffc57e:	6e ba 00 02 	mov.b	r2l,@(0x2:16,er3)
+  ffc582:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc586:	54 70       	rts	
+
+00ffc588 <_serial_intr_recv_disable>:
+  ffc588:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc58c:	0f f6       	mov.l	er7,er6
+  ffc58e:	17 f0       	exts.l	er0
+  ffc590:	10 30       	shll.l	er0
+  ffc592:	10 30       	shll.l	er0
+  ffc594:	01 00 78 00 	mov.l	@(0xffd65c:32,er0),er3
+  ffc598:	6b 23 00 ff 
+  ffc59c:	d6 5c 
+  ffc59e:	6e 3a 00 02 	mov.b	@(0x2:16,er3),r2l
+  ffc5a2:	ea bf       	and.b	#0xbf,r2l
+  ffc5a4:	6e ba 00 02 	mov.b	r2l,@(0x2:16,er3)
+  ffc5a8:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc5ac:	54 70       	rts	
+
+00ffc5ae <_getcurrent>:
+  ffc5ae:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc5b2:	0f f6       	mov.l	er7,er6
+  ffc5b4:	01 00 6b 20 	mov.l	@0xffd708:32,er0
+  ffc5b8:	00 ff d7 08 
+  ffc5bc:	46 04       	bne	.+4 (0xffc5c2)
+  ffc5be:	1b 00       	subs	#1,er0
+  ffc5c0:	40 46       	bra	.+70 (0xffc608)
+
+00ffc5c2 <.L2>:
+  ffc5c2:	6e 0a 00 1f 	mov.b	@(0x1f:16,er0),r2l
+  ffc5c6:	73 0a       	btst	#0x0,r2l
+  ffc5c8:	46 06       	bne	.+6 (0xffc5d0)
+  ffc5ca:	79 00 00 01 	mov.w	#0x1,r0
+  ffc5ce:	40 38       	bra	.+56 (0xffc608)
+
+00ffc5d0 <.L3>:
+  ffc5d0:	6f 02 00 14 	mov.w	@(0x14:16,er0),r2
+  ffc5d4:	17 f2       	exts.l	er2
+  ffc5d6:	10 32       	shll.l	er2
+  ffc5d8:	10 32       	shll.l	er2
+  ffc5da:	10 32       	shll.l	er2
+  ffc5dc:	7a 12 00 ff 	add.l	#0xffd688,er2
+  ffc5e0:	d6 88 
+  ffc5e2:	01 00 69 03 	mov.l	@er0,er3
+  ffc5e6:	01 00 69 a3 	mov.l	er3,@er2
+  ffc5ea:	46 06       	bne	.+6 (0xffc5f2)
+  ffc5ec:	01 00 6f a3 	mov.l	er3,@(0x4:16,er2)
+  ffc5f0:	00 04 
+
+00ffc5f2 <.L4>:
+  ffc5f2:	01 00 6f 02 	mov.l	@(0x1c:16,er0),er2
+  ffc5f6:	00 1c 
+  ffc5f8:	ea fe       	and.b	#0xfe,r2l
+  ffc5fa:	01 00 6f 82 	mov.l	er2,@(0x1c:16,er0)
+  ffc5fe:	00 1c 
+  ffc600:	1a a2       	sub.l	er2,er2
+  ffc602:	01 00 69 82 	mov.l	er2,@er0
+  ffc606:	19 00       	sub.w	r0,r0
+
+00ffc608 <.L1>:
+  ffc608:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc60c:	54 70       	rts	
+
+00ffc60e <_putcurrent>:
+  ffc60e:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc612:	0f f6       	mov.l	er7,er6
+  ffc614:	01 00 6b 23 	mov.l	@0xffd708:32,er3
+  ffc618:	00 ff d7 08 
+  ffc61c:	46 06       	bne	.+6 (0xffc624)
+  ffc61e:	79 00 ff ff 	mov.w	#0xffff,r0
+  ffc622:	40 60       	bra	.+96 (0xffc684)
+
+00ffc624 <.L6>:
+  ffc624:	6e 3a 00 1f 	mov.b	@(0x1f:16,er3),r2l
+  ffc628:	73 0a       	btst	#0x0,r2l
+  ffc62a:	47 06       	beq	.+6 (0xffc632)
+  ffc62c:	79 00 00 01 	mov.w	#0x1,r0
+  ffc630:	40 52       	bra	.+82 (0xffc684)
+
+00ffc632 <.L7>:
+  ffc632:	6f 32 00 14 	mov.w	@(0x14:16,er3),r2
+  ffc636:	17 f2       	exts.l	er2
+  ffc638:	10 32       	shll.l	er2
+  ffc63a:	10 32       	shll.l	er2
+  ffc63c:	10 32       	shll.l	er2
+  ffc63e:	7a 12 00 ff 	add.l	#0xffd688,er2
+  ffc642:	d6 88 
+  ffc644:	01 00 6f 20 	mov.l	@(0x4:16,er2),er0
+  ffc648:	00 04 
+  ffc64a:	47 06       	beq	.+6 (0xffc652)
+  ffc64c:	01 00 69 83 	mov.l	er3,@er0
+  ffc650:	40 04       	bra	.+4 (0xffc656)
+
+00ffc652 <.L8>:
+  ffc652:	01 00 69 a3 	mov.l	er3,@er2
+
+00ffc656 <.L9>:
+  ffc656:	01 00 6b 22 	mov.l	@0xffd708:32,er2
+  ffc65a:	00 ff d7 08 
+  ffc65e:	6f 23 00 14 	mov.w	@(0x14:16,er2),r3
+  ffc662:	17 f3       	exts.l	er3
+  ffc664:	10 33       	shll.l	er3
+  ffc666:	10 33       	shll.l	er3
+  ffc668:	10 33       	shll.l	er3
+  ffc66a:	01 00 78 b0 	mov.l	er2,@(0xffd68c:32,er3)
+  ffc66e:	6b a2 00 ff 
+  ffc672:	d6 8c 
+  ffc674:	01 00 6f 23 	mov.l	@(0x1c:16,er2),er3
+  ffc678:	00 1c 
+  ffc67a:	cb 01       	or.b	#0x1,r3l
+  ffc67c:	01 00 6f a3 	mov.l	er3,@(0x1c:16,er2)
+  ffc680:	00 1c 
+  ffc682:	19 00       	sub.w	r0,r0
+
+00ffc684 <.L5>:
+  ffc684:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc688:	54 70       	rts	
+
+00ffc68a <_thread_end>:
+  ffc68a:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc68e:	0f f6       	mov.l	er7,er6
+  ffc690:	5e ff cd 86 	jsr	@0xffcd86:24
+  ffc694:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc698:	54 70       	rts	
+
+00ffc69a <_thread_init>:
+  ffc69a:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc69e:	0f f6       	mov.l	er7,er6
+  ffc6a0:	01 00 6f 02 	mov.l	@(0x20:16,er0),er2
+  ffc6a4:	00 20 
+  ffc6a6:	01 00 6f 01 	mov.l	@(0x28:16,er0),er1
+  ffc6aa:	00 28 
+  ffc6ac:	6f 00 00 24 	mov.w	@(0x24:16,er0),r0
+  ffc6b0:	5d 20       	jsr	@er2
+  ffc6b2:	5e ff c6 8a 	jsr	@0xffc68a:24
+  ffc6b6:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc6ba:	54 70       	rts	
+
+00ffc6bc <_thread_run>:
+  ffc6bc:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc6c0:	0f f6       	mov.l	er7,er6
+  ffc6c2:	1b 97       	subs	#4,er7
+  ffc6c4:	1b 97       	subs	#4,er7
+  ffc6c6:	01 00 6d f4 	mov.l	er4,@-er7
+  ffc6ca:	01 00 6d f5 	mov.l	er5,@-er7
+  ffc6ce:	01 00 6f e0 	mov.l	er0,@(0xfffc:16,er6)
+  ffc6d2:	ff fc 
+  ffc6d4:	0f 94       	mov.l	er1,er4
+  ffc6d6:	6f e2 ff fa 	mov.w	r2,@(0xfffa:16,er6)
+  ffc6da:	19 33       	sub.w	r3,r3
+  ffc6dc:	7a 00 00 ff 	mov.l	#0xffd72c,er0
+  ffc6e0:	d7 2c 
+  ffc6e2:	7a 02 00 ff 	mov.l	#0xffd70c,er2
+  ffc6e6:	d7 0c 
+
+00ffc6e8 <.L17>:
+  ffc6e8:	0f a5       	mov.l	er2,er5
+  ffc6ea:	01 00 69 02 	mov.l	@er0,er2
+  ffc6ee:	7a 10 00 00 	add.l	#0x38,er0
+  ffc6f2:	00 38 
+  ffc6f4:	0f a2       	mov.l	er2,er2
+  ffc6f6:	47 0e       	beq	.+14 (0xffc706)
+  ffc6f8:	0b 03       	adds	#1,er3
+  ffc6fa:	1a a2       	sub.l	er2,er2
+  ffc6fc:	8a 38       	add.b	#0x38,r2l
+  ffc6fe:	0a d2       	add.l	er5,er2
+  ffc700:	79 23 00 05 	cmp.w	#0x5,r3
+  ffc704:	4f e2       	ble	.-30 (0xffc6e8)
+
+00ffc706 <.L14>:
+  ffc706:	79 23 00 06 	cmp.w	#0x6,r3
+  ffc70a:	46 08       	bne	.+8 (0xffc714)
+  ffc70c:	1a 80       	sub.l	er0,er0
+  ffc70e:	1b 00       	subs	#1,er0
+  ffc710:	58 00 00 d6 	bra	.+214 (0xffc7ea)
+
+00ffc714 <.L18>:
+  ffc714:	1a a2       	sub.l	er2,er2
+  ffc716:	8a 38       	add.b	#0x38,r2l
+  ffc718:	19 11       	sub.w	r1,r1
+  ffc71a:	0f d0       	mov.l	er5,er0
+  // call memset
+  ffc71c:	5e ff c1 62 	jsr	@0xffc162:24
+  ffc720:	0f c1       	mov.l	er4,er1
+  ffc722:	0f d0       	mov.l	er5,er0
+  ffc724:	0b 90       	adds	#4,er0
+  ffc726:	5e ff c1 f8 	jsr	@0xffc1f8:24
+  ffc72a:	1a 80       	sub.l	er0,er0
+  ffc72c:	01 00 69 d0 	mov.l	er0,@er5
+  ffc730:	6f 62 ff fa 	mov.w	@(0xfffa:16,er6),r2
+  ffc734:	6f d2 00 14 	mov.w	r2,@(0x14:16,er5)
+  ffc738:	01 00 6f d0 	mov.l	er0,@(0x1c:16,er5)
+  ffc73c:	00 1c 
+  ffc73e:	01 00 6f 60 	mov.l	@(0xfffc:16,er6),er0
+  ffc742:	ff fc 
+  ffc744:	01 00 6f d0 	mov.l	er0,@(0x20:16,er5)
+  ffc748:	00 20 
+  ffc74a:	6f 62 00 0e 	mov.w	@(0xe:16,er6),r2
+  ffc74e:	6f d2 00 24 	mov.w	r2,@(0x24:16,er5)
+  ffc752:	01 00 6f 62 	mov.l	@(0x10:16,er6),er2
+  ffc756:	00 10 
+  ffc758:	01 00 6f d2 	mov.l	er2,@(0x28:16,er5)
+  ffc75c:	00 28 
+  ffc75e:	6f 64 00 0a 	mov.w	@(0xa:16,er6),r4
+  ffc762:	17 f4       	exts.l	er4
+  ffc764:	0f c2       	mov.l	er4,er2
+  ffc766:	19 11       	sub.w	r1,r1
+  ffc768:	01 00 6b 20 	mov.l	@0xffd668:32,er0
+  ffc76c:	00 ff d6 68 
+  // call memset
+  ffc770:	5e ff c1 62 	jsr	@0xffc162:24
+  ffc774:	01 00 6b 22 	mov.l	@0xffd668:32,er2
+  ffc778:	00 ff d6 68 
+  ffc77c:	0a c2       	add.l	er4,er2
+  ffc77e:	01 00 6b a2 	mov.l	er2,@0xffd668:32
+  ffc782:	00 ff d6 68 
+  ffc786:	01 00 6f d2 	mov.l	er2,@(0x18:16,er5)
+  ffc78a:	00 18 
+  ffc78c:	0f a3       	mov.l	er2,er3
+  ffc78e:	7a 02 00 ff 	mov.l	#0xffc68a,er2
+  ffc792:	c6 8a 
+  ffc794:	01 00 6d b2 	mov.l	er2,@-er3
+  ffc798:	1b 93       	subs	#4,er3
+  ffc79a:	7a 02 00 ff 	mov.l	#0xffc69a,er2
+  ffc79e:	c6 9a 
+  ffc7a0:	6f 60 ff fa 	mov.w	@(0xfffa:16,er6),r0
+  ffc7a4:	46 04       	bne	.+4 (0xffc7aa)
+  ffc7a6:	79 4a c0 00 	or.w	#0xc000,e2
+
+00ffc7aa <.L19>:
+  ffc7aa:	01 00 69 b2 	mov.l	er2,@er3
+  ffc7ae:	1a a2       	sub.l	er2,er2
+  ffc7b0:	01 00 6d b2 	mov.l	er2,@-er3
+  ffc7b4:	01 00 6d b2 	mov.l	er2,@-er3
+  ffc7b8:	01 00 6d b2 	mov.l	er2,@-er3
+  ffc7bc:	01 00 6d b2 	mov.l	er2,@-er3
+  ffc7c0:	01 00 6d b2 	mov.l	er2,@-er3
+  ffc7c4:	01 00 6d b2 	mov.l	er2,@-er3
+  ffc7c8:	01 00 6d b5 	mov.l	er5,@-er3
+  ffc7cc:	01 00 6f d3 	mov.l	er3,@(0x34:16,er5)
+  ffc7d0:	00 34 
+  // call putcurrent
+  ffc7d2:	5e ff c6 0e 	jsr	@0xffc60e:24
+  ffc7d6:	01 00 6b a5 	mov.l	er5,@0xffd708:32
+  ffc7da:	00 ff d7 08 
+  // call putcurrent
+  ffc7de:	5e ff c6 0e 	jsr	@0xffc60e:24
+  ffc7e2:	01 00 6b 20 	mov.l	@0xffd708:32,er0
+  ffc7e6:	00 ff d7 08 
+
+00ffc7ea <.L12>:
+  ffc7ea:	01 00 6d 75 	mov.l	@er7+,er5
+  ffc7ee:	01 00 6d 74 	mov.l	@er7+,er4
+  ffc7f2:	0b 97       	adds	#4,er7
+  ffc7f4:	0b 97       	adds	#4,er7
+  ffc7f6:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc7fa:	54 70       	rts	
+
+00ffc7fc <_thread_exit>:
+  ffc7fc:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc800:	0f f6       	mov.l	er7,er6
+  ffc802:	01 00 6b 20 	mov.l	@0xffd708:32,er0
+  ffc806:	00 ff d7 08 
+  ffc80a:	0b 90       	adds	#4,er0
+  ffc80c:	5e ff c2 e8 	jsr	@0xffc2e8:24
+  ffc810:	7a 00 00 ff 	mov.l	#0xffd623,er0
+  ffc814:	d6 23 
+  ffc816:	5e ff c2 e8 	jsr	@0xffc2e8:24
+  ffc81a:	1a a2       	sub.l	er2,er2
+  ffc81c:	8a 38       	add.b	#0x38,r2l
+  ffc81e:	19 11       	sub.w	r1,r1
+  ffc820:	01 00 6b 20 	mov.l	@0xffd708:32,er0
+  ffc824:	00 ff d7 08 
+  // call memset
+  ffc828:	5e ff c1 62 	jsr	@0xffc162:24
+  ffc82c:	19 00       	sub.w	r0,r0
+  ffc82e:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc832:	54 70       	rts	
+
+00ffc834 <_kz_sysdown>:
+  ffc834:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc838:	0f f6       	mov.l	er7,er6
+  ffc83a:	7a 00 00 ff 	mov.l	#0xffd62b,er0
+  ffc83e:	d6 2b 
+  ffc840:	5e ff c2 e8 	jsr	@0xffc2e8:24
+
+00ffc844 <.L23>:
+  ffc844:	40 fe       	bra	.-2 (0xffc844)
+
+00ffc846 <_recvmsg>:
+  ffc846:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc84a:	0f f6       	mov.l	er7,er6
+  ffc84c:	01 00 6d f4 	mov.l	er4,@-er7
+  ffc850:	01 00 6d f5 	mov.l	er5,@-er7
+  ffc854:	0f 84       	mov.l	er0,er4
+  ffc856:	01 00 6f 00 	mov.l	@(0x4:16,er0),er0
+  ffc85a:	00 04 
+  ffc85c:	01 00 69 02 	mov.l	@er0,er2
+  ffc860:	01 00 6f c2 	mov.l	er2,@(0x4:16,er4)
+  ffc864:	00 04 
+  ffc866:	46 06       	bne	.+6 (0xffc86e)
+  ffc868:	01 00 6f c2 	mov.l	er2,@(0x8:16,er4)
+  ffc86c:	00 08 
+
+00ffc86e <.L26>:
+  ffc86e:	1a d5       	sub.l	er5,er5
+  ffc870:	01 00 69 85 	mov.l	er5,@er0
+  ffc874:	01 00 69 42 	mov.l	@er4,er2
+  ffc878:	01 00 6f 23 	mov.l	@(0x30:16,er2),er3
+  ffc87c:	00 30 
+  ffc87e:	01 00 6f 02 	mov.l	@(0x4:16,er0),er2
+  ffc882:	00 04 
+  ffc884:	01 00 6f b2 	mov.l	er2,@(0xc:16,er3)
+  ffc888:	00 0c 
+  ffc88a:	01 00 6f 31 	mov.l	@(0x4:16,er3),er1
+  ffc88e:	00 04 
+  ffc890:	47 06       	beq	.+6 (0xffc898)
+  ffc892:	6f 02 00 08 	mov.w	@(0x8:16,er0),r2
+  ffc896:	69 92       	mov.w	r2,@er1
+
+00ffc898 <.L27>:
+  ffc898:	01 00 6f 33 	mov.l	@(0x8:16,er3),er3
+  ffc89c:	00 08 
+  ffc89e:	47 0a       	beq	.+10 (0xffc8aa)
+  ffc8a0:	01 00 6f 02 	mov.l	@(0xc:16,er0),er2
+  ffc8a4:	00 0c 
+  ffc8a6:	01 00 69 b2 	mov.l	er2,@er3
+
+00ffc8aa <.L28>:
+  ffc8aa:	01 00 69 c5 	mov.l	er5,@er4
+  ffc8ae:	5e ff d1 72 	jsr	@0xffd172:24
+  ffc8b2:	01 00 6d 75 	mov.l	@er7+,er5
+  ffc8b6:	01 00 6d 74 	mov.l	@er7+,er4
+  ffc8ba:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc8be:	54 70       	rts	
+
+00ffc8c0 <_thread_setintr>:
+  ffc8c0:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc8c4:	0f f6       	mov.l	er7,er6
+  ffc8c6:	01 00 6d f4 	mov.l	er4,@-er7
+  ffc8ca:	01 00 6d f5 	mov.l	er5,@-er7
+  ffc8ce:	0d 04       	mov.w	r0,r4
+  ffc8d0:	0f 95       	mov.l	er1,er5
+  ffc8d2:	7a 01 00 ff 	mov.l	#0xffcb9c,er1
+  ffc8d6:	cb 9c 
+  ffc8d8:	5e ff c0 fa 	jsr	@0xffc0fa:24
+  ffc8dc:	17 f4       	exts.l	er4
+  ffc8de:	10 34       	shll.l	er4
+  ffc8e0:	10 34       	shll.l	er4
+  ffc8e2:	01 00 78 c0 	mov.l	er5,@(0xffd85c:32,er4)
+  ffc8e6:	6b a5 00 ff 
+  ffc8ea:	d8 5c 
+  // call putcurrent
+  ffc8ec:	5e ff c6 0e 	jsr	@0xffc60e:24
+  ffc8f0:	19 00       	sub.w	r0,r0
+  ffc8f2:	01 00 6d 75 	mov.l	@er7+,er5
+  ffc8f6:	01 00 6d 74 	mov.l	@er7+,er4
+  ffc8fa:	01 00 6d 76 	mov.l	@er7+,er6
+  ffc8fe:	54 70       	rts	
+
+00ffc900 <_call_functions>:
+  ffc900:	01 00 6d f6 	mov.l	er6,@-er7
+  ffc904:	0f f6       	mov.l	er7,er6
+  ffc906:	7a 17 ff ff 	add.l	#0xfffffff0,er7
+  ffc90a:	ff f0 
+  ffc90c:	01 00 6d f4 	mov.l	er4,@-er7
+  ffc910:	01 00 6d f5 	mov.l	er5,@-er7
+  ffc914:	0f 95       	mov.l	er1,er5
+  ffc916:	79 20 00 0b 	cmp.w	#0xb,r0
+  ffc91a:	58 20 02 04 	bhi	.+516 (0xffcb22)
+  ffc91e:	0d 02       	mov.w	r0,r2
+  ffc920:	17 72       	extu.l	er2
+  ffc922:	10 32       	shll.l	er2
+  ffc924:	10 32       	shll.l	er2
+  ffc926:	01 00 78 20 	mov.l	@(0xffd5b8:32,er2),er2
+  ffc92a:	6b 22 00 ff 
+  ffc92e:	d5 b8 
+  ffc930:	59 20       	jmp	@er2
+
+00ffc932 <.L32>:
+  ffc932:	01 00 6f 12 	mov.l	@(0x10:16,er1),er2
+  ffc936:	00 10 
+  ffc938:	01 00 6d f2 	mov.l	er2,@-er7
+  ffc93c:	6f 12 00 0c 	mov.w	@(0xc:16,er1),r2
+  ffc940:	01 00 6d f2 	mov.l	er2,@-er7
+  ffc944:	6f 12 00 0a 	mov.w	@(0xa:16,er1),r2
+  ffc948:	01 00 6d f2 	mov.l	er2,@-er7
+  ffc94c:	6f 12 00 08 	mov.w	@(0x8:16,er1),r2
+  ffc950:	01 00 6f 11 	mov.l	@(0x4:16,er1),er1
+  ffc954:	00 04 
+  ffc956:	01 00 69 50 	mov.l	@er5,er0
+  ffc95a:	5e ff c6 bc 	jsr	@0xffc6bc:24
+  ffc95e:	01 00 6f d0 	mov.l	er0,@(0x14:16,er5)
+  ffc962:	00 14 
+  ffc964:	7a 17 00 00 	add.l	#0xc,er7
+  ffc968:	00 0c 
+  ffc96a:	58 00 01 b4 	bra	.+436 (0xffcb22)
+
+00ffc96e <.L33>:
+  ffc96e:	5e ff c7 fc 	jsr	@0xffc7fc:24
+  ffc972:	58 00 01 ac 	bra	.+428 (0xffcb22)
+
+00ffc976 <.L34>:
+  // call putcurrent
+  ffc976:	5e ff c6 0e 	jsr	@0xffc60e:24
+
+00ffc97a <.L36>:
+  ffc97a:	19 22       	sub.w	r2,r2
+  ffc97c:	69 d2       	mov.w	r2,@er5
+  ffc97e:	58 00 01 a0 	bra	.+416 (0xffcb22)
+
+00ffc982 <.L38>:
+  ffc982:	01 00 69 14 	mov.l	@er1,er4
+  // call putcurrent
+  ffc986:	5e ff c6 0e 	jsr	@0xffc60e:24
+  ffc98a:	01 00 6b a4 	mov.l	er4,@0xffd708:32
+  ffc98e:	00 ff d7 08 
+  ffc992:	40 54       	bra	.+84 (0xffc9e8)
+
+00ffc994 <.L40>:
+  // call putcurrent
+  ffc994:	5e ff c6 0e 	jsr	@0xffc60e:24
+  ffc998:	01 00 6b 22 	mov.l	@0xffd708:32,er2
+  ffc99c:	00 ff d7 08 
+  ffc9a0:	01 00 69 d2 	mov.l	er2,@er5
+  ffc9a4:	58 00 01 7a 	bra	.+378 (0xffcb22)
+
+00ffc9a8 <.L42>:
+  ffc9a8:	69 13       	mov.w	@er1,r3
+  ffc9aa:	01 00 6b 22 	mov.l	@0xffd708:32,er2
+  ffc9ae:	00 ff d7 08 
+  ffc9b2:	6f 24 00 14 	mov.w	@(0x14:16,er2),r4
+  ffc9b6:	0d 33       	mov.w	r3,r3
+  ffc9b8:	4d 04       	blt	.+4 (0xffc9be)
+  ffc9ba:	6f a3 00 14 	mov.w	r3,@(0x14:16,er2)
+
+00ffc9be <.L43>:
+  // call putcurrent
+  ffc9be:	5e ff c6 0e 	jsr	@0xffc60e:24
+  ffc9c2:	6f d4 00 02 	mov.w	r4,@(0x2:16,er5)
+  ffc9c6:	58 00 01 58 	bra	.+344 (0xffcb22)
+
+00ffc9ca <.L45>:
+  ffc9ca:	69 14       	mov.w	@er1,r4
+  // call putcurrent
+  ffc9cc:	5e ff c6 0e 	jsr	@0xffc60e:24
+  ffc9d0:	0d 40       	mov.w	r4,r0
+  // call _kzmem_alloc
+  ffc9d2:	5e ff d1 0e 	jsr	@0xffd10e:24
+  ffc9d6:	01 00 6f d0 	mov.l	er0,@(0x4:16,er5)
+  ffc9da:	00 04 
+  ffc9dc:	58 00 01 42 	bra	.+322 (0xffcb22)
+
+00ffc9e0 <.L47>:
+  ffc9e0:	01 00 69 10 	mov.l	@er1,er0
+  ffc9e4:	5e ff d1 72 	jsr	@0xffd172:24
+
+00ffc9e8 <.L63>:
+  // call putcurrent
+  ffc9e8:	5e ff c6 0e 	jsr	@0xffc60e:24
+  ffc9ec:	19 22       	sub.w	r2,r2
+  ffc9ee:	6f d2 00 04 	mov.w	r2,@(0x4:16,er5)
+  ffc9f2:	58 00 01 2c 	bra	.+300 (0xffcb22)
+
+00ffc9f6 <.L49>:
+  ffc9f6:	6f 12 00 02 	mov.w	@(0x2:16,er1),r2
+  ffc9fa:	6f e2 ff fe 	mov.w	r2,@(0xfffe:16,er6)
+  ffc9fe:	01 00 6f 13 	mov.l	@(0x4:16,er1),er3
+  ffca02:	00 04 
+  ffca04:	01 00 6f e3 	mov.l	er3,@(0xfff8:16,er6)
+  ffca08:	ff f8 
+  ffca0a:	69 12       	mov.w	@er1,r2
+  ffca0c:	19 aa       	sub.w	e2,e2
+  ffca0e:	10 32       	shll.l	er2
+  ffca10:	10 32       	shll.l	er2
+  ffca12:	10 32       	shll.l	er2
+  ffca14:	10 32       	shll.l	er2
+  ffca16:	7a 12 00 ff 	add.l	#0xffd868,er2
+  ffca1a:	d8 68 
+  ffca1c:	01 00 6f e2 	mov.l	er2,@(0xfff4:16,er6)
+  ffca20:	ff f4 
+  // call putcurrent
+  ffca22:	5e ff c6 0e 	jsr	@0xffc60e:24
+  ffca26:	01 00 6b 23 	mov.l	@0xffd708:32,er3
+  ffca2a:	00 ff d7 08 
+  ffca2e:	01 00 6f e3 	mov.l	er3,@(0xfff0:16,er6)
+  ffca32:	ff f0 
+  ffca34:	79 00 00 10 	mov.w	#0x10,r0
+  // call _kzmem_alloc
+  ffca38:	5e ff d1 0e 	jsr	@0xffd10e:24
+  ffca3c:	0f 84       	mov.l	er0,er4
+  ffca3e:	46 04       	bne	.+4 (0xffca44)
+  // call kz_sysdown
+  ffca40:	5e ff c8 34 	jsr	@0xffc834:24
+
+00ffca44 <.L50>:
+  ffca44:	1a a2       	sub.l	er2,er2
+  ffca46:	01 00 69 c2 	mov.l	er2,@er4
+  ffca4a:	01 00 6f 62 	mov.l	@(0xfff0:16,er6),er2
+  ffca4e:	ff f0 
+  ffca50:	01 00 6f c2 	mov.l	er2,@(0x4:16,er4)
+  ffca54:	00 04 
+  ffca56:	6f 63 ff fe 	mov.w	@(0xfffe:16,er6),r3
+  ffca5a:	6f c3 00 08 	mov.w	r3,@(0x8:16,er4)
+  ffca5e:	01 00 6f 62 	mov.l	@(0xfff8:16,er6),er2
+  ffca62:	ff f8 
+  ffca64:	01 00 6f c2 	mov.l	er2,@(0xc:16,er4)
+  ffca68:	00 0c 
+  ffca6a:	01 00 6f 63 	mov.l	@(0xfff4:16,er6),er3
+  ffca6e:	ff f4 
+  ffca70:	01 00 6f 32 	mov.l	@(0x8:16,er3),er2
+  ffca74:	00 08 
+  ffca76:	47 06       	beq	.+6 (0xffca7e)
+  ffca78:	01 00 69 a4 	mov.l	er4,@er2
+  ffca7c:	40 0c       	bra	.+12 (0xffca8a)
+
+00ffca7e <.L51>:
+  ffca7e:	01 00 6f 62 	mov.l	@(0xfff4:16,er6),er2
+  ffca82:	ff f4 
+  ffca84:	01 00 6f a4 	mov.l	er4,@(0x4:16,er2)
+  ffca88:	00 04 
+
+00ffca8a <.L52>:
+  ffca8a:	01 00 6f 63 	mov.l	@(0xfff4:16,er6),er3
+  ffca8e:	ff f4 
+  ffca90:	01 00 6f b4 	mov.l	er4,@(0x8:16,er3)
+  ffca94:	00 08 
+  ffca96:	01 00 69 32 	mov.l	@er3,er2
+  ffca9a:	47 12       	beq	.+18 (0xffcaae)
+  ffca9c:	01 00 6b a2 	mov.l	er2,@0xffd708:32
+  ffcaa0:	00 ff d7 08 
+  ffcaa4:	0f b0       	mov.l	er3,er0
+  // call _recvmsg
+  ffcaa6:	5e ff c8 46 	jsr	@0xffc846:24
+  // call putcurrent
+  ffcaaa:	5e ff c6 0e 	jsr	@0xffc60e:24
+
+00ffcaae <.L54>:
+  ffcaae:	6f 62 ff fe 	mov.w	@(0xfffe:16,er6),r2
+  ffcab2:	6f d2 00 08 	mov.w	r2,@(0x8:16,er5)
+  ffcab6:	40 6a       	bra	.+106 (0xffcb22)
+
+00ffcab8 <.L56>:
+  ffcab8:	69 14       	mov.w	@er1,r4
+  ffcaba:	19 cc       	sub.w	e4,e4
+  ffcabc:	10 34       	shll.l	er4
+  ffcabe:	10 34       	shll.l	er4
+  ffcac0:	10 34       	shll.l	er4
+  ffcac2:	10 34       	shll.l	er4
+  ffcac4:	7a 14 00 ff 	add.l	#0xffd868,er4
+  ffcac8:	d8 68 
+  ffcaca:	01 00 69 42 	mov.l	@er4,er2
+  ffcace:	47 04       	beq	.+4 (0xffcad4)
+    // call kz_sysdown
+  ffcad0:	5e ff c8 34 	jsr	@0xffc834:24
+
+00ffcad4 <.L57>:
+  ffcad4:	01 00 6b 22 	mov.l	@0xffd708:32,er2
+  ffcad8:	00 ff d7 08 
+  ffcadc:	01 00 69 c2 	mov.l	er2,@er4
+  ffcae0:	01 00 6f 42 	mov.l	@(0x4:16,er4),er2
+  ffcae4:	00 04 
+  ffcae6:	46 04       	bne	.+4 (0xffcaec)
+  ffcae8:	1b 02       	subs	#1,er2
+  ffcaea:	40 1e       	bra	.+30 (0xffcb0a)
+
+00ffcaec <.L58>:
+  ffcaec:	0f c0       	mov.l	er4,er0
+  // call _recvmsg
+  ffcaee:	5e ff c8 46 	jsr	@0xffc846:24
+  // call putcurrent
+  ffcaf2:	5e ff c6 0e 	jsr	@0xffc60e:24
+  ffcaf6:	01 00 6b 22 	mov.l	@0xffd708:32,er2
+  ffcafa:	00 ff d7 08 
+  ffcafe:	01 00 6f 22 	mov.l	@(0x30:16,er2),er2
+  ffcb02:	00 30 
+  ffcb04:	01 00 6f 22 	mov.l	@(0xc:16,er2),er2
+  ffcb08:	00 0c 
+
+00ffcb0a <.L59>:
+  ffcb0a:	01 00 6f d2 	mov.l	er2,@(0xc:16,er5)
+  ffcb0e:	00 0c 
+  ffcb10:	40 10       	bra	.+16 (0xffcb22)
+
+00ffcb12 <.L60>:
+  ffcb12:	01 00 6f 11 	mov.l	@(0x4:16,er1),er1
+  ffcb16:	00 04 
+  ffcb18:	69 50       	mov.w	@er5,r0
+  ffcb1a:	5e ff c8 c0 	jsr	@0xffc8c0:24
+  ffcb1e:	6f d0 00 08 	mov.w	r0,@(0x8:16,er5)
+
+00ffcb22 <.L30>:
+  ffcb22:	01 00 6d 75 	mov.l	@er7+,er5
+  ffcb26:	01 00 6d 74 	mov.l	@er7+,er4
+  ffcb2a:	7a 17 00 00 	add.l	#0x10,er7
+  ffcb2e:	00 10 
+  ffcb30:	01 00 6d 76 	mov.l	@er7+,er6
+  ffcb34:	54 70       	rts	
+
+00ffcb36 <_syscall_intr>:
+  ffcb36:	01 00 6d f6 	mov.l	er6,@-er7
+  ffcb3a:	0f f6       	mov.l	er7,er6
+  ffcb3c:	01 00 6d f4 	mov.l	er4,@-er7
+  ffcb40:	01 00 6d f5 	mov.l	er5,@-er7
+  ffcb44:	01 00 6b 22 	mov.l	@0xffd708:32,er2
+  ffcb48:	00 ff d7 08 
+  ffcb4c:	6f 25 00 2c 	mov.w	@(0x2c:16,er2),r5
+  ffcb50:	01 00 6f 24 	mov.l	@(0x30:16,er2),er4
+  ffcb54:	00 30 
+  // call getcurrent
+  ffcb56:	5e ff c5 ae 	jsr	@0xffc5ae:24
+  ffcb5a:	0f c1       	mov.l	er4,er1
+  ffcb5c:	0d 50       	mov.w	r5,r0
+  // call call_functions
+  ffcb5e:	5e ff c9 00 	jsr	@0xffc900:24
+  ffcb62:	01 00 6d 75 	mov.l	@er7+,er5
+  ffcb66:	01 00 6d 74 	mov.l	@er7+,er4
+  ffcb6a:	01 00 6d 76 	mov.l	@er7+,er6
+  ffcb6e:	54 70       	rts	
+
+00ffcb70 <_softerr_intr>:
+  ffcb70:	01 00 6d f6 	mov.l	er6,@-er7
+  ffcb74:	0f f6       	mov.l	er7,er6
+  ffcb76:	01 00 6b 20 	mov.l	@0xffd708:32,er0
+  ffcb7a:	00 ff d7 08 
+  ffcb7e:	0b 90       	adds	#4,er0
+  ffcb80:	5e ff c2 e8 	jsr	@0xffc2e8:24
+  ffcb84:	7a 00 00 ff 	mov.l	#0xffd63a,er0
+  ffcb88:	d6 3a 
+  ffcb8a:	5e ff c2 e8 	jsr	@0xffc2e8:24
+  // call getcurrent
+  ffcb8e:	5e ff c5 ae 	jsr	@0xffc5ae:24
+  ffcb92:	5e ff c7 fc 	jsr	@0xffc7fc:24
+  ffcb96:	01 00 6d 76 	mov.l	@er7+,er6
+  ffcb9a:	54 70       	rts	
+
+00ffcb9c <_thread_intr>:
+  ffcb9c:	01 00 6d f6 	mov.l	er6,@-er7
+  ffcba0:	0f f6       	mov.l	er7,er6
+  ffcba2:	01 00 6d f4 	mov.l	er4,@-er7
+  ffcba6:	01 00 6b 22 	mov.l	@0xffd708:32,er2
+  ffcbaa:	00 ff d7 08 
+  ffcbae:	01 00 6f a1 	mov.l	er1,@(0x34:16,er2)
+  ffcbb2:	00 34 
+  ffcbb4:	17 f0       	exts.l	er0
+  ffcbb6:	10 30       	shll.l	er0
+  ffcbb8:	10 30       	shll.l	er0
+  ffcbba:	01 00 78 00 	mov.l	@(0xffd85c:32,er0),er2
+  ffcbbe:	6b 22 00 ff 
+  ffcbc2:	d8 5c 
+  ffcbc4:	47 02       	beq	.+2 (0xffcbc8)
+  ffcbc6:	5d 20       	jsr	@er2
+
+00ffcbc8 <.L68>:
+  ffcbc8:	19 44       	sub.w	r4,r4
+
+00ffcbca <.L73>:
+  ffcbca:	0d 42       	mov.w	r4,r2
+  ffcbcc:	17 f2       	exts.l	er2
+  ffcbce:	10 32       	shll.l	er2
+  ffcbd0:	10 32       	shll.l	er2
+  ffcbd2:	10 32       	shll.l	er2
+  ffcbd4:	01 00 78 20 	mov.l	@(0xffd688:32,er2),er2
+  ffcbd8:	6b 22 00 ff 
+  ffcbdc:	d6 88 
+  ffcbde:	46 08       	bne	.+8 (0xffcbe8)
+  ffcbe0:	0b 04       	adds	#1,er4
+  ffcbe2:	79 24 00 0f 	cmp.w	#0xf,r4
+  ffcbe6:	4f e2       	ble	.-30 (0xffcbca)
+
+00ffcbe8 <.L70>:
+  ffcbe8:	79 24 00 10 	cmp.w	#0x10,r4
+  ffcbec:	46 04       	bne	.+4 (0xffcbf2)
+    // call kz_sysdown
+  ffcbee:	5e ff c8 34 	jsr	@0xffc834:24
+
+00ffcbf2 <.L74>:
+  ffcbf2:	0d 42       	mov.w	r4,r2
+  ffcbf4:	17 f2       	exts.l	er2
+  ffcbf6:	10 32       	shll.l	er2
+  ffcbf8:	10 32       	shll.l	er2
+  ffcbfa:	10 32       	shll.l	er2
+  ffcbfc:	01 00 78 20 	mov.l	@(0xffd688:32,er2),er0
+  ffcc00:	6b 20 00 ff 
+  ffcc04:	d6 88 
+  ffcc06:	01 00 6b a0 	mov.l	er0,@0xffd708:32
+  ffcc0a:	00 ff d7 08 
+  ffcc0e:	7a 10 00 00 	add.l	#0x34,er0
+  ffcc12:	00 34 
+  ffcc14:	5e ff c0 2c 	jsr	@0xffc02c:24
+  ffcc18:	01 00 6d 74 	mov.l	@er7+,er4
+  ffcc1c:	01 00 6d 76 	mov.l	@er7+,er6
+  ffcc20:	54 70       	rts	
+
+00ffcc22 <_kz_start>:
+  ffcc22:	01 00 6d f6 	mov.l	er6,@-er7
+  ffcc26:	0f f6       	mov.l	er7,er6
+  ffcc28:	1b 97       	subs	#4,er7
+  ffcc2a:	01 00 6d f4 	mov.l	er4,@-er7
+  ffcc2e:	01 00 6d f5 	mov.l	er5,@-er7
+  ffcc32:	01 00 6f e0 	mov.l	er0,@(0xfffc:16,er6)
+  ffcc36:	ff fc 
+  ffcc38:	0f 95       	mov.l	er1,er5
+  ffcc3a:	0d 24       	mov.w	r2,r4
+  ffcc3c:	5e ff d0 66 	jsr	@0xffd066:24
+  ffcc40:	1a a2       	sub.l	er2,er2
+  ffcc42:	01 00 6b a2 	mov.l	er2,@0xffd708:32
+  ffcc46:	00 ff d7 08 
+  ffcc4a:	fa 80       	mov.b	#0x80,r2l
+  ffcc4c:	19 11       	sub.w	r1,r1
+  ffcc4e:	7a 00 00 ff 	mov.l	#0xffd688,er0
+  ffcc52:	d6 88 
+  // call memset
+  ffcc54:	5e ff c1 62 	jsr	@0xffc162:24
+  ffcc58:	7a 02 00 00 	mov.l	#0x150,er2
+  ffcc5c:	01 50 
+  ffcc5e:	19 11       	sub.w	r1,r1
+  ffcc60:	7a 00 00 ff 	mov.l	#0xffd70c,er0
+  ffcc64:	d7 0c 
+  // call memset
+  ffcc66:	5e ff c1 62 	jsr	@0xffc162:24
+  ffcc6a:	1a a2       	sub.l	er2,er2
+  ffcc6c:	8a 0c       	add.b	#0xc,r2l
+  ffcc6e:	19 11       	sub.w	r1,r1
+  ffcc70:	7a 00 00 ff 	mov.l	#0xffd85c,er0
+  ffcc74:	d8 5c 
+  // call memset
+  ffcc76:	5e ff c1 62 	jsr	@0xffc162:24
+  ffcc7a:	1a a2       	sub.l	er2,er2
+  ffcc7c:	8a 20       	add.b	#0x20,r2l
+  ffcc7e:	19 11       	sub.w	r1,r1
+  ffcc80:	7a 00 00 ff 	mov.l	#0xffd868,er0
+  ffcc84:	d8 68 
+  // call memset
+  ffcc86:	5e ff c1 62 	jsr	@0xffc162:24
+  ffcc8a:	7a 01 00 ff 	mov.l	#0xffcb36,er1
+  ffcc8e:	cb 36 
+  ffcc90:	79 00 00 01 	mov.w	#0x1,r0
+  ffcc94:	5e ff c8 c0 	jsr	@0xffc8c0:24
+  ffcc98:	7a 01 00 ff 	mov.l	#0xffcb70,er1
+  ffcc9c:	cb 70 
+  ffcc9e:	19 00       	sub.w	r0,r0
+  ffcca0:	5e ff c8 c0 	jsr	@0xffc8c0:24
+  ffcca4:	01 00 6f 62 	mov.l	@(0x10:16,er6),er2
+  ffcca8:	00 10 
+  ffccaa:	01 00 6d f2 	mov.l	er2,@-er7
+  ffccae:	6f 62 00 0e 	mov.w	@(0xe:16,er6),r2
+  ffccb2:	01 00 6d f2 	mov.l	er2,@-er7
+  ffccb6:	6f 62 00 0a 	mov.w	@(0xa:16,er6),r2
+  ffccba:	01 00 6d f2 	mov.l	er2,@-er7
+  ffccbe:	0d 42       	mov.w	r4,r2
+  ffccc0:	0f d1       	mov.l	er5,er1
+  ffccc2:	01 00 6f 60 	mov.l	@(0xfffc:16,er6),er0
+  ffccc6:	ff fc 
+  ffccc8:	5e ff c6 bc 	jsr	@0xffc6bc:24
+  ffcccc:	01 00 6b a0 	mov.l	er0,@0xffd708:32
+  ffccd0:	00 ff d7 08 
+  ffccd4:	7a 10 00 00 	add.l	#0x34,er0
+  ffccd8:	00 34 
+  ffccda:	5e ff c0 2c 	jsr	@0xffc02c:24
+  ffccde:	7a 17 00 00 	add.l	#0xc,er7
+  ffcce2:	00 0c 
+  ffcce4:	01 00 6d 75 	mov.l	@er7+,er5
+  ffcce8:	01 00 6d 74 	mov.l	@er7+,er4
+  ffccec:	0b 97       	adds	#4,er7
+  ffccee:	01 00 6d 76 	mov.l	@er7+,er6
+  ffccf2:	54 70       	rts	
+
+00ffccf4 <_kz_syscall>:
+  ffccf4:	01 00 6d f6 	mov.l	er6,@-er7
+  ffccf8:	0f f6       	mov.l	er7,er6
+  ffccfa:	01 00 6b 22 	mov.l	@0xffd708:32,er2
+  ffccfe:	00 ff d7 08 
+  ffcd02:	6f a0 00 2c 	mov.w	r0,@(0x2c:16,er2)
+  ffcd06:	01 00 6f a1 	mov.l	er1,@(0x30:16,er2)
+  ffcd0a:	00 30 
+  ffcd0c:	57 00       	trapa	#0x0
+  ffcd0e:	01 00 6d 76 	mov.l	@er7+,er6
+  ffcd12:	54 70       	rts	
+
+00ffcd14 <_kz_srvcall>:
+  ffcd14:	01 00 6d f6 	mov.l	er6,@-er7
+  ffcd18:	0f f6       	mov.l	er7,er6
+  ffcd1a:	1a a2       	sub.l	er2,er2
+  ffcd1c:	01 00 6b a2 	mov.l	er2,@0xffd708:32
+  ffcd20:	00 ff d7 08 
+  ffcd24:	5e ff c9 00 	jsr	@0xffc900:24
+  ffcd28:	01 00 6d 76 	mov.l	@er7+,er6
+  ffcd2c:	54 70       	rts	
+
+00ffcd2e <_kz_run>:
+  ffcd2e:	01 00 6d f6 	mov.l	er6,@-er7
+  ffcd32:	0f f6       	mov.l	er7,er6
+  ffcd34:	7a 17 ff ff 	add.l	#0xffffffe8,er7
+  ffcd38:	ff e8 
+  ffcd3a:	01 00 6f e0 	mov.l	er0,@(0xffe8:16,er6)
+  ffcd3e:	ff e8 
+  ffcd40:	01 00 6f e1 	mov.l	er1,@(0xffec:16,er6)
+  ffcd44:	ff ec 
+  ffcd46:	6f e2 ff f0 	mov.w	r2,@(0xfff0:16,er6)
+  ffcd4a:	6f 62 00 0a 	mov.w	@(0xa:16,er6),r2
+  ffcd4e:	6f e2 ff f2 	mov.w	r2,@(0xfff2:16,er6)
+  ffcd52:	6f 62 00 0e 	mov.w	@(0xe:16,er6),r2
+  ffcd56:	6f e2 ff f4 	mov.w	r2,@(0xfff4:16,er6)
+  ffcd5a:	01 00 6f 62 	mov.l	@(0x10:16,er6),er2
+  ffcd5e:	00 10 
+  ffcd60:	01 00 6f e2 	mov.l	er2,@(0xfff8:16,er6)
+  ffcd64:	ff f8 
+  ffcd66:	0f e1       	mov.l	er6,er1
+  ffcd68:	7a 11 ff ff 	add.l	#0xffffffe8,er1
+  ffcd6c:	ff e8 
+  ffcd6e:	19 00       	sub.w	r0,r0
+  // call _kz_syscall
+  ffcd70:	5e ff cc f4 	jsr	@0xffccf4:24
+  ffcd74:	01 00 6f 60 	mov.l	@(0xfffc:16,er6),er0
+  ffcd78:	ff fc 
+  ffcd7a:	7a 17 00 00 	add.l	#0x18,er7
+  ffcd7e:	00 18 
+  ffcd80:	01 00 6d 76 	mov.l	@er7+,er6
+  ffcd84:	54 70       	rts	
+
+00ffcd86 <_kz_exit>:
+  ffcd86:	01 00 6d f6 	mov.l	er6,@-er7
+  ffcd8a:	0f f6       	mov.l	er7,er6
+  ffcd8c:	1a 91       	sub.l	er1,er1
+  ffcd8e:	79 00 00 01 	mov.w	#0x1,r0
+  // call _kz_syscall
+  ffcd92:	5e ff cc f4 	jsr	@0xffccf4:24
+  ffcd96:	01 00 6d 76 	mov.l	@er7+,er6
+  ffcd9a:	54 70       	rts	
+
+00ffcd9c <_kz_wait>:
+  ffcd9c:	01 00 6d f6 	mov.l	er6,@-er7
+  ffcda0:	0f f6       	mov.l	er7,er6
+  ffcda2:	7a 17 ff ff 	add.l	#0xffffffe8,er7
+  ffcda6:	ff e8 
+  ffcda8:	0f e1       	mov.l	er6,er1
+  ffcdaa:	7a 11 ff ff 	add.l	#0xffffffe8,er1
+  ffcdae:	ff e8 
+  ffcdb0:	79 00 00 02 	mov.w	#0x2,r0
+  // call _kz_syscall
+  ffcdb4:	5e ff cc f4 	jsr	@0xffccf4:24
+  ffcdb8:	6f 60 ff e8 	mov.w	@(0xffe8:16,er6),r0
+  ffcdbc:	7a 17 00 00 	add.l	#0x18,er7
+  ffcdc0:	00 18 
+  ffcdc2:	01 00 6d 76 	mov.l	@er7+,er6
+  ffcdc6:	54 70       	rts	
+
+00ffcdc8 <_kz_sleep>:
+  ffcdc8:	01 00 6d f6 	mov.l	er6,@-er7
+  ffcdcc:	0f f6       	mov.l	er7,er6
+  ffcdce:	7a 17 ff ff 	add.l	#0xffffffe8,er7
+  ffcdd2:	ff e8 
+  ffcdd4:	0f e1       	mov.l	er6,er1
+  ffcdd6:	7a 11 ff ff 	add.l	#0xffffffe8,er1
+  ffcdda:	ff e8 
+  ffcddc:	79 00 00 03 	mov.w	#0x3,r0
+  // call _kz_syscall
+  ffcde0:	5e ff cc f4 	jsr	@0xffccf4:24
+  ffcde4:	6f 60 ff e8 	mov.w	@(0xffe8:16,er6),r0
+  ffcde8:	7a 17 00 00 	add.l	#0x18,er7
+  ffcdec:	00 18 
+  ffcdee:	01 00 6d 76 	mov.l	@er7+,er6
+  ffcdf2:	54 70       	rts	
+
+00ffcdf4 <_kz_wakeup>:
+  ffcdf4:	01 00 6d f6 	mov.l	er6,@-er7
+  ffcdf8:	0f f6       	mov.l	er7,er6
+  ffcdfa:	7a 17 ff ff 	add.l	#0xffffffe8,er7
+  ffcdfe:	ff e8 
+  ffce00:	01 00 6f e0 	mov.l	er0,@(0xffe8:16,er6)
+  ffce04:	ff e8 
+  ffce06:	0f e1       	mov.l	er6,er1
+  ffce08:	7a 11 ff ff 	add.l	#0xffffffe8,er1
+  ffce0c:	ff e8 
+  ffce0e:	79 00 00 04 	mov.w	#0x4,r0
+  // call _kz_syscall
+  ffce12:	5e ff cc f4 	jsr	@0xffccf4:24
+  ffce16:	6f 60 ff ec 	mov.w	@(0xffec:16,er6),r0
+  ffce1a:	7a 17 00 00 	add.l	#0x18,er7
+  ffce1e:	00 18 
+  ffce20:	01 00 6d 76 	mov.l	@er7+,er6
+  ffce24:	54 70       	rts	
+
+00ffce26 <_kz_getid>:
+  ffce26:	01 00 6d f6 	mov.l	er6,@-er7
+  ffce2a:	0f f6       	mov.l	er7,er6
+  ffce2c:	7a 17 ff ff 	add.l	#0xffffffe8,er7
+  ffce30:	ff e8 
+  ffce32:	0f e1       	mov.l	er6,er1
+  ffce34:	7a 11 ff ff 	add.l	#0xffffffe8,er1
+  ffce38:	ff e8 
+  ffce3a:	79 00 00 05 	mov.w	#0x5,r0
+  // call _kz_syscall
+  ffce3e:	5e ff cc f4 	jsr	@0xffccf4:24
+  ffce42:	01 00 6f 60 	mov.l	@(0xffe8:16,er6),er0
+  ffce46:	ff e8 
+  ffce48:	7a 17 00 00 	add.l	#0x18,er7
+  ffce4c:	00 18 
+  ffce4e:	01 00 6d 76 	mov.l	@er7+,er6
+  ffce52:	54 70       	rts	
+
+00ffce54 <_kz_chpri>:
+  ffce54:	01 00 6d f6 	mov.l	er6,@-er7
+  ffce58:	0f f6       	mov.l	er7,er6
+  ffce5a:	7a 17 ff ff 	add.l	#0xffffffe8,er7
+  ffce5e:	ff e8 
+  ffce60:	6f e0 ff e8 	mov.w	r0,@(0xffe8:16,er6)
+  ffce64:	0f e1       	mov.l	er6,er1
+  ffce66:	7a 11 ff ff 	add.l	#0xffffffe8,er1
+  ffce6a:	ff e8 
+  ffce6c:	79 00 00 06 	mov.w	#0x6,r0
+  // call _kz_syscall
+  ffce70:	5e ff cc f4 	jsr	@0xffccf4:24
+  ffce74:	6f 60 ff ea 	mov.w	@(0xffea:16,er6),r0
+  ffce78:	7a 17 00 00 	add.l	#0x18,er7
+  ffce7c:	00 18 
+  ffce7e:	01 00 6d 76 	mov.l	@er7+,er6
+  ffce82:	54 70       	rts	
+
+00ffce84 <_kz_kmalloc>:
+  ffce84:	01 00 6d f6 	mov.l	er6,@-er7
+  ffce88:	0f f6       	mov.l	er7,er6
+  ffce8a:	7a 17 ff ff 	add.l	#0xffffffe8,er7
+  ffce8e:	ff e8 
+  ffce90:	6f e0 ff e8 	mov.w	r0,@(0xffe8:16,er6)
+  ffce94:	0f e1       	mov.l	er6,er1
+  ffce96:	7a 11 ff ff 	add.l	#0xffffffe8,er1
+  ffce9a:	ff e8 
+  ffce9c:	79 00 00 07 	mov.w	#0x7,r0
+  // call _kz_syscall
+  ffcea0:	5e ff cc f4 	jsr	@0xffccf4:24
+  ffcea4:	01 00 6f 60 	mov.l	@(0xffec:16,er6),er0
+  ffcea8:	ff ec 
+  ffceaa:	7a 17 00 00 	add.l	#0x18,er7
+  ffceae:	00 18 
+  ffceb0:	01 00 6d 76 	mov.l	@er7+,er6
+  ffceb4:	54 70       	rts	
+
+00ffceb6 <_kz_kmfree>:
+  ffceb6:	01 00 6d f6 	mov.l	er6,@-er7
+  ffceba:	0f f6       	mov.l	er7,er6
+  ffcebc:	7a 17 ff ff 	add.l	#0xffffffe8,er7
+  ffcec0:	ff e8 
+  ffcec2:	01 00 6f e0 	mov.l	er0,@(0xffe8:16,er6)
+  ffcec6:	ff e8 
+  ffcec8:	0f e1       	mov.l	er6,er1
+  ffceca:	7a 11 ff ff 	add.l	#0xffffffe8,er1
+  ffcece:	ff e8 
+  ffced0:	79 00 00 08 	mov.w	#0x8,r0
+  // call _kz_syscall
+  ffced4:	5e ff cc f4 	jsr	@0xffccf4:24
+  ffced8:	6f 60 ff ec 	mov.w	@(0xffec:16,er6),r0
+  ffcedc:	7a 17 00 00 	add.l	#0x18,er7
+  ffcee0:	00 18 
+  ffcee2:	01 00 6d 76 	mov.l	@er7+,er6
+  ffcee6:	54 70       	rts	
+
+00ffcee8 <_kz_send>:
+  ffcee8:	01 00 6d f6 	mov.l	er6,@-er7
+  ffceec:	0f f6       	mov.l	er7,er6
+  ffceee:	7a 17 ff ff 	add.l	#0xffffffe8,er7
+  ffcef2:	ff e8 
+  ffcef4:	6f e0 ff e8 	mov.w	r0,@(0xffe8:16,er6)
+  ffcef8:	6f e1 ff ea 	mov.w	r1,@(0xffea:16,er6)
+  ffcefc:	01 00 6f e2 	mov.l	er2,@(0xffec:16,er6)
+  ffcf00:	ff ec 
+  ffcf02:	0f e1       	mov.l	er6,er1
+  ffcf04:	7a 11 ff ff 	add.l	#0xffffffe8,er1
+  ffcf08:	ff e8 
+  ffcf0a:	79 00 00 09 	mov.w	#0x9,r0
+  // call _kz_syscall
+  ffcf0e:	5e ff cc f4 	jsr	@0xffccf4:24
+  ffcf12:	6f 60 ff f0 	mov.w	@(0xfff0:16,er6),r0
+  ffcf16:	7a 17 00 00 	add.l	#0x18,er7
+  ffcf1a:	00 18 
+  ffcf1c:	01 00 6d 76 	mov.l	@er7+,er6
+  ffcf20:	54 70       	rts	
+
+00ffcf22 <_kz_recv>:
+  ffcf22:	01 00 6d f6 	mov.l	er6,@-er7
+  ffcf26:	0f f6       	mov.l	er7,er6
+  ffcf28:	7a 17 ff ff 	add.l	#0xffffffe8,er7
+  ffcf2c:	ff e8 
+  ffcf2e:	6f e0 ff e8 	mov.w	r0,@(0xffe8:16,er6)
+  ffcf32:	01 00 6f e1 	mov.l	er1,@(0xffec:16,er6)
+  ffcf36:	ff ec 
+  ffcf38:	01 00 6f e2 	mov.l	er2,@(0xfff0:16,er6)
+  ffcf3c:	ff f0 
+  ffcf3e:	0f e1       	mov.l	er6,er1
+  ffcf40:	7a 11 ff ff 	add.l	#0xffffffe8,er1
+  ffcf44:	ff e8 
+  ffcf46:	79 00 00 0a 	mov.w	#0xa,r0
+  // call kz_syscall(KZ_SYSCALL_TYPE_RECV)
+  ffcf4a:	5e ff cc f4 	jsr	@0xffccf4:24
+  ffcf4e:	01 00 6f 60 	mov.l	@(0xfff4:16,er6),er0
+  ffcf52:	ff f4 
+  ffcf54:	7a 17 00 00 	add.l	#0x18,er7
+  ffcf58:	00 18 
+  ffcf5a:	01 00 6d 76 	mov.l	@er7+,er6
+  ffcf5e:	54 70       	rts	
+
+00ffcf60 <_kz_setintr>:
+  ffcf60:	01 00 6d f6 	mov.l	er6,@-er7
+  ffcf64:	0f f6       	mov.l	er7,er6
+  ffcf66:	7a 17 ff ff 	add.l	#0xffffffe8,er7
+  ffcf6a:	ff e8 
+  ffcf6c:	6f e0 ff e8 	mov.w	r0,@(0xffe8:16,er6)
+  ffcf70:	01 00 6f e1 	mov.l	er1,@(0xffec:16,er6)
+  ffcf74:	ff ec 
+  ffcf76:	0f e1       	mov.l	er6,er1
+  ffcf78:	7a 11 ff ff 	add.l	#0xffffffe8,er1
+  ffcf7c:	ff e8 
+  ffcf7e:	79 00 00 0b 	mov.w	#0xb,r0
+  // call _kz_syscall
+  ffcf82:	5e ff cc f4 	jsr	@0xffccf4:24
+  ffcf86:	6f 60 ff f0 	mov.w	@(0xfff0:16,er6),r0
+  ffcf8a:	7a 17 00 00 	add.l	#0x18,er7
+  ffcf8e:	00 18 
+  ffcf90:	01 00 6d 76 	mov.l	@er7+,er6
+  ffcf94:	54 70       	rts	
+
+00ffcf96 <_kx_wakeup>:
+  ffcf96:	01 00 6d f6 	mov.l	er6,@-er7
+  ffcf9a:	0f f6       	mov.l	er7,er6
+  ffcf9c:	7a 17 ff ff 	add.l	#0xffffffe8,er7
+  ffcfa0:	ff e8 
+  ffcfa2:	01 00 6f e0 	mov.l	er0,@(0xffe8:16,er6)
+  ffcfa6:	ff e8 
+  ffcfa8:	0f e1       	mov.l	er6,er1
+  ffcfaa:	7a 11 ff ff 	add.l	#0xffffffe8,er1
+  ffcfae:	ff e8 
+  ffcfb0:	79 00 00 04 	mov.w	#0x4,r0
+  ffcfb4:	5e ff cd 14 	jsr	@0xffcd14:24
+  ffcfb8:	6f 60 ff ec 	mov.w	@(0xffec:16,er6),r0
+  ffcfbc:	7a 17 00 00 	add.l	#0x18,er7
+  ffcfc0:	00 18 
+  ffcfc2:	01 00 6d 76 	mov.l	@er7+,er6
+  ffcfc6:	54 70       	rts	
+
+00ffcfc8 <_kx_kmalloc>:
+  ffcfc8:	01 00 6d f6 	mov.l	er6,@-er7
+  ffcfcc:	0f f6       	mov.l	er7,er6
+  ffcfce:	7a 17 ff ff 	add.l	#0xffffffe8,er7
+  ffcfd2:	ff e8 
+  ffcfd4:	6f e0 ff e8 	mov.w	r0,@(0xffe8:16,er6)
+  ffcfd8:	0f e1       	mov.l	er6,er1
+  ffcfda:	7a 11 ff ff 	add.l	#0xffffffe8,er1
+  ffcfde:	ff e8 
+  ffcfe0:	79 00 00 07 	mov.w	#0x7,r0
+  ffcfe4:	5e ff cd 14 	jsr	@0xffcd14:24
+  ffcfe8:	01 00 6f 60 	mov.l	@(0xffec:16,er6),er0
+  ffcfec:	ff ec 
+  ffcfee:	7a 17 00 00 	add.l	#0x18,er7
+  ffcff2:	00 18 
+  ffcff4:	01 00 6d 76 	mov.l	@er7+,er6
+  ffcff8:	54 70       	rts	
+
+00ffcffa <_kx_kmfree>:
+  ffcffa:	01 00 6d f6 	mov.l	er6,@-er7
+  ffcffe:	0f f6       	mov.l	er7,er6
+  ffd000:	7a 17 ff ff 	add.l	#0xffffffe8,er7
+  ffd004:	ff e8 
+  ffd006:	01 00 6f e0 	mov.l	er0,@(0xffe8:16,er6)
+  ffd00a:	ff e8 
+  ffd00c:	0f e1       	mov.l	er6,er1
+  ffd00e:	7a 11 ff ff 	add.l	#0xffffffe8,er1
+  ffd012:	ff e8 
+  ffd014:	79 00 00 08 	mov.w	#0x8,r0
+  ffd018:	5e ff cd 14 	jsr	@0xffcd14:24
+  ffd01c:	6f 60 ff ec 	mov.w	@(0xffec:16,er6),r0
+  ffd020:	7a 17 00 00 	add.l	#0x18,er7
+  ffd024:	00 18 
+  ffd026:	01 00 6d 76 	mov.l	@er7+,er6
+  ffd02a:	54 70       	rts	
+
+00ffd02c <_kx_send>:
+  ffd02c:	01 00 6d f6 	mov.l	er6,@-er7
+  ffd030:	0f f6       	mov.l	er7,er6
+  ffd032:	7a 17 ff ff 	add.l	#0xffffffe8,er7
+  ffd036:	ff e8 
+  ffd038:	6f e0 ff e8 	mov.w	r0,@(0xffe8:16,er6)
+  ffd03c:	6f e1 ff ea 	mov.w	r1,@(0xffea:16,er6)
+  ffd040:	01 00 6f e2 	mov.l	er2,@(0xffec:16,er6)
+  ffd044:	ff ec 
+  ffd046:	0f e1       	mov.l	er6,er1
+  ffd048:	7a 11 ff ff 	add.l	#0xffffffe8,er1
+  ffd04c:	ff e8 
+  ffd04e:	79 00 00 09 	mov.w	#0x9,r0
+  ffd052:	5e ff cd 14 	jsr	@0xffcd14:24
+  ffd056:	6f 60 ff f0 	mov.w	@(0xfff0:16,er6),r0
+  ffd05a:	7a 17 00 00 	add.l	#0x18,er7
+  ffd05e:	00 18 
+  ffd060:	01 00 6d 76 	mov.l	@er7+,er6
+  ffd064:	54 70       	rts	
+
+00ffd066 <_kzmem_init>:
+  ffd066:	01 00 6d f6 	mov.l	er6,@-er7
+  ffd06a:	0f f6       	mov.l	er7,er6
+  ffd06c:	1b 97       	subs	#4,er7
+  ffd06e:	01 00 6d f4 	mov.l	er4,@-er7
+  ffd072:	01 00 6d f5 	mov.l	er5,@-er7
+  ffd076:	19 22       	sub.w	r2,r2
+  ffd078:	6f e2 ff fe 	mov.w	r2,@(0xfffe:16,er6)
+
+00ffd07c <.L10>:
+  ffd07c:	6f 64 ff fe 	mov.w	@(0xfffe:16,er6),r4
+  ffd080:	17 f4       	exts.l	er4
+  ffd082:	10 34       	shll.l	er4
+  ffd084:	10 34       	shll.l	er4
+  ffd086:	10 34       	shll.l	er4
+  ffd088:	7a 14 00 ff 	add.l	#0xffd66c,er4
+  ffd08c:	d6 6c 
+  ffd08e:	01 00 6b 25 	mov.l	@0xffd684:32,er5
+  ffd092:	00 ff d6 84 
+  ffd096:	0f c0       	mov.l	er4,er0
+  ffd098:	0b 90       	adds	#4,er0
+  ffd09a:	19 33       	sub.w	r3,r3
+  ffd09c:	6f e3 ff fc 	mov.w	r3,@(0xfffc:16,er6)
+  ffd0a0:	6f 42 00 02 	mov.w	@(0x2:16,er4),r2
+
+00ffd0a4 <.L15>:
+  ffd0a4:	1d 23       	cmp.w	r2,r3
+  ffd0a6:	4c 44       	bge	.+68 (0xffd0ec)
+  ffd0a8:	01 00 69 85 	mov.l	er5,@er0
+  ffd0ac:	1a a2       	sub.l	er2,er2
+  ffd0ae:	8a 08       	add.b	#0x8,r2l
+  ffd0b0:	19 11       	sub.w	r1,r1
+  ffd0b2:	0f d0       	mov.l	er5,er0
+  // call memset
+  ffd0b4:	5e ff c1 62 	jsr	@0xffc162:24
+  ffd0b8:	69 42       	mov.w	@er4,r2
+  ffd0ba:	6f d2 00 04 	mov.w	r2,@(0x4:16,er5)
+  ffd0be:	0f d0       	mov.l	er5,er0
+  ffd0c0:	69 43       	mov.w	@er4,r3
+  ffd0c2:	17 f3       	exts.l	er3
+  ffd0c4:	0a b5       	add.l	er3,er5
+  ffd0c6:	01 00 6b 22 	mov.l	@0xffd684:32,er2
+  ffd0ca:	00 ff d6 84 
+  ffd0ce:	0a b2       	add.l	er3,er2
+  ffd0d0:	01 00 6b a2 	mov.l	er2,@0xffd684:32
+  ffd0d4:	00 ff d6 84 
+  ffd0d8:	6f 62 ff fc 	mov.w	@(0xfffc:16,er6),r2
+  ffd0dc:	0b 02       	adds	#1,er2
+  ffd0de:	6f e2 ff fc 	mov.w	r2,@(0xfffc:16,er6)
+  ffd0e2:	6f 42 00 02 	mov.w	@(0x2:16,er4),r2
+  ffd0e6:	6f 63 ff fc 	mov.w	@(0xfffc:16,er6),r3
+  ffd0ea:	40 b8       	bra	.-72 (0xffd0a4)
+
+00ffd0ec <.L14>:
+  ffd0ec:	6f 62 ff fe 	mov.w	@(0xfffe:16,er6),r2
+  ffd0f0:	0b 02       	adds	#1,er2
+  ffd0f2:	6f e2 ff fe 	mov.w	r2,@(0xfffe:16,er6)
+  ffd0f6:	79 22 00 02 	cmp.w	#0x2,r2
+  ffd0fa:	43 80       	bls	.-128 (0xffd07c)
+  ffd0fc:	19 00       	sub.w	r0,r0
+  ffd0fe:	01 00 6d 75 	mov.l	@er7+,er5
+  ffd102:	01 00 6d 74 	mov.l	@er7+,er4
+  ffd106:	0b 97       	adds	#4,er7
+  ffd108:	01 00 6d 76 	mov.l	@er7+,er6
+  ffd10c:	54 70       	rts	
+
+00ffd10e <_kzmem_alloc>:
+  ffd10e:	01 00 6d f6 	mov.l	er6,@-er7
+  ffd112:	0f f6       	mov.l	er7,er6
+  ffd114:	01 00 6d f4 	mov.l	er4,@-er7
+  ffd118:	0d 04       	mov.w	r0,r4
+  ffd11a:	19 00       	sub.w	r0,r0
+
+00ffd11c <.L22>:
+  ffd11c:	0d 01       	mov.w	r0,r1
+  ffd11e:	17 f1       	exts.l	er1
+  ffd120:	10 31       	shll.l	er1
+  ffd122:	10 31       	shll.l	er1
+  ffd124:	10 31       	shll.l	er1
+  ffd126:	7a 11 00 ff 	add.l	#0xffd66c,er1
+  ffd12a:	d6 6c 
+  ffd12c:	0d 43       	mov.w	r4,r3
+  ffd12e:	17 f3       	exts.l	er3
+  ffd130:	69 12       	mov.w	@er1,r2
+  ffd132:	17 f2       	exts.l	er2
+  ffd134:	1b 92       	subs	#4,er2
+  ffd136:	1b 92       	subs	#4,er2
+  ffd138:	1f a3       	cmp.l	er2,er3
+  ffd13a:	42 1e       	bhi	.+30 (0xffd15a)
+  ffd13c:	01 00 6f 10 	mov.l	@(0x4:16,er1),er0
+  ffd140:	00 04 
+  ffd142:	47 1e       	beq	.+30 (0xffd162)
+  ffd144:	01 00 69 02 	mov.l	@er0,er2
+  ffd148:	01 00 6f 92 	mov.l	er2,@(0x4:16,er1)
+  ffd14c:	00 04 
+  ffd14e:	1a a2       	sub.l	er2,er2
+  ffd150:	01 00 69 82 	mov.l	er2,@er0
+  ffd154:	0b 90       	adds	#4,er0
+  ffd156:	0b 90       	adds	#4,er0
+  ffd158:	40 0e       	bra	.+14 (0xffd168)
+
+00ffd15a <.L19>:
+  ffd15a:	0b 00       	adds	#1,er0
+  ffd15c:	79 20 00 02 	cmp.w	#0x2,r0
+  ffd160:	43 ba       	bls	.-70 (0xffd11c)
+
+00ffd162 <.L25>:
+// call kz_sysdown
+  ffd162:	5e ff c8 34 	jsr	@0xffc834:24
+  ffd166:	1a 80       	sub.l	er0,er0
+
+00ffd168 <.L16>:
+  ffd168:	01 00 6d 74 	mov.l	@er7+,er4
+  ffd16c:	01 00 6d 76 	mov.l	@er7+,er6
+  ffd170:	54 70       	rts	
+
+00ffd172 <_kzmem_free>:
+  ffd172:	01 00 6d f6 	mov.l	er6,@-er7
+  ffd176:	0f f6       	mov.l	er7,er6
+  ffd178:	01 00 6d f4 	mov.l	er4,@-er7
+  ffd17c:	1b 90       	subs	#4,er0
+  ffd17e:	1b 90       	subs	#4,er0
+  ffd180:	19 44       	sub.w	r4,r4
+
+00ffd182 <.L31>:
+  ffd182:	0d 41       	mov.w	r4,r1
+  ffd184:	17 f1       	exts.l	er1
+  ffd186:	10 31       	shll.l	er1
+  ffd188:	10 31       	shll.l	er1
+  ffd18a:	10 31       	shll.l	er1
+  ffd18c:	7a 11 00 ff 	add.l	#0xffd66c,er1
+  ffd190:	d6 6c 
+  ffd192:	6f 03 00 04 	mov.w	@(0x4:16,er0),r3
+  ffd196:	69 12       	mov.w	@er1,r2
+  ffd198:	1d 23       	cmp.w	r2,r3
+  ffd19a:	46 12       	bne	.+18 (0xffd1ae)
+  ffd19c:	01 00 6f 12 	mov.l	@(0x4:16,er1),er2
+  ffd1a0:	00 04 
+  ffd1a2:	01 00 69 82 	mov.l	er2,@er0
+  ffd1a6:	01 00 6f 90 	mov.l	er0,@(0x4:16,er1)
+  ffd1aa:	00 04 
+  ffd1ac:	40 0c       	bra	.+12 (0xffd1ba)
+
+00ffd1ae <.L29>:
+  ffd1ae:	0b 04       	adds	#1,er4
+  ffd1b0:	79 24 00 02 	cmp.w	#0x2,r4
+  ffd1b4:	43 cc       	bls	.-52 (0xffd182)
+  // call kz_sysdown
+  ffd1b6:	5e ff c8 34 	jsr	@0xffc834:24
+
+00ffd1ba <.L26>:
+  ffd1ba:	01 00 6d 74 	mov.l	@er7+,er4
+  ffd1be:	01 00 6d 76 	mov.l	@er7+,er6
+  ffd1c2:	54 70       	rts	
+
+00ffd1c4 <_send_char>:
+  ffd1c4:	01 00 6d f6 	mov.l	er6,@-er7
+  ffd1c8:	0f f6       	mov.l	er7,er6
+  ffd1ca:	01 00 6d f4 	mov.l	er4,@-er7
+  ffd1ce:	0f 84       	mov.l	er0,er4
+  ffd1d0:	01 00 6f 02 	mov.l	@(0x8:16,er0),er2
+  ffd1d4:	00 08 
+  ffd1d6:	68 29       	mov.b	@er2,r1l
+  ffd1d8:	6f 00 00 04 	mov.w	@(0x4:16,er0),r0
+  ffd1dc:	5e ff c4 04 	jsr	@0xffc404:24
+  ffd1e0:	6f 42 00 10 	mov.w	@(0x10:16,er4),r2
+  ffd1e4:	1b 02       	subs	#1,er2
+  ffd1e6:	6f c2 00 10 	mov.w	r2,@(0x10:16,er4)
+  ffd1ea:	19 00       	sub.w	r0,r0
+
+00ffd1ec <.L8>:
+  ffd1ec:	1d 20       	cmp.w	r2,r0
+  ffd1ee:	4c 1a       	bge	.+26 (0xffd20a)
+  ffd1f0:	0d 03       	mov.w	r0,r3
+  ffd1f2:	17 f3       	exts.l	er3
+  ffd1f4:	01 00 6f 42 	mov.l	@(0x8:16,er4),er2
+  ffd1f8:	00 08 
+  ffd1fa:	0a b2       	add.l	er3,er2
+  ffd1fc:	6e 2b 00 01 	mov.b	@(0x1:16,er2),r3l
+  ffd200:	68 ab       	mov.b	r3l,@er2
+  ffd202:	0b 00       	adds	#1,er0
+  ffd204:	6f 42 00 10 	mov.w	@(0x10:16,er4),r2
+  ffd208:	40 e2       	bra	.-30 (0xffd1ec)
+
+00ffd20a <.L7>:
+  ffd20a:	01 00 6d 74 	mov.l	@er7+,er4
+  ffd20e:	01 00 6d 76 	mov.l	@er7+,er6
+  ffd212:	54 70       	rts	
+
+00ffd214 <_send_string>:
+  ffd214:	01 00 6d f6 	mov.l	er6,@-er7
+  ffd218:	0f f6       	mov.l	er7,er6
+  ffd21a:	1b 97       	subs	#4,er7
+  ffd21c:	01 00 6d f4 	mov.l	er4,@-er7
+  ffd220:	01 00 6d f5 	mov.l	er5,@-er7
+  ffd224:	0f 84       	mov.l	er0,er4
+  ffd226:	6f e2 ff fe 	mov.w	r2,@(0xfffe:16,er6)
+  ffd22a:	19 22       	sub.w	r2,r2
+  ffd22c:	6f e2 ff fc 	mov.w	r2,@(0xfffc:16,er6)
+  ffd230:	6f 63 ff fe 	mov.w	@(0xfffe:16,er6),r3
+  ffd234:	1d 32       	cmp.w	r3,r2
+  ffd236:	4c 52       	bge	.+82 (0xffd28a)
+  ffd238:	0f 95       	mov.l	er1,er5
+
+00ffd23a <.L14>:
+  ffd23a:	68 5a       	mov.b	@er5,r2l
+  ffd23c:	aa 0a       	cmp.b	#0xa,r2l
+  ffd23e:	46 1c       	bne	.+28 (0xffd25c)
+  ffd240:	1a 91       	sub.l	er1,er1
+  ffd242:	89 10       	add.b	#0x10,r1l
+  ffd244:	0a c1       	add.l	er4,er1
+  ffd246:	69 10       	mov.w	@er1,r0
+  ffd248:	0d 03       	mov.w	r0,r3
+  ffd24a:	17 f3       	exts.l	er3
+  ffd24c:	01 00 6f 42 	mov.l	@(0x8:16,er4),er2
+  ffd250:	00 08 
+  ffd252:	0a b2       	add.l	er3,er2
+  ffd254:	fb 0d       	mov.b	#0xd,r3l
+  ffd256:	68 ab       	mov.b	r3l,@er2
+  ffd258:	0b 00       	adds	#1,er0
+  ffd25a:	69 90       	mov.w	r0,@er1
+
+00ffd25c <.L13>:
+  ffd25c:	1a 91       	sub.l	er1,er1
+  ffd25e:	89 10       	add.b	#0x10,r1l
+  ffd260:	0a c1       	add.l	er4,er1
+  ffd262:	69 10       	mov.w	@er1,r0
+  ffd264:	0d 03       	mov.w	r0,r3
+  ffd266:	17 f3       	exts.l	er3
+  ffd268:	01 00 6f 42 	mov.l	@(0x8:16,er4),er2
+  ffd26c:	00 08 
+  ffd26e:	0a b2       	add.l	er3,er2
+  ffd270:	6c 5b       	mov.b	@er5+,r3l
+  ffd272:	68 ab       	mov.b	r3l,@er2
+  ffd274:	0b 00       	adds	#1,er0
+  ffd276:	69 90       	mov.w	r0,@er1
+  ffd278:	6f 62 ff fc 	mov.w	@(0xfffc:16,er6),r2
+  ffd27c:	0b 02       	adds	#1,er2
+  ffd27e:	6f e2 ff fc 	mov.w	r2,@(0xfffc:16,er6)
+  ffd282:	6f 63 ff fe 	mov.w	@(0xfffe:16,er6),r3
+  ffd286:	1d 32       	cmp.w	r3,r2
+  ffd288:	4d b0       	blt	.-80 (0xffd23a)
+
+00ffd28a <.L17>:
+  ffd28a:	6f 42 00 10 	mov.w	@(0x10:16,er4),r2
+  ffd28e:	47 1a       	beq	.+26 (0xffd2aa)
+  ffd290:	6f 40 00 04 	mov.w	@(0x4:16,er4),r0
+  ffd294:	5e ff c4 c8 	jsr	@0xffc4c8:24
+  ffd298:	0d 00       	mov.w	r0,r0
+  ffd29a:	46 0e       	bne	.+14 (0xffd2aa)
+  ffd29c:	6f 40 00 04 	mov.w	@(0x4:16,er4),r0
+  ffd2a0:	5e ff c4 ee 	jsr	@0xffc4ee:24
+  ffd2a4:	0f c0       	mov.l	er4,er0
+  ffd2a6:	5e ff d1 c4 	jsr	@0xffd1c4:24
+
+00ffd2aa <.L9>:
+  ffd2aa:	01 00 6d 75 	mov.l	@er7+,er5
+  ffd2ae:	01 00 6d 74 	mov.l	@er7+,er4
+  ffd2b2:	0b 97       	adds	#4,er7
+  ffd2b4:	01 00 6d 76 	mov.l	@er7+,er6
+  ffd2b8:	54 70       	rts	
+
+00ffd2ba <_consdrv_intr>:
+  ffd2ba:	01 00 6d f6 	mov.l	er6,@-er7
+  ffd2be:	0f f6       	mov.l	er7,er6
+  ffd2c0:	1b 97       	subs	#4,er7
+  ffd2c2:	01 00 6d f4 	mov.l	er4,@-er7
+  ffd2c6:	01 00 6b 22 	mov.l	@0xffd888:32,er2
+  ffd2ca:	00 ff d8 88 
+  ffd2ce:	58 70 00 f2 	beq	.+242 (0xffd3c4)
+  ffd2d2:	6b 20 00 ff 	mov.w	@0xffd88c:32,r0
+  ffd2d6:	d8 8c 
+  ffd2d8:	5e ff c3 e0 	jsr	@0xffc3e0:24
+  ffd2dc:	0d 00       	mov.w	r0,r0
+  ffd2de:	46 10       	bne	.+16 (0xffd2f0)
+  ffd2e0:	6b 20 00 ff 	mov.w	@0xffd88c:32,r0
+  ffd2e4:	d8 8c 
+  ffd2e6:	5e ff c4 5a 	jsr	@0xffc45a:24
+  ffd2ea:	0d 00       	mov.w	r0,r0
+  ffd2ec:	58 70 00 d4 	beq	.+212 (0xffd3c4)
+
+00ffd2f0 <.L39>:
+  ffd2f0:	6b 20 00 ff 	mov.w	@0xffd88c:32,r0
+  ffd2f4:	d8 8c 
+  ffd2f6:	5e ff c4 5a 	jsr	@0xffc45a:24
+  ffd2fa:	0d 00       	mov.w	r0,r0
+  ffd2fc:	58 70 00 8e 	beq	.+142 (0xffd38e)
+  ffd300:	6b 20 00 ff 	mov.w	@0xffd88c:32,r0
+  ffd304:	d8 8c 
+  ffd306:	5e ff c4 7e 	jsr	@0xffc47e:24
+  ffd30a:	6e e8 ff ff 	mov.b	r0l,@(0xffff:16,er6)
+  ffd30e:	a8 0d       	cmp.b	#0xd,r0l
+  ffd310:	46 06       	bne	.+6 (0xffd318)
+  ffd312:	fa 0a       	mov.b	#0xa,r2l
+  ffd314:	6e ea ff ff 	mov.b	r2l,@(0xffff:16,er6)
+
+00ffd318 <.L41>:
+  ffd318:	79 02 00 01 	mov.w	#0x1,r2
+  ffd31c:	0f e1       	mov.l	er6,er1
+  ffd31e:	1b 01       	subs	#1,er1
+  ffd320:	7a 00 00 ff 	mov.l	#0xffd888,er0
+  ffd324:	d8 88 
+  ffd326:	5e ff d2 14 	jsr	@0xffd214:24
+  ffd32a:	01 00 6b 22 	mov.l	@0xffd888:32,er2
+  ffd32e:	00 ff d8 88 
+  ffd332:	47 5a       	beq	.+90 (0xffd38e)
+  ffd334:	6e 6c ff ff 	mov.b	@(0xffff:16,er6),r4l
+  ffd338:	ac 0a       	cmp.b	#0xa,r4l
+  ffd33a:	47 1e       	beq	.+30 (0xffd35a)
+  ffd33c:	7a 01 00 ff 	mov.l	#0xffd89a,er1
+  ffd340:	d8 9a 
+  ffd342:	69 13       	mov.w	@er1,r3
+  ffd344:	0d 30       	mov.w	r3,r0
+  ffd346:	17 f0       	exts.l	er0
+  ffd348:	01 00 6b 22 	mov.l	@0xffd894:32,er2
+  ffd34c:	00 ff d8 94 
+  ffd350:	0a 82       	add.l	er0,er2
+  ffd352:	68 ac       	mov.b	r4l,@er2
+  ffd354:	0b 03       	adds	#1,er3
+  ffd356:	69 93       	mov.w	r3,@er1
+  ffd358:	40 34       	bra	.+52 (0xffd38e)
+
+00ffd35a <.L42>:
+  ffd35a:	79 00 00 18 	mov.w	#0x18,r0
+  ffd35e:	5e ff cf c8 	jsr	@0xffcfc8:24
+  ffd362:	0f 84       	mov.l	er0,er4
+  ffd364:	6b 22 00 ff 	mov.w	@0xffd89a:32,r2
+  ffd368:	d8 9a 
+  ffd36a:	17 f2       	exts.l	er2
+  ffd36c:	01 00 6b 21 	mov.l	@0xffd894:32,er1
+  ffd370:	00 ff d8 94 
+  ffd374:	5e ff c1 7c 	jsr	@0xffc17c:24
+  ffd378:	0f c2       	mov.l	er4,er2
+  ffd37a:	6b 21 00 ff 	mov.w	@0xffd89a:32,r1
+  ffd37e:	d8 9a 
+  ffd380:	19 00       	sub.w	r0,r0
+  ffd382:	5e ff d0 2c 	jsr	@0xffd02c:24
+  ffd386:	19 22       	sub.w	r2,r2
+  ffd388:	6b a2 00 ff 	mov.w	r2,@0xffd89a:32
+  ffd38c:	d8 9a 
+
+00ffd38e <.L40>:
+  ffd38e:	6b 20 00 ff 	mov.w	@0xffd88c:32,r0
+  ffd392:	d8 8c 
+  ffd394:	5e ff c3 e0 	jsr	@0xffc3e0:24
+  ffd398:	0d 00       	mov.w	r0,r0
+  ffd39a:	47 28       	beq	.+40 (0xffd3c4)
+  ffd39c:	01 00 6b 22 	mov.l	@0xffd888:32,er2
+  ffd3a0:	00 ff d8 88 
+  ffd3a4:	47 08       	beq	.+8 (0xffd3ae)
+  ffd3a6:	6b 22 00 ff 	mov.w	@0xffd898:32,r2
+  ffd3aa:	d8 98 
+  ffd3ac:	46 0c       	bne	.+12 (0xffd3ba)
+
+00ffd3ae <.L44>:
+  ffd3ae:	6b 20 00 ff 	mov.w	@0xffd88c:32,r0
+  ffd3b2:	d8 8c 
+  ffd3b4:	5e ff c5 14 	jsr	@0xffc514:24
+  ffd3b8:	40 0a       	bra	.+10 (0xffd3c4)
+
+00ffd3ba <.L43>:
+  ffd3ba:	7a 00 00 ff 	mov.l	#0xffd888,er0
+  ffd3be:	d8 88 
+  ffd3c0:	5e ff d1 c4 	jsr	@0xffd1c4:24
+
+00ffd3c4 <.L38>:
+  ffd3c4:	01 00 6d 74 	mov.l	@er7+,er4
+  ffd3c8:	0b 97       	adds	#4,er7
+  ffd3ca:	01 00 6d 76 	mov.l	@er7+,er6
+  ffd3ce:	54 70       	rts	
+
+00ffd3d0 <_consdrv_main>:
+  ffd3d0:	01 00 6d f6 	mov.l	er6,@-er7
+  ffd3d4:	0f f6       	mov.l	er7,er6
+  ffd3d6:	1b 97       	subs	#4,er7
+  ffd3d8:	1b 97       	subs	#4,er7
+  ffd3da:	01 00 6d f4 	mov.l	er4,@-er7
+  ffd3de:	1a a2       	sub.l	er2,er2
+  ffd3e0:	8a 20       	add.b	#0x20,r2l
+  ffd3e2:	19 11       	sub.w	r1,r1
+  ffd3e4:	7a 00 00 ff 	mov.l	#0xffd888,er0
+  ffd3e8:	d8 88 
+  // call memset
+  ffd3ea:	5e ff c1 62 	jsr	@0xffc162:24
+  ffd3ee:	7a 01 00 ff 	mov.l	#0xffd2ba,er1
+  ffd3f2:	d2 ba 
+  ffd3f4:	79 00 00 02 	mov.w	#0x2,r0
+  // call kz_setintr
+  ffd3f8:	5e ff cf 60 	jsr	@0xffcf60:24
+
+00ffd3fc <.L49>:
+  ffd3fc:	0f e2       	mov.l	er6,er2
+  ffd3fe:	1b 92       	subs	#4,er2
+  ffd400:	0f e1       	mov.l	er6,er1
+  ffd402:	1b 91       	subs	#4,er1
+  ffd404:	1b 81       	subs	#2,er1
+  ffd406:	79 00 00 01 	mov.w	#0x1,r0
+  // call kz_recv
+  ffd40a:	5e ff cf 22 	jsr	@0xffcf22:24
+  ffd40e:	0f 81       	mov.l	er0,er1
+  ffd410:	01 00 6f 63 	mov.l	@(0xfffc:16,er6),er3
+  ffd414:	ff fc 
+  ffd416:	6c 3a       	mov.b	@er3+,r2l
+  ffd418:	17 52       	extu.w	r2
+  ffd41a:	79 12 ff d0 	add.w	#0xffd0,r2
+  ffd41e:	0d 24       	mov.w	r2,r4
+  ffd420:	17 f4       	exts.l	er4
+  ffd422:	fa 05       	mov.b	#0x5,r2l
+
+00ffd424 <.Llt1>:
+  ffd424:	10 34       	shll.l	er4
+  ffd426:	8a ff       	add.b	#0xff,r2l
+  ffd428:	46 fa       	bne	.-6 (0xffd424)
+  ffd42a:	7a 14 00 ff 	add.l	#0xffd888,er4
+  ffd42e:	d8 88 
+  ffd430:	6f 60 ff fa 	mov.w	@(0xfffa:16,er6),r0
+  ffd434:	1b 00       	subs	#1,er0
+  ffd436:	68 3a       	mov.b	@er3,r2l
+  ffd438:	17 52       	extu.w	r2
+  ffd43a:	79 22 00 75 	cmp.w	#0x75,r2
+  ffd43e:	47 08       	beq	.+8 (0xffd448)
+  ffd440:	79 22 00 77 	cmp.w	#0x77,r2
+  ffd444:	47 4c       	beq	.+76 (0xffd492)
+  ffd446:	40 5c       	bra	.+92 (0xffd4a4)
+
+00ffd448 <.L52>:
+  ffd448:	01 00 69 c1 	mov.l	er1,@er4
+  ffd44c:	6e 3a 00 01 	mov.b	@(0x1:16,er3),r2l
+  ffd450:	17 52       	extu.w	r2
+  ffd452:	79 12 ff d0 	add.w	#0xffd0,r2
+  ffd456:	6f c2 00 04 	mov.w	r2,@(0x4:16,er4)
+  ffd45a:	79 00 00 18 	mov.w	#0x18,r0
+  // call kz_malloc
+  ffd45e:	5e ff ce 84 	jsr	@0xffce84:24
+  ffd462:	01 00 6f c0 	mov.l	er0,@(0x8:16,er4)
+  ffd466:	00 08 
+  ffd468:	79 00 00 18 	mov.w	#0x18,r0
+  // call kz_malloc
+  ffd46c:	5e ff ce 84 	jsr	@0xffce84:24
+  ffd470:	01 00 6f c0 	mov.l	er0,@(0xc:16,er4)
+  ffd474:	00 0c 
+  ffd476:	19 22       	sub.w	r2,r2
+  ffd478:	6f c2 00 10 	mov.w	r2,@(0x10:16,er4)
+  ffd47c:	6f c2 00 12 	mov.w	r2,@(0x12:16,er4)
+  ffd480:	6f 40 00 04 	mov.w	@(0x4:16,er4),r0
+  ffd484:	5e ff c3 aa 	jsr	@0xffc3aa:24
+  ffd488:	6f 40 00 04 	mov.w	@(0x4:16,er4),r0
+  ffd48c:	5e ff c5 62 	jsr	@0xffc562:24
+  ffd490:	40 12       	bra	.+18 (0xffd4a4)
+
+00ffd492 <.L53>:
+  ffd492:	04 c0       	orc	#0xc0,ccr
+  ffd494:	0d 02       	mov.w	r0,r2
+  ffd496:	1b 02       	subs	#1,er2
+  ffd498:	0f b1       	mov.l	er3,er1
+  ffd49a:	0b 01       	adds	#1,er1
+  ffd49c:	0f c0       	mov.l	er4,er0
+  ffd49e:	5e ff d2 14 	jsr	@0xffd214:24
+  ffd4a2:	06 3f       	andc	#0x3f,ccr
+
+00ffd4a4 <.L51>:
+  ffd4a4:	01 00 6f 60 	mov.l	@(0xfffc:16,er6),er0
+  ffd4a8:	ff fc 
+  ffd4aa:	5e ff ce b6 	jsr	@0xffceb6:24
+  ffd4ae:	58 00 ff 4a 	bra	.-182 (0xffd3fc)
+
+00ffd4b2 <_send_write>:
+  ffd4b2:	01 00 6d f6 	mov.l	er6,@-er7
+  ffd4b6:	0f f6       	mov.l	er7,er6
+  ffd4b8:	1b 97       	subs	#4,er7
+  ffd4ba:	1b 97       	subs	#4,er7
+  ffd4bc:	01 00 6d f4 	mov.l	er4,@-er7
+  ffd4c0:	01 00 6d f5 	mov.l	er5,@-er7
+  ffd4c4:	01 00 6f e0 	mov.l	er0,@(0xfffc:16,er6)
+  ffd4c8:	ff fc 
+  ffd4ca:	5e ff c1 de 	jsr	@0xffc1de:24
+  ffd4ce:	0d 05       	mov.w	r0,r5
+  ffd4d0:	0d 02       	mov.w	r0,r2
+  ffd4d2:	0b 82       	adds	#2,er2
+  ffd4d4:	6f e2 ff fa 	mov.w	r2,@(0xfffa:16,er6)
+  ffd4d8:	0d 20       	mov.w	r2,r0
+  // call kz_malloc
+  ffd4da:	5e ff ce 84 	jsr	@0xffce84:24
+  ffd4de:	0f 84       	mov.l	er0,er4
+  ffd4e0:	fa 30       	mov.b	#0x30,r2l
+  ffd4e2:	68 8a       	mov.b	r2l,@er0
+  ffd4e4:	fa 77       	mov.b	#0x77,r2l
+  ffd4e6:	6e 8a 00 01 	mov.b	r2l,@(0x1:16,er0)
+  ffd4ea:	0d 52       	mov.w	r5,r2
+  ffd4ec:	17 f2       	exts.l	er2
+  ffd4ee:	01 00 6f 61 	mov.l	@(0xfffc:16,er6),er1
+  ffd4f2:	ff fc 
+  ffd4f4:	0b 80       	adds	#2,er0
+  ffd4f6:	5e ff c1 7c 	jsr	@0xffc17c:24
+  ffd4fa:	0f c2       	mov.l	er4,er2
+  ffd4fc:	6f 61 ff fa 	mov.w	@(0xfffa:16,er6),r1
+  ffd500:	79 00 00 01 	mov.w	#0x1,r0
+  // call _kz_send
+  ffd504:	5e ff ce e8 	jsr	@0xffcee8:24
+  ffd508:	01 00 6d 75 	mov.l	@er7+,er5
+  ffd50c:	01 00 6d 74 	mov.l	@er7+,er4
+  ffd510:	0b 97       	adds	#4,er7
+  ffd512:	0b 97       	adds	#4,er7
+  ffd514:	01 00 6d 76 	mov.l	@er7+,er6
+  ffd518:	54 70       	rts	
+
+00ffd51a <_command_main>:
+  ffd51a:	01 00 6d f6 	mov.l	er6,@-er7
+  ffd51e:	0f f6       	mov.l	er7,er6
+  ffd520:	1b 97       	subs	#4,er7
+  ffd522:	1b 97       	subs	#4,er7
+  ffd524:	79 00 00 03 	mov.w	#0x3,r0
+  // call kz_malloc
+  ffd528:	5e ff ce 84 	jsr	@0xffce84:24
+  ffd52c:	0f 82       	mov.l	er0,er2
+  ffd52e:	fb 30       	mov.b	#0x30,r3l
+  ffd530:	68 8b       	mov.b	r3l,@er0
+  ffd532:	fb 75       	mov.b	#0x75,r3l
+  ffd534:	6e 8b 00 01 	mov.b	r3l,@(0x1:16,er0)
+  ffd538:	fb 31       	mov.b	#0x31,r3l
+  ffd53a:	6e 8b 00 02 	mov.b	r3l,@(0x2:16,er0)
+  ffd53e:	79 01 00 03 	mov.w	#0x3,r1
+  ffd542:	79 00 00 01 	mov.w	#0x1,r0
+  // call _kz_send
+  ffd546:	5e ff ce e8 	jsr	@0xffcee8:24
+
+00ffd54a <.L4>:
+  ffd54a:	7a 00 00 ff 	mov.l	#0xffd642,er0
+  ffd54e:	d6 42 
+  // call _send_write
+  ffd550:	5e ff d4 b2 	jsr	@0xffd4b2:24
+  ffd554:	0f e2       	mov.l	er6,er2
+  ffd556:	1b 92       	subs	#4,er2
+  ffd558:	0f e1       	mov.l	er6,er1
+  ffd55a:	1b 91       	subs	#4,er1
+  ffd55c:	1b 81       	subs	#2,er1
+  ffd55e:	19 00       	sub.w	r0,r0
+  // call kz_recv
+  ffd560:	5e ff cf 22 	jsr	@0xffcf22:24
+  ffd564:	6f 62 ff fa 	mov.w	@(0xfffa:16,er6),r2
+  ffd568:	17 f2       	exts.l	er2
+  ffd56a:	01 00 6f 63 	mov.l	@(0xfffc:16,er6),er3
+  ffd56e:	ff fc 
+  ffd570:	0a a3       	add.l	er2,er3
+  ffd572:	18 aa       	sub.b	r2l,r2l
+  ffd574:	68 ba       	mov.b	r2l,@er3
+  ffd576:	79 02 00 04 	mov.w	#0x4,r2
+  ffd57a:	7a 01 00 ff 	mov.l	#0xffd64c,er1
+  ffd57e:	d6 4c 
+  ffd580:	01 00 6f 60 	mov.l	@(0xfffc:16,er6),er0
+  ffd584:	ff fc 
+  ffd586:	5e ff c2 48 	jsr	@0xffc248:24
+  ffd58a:	0d 00       	mov.w	r0,r0
+  ffd58c:	46 14       	bne	.+20 (0xffd5a2)
+  ffd58e:	01 00 6f 60 	mov.l	@(0xfffc:16,er6),er0
+  ffd592:	ff fc 
+  ffd594:	0b 90       	adds	#4,er0
+  // call _send_write 
+  ffd596:	5e ff d4 b2 	jsr	@0xffd4b2:24
+  ffd59a:	7a 00 00 ff 	mov.l	#0xffd60b,er0
+  ffd59e:	d6 0b 
+  ffd5a0:	40 06       	bra	.+6 (0xffd5a8)
+
+00ffd5a2 <.L6>:
+  ffd5a2:	7a 00 00 ff 	mov.l	#0xffd651,er0
+  ffd5a6:	d6 51 
+
+00ffd5a8 <.L8>:
+  // call _send_write
+  ffd5a8:	5e ff d4 b2 	jsr	@0xffd4b2:24
+  ffd5ac:	01 00 6f 60 	mov.l	@(0xfffc:16,er6),er0
+  ffd5b0:	ff fc 
+  // call kz_kmfree
+  ffd5b2:	5e ff ce b6 	jsr	@0xffceb6:24
+  ffd5b6:	40 92       	bra	.-110 (0xffd54a)
+
+Disassembly of section .rodata:
+
+00ffd5b8 <_rodata_start>:
+  ffd5b8:	00 ff       	.word	H'0,H'ff
+  ffd5ba:	c9 32       	or.b	#0x32,r1l
+  ffd5bc:	00 ff       	.word	H'0,H'ff
+  ffd5be:	c9 6e       	or.b	#0x6e,r1l
+  ffd5c0:	00 ff       	.word	H'0,H'ff
+  ffd5c2:	c9 76       	or.b	#0x76,r1l
+  ffd5c4:	00 ff       	.word	H'0,H'ff
+  ffd5c6:	c9 7a       	or.b	#0x7a,r1l
+  ffd5c8:	00 ff       	.word	H'0,H'ff
+  ffd5ca:	c9 82       	or.b	#0x82,r1l
+  ffd5cc:	00 ff       	.word	H'0,H'ff
+  ffd5ce:	c9 94       	or.b	#0x94,r1l
+  ffd5d0:	00 ff       	.word	H'0,H'ff
+  ffd5d2:	c9 a8       	or.b	#0xa8,r1l
+  ffd5d4:	00 ff       	.word	H'0,H'ff
+  ffd5d6:	c9 ca       	or.b	#0xca,r1l
+  ffd5d8:	00 ff       	.word	H'0,H'ff
+  ffd5da:	c9 e0       	or.b	#0xe0,r1l
+  ffd5dc:	00 ff       	.word	H'0,H'ff
+  ffd5de:	c9 f6       	or.b	#0xf6,r1l
+  ffd5e0:	00 ff       	.word	H'0,H'ff
+  ffd5e2:	ca b8       	or.b	#0xb8,r2l
+  ffd5e4:	00 ff       	.word	H'0,H'ff
+  ffd5e6:	cb 12       	or.b	#0x12,r3l
+  ffd5e8:	63 6f       	btst	r6h,r7l
+  ffd5ea:	6e 73 64 72 	mov.b	@(0x6472:16,er7),r3h
+  ffd5ee:	76 00       	band	#0x0,r0h
+  ffd5f0:	63 6f       	btst	r6h,r7l
+  ffd5f2:	6d 6d       	mov.w	@er6+,e5
+  ffd5f4:	61 6e       	bnot	r6h,r6l
+  ffd5f6:	64 00       	or.w	r0,r0
+  ffd5f8:	6b 6f       	.word	H'6b,H'6f
+  ffd5fa:	7a 6f 73 20 	and.l	#0x7320,er7
+  ffd5fe:	62 6f       	bclr	r6h,r7l
+  ffd600:	6f 74 20 73 	mov.w	@(0x2073:16,er7),r4
+  ffd604:	75 63       	bxor	#0x6,r3h
+  ffd606:	63 65       	btst	r6h,r5h
+  ffd608:	65 64       	xor.w	r6,r4
+  ffd60a:	21 0a       	mov.b	@0xa:8,r1h
+  ffd60c:	00 69       	.word	H'0,H'69
+  ffd60e:	64 6c       	or.w	r6,e4
+  ffd610:	65 00       	xor.w	r0,r0
+  ffd612:	30 31       	mov.b	r0h,@0x31:8
+  ffd614:	32 33       	mov.b	r2h,@0x33:8
+  ffd616:	34 35       	mov.b	r4h,@0x35:8
+  ffd618:	36 37       	mov.b	r6h,@0x37:8
+  ffd61a:	38 39       	mov.b	r0l,@0x39:8
+  ffd61c:	61 62       	bnot	r6h,r2h
+  ffd61e:	63 64       	btst	r6h,r4h
+  ffd620:	65 66       	xor.w	r6,r6
+  ffd622:	00 20       	.word	H'0,H'20
+  ffd624:	45 58       	bcs	.+88 (0xffd67e)
+  ffd626:	49 54       	bvs	.+84 (0xffd67c)
+  ffd628:	2e 0a       	mov.b	@0xa:8,r6l
+  ffd62a:	00 73       	.word	H'0,H'73
+  ffd62c:	79 73       	.word	H'79,H'73
+  ffd62e:	74 65       	bor	#0x6,r5h
+  ffd630:	6d 20       	mov.w	@er2+,r0
+  ffd632:	65 72       	xor.w	r7,r2
+  ffd634:	72 6f       	bclr	#0x6,r7l
+  ffd636:	72 21       	bclr	#0x2,r1h
+  ffd638:	0a 00       	inc	r0h
+  ffd63a:	20 44       	mov.b	@0x44:8,r0h
+  ffd63c:	4f 57       	.word	H'4f,H'57
+  ffd63e:	4e 2e       	bgt	.+46 (0xffd66e)
+  ffd640:	0a 00       	inc	r0h
+  ffd642:	63 6f       	btst	r6h,r7l
+  ffd644:	6d 6d       	mov.w	@er6+,e5
+  ffd646:	61 6e       	bnot	r6h,r6l
+  ffd648:	64 3e       	or.w	r3,e6
+  ffd64a:	20 00       	mov.b	@0x0:8,r0h
+  ffd64c:	65 63       	xor.w	r6,r3
+  ffd64e:	68 6f       	mov.b	@er6,r7l
+  ffd650:	00 75       	.word	H'0,H'75
+  ffd652:	6e 6b 6e 6f 	mov.b	@(0x6e6f:16,er6),r3l
+  ffd656:	77 6e       	bld	#0x6,r6l
+  ffd658:	2e 0a       	mov.b	@0xa:8,r6l
+	...
+
+Disassembly of section .data:
+
+00ffd65c <_data_start>:
+  ffd65c:	00 ff       	.word	H'0,H'ff
+  ffd65e:	ff b0       	mov.b	#0xb0,r7l
+  ffd660:	00 ff       	.word	H'0,H'ff
+  ffd662:	ff b8       	mov.b	#0xb8,r7l
+  ffd664:	00 ff       	.word	H'0,H'ff
+  ffd666:	ff c0       	mov.b	#0xc0,r7l
+
+00ffd668 <thread_stack___0>:
+  ffd668:	00 ff       	.word	H'0,H'ff
+  ffd66a:	f4 00       	mov.b	#0x0,r4h
+
+00ffd66c <_pool>:
+  ffd66c:	00 10       	.word	H'0,H'10
+  ffd66e:	00 08       	.word	H'0,H'8
+  ffd670:	00 00       	nop	
+  ffd672:	00 00       	nop	
+  ffd674:	00 20       	.word	H'0,H'20
+  ffd676:	00 08       	.word	H'0,H'8
+  ffd678:	00 00       	nop	
+  ffd67a:	00 00       	nop	
+  ffd67c:	00 40       	.word	H'0,H'40
+  ffd67e:	00 04       	.word	H'0,H'4
+  ffd680:	00 00       	nop	
+	...
+
+00ffd684 <area___0>:
+  ffd684:	00 ff       	.word	H'0,H'ff
+  ffd686:	d8 a8       	xor.b	#0xa8,r0l
+
+Disassembly of section .bss:
+
+00ffd688 <_bss_start>:
+	...
+
+00ffd708 <_current>:
+  ffd708:	00 00       	nop	
+	...
+
+00ffd70c <_threads>:
+	...
+
+00ffd85c <_handlers>:
+	...
+
+00ffd868 <_msgboxes>:
+	...
+
+00ffd888 <_consreg>:
+	...

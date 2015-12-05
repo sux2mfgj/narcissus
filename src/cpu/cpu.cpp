@@ -93,6 +93,7 @@ namespace narcissus {
                 }
 
                 case interrupts::rxi1:
+                case interrupts::txi1:
                 {
                     auto jmp_addr = read_immediate(0x0000e4, 4);
                     pc = jmp_addr;
@@ -102,7 +103,6 @@ namespace narcissus {
                     break;
                 }
 
-                case interrupts::txi1:
                 case interrupts::eri1:
                 case interrupts::tei1:
                 {
@@ -299,7 +299,7 @@ namespace narcissus {
                     auto rd_value = read_register(rd, register_size::BYTE);
                     
                     //TODO Do i have to cast by integer?
-                    auto result = rd_value + imm;
+                    auto result = (std::int8_t)rd_value + (std::int8_t)imm;
 
                     write_register(rd, result, register_size::BYTE);
 
