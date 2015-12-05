@@ -178,7 +178,7 @@ namespace narcissus {
             BGT_8,                  // greater or equal
 //             BGT_16,
             BLE_8,                      // branch less or equal
-//             BLE_16,                      // branch less or equal
+            BLE_16,                      // branch less or equal
 
 
 //             CMP_B_IMM,                  // compare register and immediate
@@ -489,6 +489,7 @@ namespace narcissus {
                 FRIEND_TEST(MOV_W_R_IND_R, 0);
                 FRIEND_TEST(BLT_8, 0);
                 FRIEND_TEST(MOV_W_R_R_IND, 0);
+                FRIEND_TEST(BLE_16, 0);
         };
 
     }  // namespace h8_3069f

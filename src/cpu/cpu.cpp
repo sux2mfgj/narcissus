@@ -1013,12 +1013,24 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::BLE_16:
+                {
+                    auto disp = (std::int16_t)read_immediate(pc + 2, 2);
+                    pc += 4;
+                    if(ccr.zero || (ccr.negative ^ ccr.over_flow))
+                    {
+                        pc += disp;
+                    }
+
+                    break;
+                }
+
                 case operation::BLS_8:
                 {
                     auto disp = read_immediate(pc + 1, 1);
                     
                     if(ccr.carry || ccr.zero){
-                        pc += (std::uint8_t)disp;
+                        pc += (std::int8_t)disp;
                     }
                     pc += 2;
 
@@ -1971,9 +1983,7 @@ namespace narcissus {
                                     //BGT
                                     return operation::INVALID;
                                 case 0xf:
-                                    //TODO
-                                    //BLE
-                                    return operation::INVALID;
+                                    return operation::BLE_16;
                                 default:
                                     return operation::INVALID;
                             }
