@@ -40,7 +40,7 @@ namespace narcissus {
             // mov.w
             MOV_W_IMM_R,
             MOV_W_R_R,  
-//             MOV_W_R_IND_R,              // register indirect (rd = @ers)  
+            MOV_W_R_IND_R,              // register indirect (rd = @ers)  
             MOV_W_R_IND_WITH_DIS_16_R,    // register indirect with displacement(16 bit)
 //             MOV_W_R_IND_WITH_DIS_24_R,    // register indirect with displacement(24 bit)
 //             MOV_W_R_IND_POST_INC_R,       // rd increment after register indirect acdess
@@ -483,6 +483,7 @@ namespace narcissus {
                 FRIEND_TEST(BHI_16, 0);
                 FRIEND_TEST(EXTU_L, 0);
                 FRIEND_TEST(JMP_R, 0);
+                FRIEND_TEST(MOV_W_R_IND_R, 0);
         };
 
     }  // namespace h8_3069f
