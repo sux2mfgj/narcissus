@@ -47,7 +47,7 @@ namespace narcissus {
 //             MOV_W_ABS_8_R,                // absolute addressing 8
 //             MOV_W_ABS_16_R,               // absolute addressing 16
             MOV_W_ABS_24_R,               // absolute addressing 24
-//             MOV_W_R_R_IND,              // register indirect (@erd = rs)
+            MOV_W_R_R_IND,              // register indirect (@erd = rs)
             MOV_W_R_R_IND_WITH_DIS_16,    // register indirect with displacement(16 bit)
 //             MOV_W_R_R_IND_WITH_DIS_24,    // register indirect with displacement(16 bit)
 //             MOV_W_R_R_IND_PRE_DEC,
@@ -488,6 +488,7 @@ namespace narcissus {
                 FRIEND_TEST(JMP_R, 0);
                 FRIEND_TEST(MOV_W_R_IND_R, 0);
                 FRIEND_TEST(BLT_8, 0);
+                FRIEND_TEST(MOV_W_R_R_IND, 0);
         };
 
     }  // namespace h8_3069f
