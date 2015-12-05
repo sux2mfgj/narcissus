@@ -265,6 +265,7 @@ namespace narcissus {
                     break;
                 }
 
+                //TODO sign extention
                 case operation::ADDS_4:
                 {
                     auto erd = read_register_fields(pc + 1, value_place::low, false);
@@ -278,6 +279,7 @@ namespace narcissus {
                     break;
                 }
 
+                //TODO sign extention
                 case operation::ADDS_1:
                 {
                     auto erd = read_register_fields(pc + 1, value_place::low, true);
@@ -289,6 +291,20 @@ namespace narcissus {
                     pc += 2;
                     break;
                 }
+
+                //TODO sign extention
+                case operation::ADDS_2:
+                {
+                    auto erd = read_register_fields(pc + 1, value_place::low, true);
+                    auto erd_value = read_register(erd, register_size::LONG);
+
+                    auto result = erd_value + 2;
+
+                    write_register(erd, result, register_size::LONG);
+                    pc += 2;
+                    break;
+                }
+                
 
                 case operation::ADD_B_IMM_R:
                 {
@@ -1686,9 +1702,7 @@ namespace narcissus {
                                     return operation::INVALID;
 
                                 case 8:
-                                    //TODO ADDS
-                                    //return operation::ADDS_2;
-                                    return operation::INVALID;
+                                    return operation::ADDS_2;
                                 case 9:
                                     return operation::ADDS_4;
                                 case 0xc:

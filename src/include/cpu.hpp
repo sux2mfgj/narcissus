@@ -97,7 +97,7 @@ namespace narcissus {
             
             // adds
             ADDS_1,                     // add 1 with sign extention
-//             ADDS_2,                     // add 2 with sign extention
+            ADDS_2,                     // add 2 with sign extention
             ADDS_4,                     // add 4 with sign extention
 
             // inc
@@ -492,6 +492,7 @@ namespace narcissus {
                 FRIEND_TEST(BLE_16, 0);
                 FRIEND_TEST(BHI_8, 0);
                 FRIEND_TEST(SUBS_2, 0);
+                FRIEND_TEST(ADDS_2, 0);
         };
 
     }  // namespace h8_3069f
