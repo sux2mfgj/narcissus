@@ -167,7 +167,7 @@ namespace narcissus {
             BRA_16,                        // branch always(true)
             BNE_8,                        // branch not equal
             BNE_16,                        // branch not equal
-//             BHI_8,
+            BHI_8,
             BHI_16,
             BLS_8,                     // branch low or same
 //             BLS_16,                     // branch low or same
@@ -490,6 +490,7 @@ namespace narcissus {
                 FRIEND_TEST(BLT_8, 0);
                 FRIEND_TEST(MOV_W_R_R_IND, 0);
                 FRIEND_TEST(BLE_16, 0);
+                FRIEND_TEST(BHI_8, 0);
         };
 
     }  // namespace h8_3069f
