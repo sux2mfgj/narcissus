@@ -1415,9 +1415,17 @@ namespace narcissus {
                     auto rd = read_register_fields(pc, value_place::low, false);
                     auto imm = (std::uint8_t)read_immediate(pc + 1, 1);
 
-                    auto rd_value = (std::uint8_t)read_register(rd, register_size::BYTE);
+                    auto rd_value = 
+                        (std::uint8_t)read_register(rd, register_size::BYTE);
 
                     auto result = rd_value | imm;
+                    std::clog << std::hex 
+                        << " imm:       0x" << (std::uint16_t)imm << std::endl
+                        << " rd_value:  0x" << (std::uint16_t)rd_value << std::endl
+                        << " result     0x" << (std::uint16_t)result << std::endl
+                        << std::endl;
+
+                    write_register(rd, result, register_size::BYTE);
                     update_ccr_mov(result, register_size::BYTE);
 
                     pc += 2;

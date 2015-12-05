@@ -38,6 +38,7 @@ Disassembly of section .text:
   ffc076:	ce 1c 
   ffc078:	7a 00 00 ff 	mov.l	#0xffcc84,er0
   ffc07c:	cc 84 
+  // call kz_run
   ffc07e:	5e ff cb 2e 	jsr	@0xffcb2e:24
   ffc082:	01 00 6b a0 	mov.l	er0,@0xffd290:32
   ffc086:	00 ff d2 90 
@@ -49,6 +50,7 @@ Disassembly of section .text:
   ffc09e:	ce 25 
   ffc0a0:	7a 00 00 ff 	mov.l	#0xffcd08,er0
   ffc0a4:	cd 08 
+  // call kz_run
   ffc0a6:	5e ff cb 2e 	jsr	@0xffcb2e:24
   ffc0aa:	01 00 6b a0 	mov.l	er0,@0xffd28c:32
   ffc0ae:	00 ff d2 8c 
@@ -60,12 +62,14 @@ Disassembly of section .text:
   ffc0c6:	ce 2e 
   ffc0c8:	7a 00 00 ff 	mov.l	#0xffcd76,er0
   ffc0cc:	cd 76 
+  // call kz_run
   ffc0ce:	5e ff cb 2e 	jsr	@0xffcb2e:24
   ffc0d2:	01 00 6b a0 	mov.l	er0,@0xffd288:32
   ffc0d6:	00 ff d2 88 
   ffc0da:	7a 17 00 00 	add.l	#0x24,er7
   ffc0de:	00 24 
   ffc0e0:	79 00 00 0f 	mov.w	#0xf,r0
+  // call kz_chpri
   ffc0e4:	5e ff cc 54 	jsr	@0xffcc54:24
   ffc0e8:	06 3f       	andc	#0x3f,ccr
 
@@ -681,6 +685,8 @@ Disassembly of section .text:
   ffc5ec:	01 00 6b 20 	mov.l	@0xffd128:32,er0
   ffc5f0:	00 ff d1 28 
   ffc5f4:	46 04       	bne	.+4 (0xffc5fa)
+    // if (current == NULL)
+    // return -1;
   ffc5f6:	1b 00       	subs	#1,er0
   ffc5f8:	40 46       	bra	.+70 (0xffc640)
 
@@ -688,6 +694,9 @@ Disassembly of section .text:
   ffc5fa:	6e 0a 00 1f 	mov.b	@(0x1f:16,er0),r2l
   ffc5fe:	73 0a       	btst	#0x0,r2l
   ffc600:	46 06       	bne	.+6 (0xffc608)
+    // if (!(current->flags 
+    //          & KZ_THREAD_FLAG_READY))
+    //      return 1;
   ffc602:	79 00 00 01 	mov.w	#0x1,r0
   ffc606:	40 38       	bra	.+56 (0xffc640)
 
@@ -1372,6 +1381,7 @@ ffc960:	5e ff c6 46 	jsr	@0xffc646:24
   ffccb0:	ce bd 
   ffccb2:	5e ff c3 20 	jsr	@0xffc320:24
   ffccb6:	79 00 00 03 	mov.w	#0x3,r0
+  // call kz_chpri
   ffccba:	5e ff cc 54 	jsr	@0xffcc54:24
   ffccbe:	7a 00 00 ff 	mov.l	#0xffced1,er0
   ffccc2:	ce d1 
@@ -1414,6 +1424,7 @@ ffc960:	5e ff c6 46 	jsr	@0xffc646:24
   ffcd34:	cf 80 
   ffcd36:	5e ff c3 20 	jsr	@0xffc320:24
   ffcd3a:	79 00 00 03 	mov.w	#0x3,r0
+  // call kz_chpri
   ffcd3e:	5e ff cc 54 	jsr	@0xffcc54:24
   ffcd42:	7a 00 00 ff 	mov.l	#0xffcf94,er0
   ffcd46:	cf 94 
