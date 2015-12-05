@@ -2502,6 +2502,30 @@ namespace narcissus {
 
             ASSERT_EQ(0x1234, cpu->er[3].r);
         }
+
+        TEST(BLT_8, 0)
+        {
+            std::array<std::uint8_t, 
+                (std::uint32_t)h8_3069f::mem_info::rom_size> mem = {0};
+            mem[0] = 0x00;
+            mem[1] = 0x00;
+            mem[2] = 0x01;
+            mem[3] = 0x00;
+
+            //4d 04           
+            //blt .+4 (0xffc988)
+            mem[0x100] = 0x4d;
+            mem[0x101] = 0x04;
+
+            auto cpu = std::make_shared<h8_3069f::cpu>(std::move(mem));
+            cpu->interrupt(h8_3069f::interrupts::reset);
+
+            cpu->ccr.negative = 0;
+            cpu->ccr.over_flow = 1;
+
+            ASSERT_EQ(h8_3069f::operation::BLT_8, cpu->detect_operation());
+            ASSERT_EQ(0x102 + 4, cpu->cycle());
+        }
     }  // namespace cpu
 }  // namespace narcissus
 

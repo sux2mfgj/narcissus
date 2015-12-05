@@ -167,16 +167,19 @@ namespace narcissus {
             BRA_16,                        // branch always(true)
             BNE_8,                        // branch not equal
             BNE_16,                        // branch not equal
-            BLE_8,                      // branch less or equal
-//             BLE_16,                      // branch less or equal
 //             BHI_8,
             BHI_16,
             BLS_8,                     // branch low or same
 //             BLS_16,                     // branch low or same
-            BGT_8,                  // greater or equal
-//             BGT_16,
             BGE_8,                  //branch greater or equal
             BGE_16,
+            BLT_8,
+//             BLT_16,
+            BGT_8,                  // greater or equal
+//             BGT_16,
+            BLE_8,                      // branch less or equal
+//             BLE_16,                      // branch less or equal
+
 
 //             CMP_B_IMM,                  // compare register and immediate
 //             CMP_B_R_R,                  // compare register and  register
@@ -484,6 +487,7 @@ namespace narcissus {
                 FRIEND_TEST(EXTU_L, 0);
                 FRIEND_TEST(JMP_R, 0);
                 FRIEND_TEST(MOV_W_R_IND_R, 0);
+                FRIEND_TEST(BLT_8, 0);
         };
 
     }  // namespace h8_3069f
