@@ -405,6 +405,16 @@ namespace narcissus {
                     break;
                 }
 
+                case operation::SUBS_2:
+                {
+                    auto erd = read_register_fields(pc + 1, value_place::low, true);
+
+                    er[erd].er -= 2;
+
+                    pc += 2;
+                    break;
+                }
+
                 case operation::SUBS_4:
                 {
                     auto erd = read_register_fields(pc + 1, value_place::low, true);
@@ -1822,8 +1832,7 @@ namespace narcissus {
                                 case 7:
                                     return operation::DEC_L_1;
                                 case 8:
-//                                     return operation::SUBS_2;
-                                    return operation::INVALID;
+                                    return operation::SUBS_2;
                                 case 9:
                                     return operation::SUBS_4;
                                 case 0xd:

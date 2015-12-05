@@ -123,7 +123,7 @@ namespace narcissus {
 
             // subs
             SUBS_1,
-            // SUBS_2,
+            SUBS_2,
             SUBS_4,
 
             // dec
@@ -491,6 +491,7 @@ namespace narcissus {
                 FRIEND_TEST(MOV_W_R_R_IND, 0);
                 FRIEND_TEST(BLE_16, 0);
                 FRIEND_TEST(BHI_8, 0);
+                FRIEND_TEST(SUBS_2, 0);
         };
 
     }  // namespace h8_3069f
