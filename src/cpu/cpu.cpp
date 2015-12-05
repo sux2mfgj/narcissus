@@ -265,7 +265,7 @@ namespace narcissus {
                     break;
                 }
 
-                //TODO sign extention
+                //TODO sign extention?
                 case operation::ADDS_4:
                 {
                     auto erd = read_register_fields(pc + 1, value_place::low, false);
@@ -279,7 +279,7 @@ namespace narcissus {
                     break;
                 }
 
-                //TODO sign extention
+                //TODO sign extention?
                 case operation::ADDS_1:
                 {
                     auto erd = read_register_fields(pc + 1, value_place::low, true);
@@ -292,7 +292,7 @@ namespace narcissus {
                     break;
                 }
 
-                //TODO sign extention
+                //TODO sign extention?
                 case operation::ADDS_2:
                 {
                     auto erd = read_register_fields(pc + 1, value_place::low, true);

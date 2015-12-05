@@ -68,9 +68,13 @@ namespace narcissus {
                             read_buffer.push((std::uint8_t)buf);
                             ssr |= (std::uint8_t)ssr_bits::rdrf;
 
-                            if(auto ptr = controller.lock()){
-                                ptr->interrupt(h8_3069f::interrupts::rxi1);
-                                c_variable_ptr->notify_all();
+                            if(auto ptr = controller.lock())
+                            {
+                                if(scr & (std::uint8_t)scr_bits::rie)
+                                {
+                                    ptr->interrupt(h8_3069f::interrupts::rxi1);
+                                    c_variable_ptr->notify_all();
+                                }
                             }
                         }
                     });
@@ -89,6 +93,15 @@ namespace narcissus {
                         << "(" << (char)tdr << ")"<<std::endl;
 
                     ssr |= (std::uint8_t)ssr_bits::tdre;
+
+                    if(auto ptr = controller.lock())
+                    {
+                        if(scr & (std::uint8_t)scr_bits::tie)
+                        {
+                            ptr->interrupt(h8_3069f::interrupts::txi1);
+                            c_variable_ptr->notify_all();
+                        }
+                    }
                 }
 
                 if(!(ssr & (std::uint8_t)ssr_bits::rdrf))

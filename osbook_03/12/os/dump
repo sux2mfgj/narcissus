@@ -489,8 +489,6 @@ Disassembly of section .text:
   ffc3fa:	79 60 00 80 	and.w	#0x80,r0
   ffc3fe:	01 00 6d 76 	mov.l	@er7+,er6
   ffc402:	54 70       	rts	
-
-00ffc404 <_serial_send_byte>:
   ffc404:	01 00 6d f6 	mov.l	er6,@-er7
   ffc408:	0f f6       	mov.l	er7,er6
   ffc40a:	1b 97       	subs	#4,er7

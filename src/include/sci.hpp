@@ -23,6 +23,18 @@ namespace narcissus {
             tdre = 1 << 7
         };
 
+        enum class scr_bits : std::uint8_t
+        {
+            cke0 = 1 << 0,
+            cke1 = 1 << 1,
+            teie = 1 << 2,
+            mpie = 1 << 3,
+            re = 1 << 4,
+            te = 1 << 5,
+            rie = 1 << 6,
+            tie = 1 << 7,
+        };
+
         enum class access_flag : std::uint8_t
         {
             smr = 1 << 0,
