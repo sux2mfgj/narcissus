@@ -41,6 +41,6 @@ Build gdb for h8/300
     
 License
 ---
-[Boost Software License - Version 1.0](http://www.boost.org/LICENSE_1_0.txt)
+[Boost Software License - Version 1.0](http://www.boost.org/LICENSE_1_0.txt)  
 please see this link.
 
