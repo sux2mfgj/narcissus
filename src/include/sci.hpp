@@ -78,7 +78,6 @@ namespace narcissus {
 
                 std::shared_ptr<std::condition_variable> c_variable_ptr;
                 std::shared_ptr<std::mutex> cv_mutex_ptr;
-                bool is_dirty_ssr;
                 std::shared_ptr<bool> is_sleep;
 
                 std::weak_ptr<cpu> controller;

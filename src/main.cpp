@@ -28,7 +28,7 @@ int main(int argc, char const* argv[])
             ("image,i", po::value<std::string>(), "run image to <file_path>")
             ("debug,d", "enable debug mode")
             ("port,p", po::value<std::uint16_t>()->default_value(2159), "for remote debug port")
-            ("elf,e", po::value<std::string>(), "elf file")
+//             ("elf,e", po::value<std::string>(), "elf file")
 //             ("version,v", "narcissus v0.01")
         ;
 

@@ -15,7 +15,7 @@ namespace narcissus {
                 std::shared_ptr<bool> is_s, std::shared_ptr<std::mutex> m)
             : rsr(), rdr(), tsr(), tdr(), smr(), scr(), 
             ssr((std::uint8_t)ssr_bits::rdrf), brr(), scmr(), access_flags(0),
-            c_variable_ptr(cv), is_sleep(is_s), is_dirty_ssr(false), cv_mutex_ptr(m)
+            c_variable_ptr(cv), is_sleep(is_s), cv_mutex_ptr(m)
         {} 
 
         sci::~sci()
@@ -38,8 +38,6 @@ namespace narcissus {
                 case 0x3:
                     return tdr;
                 case 0x4:
-//                     is_dirty_ssr = true;
-//                     c_variable_ptr->notify_all();
                     return ssr;
                 case 0x5:
                     rdr = (std::uint8_t)read_buffer.front();
